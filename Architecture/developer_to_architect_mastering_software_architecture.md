@@ -2599,6 +2599,15 @@
 ### Transactions in Micro-Services ###
 ### Compensating Tansactions - SAGA Pattern ###
 ### Micro-Services Communication Model ###
+1. Synchronous processing
+	1. Immediate Response
+	2. For read/query loads
+2. Asynchronous processing
+	1. Deferred response
+	2. For write/transaction loads
+	3. Higher scalability
+	4. Higher reliability
+
 ### Event Driven Transactions ###
 ### Extreme Scalability with NoSQL and Kafka ###
 
