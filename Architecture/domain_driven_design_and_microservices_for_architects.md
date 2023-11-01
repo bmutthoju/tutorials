@@ -1161,12 +1161,236 @@
 			1. "From Day 1 travel agents have been the biggest producer for our business (approx. 50%). But gradually we see that the travel agent business is declining as people like to use their phones and iPads to research & book vacations"
 				1. **Travel Agents** (declining due to change in customer preferences)
 			2. "Direct sales are almost 35% of our revenue - hoping to increase it to 55% in next 2 years with the help of technology"
+			3. "**Affiliate partners** work on commission to sell our products. Mostly these are individuals who are the influencers e.g., bloggers and YouTube stars. Frankly, it's a big opportunity that we have not fully tapped into"
+			4. "Sales of our products via **wholesale clubs** is growing but it is just a small part. The clubs want us to build technology to support them. Hopefully in coming years we will be able to support their technology demands"
+		8. **Revenue Streams**
+			1. "**Some providers** work with us on commission basis that is we sell their product as part of the vacation package and in return we receive a commission; the commission amount we receive is negotiated independently with each such provider."
+			2. "We add a **markup on the provider's price**, we refer to as the Provider Markup; this is our share of the profit. The better price we can negotiate with the provider the better it is for us and the customers!!"
+			3. "Markup on Vacation packages"
+		9. **Cost structure**
+			1. "Advertisements and Marketing campaigns is where we spend a big chunk of our money"
+			2. "Like we get commissions from our providers; we pay commisions to our sales partners"
+			3. "Our technology spend has grown exponentially in recent years so can't be ignored anymore"
+			4. "Employee salaries and travel specialist commissions"
 
 ## Domain Driven Design: Strategic Patterns ##
 ### Introduction to DDD and Patterns ###
+1. Domain Driven Design
+	1. Domain Drien Design approach provides **principles and patterns to address the challenges faced with developing complex domain models**
+2. Objectives:
+	1. IT project's primary focus is on the **core domain** and **domain logic**
+	2. Break a unified model into **smaller more manageable models**
+	3. Iterative improvements to the model to solve a domain problem
+3. Strategic Vs. Tactical Patterns
+	1. Strategic patterns:
+		1. Used to divide a complex & large business problem into smaller chunks with well defined boundaries
+		2. Apply across multiple bounded contexts
+	2. Tactical patterns:
+		1. Used to translate conceptual models to software application / service design e.g., classes, modules
+		2. Applicable only within a bounded context
+4. Stratigic patterns:
+	1. Bounded context
+	2. Ubiquitous Language <-names enter- Bounded context
+	3. Context Map <- assess/overview relationships with- Bounded context
+		1. -Segregate the conceptual masses-> Big Ball of Mud
+		2. -Translate and insulate unilaterally with-> Anticorruption layer
+		3. -Free teams to go-> Separate Ways
+		4. -Support multiple clients through-> Open Host Service
+			1. -Formalize as-> Published language
+		5. -Overlap unilaterally as-> Conformist
+		6. -Relate allied contexts as-> Customer/Supplier teams
+		7. -Overlap allied contexts through-> Shared Kernel
+5. How is the DDD related to Microservices?
+	1. Domain Driven Design approach leads to smaller independent domain models that can then be built as highly decoupled, independent set of Microservices
+		1. We are identifying boundaries for microservices using the stratigic pattern
+6. Section Objectives:
+	1. Identify and categorize the sub-domains (in a business domain)
+	2. Business context (why is it important)
+	3. DDD Stratigic Pattern: Ubiquitous language
+	4. DDD strategic Pattern: Bounded Context
+	5. Discovering the Bounded Contexts [in a domain]
+
 ### Business Subdomain Types ###
+1. Subdomains: Understanding the business requires breaking it into parts
+2. Business may not operate in all sub domains in that overarching domain (industry)
+	1. Subdomain structure for Bank A and Bank B might look different
+		1. Bank A:
+			1. Retail Accounts
+			2. Human resources
+			3. Marketing
+			4. Compliance
+			5. ...
+		2. Bank B:
+			1. Credit Cards
+			2. Merchant Services
+			3. Human resources
+			4. Marketing
+			5. Compliance
+			6. ...
+	2. Sub-Domains Granularity
+		1. Sub-domains can be further divided into more sub-domains
+			1. Depends on the focus of the Business
+				1. Example: 
+					1. Bank
+						1. React Accounts
+							1. Savings Accounts
+							2. Checking Accounts
+							3. Certificate of Deposit
+							4. Ledger & Accounting
+							5. Retail Banking Compliance
+							6. ...
+					2. Each bank might view the enterprise as composed of different Sub-Domains
+			2. Each sub-domain has a different level of complexity
+				1. Multiple factors contribute:
+					1. Complexity contributors:
+						1. **Business Rules**
+						2. **Compliance**
+							1. If sub-domain is operating in a highly regulated Environment
+						3. **Complex Calculations**
+							1. The algorithms might require specialized skills or specialized knowledge of the Sub-Domain
+						4. **Process & Handovers**
+							1. Between sub-domain and other sub-domains or external entities
+						5. **Dynamicity**
+							1. If sub-domains need changes to processes, rules, structures or other aspects
+								1. **Difficult to manage the knowledge and understanding of the domain as it is changing with time**
+						6. **Other Factors**
+							1. Depending on the business & industry
+3. Sub-Domain Categories:
+	1. Sub-domains are categorized into 3 types based on their complexity & business value
+		1. Generic
+			1. Known solution exist for such Subdomains
+				1. There is nothing special about these Subdomains
+				2. Best practices are available
+				3. No business advantage in re-inventing the wheel
+					1. No competitive advantage by doing things differently in this category of sub-domains
+			2. Examples: (The following are quite mature and will not add any differentiating value for the business)
+				1. Human Resources
+				2. Facilities Management
+		2. Core
+			1. This is the differentiator for the business
+				1. Each business within a specified industry will operate differently within the core sub-domains to gain some advantage over their competition
+					1. Secret sauce is the core Subdomain
+					2. Business looks for ways to get competitive advantage
+					3. Fast pace & ever evolving (depending on the industry)
+						1. High level of Dynamicity
+			2. Example:
+				1. Manufacturing (auto-industry)
+					1. To gain competitive edge (cost savings say that translates to value)
+				2. Credit Cards
+					1. Banks offer different kinds of benefits
+		3. Supporting
+			1. Does not provide business advantage ut core depends on it
+				1. Well known practices but solutions not readily available
+					1. May need to customized Otherwise
+				2. Relatively simple to build as no complex business logic
+			2. Examples:
+				1. Customer Support
+				2. Compliance
+	2. Differentiators of Banks:
+		1. Products they offer (core):
+			1. Bank A: Retail Accounts, Credit Cards, Merchant Services
+			2. Bank B: Retial Accounts, Mortgage Services
+		2. Retail accounts might be getting operated differently
+4. How to identify type of sub-domain:
+	1. Common business capability - Known solutions are available
+		1. The sub-domain is **generic**
+	2. If no known solution
+		1. Check if subdomain **adds business value** (is there an opportunity for business to differentiate itself from competitors by doing things differently within the subdomain)
+			1. If **no**:
+				1. Check if **core depends on it**?
+					1. If yes: Likely to be **Supporting** subdomain
+					2. If no: It could be a **generic** subdomain (we may need to build a solution)
+			2. If **yes**:
+				1. Check if business domain has **HIGH Complexity**
+					1. If **no**:
+						1. Likely to be a **Supporting** Subdomain
+					2. If **yes**:
+						1. Likely to be **core**
+5. Why do we categorize the sub-domains?
+	1. Businesses have limited resources (refers to HR and money put aside for various initiatives across the enterprise); 
+		1. Categorization of sub-domains helps in prioritization of the initiatives
+	2. Return on investments (maximization)
+	3. Help make Build Vs. Buy decisions
+		1. IT Solutions: Buy vs Build
+			1. **Generic** sub-domain: Buy
+				1. SAP (Enterprise Resource Planning software)
+				2. Workday
+			2. **Supporting** sub-domain: Build by outsourcing
+				1. Or buy generic solution and customize it
+					1. Salesforce
+			3. **Core** sub-domain: Built by 'A' teams (best teams and best talent are used to build it)
+6. Quick Review:
+	1. 3 Types of Subdomains
+		1. Generic: Readily available solutions
+		2. Core: Business can use to differentiate itself from its competitors
+		3. Supporting: Core subdomains depend on these
+	2. Categorization helps with build vs. buy decisions
+	3. Businesses gets the most ROI by investing in **Core**
+		1. Best talent and resources are used
+
 ### Exercise: ACME Subdomain Type Assignment ###
+1. Partial set of ACME subdomains
+	1. Products Management
+	2. Accounting
+	3. Customer Support
+	4. Partner Management
+	5. Payments
+	6. Human Resources
+	7. Sales channel
+	8. Marketing
+2. More info:
+	1. Business SME @ ACME
+		1. Product Management: Product at ACME refers to the vacation package. This is where we spend most of our time; thinking about products that are better than our Competitors
+			1. Core
+		2. Accounting: We follow the general accounting practices; nothing different from others except that there may be few rules of thumb that make us different
+			1. Generic
+		3. Customer Support: Our customer support must be the best in the industry to sustain the competitive advantage; there are tools available, but we are always looking to improve somehow
+			1. Core/Supporting
+		4. Partner Management: Partners are our lifeline; we want them to be happy but due to the complex contracts it is a challenge
+			1. Core
+		5. Sales Channel: We sell via multiple channels e.g., direct sales, travel agents etc. Our sales team is always looking for creative ways to sell our product
+			1. Core
+		6. Human Resources: As you know its an important function, but our HR team is the best and they know what they are doing!!!
+			1. Generic (mature and no complexity)
+		7. Marketing: Campaigns are managed by our marketing team. Sales and product management team need to adjust to these campaigns based on information they receive from marketing
+			1. Supporting (due to dependency of core subdomains)
+
 ### Understanding the Business Context ###
+1. Understanding the meaning of the context:
+	1. What is Context?
+	2. What is Business Context?
+	3. Why is it important for IT teams to understand the context?
+2. Example:
+	1. Should I prefer an account with **High** fees
+	2. Should I prefer an account with **Low** fees
+	3. What would you tell Jack to do?
+		1. Option 1: This is good if Jack is looking to open a "SAVINGS Account"
+		2. Option 2: This is good if Jack is looking to open a "CREDIT CARD Account"
+3. To make an objective decision you will need additional facts or information on the situation!!!
+	1. You need the **Context**
+		1. Why is Jack asking this question?
+		2. What is his intent?
+		3. What type of an account is Jack planning to open?
+4. Context: The circumstances or facts that form the setting for a statement, event or idea
+	1. Context: Jack is looking to borrow money from the bank.
+		1. Should I prefer an account with High fees?
+		2. Should I prefer an account with Low fees? (This one)
+5. Business Context: As an IT team, I need to be doing knowledge crunching exercises:
+	1. Focus areas for knowledge crunching
+		1. Be aware of the business Context
+			1. Credit Cards Context
+			2. Savings Account Context
+			3. Merchant Account Context
+		2. Interpret the knowledge gained in each of the Contexts or Products
+	2. In order to understand the business domain, one MUST understand the business context
+		1. Example: Credit Cards: Funds received from the customer are credited to customer's account
+			1. IT team understanding the credit card business context:
+				1. Customer pays the credit card bill
+				
+						Actor -> Pay Bill - Update Account
+						
+		2. Example: Savings Account: Funds received from the customer are credited to customer's account
+
 ### Business Domain Language ###
 ### Strategic Pattern: Ubiquitous Language ###
 ### Exercise: Define ACME's Ubiquitous Language ###
@@ -1201,10 +1425,84 @@
 ### Hands On: Application and Infrastructure Services, UML & Java ###
 
 ## Events Driven Architecture & Domain Events ##
+### Intro to Events in Microservices ###
+### Monolithic & Distributed Communication Patterns ###
+### Microservices Interaction Patterns ###
+### Event Driven Architecture ###
+### Hands On: Pub Sub with AMQP/RabbitMQ ###
+### Domain Events - Pattern ###
+### Hands On: Static Class Broker Pattern ###
+### Exercise: ACME Sales Domain Events ###
+### Hands On: Realization of ACME Domain Events ###
+### Integration Events - Pattern ###
+### Exercise: ACME Sales Integration Events ###
+### Hands On: Realization of ACME Integration Events (1 of 2) ###
+### Hands On: Realization of ACME Integration Events (2 of 2) ###
+
 ## Event Storming for Constructing Shared Knowledge ##
+### Learning Objectives: Discovering the Events in a Domain ###
+### Introduction to Event Storming ###
+### Elements of Event Storming ###
+### Preparing for the ES Workshop ###
+### Conducting the ES Workshop ###
+### Exercise: ACME Sales ES Workshop ###
+
 ## Microservices Data Management Patterns ##
+### Introduction to Microservices Data Persistence ###
+### Monolithic Apps - Shared Persistence Storage ###
+### Service Oriented Architecture (SOA) ###
+### Separate Database Pattern ###
+### Brownfield Microservices: Database Patterns | Options ###
+### Shared Database Pattern ###
+### Shared Database: Challenges & Solutions ###
+
 ## Microservices DB Performance Management ##
+### Need for More Data Patterns ###
+### Commands Query Separation (CQS) ###
+### Hands On: PostgreSQL Database for Backend ###
+### Realization of Commands & Queries ###
+### Hands On: Build the CQS Pattern ###
+### Command Query Responsibility Segregation (CQRS) ###
+### Data Replication Between WRITE-READ Sides ###
+### Exercise: ACME CQRS for Proposal ###
+### Event Sourcing and Event Store Considerations ###
+### Hands On: MongoDB for ACME Sales READ Side ###
+### Hands On: CQRS-v1 Proposal Subscriber ###
+### Hands On: CQRS-v2 Read Side Query ###
+
 ## Microservices Managing the Data Integrity ##
+### Introduction to Realiable Messaging ###
+### Designing for Failure ###
+### Exercise: Address ACME CQRS Write Side Failures ###
+### Exercies: Address ACME CQRS Read Side Failures ###
+### Hands On: Handling Duplicate Messages ###
+
 ## Microservices and Kafka ##
+### Use of Kafka in Microservices ###
+### Kafka Overview ###
+### Kafka Concepts ###
+### Hands On: Construct a Kafka Cluster ###
+### Hands On: Working with Kafka Producer ###
+### Hands On: Working with Kafka Consumer Groups ###
+### Kafka vs AMQP (RabbitMQ) ###
+### Exercise: Messaging for Microservices ###
+
 ## Managing Distributed Transactions with SAGA ##
+### Distributed Transactions with SAGA ###
+### SAGA Pattern for Distributed Transactions ###
+### SAGA Choreography Vs. Orchestration ###
+### SAGA Implementation Considerations ###
+### Exercise: ACME Sales Booking Transaction SAGA ###
+### Hands On: UML & Code Walkthrough of Booking SAGA ###
+
 ## Microservices and API ##
+### Microservices-API Realization ###
+### Introduction to REST API ###
+### REST API Resources & Design Constraints ###
+### API Management ###
+### Exercise: ACME REST API for Products ###
+### Hands On: ACME REST API in Action ###
+### Introduction to GraphQL ###
+### GraphQL Schema Definition ###
+### Exercise: ACME GraphQL API for Products ###
+### Hands On: ACME GraphQL API in Action ###

@@ -1,0 +1,14 @@
+# Caffeine #
+## What is the Caffeine caching mechanism? ##
+Caffeine is a high-performance, in-memory caching library for Java. It provides a flexible and efficient caching mechanism that can be used to improve the performance of applications by reducing the need to repeatedly fetch data from slower data sources, such as databases or remote services. Here are some key features and concepts of the Caffeine caching mechanism:
+
+1. **In-Memory Storage**: Caffeine caches data in memory, allowing for fast access and retrieval. It leverages the system's memory resources to store and manage cached objects.
+2. **Key-Value Store**: Caffeine uses a key-value store approach, where data is stored in the cache using a unique key. The key is used to look up and retrieve the corresponding cached value.
+3. **Cache Loading**: Caffeine supports automatic cache loading, which means that when a requested key is not found in the cache, it can automatically fetch the value from a specified data source and populate the cache. This eliminates the need for manual data loading and simplifies cache initialization.
+4. **Expiration Policies**: Caffeine allows you to define expiration policies for cache entries. You can specify a time-to-live (TTL) duration or an expiration timestamp for each entry. Once an entry expires, it is evicted from the cache, and subsequent access to that key will result in a cache miss.
+5. **Eviction Strategies**: Caffeine provides various eviction strategies to manage cache size and ensure efficient memory usage. Some common eviction strategies include size-based eviction (e.g., maximum number of entries), time-based eviction (e.g., oldest or least recently used entries), and weighted eviction (e.g., assigning different weights to entries).
+6. **Cache Statistics**: Caffeine allows you to monitor and collect statistics about cache usage, such as hit rate, miss rate, eviction count, and more. These statistics can be useful for performance tuning and understanding cache behavior.
+7. **Thread-Safety**: Caffeine ensures thread-safety by providing concurrent access to the cache. Multiple threads can read and update the cache concurrently without the need for explicit synchronization.
+8. **Flexible Configuration**: Caffeine offers a flexible and configurable API for creating and customizing caches. You can configure various aspects of the cache, such as initial capacity, maximum size, eviction policies, cache loaders, and more.
+
+Overall, Caffeine provides a powerful and efficient caching mechanism that can significantly improve application performance by reducing the latency associated with fetching data from slower data sources. It offers features like automatic cache loading, expiration policies, eviction strategies, and thread-safety, making it a popular choice for in-memory caching in Java applications.

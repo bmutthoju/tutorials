@@ -640,8 +640,96 @@
 		1. Initial code changes may be required
 			1. If we make changes once, we can add or remove resources
 		2. Increased complexity, coordination overhead
+9. Team/Organization Scalability
+	1. Scalability Definition - Developer's Perspective
+		1. The measure of a systems ability to handle a growing amount of **work**, in an easy and cost effective way, by adding **resourcs** to the system
+			1. Work (from developer's perspective)
+				1. Adding features
+				2. Testing
+				3. Fixing bugs
+				4. Do releases
+			2. Resources (in this context)
+				1. More engineers
+	2. Assuming a single monolithic application: If we plot productivity as a function of engineers
+		1. Upto certain point, the more engineers we add, the more work gets done (productivity increases)
+		2. At some point, the more engineers we add, the less will the productivity be
+		3. Reasons for poductivity degradation:
+			1. Many crowded meetings - makes them less productive
+			2. Code merge conflict - A lot of developers work on features simultaneously (overhead)
+				1. Eventually, everyone might start stepping on each other's toes
+			3. Business complexity - Longer ramp up time
+				1. Each new developer has a lot more to learn before they become productive
+			4. Testing is harder and slower
+				1. No isolation
+					1. Every minor change can potentially break something
+						1. Any change to the code-base requires testing everything
+			5. Releases become very risky
+				1. Each release comes with lot of changes from many engineers
+					1. Cause companies to make releases less frequently which makes it worse (each release has many changes)
+	3. Team scalability:
+		1. Software Architecture impacts engineering velocity (team productivity)
+		2. Solution:
+			1. Separate code into multiple modules/ abstract away into libraries
+				1. Separate group of developers can work on each individual modules separately and not interfere with each other as-much
+				2. The pieces are still part of the same service (still tightly coupled)
+					1. Especially if we want to release new versions in production
+			2. Separate code-base into separate services
+				1. Each service has
+					1. Own code-base
+					2. Own stack
+					3. Own release schedule
+				2. Services communicate with each other through loosely coupled protocols over a network
+				3. Advantages:
+					1. Improves engineering productivity
+					2. Helps scale organization
+				4. Challenges:
+					1. There are challenges and we need patterns
+10. Scalability can be achieved in three orthogonal dimensions (we can scale in each direction independently)
+	1. Scale Up/ Vertical Scalability
+	2. Scale Out/ Horizontal Scalability
+	3. Team/ Organization Scalability
+11. Summary:
+	1. We learned about a very important quality attribute - Scalability
+	2. Motivation - traffic/load may increase:
+		1. Over time
+		2. On the seasonal pattern
+		3. Sporadically
+	3. Scalability definition: **Measure of a system's ability to handle a growing amount of work in an easy and cost effective way by adding resources to the system**
+	4. We learned about three orthogonal ways to scale our system
+		1. **Vertical Scalability** - Adding resources or upgrading the existing resources on a single computer
+		2. **Horizontal Scalability** - Adding more resources in a form of new instances running on different machines
+		3. **Team Scalability** - Increasing productivity while hiring more engineers into the team
 
 ### Availability - Introduction & Measurement ###
+1. Topics:
+	1. Importance and Risks
+	2. What is high availability
+	3. Availability definition and formulas
+2. Introduction:
+	1. Availability is an important attribute when designing a system
+	2. It has the greatest impact on:
+		1. Our users
+		2. Our business
+	3. Importance of Availability - Users
+		1. Users try to purchase from online store but:
+			1. The page doesn't load
+			2. They get an error at checkout
+		2. Users lose access to their email for considerable time
+	4. Importance of Availability - Business (B2B)
+		1. If we provide services to other companies, the impact of outage is compounded
+			1. AWS simple storage service had an outage in February 2017
+				1. Since many companies and websites used the service, it almost took down the entire internet
+3. Importance of Availability - Mission Critical Services
+	1. System downtime is not always just an inconvenience
+	2. Our software can be used for mission-critical service like:
+		1. Air trffic control in airports
+		2. Healthcare in hospitals
+	3. If it crashes/ becomes unavailable for prolonged periods, people's lives are on line
+4. Impact of downtime on the business
+	1. For a business, the consequences of our system going down are:
+		1. If users cannot use our system, our profits become zero
+		2. If users lose access constantly, they go to our competitors
+
 ### Fault Tolerance & High Availability ###
 ### SLA, SLO, SLI ###
 ### Real World SLA Examples from the Industry ###

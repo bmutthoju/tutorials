@@ -166,16 +166,357 @@ Overall, the best way to learn gRPC is to start with the official documentation 
 		2. gRPC guarantees message ordering within an individual RPC call.
 		
 				rpc LotsOfReplies (HelloRequest) returns (stream HelloResponse);
+				
+	3. **Client streaming RPCs**:
+		1. Client writes a sequence of messages and sends them to server (using provided stream)
+		2. Once client has finished writing messages, it waits for server to read them and return its response
+		3. gRPC guarantees message ordering within an individual RPC call
+		
+				rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
+				
+	4. **Bidirectional streaming RPCs**:
+		1. Both sides send a sequence of messages using read-write stream
+			1. Two streams operate independently
+				1. Clients and servers can read and write in whatever order they like
+				2. Example: Server could wait to receive all client messages before writing its response or could read a message then write a message, or any other combination of reads and writes
+		2. The order of messages in each stream is preserved.
+		
+				rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
 
 #### Using the API ####
+1. gRPC provides protocol buffer compiler plugins that generate client-side and server-side code
+	1. We can call APIs on client side & implement the corresponding APIs on server side
+2. On the server side:
+	1. Server implements methods declared by service
+	2. Server runs a gRPC server to handle client calls
+	3. gRPC infra decodes incoming requests, executes service methods, and encodes service responses
+3. On the client side:
+	1. Client has local object called stub (client in some languages)
+	2. It implements the same methods as the service
+	3. Client can just call the methods on the local object
+		1. Methods wrap parameters for the call in appropriate protocol buffer message type, send the requests to server, return server's protocol buffer responses
+
 #### Synchronous vs. asynchronous ####
+1. Synchronous RPC calls block until a response arrives from the server
+	1. Closest approximation to abstraction of a procedure call that RPC aspires to (?)
+		1. However, networks are inherently asynchronous (latency can vary widely, can error out at times)
+			1. Solution: **Start RPC without blocking the current thread**
+2. gRPC programming API in many languages comes in both **synchronous** and **asynchronous** flavors
+	1. Refer to the **reference documentation of the languages**
+
 ### RPC life cycle ###
+1. What happens when a gRPC client calls a gRPC server method
+
 #### Unary RPC ####
+1. Consider the case where client sends a single request and gets back a single response
+	1. Client calls a stub method.
+	2. Server is notified that RPC is invoked with client's [metadata](https://grpc.io/docs/what-is-grpc/core-concepts/#metadata), method name & [deadline](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines) if applicable
+		1. **Metadata**: It is info about a particular RPC call (say [authentication details](https://grpc.io/docs/guides/auth/)) as a list of key-value pairs
+			1. Values: 
+				1. Strings or binary data
+			2. Keys: 
+				1. Strings
+				2. Case insensitive
+				3. Consist of ASCII letters, digits, and special characters `-`, `_`, `.`
+				4. Must not start with `grpc-` (reserved for gRPC)
+				5. Binary valued keys end in `-bin`
+				6. ASCII-valued keys do not end in `-bin`
+			3. User-defined metadata is not used by gRPC
+				1. Allows user to provide info associated with the call to the server and vice-versa
+			4. Access to the metadata is language dependent
+		2. **Deadlines/ Timeouts**:
+			1. gRPC gives the client the option to specify how long they are willing to wait for an RPC to complete before the RPC is termintated with a `DEADLINE_EXCEEDED` error
+			2. On server-side, server can query to see
+				1. If a particular RPC has timed out
+				2. How much time is left to complete the RPC
+			3. Specifying deadline/timeout is language specific
+				1. Some language APIs work in terms of timeouts (durations of time)
+				2. Some language APIs work in terms of a deadline (a fixed point in time)
+					1. They may or may not have a default deadline
+	3. Server can send back its own initial metadata (which need to be sent before any response) right away, or wait for client's actual request message.
+		1. Which happens first, is application-specific
+	4. Once server has client's request messages, it does whatever work is necessary to construct and populate a response.
+	5. Response is returned to the client (if successful) together with status details (status details: status code, optional status message) and optional trailing metadata
+	6. If response status is okay, client gets the response, which completes the call on client's side
+
 #### Server streaming RPC ####
+1. It is similar to a unary RPC
+	1. But server returns a stream of messages in response to client's request
+2. After sending all messages, server's status details (status details: status code, optional status message) and optional trailing metadata are sent to client
+	1. This completes processing on the server side
+3. Client completes once it has all the server's messages
+
 #### Client streaming RPC ####
+1. It is similar to a unary RPC
+	1. But client sends a stream of messages to server instead of a single message
+2. Server responds with a single message (along with status details and optional metadata)
+	1. Typically (but not necessarily) it has received all the client's messages
+
 #### Bidirectional streaming RPC ####
-#### Deadlines/Timeouts ####
+1. The call is initiated by the client invoking the method and server receiving the client metadata, method name, and deadline.
+2. Server can either send back its initial metadata or wait until client starts streaming messages
+3. Stream processing on both client-side and server-side are application specific
+	1. Client & server can read and write messages in any order
+		1. Examples:
+			1. Server can wait until it has received all of the messages from client OR
+			2. Server & client can play "ping-pong"
+				1. Client sends a request
+				2. Server gets the request
+				3. Server sends a response
+				4. Client sends another request based on the previous response(s)
+
 #### RPC termination ####
+1. In gRPC, client & server make independent and local determinations of success of a call
+	1. Conclusions may not match
+		1. Example: An RPC might finish successfully on server-side ("I have sent all my responses") but fails on the client side ("The responses arrived after by deadline!")
+	2. Server might decide to complete before a client sends all its requests
+
 #### Cancelling an RPC ####
-#### Metadata ####
+1. Client or server can cancel an RPC at any time
+	1. Cancellation termintates RPC immediately
+		1. No further work is done
+		2. Changes made before cancellation are not rolled back
+		
 #### Channels ####
+1. gRPC channel:
+	1. It provides a connection to a gRPC server on a specified host and port
+	2. It is used during the creation of a client stub
+		1. Clients specify channel arguments to modify gRPC's default behavior
+			1. Example: Switching message compression on or off
+	3. A channel has state
+		1. `connected`
+		2. `idle`
+	4. How gRPC deals with closing a channel is langauge dependent
+	5. Some languages permit querying channel state
+	
+## FAQ ##
+### What is gRPC? ###
+1. It is a modern, open-source remote procedure call (RPC) framework
+2. It can run anywhere
+3. It allows client & server applications to communicate transparently
+4. It makes it easier to build connected systems
+5. [Motivation & Design Principles](https://grpc.io/blog/principles/) - background on why gRPC was created
+
+### What does gRPC stand for? ###
+1. gRPC Remote Procedure Calls
+
+### Why should I want to use gRPC? ###
+1. Usage scenarios:
+	1. Low latency, highly scalable, distributed systems
+	2. Developing mobile clients which are communicating to a cloud server
+	3. Designing a new protocol that needs to be:
+		1. Accurate
+		2. Efficient
+		3. Language independent
+	4. Layered design to enable extension
+		1. Authentication
+		2. Load balancing
+		3. Logging
+		4. Monitoring
+		5. ...
+
+### Who's using this and why? ###
+1. gRPC is [Cloud Native Computing Foundation (CNCF)](https://cncf.io/)
+2. Google has been using underlying technologies and concepts
+	1. Cloud products
+	2. Externally facing APIs
+3. Other companies:
+	1. Square
+	2. Netflix
+	3. CoreOS
+	4. Docker
+	5. CockroachDB
+	6. Cisco
+	7. Juniper Networks
+	8. ...
+
+### Which programming languages are supported? ###
+1. [Officient support](https://grpc.io/docs/#official-support)
+	1. C/C++
+		1. GCC
+		2. Clang
+		3. Visual Studio
+	2. C#
+		1. .Net Core
+		2. Mono
+	3. Dart
+	4. Go
+	5. Java
+	6. Kotlin
+	7. Node.js
+	8. Objective-C
+	9. PHP
+	10. Python
+	11. Ruby
+
+### How do I get started using gRPC? ###
+1. [Installation](https://grpc.io/docs/quickstart/)
+2. [gRPC GitHub org page](https://github.com/grpc)
+	1. Pick the runtime or language
+	2. Follow README instructions
+
+### Which license is gRPC under? ###
+1. Apache 2.0
+
+### How can I contribute? ###
+1. [Contributors](https://grpc.io/community/#contribute)
+	1. Community feedback
+	2. Additions
+	3. Bugs
+2. [Submit ideas for projects around gRPC](https://github.com/grpc/grpc-contrib/blob/master/CONTRIBUTING.md)
+3. [List of projects](https://github.com/grpc-ecosystem)
+
+### Where is the documentation? ###
+1. [https://grpc.io/docs/](https://grpc.io/docs/)
+
+### What is the road map? ###
+1. New features are designed and approved for implementation through an RFC process
+	1. Tracked in the following [repository](https://github.com/grpc/proposal)
+
+### How long are gRPC releases supported for? ###
+1. No LTS releases
+	1. Current release
+	2. Latest release
+	3. Prior release
+2. Support: Bug fixes, security fixes
+
+### What is the gRPC versioning policy? ###
+1. [See here](https://github.com/grpc/grpc/blob/master/doc/versioning.md)
+
+### What is the latest gRPC version? ###
+1. Latest release tag: v1.58.0
+
+### When do gRPC releases happen? ###
+1. Tip of the master branch is stable all the times
+	1. Project, across various runtimes, targets to ship checkpoint releases every 6 weeks on a best effort basis
+		1. [Release schedule](https://github.com/grpc/grpc/blob/master/doc/grpc_release_schedule.md)
+
+### How can I report a security vulnerability in gRPC? ###
+1. [Process](https://github.com/grpc/proposal/blob/master/P4-grpc-cve-process.md)
+
+### Can I use it in the browser? ###
+1. [gRPC-Web](https://github.com/grpc/grpc-web) - Generally available
+
+### Can I use gRPC with my favorite data format (JSON, Protobuf, Thrift, XML)? ###
+1. Yes
+	1. gRPC is extensible to support multiple content types
+	2. Other content types: FlatBuffers, Thrift
+
+### Can I use gRPC in a service mesh? ###
+1. Yes
+	1. gRPC applications can be deployed in a service mesh like any other application
+	2. gRPC also supports [xDS APIs](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol)
+		1. Enables deploying gRPC applications in a service mesh without sidecar proxies
+	3. [Proxyless service mesh features supported in gRPC](https://github.com/grpc/grpc/blob/master/doc/grpc_xds_features.md)
+
+### How does gRPC help in mobile application development? ###
+1. gRPC and Protobuf provide an easy way to define a service & auto-generate reliable client libraries for iOS, Android & servers (back-end)
+	1. Clients can take advantage of **advanced streaming and connection features**
+		1. Helps **save bandwidth**
+		2. Do more over **fewer TCP connections**
+		3. **Save CPU usage & battery life**
+
+### Why is gRPC better than any binary blob over HTTP/2? ###
+1. gRPC is a **set of libraries that provides higher-level features consistently across platforms that common HTTP libraries typically do not provide**
+	1. Examples:
+		1. Interaction with **flow-control at the application layer**
+		2. **Cascading call-cancellation**
+		3. **Load balancing** & **failover**
+
+### Why is gRPC better/worse than REST? ###
+1. gRPC follows HTTP semantics over HTTP/2 but full-duplex streaming is allowed
+	1. Divergence from REST conventions:
+		1. Use of static paths for performance reasons during call dispatch
+			1. Call parameter, query parameters, payload body parsing adds latency and complexity
+		2. Formalization of errors that are applicable directly to API use cases as compared to HTTP status codes
+
+### How do you pronounce gRPC? ###
+1. jee-arr-pee-see
+
+## Languages ##
+### Suported Languages ###
+1. Pages:
+	1. Quick start
+	2. Tutorials
+	3. API reference
+2. Languages:
+	1. C++: [https://grpc.io/docs/languages/cpp/](https://grpc.io/docs/languages/cpp/)
+	2. Go: [https://grpc.io/docs/languages/go/](https://grpc.io/docs/languages/go/)
+	3. Java: [https://grpc.io/docs/languages/java/](https://grpc.io/docs/languages/java/)
+	4. Node: [https://grpc.io/docs/languages/node/](https://grpc.io/docs/languages/node/)
+	5. Python: [https://grpc.io/docs/languages/python/](https://grpc.io/docs/languages/python/)
+	
+# Java #
+## Quick Start ##
+### Prerequisites ###
+1. JDK 7 or higher
+
+### Get the Example Code ###
+1. [Download the repo as a zip file](https://github.com/grpc/grpc-java/archive/v1.58.0.zip)
+2. Clone repo:
+
+		git clone -b v1.58.0 --depth 1 https://github.com/grpc/grpc-java
+		
+3. Change to examples directory:
+
+		cd grpc-java/examples
+
+### Run the Example ###
+1. Compile the client and server:
+
+		./gradlew installDist
+		
+2. Run the server:
+
+		./build/install/examples/bin/hello-world-server
+		
+3. Run the client from another terminal
+
+		./build/install/examples/bin/hello-world-client
+
+### Update the gRPC Service ###
+1. Adding another server method
+	1. Service is defined using protocol buffers:
+		1. [protocol buffers](https://developers.google.com/protocol-buffers)
+	2. How to define a service in `.proto` file:
+		1. [Basic tutorial](https://grpc.io/docs/languages/java/basics/)
+2. Both client and server have `SayHello()` RPC method
+	1. It takes `HelloRequest` parameter from client
+	2. It returns `HelloReply` from server
+3. Definition:
+
+		// The greeting service definition.
+		service Greeter {
+			// Sends a greeting
+			rpc SayHello (HelloRequest) returns (HelloReply) {}
+		}
+		
+		// The request message containing the user's name
+		message HelloReques {
+			string name = 1;
+		}
+		
+		// The response message containing the greetings
+		message HelloReply {
+			string message = 1;
+		}
+		
+4. Open `src/main/proto/helloworld.proto` and add a new `SayHelloAgain()` method with same request and response types as `SayHello()`:
+
+		// The greeting service definition
+		service Greeter {
+			// Sends a greeting
+			rpc SayHello (HelloRequest) returns (HelloReply) {}
+			// Sends another greeting
+			rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+		}
+		
+		// ...
+
+### Update the App ###
+1. The build process regenerates `GreeterGrpc.java` file which contains gRPC client and server classes
+
+### Update the Server ###
+### Update the Client ###
+### Run the Updated App ###
+### What's Next ###
