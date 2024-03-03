@@ -2734,55 +2734,3566 @@
 
 ## Technology Stack ##
 ### Module Contents Overview ###
+1. Architecting Solutions with Platforms & Frameworks
+	1. Platforms for:
+		1. Web Apps
+		2. Services
+		3. Datastores
+		4. Analytics
+	2. Platform Functionality
+		1. We will pick up a platform product
+			1. We will look at its functionality
+				1. Example: Database
+					1. What kind of schema it supports
+					2. What kind of read and write load it can handle
+				2. Example: Web-server
+					1. Whether the web-server can support caching
+					2. Whether the web-server can act as a good reverse proxy
+			2. Before selecting any product, we want to make sure that this product serves us all the functionality that we are looking for
+	3. Platform Architecture (non-functional requirements)
+		1. Performance (how does the product perform)
+		2. Scalability (how does the product scale)
+		3. Reliability (what reliability guarantees does the platform product provide)
+	4. Platform Use-Cases (for what use-cases, the product is built for)
+	5. Platform Alternatives (compare the product with other products that are available)
+		1. Comparison (which product fits the best for our application)
+	6. Architecting Solution
+		1. End-to-End
+2. For each of layers, we need to select certain products
+	1. Database:
+		1. RDBMS: Oracle, SQL Server
+		2. NoSQL
+			1. On what basis do we make the selection
+	2. Frontend:
+		1. On what basis do we choose a reverse proxy
+		2. On what basis do we choose a web-server
+3. How do we make those decisions?
+	1. On what basis do we select a particular platform and construct a solution out of that
+	2. For each of the layers, we pick a product (platform product)
+
 ### Reference System for Using Tech Platforms ###
+1. Reference System
+	1. Web layer
+	2. Service layer
+	3. Database layer
+	4. Analytics layer
+2. We will try to build the system using various platforms and technologies available
+	1. When we have to choose a platform product, we are interested in two things:
+		1. Functionality
+			1. Is it providing the necessary functionality or not
+		2. Non-functional aspect
+			1. Is it going to scale
+			2. Is it resilient
+			3. Is it reliable
+			4. Is it secure
+			5. Is it going to perform
+
 ### Web Applications ###
+1. Front-end
+	1. We are concerned about the server side of the system
+		1. Not user interfaces (not even scripting)
+	2. Web-applications:
+		1. Web-applications receive the highest amount of load that a system receives
+			1. As we go down the system, the load decreases progressively
+				1. The load on the databases is the least
+					1. Challenging:
+						1. It is hard to scale out databases
+						2. We are managing state
+		2. We do not manage state on the frontend side
+			1. It reduces some load on the web application
+		3. **Every request hits our web-application**
+			1. A request may or may not go to the backend
+			2. **Hence, load the a web-application is the primary challenge that any web-application needs to deal with**
+		4. **They are connected with clients that are located at long distances**
+			1. Clients of any other layer of the system are local clients
+		5. **Communication needs to be secure**
+		6. When we try to select a product for our web-application, we look for the above things
+			1. How efficiently can it serve the content
+			2. How much load can it efficiently handle
+
 ### Solutions for Web Applications ###
+1. Solutions:
+	1. Static Content (how to manage)
+		1. Apache Web Server
+		2. Nginx Web Server
+		3. Cloud Storage (static data)
+	2. Dynamic Content
+		1. Web Server - Apache HTTPD, NodeJS (static content)
+		2. Java Web Containers - Tomcat, Jetty (comparing with NodeJS), Spring-Boot (Java)
+			1. Tomcat vs Jetty - small comparison
+			2. Jetty vs NodeJS - Totally different ways of handling web-content
+	3. Content Caching
+		1. Nginx
+			1. Varnish cache is another option
+	4. Content Distribution
+		1. CDN
+			1. When we have large distances to cover
+				1. If we have a large site in Asia but we have customers in America as well
+			2. If website has a lot of static content
+
 ### Apache Web Server ###
+1. Store Static Content (important function)
+	1. HTML/CSS/JS Files
+	2. Image files
+	3. Documents
+2. Generate Dynamic Content (important function)
+	1. Get data & generate pages dynamically
+	2. PHP, Python, Perl
+	3. No JSP/Servlets
+3. Act as a Reverse Proxy (important function)
+	1. Not great
+	
+#### Store Static Content ####
+1. Static content is stored on Apache server's hard disk
+	1. If content is delivered from hard-disk, the delivery is quite slow
+		1. Example: if a jpeg image needs to be delivered, Apache needs to fetch the image from the hard-disk and deliver to the client - This can be slow because Apache needs to do an IO from the disk
+			1. Solution:
+				1. When Apache is fetching the jpeg file for the first time, it stores the file in the memory of the Apache server
+				2. Next time if a request comes for the same image, it will be delivered from RAM
+				3. **It is important for Apache Server to have a large RAM**
+					1. 32 GB, 64 GB, ...
+						1. May or may not be sufficient
+							1. Depends on the amount of static content
+								1. Say 200 GB
+									1. RAM of 32 GB is insufficient
+					2. If it is a static content intensive web-site, there will be a huge static content sitting on the disk and not everything can be cached on the RAM
+						1. Anything at comes from the RAM is slow but anything that comes from the hard disk will be faster
+
+#### Generate Dynamic Content ####
+1. It does it pretty well and is known for this feature
+	1. We can write scripts in PHP, Python, or Perl, ...
+		1. Using the scripts, Apache will fetch data from a service/ database & dynamically generates HTML page (whenever a request is received for generating a page)
+	2. For generating dynamic HTML pages, the resources used by Apache:
+		1. RAM - Where all the operations are performed
+		2. CPU
+			1. These two are overloaded
+	3. It doesn't have Servlet container
+		1. No JSP/Servlets
+		
+#### Act as a Reverse Proxy ####
+1. It is not well known for
+	1. We can still use it
+		1. If it is not a heavily overloaded website
+2. It is not a great reverse proxy as compared to others
+	1. Other reverse proxies are designed to be great reverse proxies
+3. It can sit in front of our web-application
+	1. Suppose web-application has several instances (10-15 instances)
+		1. Apache Web Server can sit in front of the web-app
+		2. Clients can call Apache Web Server
+			1. Apache Web Server will be a single point of contact (they just have to know the IP address of the Apache Web Server)
+			2. Apache Web Server will proxy all the requests to the backend web application
+				1. It acts as a reverse proxy
+				2. It can do some load balancing
+
 ### Apache WebServer Architecture ###
+1. The architecture is based on request/response model
+	1. It is similar to the architecture of any the following which serves HTTP requests
+		1. Web server
+		2. App server
+		3. Web container
+	2. Examples: Apache Tomcat, Wildfly, JBoss, Jetty, ... 
+		1. The servers are based on request/response model and they listen to HTTP requests
+		2. They work pretty much the same way
+			1. Apache Webserver represents them
+2. Architecture
+	1. Assume there are a lot of clients connecting using HTTP protocol to a web-server
+		1. Each client will have a connection
+			1. It can be a persistent connection if client is trying to re-connect again using the same connection
+				1. Reason: It saves some latency
+			2. Apache provides this feature
+			3. Each connection occupies some memory (not much)
+			4. Each connection will be **allocated a thread from a worker thread pool**
+				1. The thread will dedicatedly work for that connection for a given client request
+				2. The thread serving a client request may access the following depending on the kind of request:
+					1. cpu
+					2. memory
+					3. network
+				3. If the client has asked for a static resource, the thread will do a disk access, it will fetch a static resource file (css file, jpeg file, ...) and it will return the information back to client
+					1. During the operation, the thread may write some log statements on a log file (this needs disk access as well)
+				4. The thread might serve the request purely out of memory if the resource is cached in memory
+			5. Request for a dynamic web-page
+				1. When client requests for a dynamic web-page, a connection is established
+				2. The connection will be allocated a thread
+				3. The thread will spend time in CPU (because it does processing to generate a page)
+					1. During this process, it needs to access network to fetch data
+						1. It can be from database
+						2. It can be from a service (which is available on a network)
+					2. Once data is fetched, it will be processed using CPU and memory
+				4. Once the processing is done, the page is generated
+				5. The page is then returned to the client
+				6. A thread at any given time is doing one of the following things:
+					1. Processing - consuming CPU and Memory
+					2. IO - accessing network, disk, and/or memory
+				7. If we are using Apache server for generating dynamic content and we increase the load on Apache server (increase the number of clients, increase the load such that the server gets overloaded),
+					1. Server will run out of:
+						1. CPU first - for more CPU intensive requests
+						2. Memory first - for more Memory intensive requests
+
 ### Apache WebServer Scalability ###
+1. It depends on how it is used:
+	1. Apache as Webserver (CPU Bound)
+		1. Apache is fronted by a load balancer (load balancer acts as a reverse proxy, it can be any other tool, discussed later)
+	2. Apache as Reverse Proxy (IO Bound)
+		1. Apache is fronted by a Apache Webserver load balancer
+			1. Apache is sending or proxying requests to any other web server
+2. Apache as a Webserver:
+	1. Apache Web server can be used to serve static content or dynamic content or a mix of both
+	2. When we scale the requests to Apache web server, Apache web server may run out of CPU or Memory depending upon the nature of requests
+		1. If the requests require a lot of CPU, Apache web server may run out of CPU first
+		2. If the requests require a lot of Memory (because we are doing a lot of processing, caching or static content), Apache may run out of Memory first
+		3. Solution:
+			1. We can add more nodes of Apache webserver
+				1. As we add more nodes, we will get more CPU and more Memory, and we can scale Apache webserver (if we are using Apache webserver for dynamic content or static content)
+3. Apache as Reverse Proxy:
+	1. Apache doesn't have to do much processing
+		1. The processing per client is very limited
+			1. It can choose a backend web-server and send the request to that (any of them)
+	2. The thread is blocked until the response is returned by the backend web-server
+	3. Once the response is received, Apache reverse proxy returns the response to the client
+	4. The load is mostly on the memory (no much CPU load)
+		1. If there are lots of connections tha Apache is handling, it will have to increase its thread pool (one thread per connection)
+			1. If we increase the thread pool size, that will require more memory
+				1. **The only way to scale Apache Web Server as a Reverse proxy is to scale it vertically**
+					1. Scaling memory in one single server is pretty costly
+						1. Having very large memory is not sometimes possible and may not be cost effective as well
+							1. Solution: Other solutions when we are dealing with large number of connections which can optimally utilize memory
+4. If we have a requirement just for a web server and we have to generate dynamic web-pages, Apache web-server is a fantastic option
+	1. It is a lightweight webserver where we can make use of Perl, PHP, Python, etc. to generate dynamic web pages
+		1. Even today it is used widely used to generate dyanmic web pages in PHP
+
 ### Nginx WebServer ###
+1. Topics:
+	1. Store Static Content (function 1)
+		1. HTML/CSS/JS Files
+		2. Image files
+		3. Documents
+	2. Generate Dynamic Content (function 2)
+		1. Not the best
+	3. Act as a Reverse Proxy (function 3)
+		1. Excellent
+	4. Cache Content (function 4)
+		1. Good
+2. Its functionality is same as Apache webserver
+	
+#### Store Static Content ####
+#### Generate Dynamic Content ####
+1. Apache has got a marginal edge over Nginx in terms of performance
+
+#### Act as a Reverse Proxy ####
+1. Nginx webserver was designed to be an excellent reverse proxy
+
+#### Cache Content ####
+
 ### Nginx Architecture ###
+1. Architecture:
+	1. It is event-driven
+		1. Uses asynchronous IO model
+	2. Client can connect to Nginx using HTTP protocol (web-server)
+		1. Upto the point that client forms a connection with Nginx, it works the same as Apache
+			1. Difference: How the requests for each connection is fulfilled
+				1. Apache: For each request that comes, Apache server allocates a thread from thread pool
+				2. Nginx: There is no thread-pool
+					1. There is only one single main thread (other activities have threads)
+						1. The thread that processes requests is a single thread
+	3. The single thread never leaves CPU on its own
+		1. If a thread does not leave CPU, it can do a lot more processing efficiently, because there wont be any context switching
+			1. Gives thread ample chance to do processing, **without waiting for CPU**
+	4. Steps:
+		1. When a connection request comes, the main thread will check if any request has come
+			1. It continously polls to check if there are any TCP connections and checks for any activity
+		2. The single thread reads the stream and gets the request
+		3. The single thread processes the request
+		4. If the single thread has nothing else to process, it will write back to the connection and response is sent to client
+		5. Sometimes, we need data from a database, or a service, or sometimes we need to get a static resource file from hard-disk
+			1. The thread will issue an asynchronous IO request and it will not wait for a response from IO
+				1. The thread will continue to execute after issuing the request
+		6. The thread will then continue to check if there is any other request
+			1. If there is no other request, the thread will continue to execute
+		7. The thread will then check if IO has any response
+			1. If there is no response, it will again go and check if there is any activity on the connection side
+				1. If there is, it will execute that
+		8. The thread will then check if there is any database or service call, or disk access
+			1. The thread will make an async request if there is, and then it will continue its execution
+		9. During the execution, it will check if there is any new connection request
+			1. If there is none, it will check if there is any IO response we got back
+				1. If we have got a response from DB or service, it will process it and finds to which request it belongs to and write to the same connection
+		10. The thread will continue to execute
+		11. If the thread sees any response, it will take the response and write the response on appropriate connection
+		12. etc.
+		13. Thread never leaves the CPU, unless OS forces it to leave the CPU
+			1. On its own, it will never leave the CPU
+	5. Process loop:
+		1. Poll for client request (continously poll)
+		2. Poll for client response (continously poll)
+		3. Process client request (if it is got from a connection)
+		3. Process IO response (if it has come back from the OS)
+		4. For processed client request Send IO Request (if required)
+		5. For processed IO response send response to client (from Async IO)
+	6. The Single Thread works very fast
+		1. In cases, where there are a lot of IO as compared to processing
+			1. If only processing needs to be done, the model doesn't work fine
+			2. The model works well if there are many Asynchronous IO requests that needs to be made
+				1. Hence a single thread is good enough to handle the processing load (for IO bound requests which do not have much processing)
+		2. A single thread is good enough to handle a lot of connections
+	7. Only one thread has thread context
+		1. The memory that is consumed is only the one consumed by the single thread
+			1. If there are 1 M connections, it wont construct 1 M thread contexts
+			2. Only one thread context that corresponds to single worker thread
+				1. **Hence, Nginx scales immensely, when it works as a reverse proxy**
+					1. A reverse proxy doesn't do much processing
+						1. The only processing is:
+							1. It receives a request from a client
+							2. The request is sent to some other service
+							3. Whenever the service response comes back, the response is returned to the client
+						2. There is a lot of IO but not much processing
+							1. **Nginx is perfectly suitable for this kind of workload**
+							2. **Nginx is also suitable for static data files also**
+								1. We can read the file data asynchronously
+									1. It is marginally better
+										1. Reason: We cannot do too much of parallel processing on disk
+								2. Any improvement that comes from static data comes from using cache memory
+									1. We will store most of the data files we have accessed in cache memory (RAM) of Nginx
+										1. Same as Apache
+	8. Nginx is perfect for handling a lot of IO based requests, hence it is a good reverse proxy
+
 ### Nginx as Reverse Proxy and Cache ###
+1. How to use Nginx as a reverse proxy and cache
+	1. Web application (assuming it is written in PHP or Python, or Perl, ...) (Apache is a good candidate for web application)
+		1. Apache is perfect to host a PHP web application
+	2. We have placed Nginx in front of Apache
+		1. If browser is looking for a static resource (Jpeg say):
+			1. If the file is not in memory, it will be a cache miss
+				1. The file will be fetched from the disk and response will be returned
+			2. If the file is in memory, it will be a cache hit
+				1. The file will be fetched from memory, and response will be returned
+					1. This way, Nginx acts as a cache
+						1. As there will be more requests, more and more static data files will be cached in Nginx memory
+							1. Typically we use a large memory with Nginx
+								1. When we want Nginx to act as a cache
+									1. Static data files will build up in the memory
+										1. Nginx will start serving them from its cache whenever there is a cache hit
+		2. Nginx as reverse proxy
+			1. It is proxying requests to backend Apache servers
+				1. While it is acting as a reverse proxy, it can do a load balancing across instances
+					1. The capability is built into Nginx
+			2. Nginx can front any services as a reverse proxy
+				1. If we have a RESTful service, Nginx can act as a reverse proxy load balancer
+			3. If HTTP responses are coming from services, it can cache the responses too
+				1. It can act as reverse proxy and cache as well
+2. If there is a requirement in the architecture where we want a reverse proxy and we have to cache HTTP responses (In front of RESTful service, and web-application)
+
 ### Web Containers & Spring Framework ###
+1. Topics:
+	1. Dynamic content using Java
+		1. OO Language for complex logic
+	2. Web Containers
+		1. Tomcat (Servlet Engine)
+		2. Jetty (Servlet Engine)
+	3. Application Servers
+		1. Features:
+			1. Servlet Engine
+			2. EJB Container
+			3. Session Clustering
+			4. Connection Pools
+			5. Caching
+			6. JMX
+			7. JMS
+			8. OSGI
+			9. ...
+		2. Examples:
+			1. Wildfly/JBoss
+			2. Weblogic
+			3. Websphere
+	4. MVC Architecture
+		1. Servlets for logic
+		2. JSP for presentation
+	5. Spring Containers
+		1. Runs inside a Web container
+		2. Provides
+			1. IOC/DI
+				1. For business logic
+			2. Model View Controller
+				1. For frontends
+			3. JDBC Templates
+				1. For accessing DB
+			4. Connection Pools
+				1. Http, DB
+
+#### Dynamic content using Java ####
+1. Serving dynamic web-content that has a little more complex business logic
+	1. Which we do not want to express in scripting language (PHP, Python, Perl, ...) that can be easily hosted on Apache webserver or Nginx webserver
+		1. We can go for web containers where we can write complex business logic using Java langauge (OOL) - suitable for more complex business logic
+
+#### Web Containers ####
+1. The web containers provide servlet engines
+	1. We can write our business logic as servlets & presentation can be expressed as JSP
+2. Two open source web containers (provide servlet containers, most popular)
+	1. Tomcat
+	2. Jetty
+
+#### Application Servers ####
+1. Application servers provide
+	1. Servlet Engines
+	2. EJB Containers
+	3. Session Clustering
+	4. Connection Pooling
+	5. Caching
+	6. JMX
+	7. JMS
+	8. OSGI
+	9. ...
+2. They usually come at a huge license cost
+	1. Wildfly/JBoss - open source
+	2. Weblogic - huge cost
+	3. Websphere - huge cost
+3. It is not worth paying the cost because same functionality can be achieved through web containers in combination with Spring framework (open source)
+
+#### Spring Boot ####
+1. If we are using Spring framework (any web application these days are using), then another way of running web container is:
+	1. Spring Boot (runs Java application)
+		1. Runs embedded web container 
+			1. Runs:
+				1. Tomcat
+				2. Jetty (choice)
+2. If we want to run our RESTful service, we can use web containers along with Spring framework
+	1. If we are writing a web application, it is a common practice & best practice to use MVC framework
+		1. There are frameworks available to implement MVC architecture
+			1. Model-View-Controller
+
+#### MVC Architecture ####
+1. Most popular framework available to implement MVC architecture is Spring
+2. Using Spring framework, we are able to separate:
+	1. The model in the form of Servlet
+	2. The presentation in the form of JSP
+3. Passing of control from controller to model and model to JSP (view) is taken care by MVC framework in Spring
+	1. Best practice to have MVC architecture and use Spring
+
+#### Spring Containers ####
+1. Spring provides many core capabilities which are important for any Web application & any services (RESTful)
+2. Spring framework runs as a **container inside a web container**
+	1. It provides certain key capabilities:
+		1. Inversion of Control (Dependency Injection) - for business logic
+		2. Model View Controller - for frontends
+		3. JDBC Templates - for acessing DB
+		4. Connection Pools - for HTTP, for DB
+	2. The capabilities gives structure to the application
+	3. The capabilities takes away a lot of work from a developer
+		1. Otherwise, developers needs to write a lot of boilerplate code (taken away by Spring containers)
+
 ### Jetty & Spring ###
+1. Review:
+	1. Jetty can be used anywhere we have HTTP requests
+		1. It can be used to host web-applications
+		2. It can be used to host services (based on HTTP protocol)
+			1. REST Service - uses HTTP protocol (hence Jetty container)
+	2. On top of Jetty containers, we can use Spring containers
+	
+			+------Jetty------+
+			|  +-----------+  |
+			|  |  Spring   |  |
+			|  | Container |  |
+			|  +-----------+  |
+			+-----------------+
+			
+		1. Whereever we are writing Java code, we can use Spring framework
+			1. Spring framework provides a lot of libraries to minimize developer work while writing Java code
+	3. Difference between Spring framework on RESTful side and Webapp side is:
+		1. Kind of response we are generating
+			1. On services side:
+				1. Response: JSON/XML
+			2. On webapp side:
+				1. Response: HTML
+					1. Because we are generating dynamic content
+	4. Other things related to HTML (css, javascript, static images, ...) are hosted on Nginx reverse proxy
+		1. We don't need to bring requests to dynamic content layer
+			1. Since it can be served from Nginx through its memory
+				1. Releaves our webapp from some of the load that Nginx can share
+	5. We can use Nginx for caching RESTful services responses (reverse proxy)
+		1. If the HTTP response indicates that they are cacheable, Nginx can cache the responses
+			1. If there is a request from webapp for some service API, the response is cacheable and is cached in Nginx
+				1. Then there is no need to go upto service
+		2. Nginx reverse proxy alleviates restful services from some of the load wherever it can cache the responses
+
 ### Node.JS ###
+1. Topics:
+	1. HTTP Server
+		1. Uses JavaScript engine to process requests
+	2. Highly efficient at handling a large-number of connections
+		1. For requests that are IO bound and not CPU bound
+	3. Single thread to handle all connections
+		1. Saves memory
+		2. Avoids context switching
+		
+#### HTTP Server ####
+1. Why use Javascript engine on Server side?
+	1. Javascript engine was designed to handle a lot of I/O requests asynchronously
+		1. Javascript makes call to server and gets data
+		2. Javascript renders the page behind the scenes
+		3. Javascript does a lot of asynchronous I/O behind the scenes
+			1. It does it very efficiently
+	2. Suppose we have same kind of requests on the server side
+		1. The most of the work that a server has to do is:
+			1. Handle IO requests to service
+			2. Handle IO requests to database
+		2. Then the web app has to handle IO requests
+			1. **If IO requests can be handled asynchronously, that gives an opportunity to handle a very large number of connections**
+
+#### Highly efficient at handling a large-number of connections ####
+1. Requirement: The requests should be IO bound and not CPU bound
+	1. Each request must not force Node.js to do a lot of computation
+		1. If there are lot of computations involved in serving a request, then Node.js is not a good choice
+		2. If the requests are mostly IO bound, where very little computation is required
+			1. Most of the time is spent in:
+				1. Making call to database
+				2. Making call to a service
+		3. For IO bound requests, Node.js is an excellent choice because it gives us an opportunity to handle a very large number of connections
+
+#### Single thread to handle all connections ####
+1. Single threaded model avoids context switching and it saves memory
+	1. event-driven, asynchronous model
+		1. Also used in Nginx reverse proxy
+		2. Node.js in addition as asynchronous execution that needs to be done
+			1. With Javascript, we can do a lot of asynchronous callbacks
+2. The native datastructure format on the server side is JSON
+	1. MongoDB supports JSON format
+	2. Browser works with JSON format
+	3. Web application works with JSON format (due to Node.js)
+		1. **Gives an opportunity to pass messages without any transformation**
+			1. End to end messages can be passed and communicated using JSON format
+
 ### Node.JS Event Loop ###
+1. Architecture
+	1. Node.js internally executes Javascript engine
+		1. Javascript engine has got an event loop
+			1. Event-loop: A single thread that continuously executes and never gives up the CPU on its own
+				1. If OS wants to move out the thread for some reason, it can do that
+		2. The only reason it may vacate CPU is when there is absolutely no requests
+			1. Otherwise, the thread will continue to execute all the requests
+				1. There are other threads
+		3. Event loop processes:
+			1. Incoming client requests
+			2. Callbacks
+			3. Outgoing calls
+			4. Handling responses
+		4. Rest of the activities related to the IO are managed by OS
+			1. OS IO Queue (Non-Blocking) or Thread Pool (OS responsibility)
+			2. Incoming Network Calls (OS responsibility)
+				1. Listening to client requests for incoming calls
+			3. Outgoing Network Calls (OS responsibility)
+				1. Make outgoing calls to execute the outgoing calls which have been called by Node.js asynchronously
+			4. Disk Access (OS responsibility)
+		5. Any function executed synchronously is executed by the event loop
+			1. Any function that is called synchronously is handled by the event loop
+			2. Any function that the event loop will call asynchronously will be given to OS
+				1. OS will execute the outgoing call asynchronously
+		6. If a disk access is required (say Node.js is writing some statements in a log file), the disk access is also handled asynchronously
+	2. Flow:
+		1. Incoming request is handled by the OS (case with every server)
+			1. All other servers which are based on request/response model, they will spawn a thread for each client request
+			2. In the case of Node.js, no threads are spawned for each request
+		2. Event-loop constantly polls OS IO queue
+			1. Then it gets to know the incoming client requests
+		4. Then if there is any incoming client requests, it will take the request
+		5. Then it will execute it synchronously
+		6. If there is any asynchronous call in Javascript code, the event loop is executing for the request, the asynchronous call will be put into a callback queue
+			1. Example: `setTimeout` function
+				1. Executed asynchronously after certain duration of time
+					1. Callbacks which have to be executed after a certain duration of time, will be put into a callback queue (enqueue)
+		7. Once event loop is done executing some of the requests, it can poll the callbacks
+			1. If it finds that any callback needs to be executed, it will execute the callack
+		8. Once the callback is executed, it will poll for any incoming requests
+			1. If there is any incoming request, it will execute it in a synchronous fashion
+			2. If there is any callback during the execution, it will be put into the callback queue
+		9. If there is an external call that we are making synchronously, event loop will execute it synchronously
+			1. It blocks the event loop
+				1. **It may force it to vacate CPU**
+					1. Solution: **When we make external calls in Node.js, we make them in an asynchronous fashion**
+						1. Any IO needs to be done asynchronously
+							1. If we cannot do it asynchronously, we must not use Node.js
+		10. If there is an external call that we are making asynchronously, the call will be given to the OS
+			1. OS will take care of making the external network call
+		11. Event-loop will periodically poll the OS IO queue to check if we have got any response for our outgoing network call
+	3. What is being polled?
+		1. It is polling OS IO queue
+			1. It can get:
+				1. Incoming client requests
+				2. Any response to outgoing network call
+					1. Call made to external service and response has come
+						1. It is in the OS buffer
+							1. Once we poll the OS, OS will let us know that we have got a response
+						2. Event-loop can take the response back and process the response synchronously
+					2. Once we complete the execution, we will write the response on OS IO queue
+						1. This response will go back to a network channel from where, the request has come
+							1. Event-loop will track which code executed belongs to which request and which callback executed ties up to which request etc.
+			2. **Any IO that happens, it happens asynchronously**
+				1. **As soon as event loop sees that it has to do something asynchronously, it puts it into some queue**
+					1. Once it is put in the queue, event loop will proceed with the next task which it will get from any other queue by polling
+	4. Summary:
+		1. Event loop constantly polls
+		2. Event loop queues the work that is in callback
+		3. Event loop queues the outgoing work (network calls, disk access)
+		4. Event loop executes the necessary code after it gets back a response (after disk access, network call, ...)
+		5. Event loop will write back on the network channel from where the request has come
+	5. Client's perspective:
+		1. It is a request/response model
+	6. Node.JS perspective:
+		1. Within Node.JS, all the requests are handled in an asynchronous fashion which gives an opportunity to continously execute single thread without giving up CPU
+			1. It minimizes context switching
+				1. Speeds up our process:
+					1. If we continously execute single thread, we can continuously get work from clients
+						1. This allows us to maintain lots of connections
+							1. Reason: Very little memory overhead for maintain only one thread
+								1. Thread is continously working
+								2. Thread can work on multiple requests
+								3. Thread can handle client load only if the work it has to do for each request is IO work
+									1. If a lot of computation needs to done, event loop will do it in a synchronous fashion:
+										1. **Client request will get blocked for a long time**
+		2. Client doesn't get blocked (if IO bound)
+			1. Node.js picks up request
+			2. Node.js queues it up with OS (as an async request)
+			3. Node.js moves to the next client request
+2. Node.js is very efficient
+	1. It does two things:
+		1. To serve requests for huge number of clients
+			1. It can maintain lots of connections
+			2. It has very small memory footprint
+				1. Everything is run on a single thread (there is only one thread context that occupies memory)
+					1. Memory is required for stacks
+					2. If there are million connections and we spawn million threads for them, there will be millions of thread contexts
+						1. They will not fit into memory
+	2. Node.js can handle a large number of connections pretty well when most of the work is asynchronous
+	
 ### Cloud Solutions for Web ###
+1. Topics:
+	1. Managed Services
+		1. Hardened solutions
+		2. Automated deployment
+		3. Built-in scalability & reliability
+		4. Global deployment solutions
+
+#### Managed Services ####
+1. The solutions that work on-premises can also be used in cloud environment
+	1. Especially if we use cloud as IaaS
+2. Cloud has some advantages over on-premises products
+	1. We get services which are self-managed services
+		1. Benefits:
+			1. Hardened solutions
+				1. Example: Service for hosting static content
+					1. The service is being used for such a long time that it is hardened solution
+						1. There are hardly any issues left in the services
+				2. The services are also loaded with features
+			2. Automated deployment
+				1. Any deployment we do will be automated
+					1. Example: In certain cases, storage solutions doesn't need anything to be deployed
+						1. We just need to store our content
+			3. Built-in Scalability & Reliability
+				1. Cloud solutions are built for scale
+				2. Cloud solutions are built with inherent reliability (there will be multiple replicas to ensure that the data is safe)
+					1. Be it a server hosting in cloud
+					2. Be it storage solution
+			4. Global deployment solutions
+				1. We can deploy our solutions anywhere on the globe
+					1. Asia
+					2. Europe
+					3. America
+				2. If we decide to deploy our solution in one region (Asia region say)
+					1. If we want to deliver solution to customers in Europe and America, cloud has solutions to make it possible
+				3. Cloud already has a global network and global presense
+					1. It is cost effective to make a global solution
+					2. The performance of the solutions is much better (due to global presense)
+3. Cloud solutions provided by two popular cloud vendors:
+	1. AWS
+	2. Google Cloud
+	3. Solutions:
+		1. CDN
+			1. Akamai - specialized in CDN (they have global network)
+			2. AWS - AWS CloudFront
+				1. Integration exists with their backend
+					1. We just need to do some configuration
+				2. It is easy to deploy and operate
+			3. Google Cloud - Google Cloud CDN
+		2. Load Balancers - They come with a lot of compelling features
+			1. Features:
+				1. We can configure health checks to backend
+					1. The health checks can check if the backend is alive or not
+					2. LB can route requests to backend if it is alive or will not route requests if not
+					3. We can set criterias for defining whether a particular backend is alive or not
+				2. HA is already supported in cloud - we don't have to do anything
+					1. In on-premise, we have to setup two load balancers (primary, secondary) and establish high availability between them so that once primary goes down, secondary can take over
+				3. Load Balancers
+					1. L7 Load balancer: They can inspect the contents of the request and route the requests
+						1. Splitting requests based on the kind of request (URL of the request):
+							1. We want to send static content request to cloud storage
+							2. We want to send dynamic content request to web application
+						2. Solutions:
+							1. Application LB - AWS
+							2. External HTTP LB - Google
+					2. L4 Load Balancer: It doesn't inspect contents of the request
+						1. It lets requests pass through to one of the instances of the backend
+						2. Solutions:
+							1. Network LB - AWS
+							2. Network HTTP LB - Google
+				4. Cloud Storage
+					1. Any static data that we store on cloud storage gets replicated automatically:
+						1. We can replicate in multiple continents:
+							1. Very high reliability - content cannot be lost
+							2. If a lot of clients are connecting to the application and looking for static data, then they have multiple instances they can connect to and get the content
+								1. The load balancing is built into the solution
+									1. If say a jpeg images is downloaded by a lot of customers, it can replicate it on multiple servers
+						1. Solutions:
+							1. AWS S3 (Simple Storage Service)
+							2. Google Cloud Storage
+					2. A network load balancer directs CDN to cloud storage service directly
+					3. Application load balancer can direct CDN to web application
+						1. Dynamic content is usually not stored in CDN
+							1. However, there is some dynamic content that has life (2 min or 5 min, 30s is also good)
+								1. If we don't want to store any dynamic data, users can reach out to LB directly (Governed through DNS)
+			2. Examples:
+				1. AWS - Application LB
+				2. Google Cloud - External HTTP LB
+		3. Application Servers (web containers)
+			1. Out of the box features:
+				1. Managed service
+				2. Comes with automation
+				3. Easy to deploy - our solution on cloud
+				4. Automatic scalability
+					1. Number of instances can go up and come down depending on the load
+				5. Reliability
+					1. Whenever an instance goes down, the cloud will bring up another instance
+			2. Solutions:
+				1. AWS Elastic Beanstalk
+				2. Google App Engine
+
 ### Cloud Storage ###
+1. Topics:
+	1. Unlimited Disk Space
+	2. Version Control
+	3. Access Control
+	4. Low Latency
+		1. No overhead of Directory structure
+	5. High Throughput
+		1. Parallel clients
+		2. Large files can be broken into smaller chunks for parallel read
+	6. High Availability & Reliability
+		1. Multiple copies
+		2. Multiple physical locations
+	7. Static Website Creation
+2. Case study: Online booking system
+	1. Static data files - stored in cloud storage
+		1. Product images
+		2. Web content
+			1. CSS
+			2. JS
+			3. Static HTML
+			4. Documents
+				1. PDF
+				2. Word Docs
+	
+#### Unlimited Disk Space ####
+1. Space available on cloud storage is practically unlimited
+	1. We pay for only what we use
+
+#### Version Control ####
+1. If we upload a product image and we see that we have uploaded it by mistake, we can go back to our previous version
+
+#### Access Control ####
+1. We can decide which of the users have write access and which users have a read access
+	1. Employees who take care of uploading or modifying on cloud storage
+		1. They can have read/write control
+	2. Users of the website will have only read access
+2. Fine-grained access control
+
+#### Low Latency ####
+1. The files stored are key-value kind of data (not hierarchical)
+	1. No overhead of directory structure
+		1. Reduces latency a lot - for large scale systems
+
+#### High Throughput ####
+1. The files are replicated over multiple servers
+	1. Example: File 1 is replicated on 3 servers etc.
+2. If there are more readers, the file will be replicated even more
+	1. If there are k users and if file is available at k locations, they can read in parallel (they don't have to go to the same machine)
+		1. Hence the throughput is increased
+3. Large files can be broken into smaller chunks for parallel read
+	1. Read will be faster
+		1. We can parallely read multiple chunks, combine them and give them to the user
+
+#### High Availability & Reliability ####
+1. High Availability & reliability: If one of the machine goes down, there are two more machines that can serve the same file
+	1. After certain time, the files hosted on the server that went down will be replicated on other servers
+	2. We can extend HA and reliability by having storage in multiple locations
+		1. We can store a file in a different country, continent, or region
+			1. Very high amount of availability and reliability
+
+#### Static Website Creation ####
+1. Cloud storage can be used to host static websites
+	1. If website does not have any dynamic content
+		1. We do not need anything else
+
 ### Cloud CDN ###
+1. Topics:
+	1. Low latency local access for cache hits
+	2. Persistent connections for cache miss
+	3. Lower load on the backend
+2. Solutions:
+	1. AWS CloudFront
+	2. Google Cloud CDN
+3. Case study: e-commerce system
+	1. When user is using the system, what data is transferred the most? (static data or dynamic data)
+		1. User interaction
+			1. User browses through a lot of products
+			2. User then takes about 5 min to select a product once user has looked at multiple products
+			3. User then buys the product
+		2. Number of pages visited by the user is much more than the pages the user will visit for buying a product
+			1. Amount of interactions that a user has for static data is far more than the interaction for dynamic data
+		3. If we look at the size of static data vs dynamic data
+			1. Static data is far larger than dynamic data
+				1. The amount of static data transfered is much more than dynamic data
+					1. Because of number of interactions
+					2. Because of size of static data
+				2. **Transferring static data is a big challenge**
+		4. Another challenge: **Physical distances**
+	2. Solution:
+		1. CDN
+			1. If a system is somewhere in Asia
+			2. If a user connects to our system
+				1. The request travels over the internet and connect to our system
+					1. Latency experienced will be very high
+						1. The data has to traverse over continents
+			3. It has a lot of servers present in each continent in different countries
+				1. Job of servers is to cache any data coming from origin server
+					1. Data must be cacheable
+						1. Static data is mostly cacheable
+			4. CDN will make a request to origin server (system) and gets the image
+				1. User will be able to download from a local server
+					1. Caveat - First time, user will experience a lot of latency
+						1. CDN has to first download the image from the origin server
+				2. If another user comes in after some time
+					1. If the user needs the same product image and if the user is in North America, the image will come from local CDN server
+						
+#### Low latency local access for cache hits ####
+1. We minimize latency
+
+#### Persistent connections for cache miss ####
+1. We would have done some optimization
+	1. CDN server in North America, while downloading an image from server in Asia will use **persistent connection**
+		1. Let us say, CDN downloads product 1 image from origin server
+			1. It will have to instantiate a TCP connection
+				1. The connection will not be closed
+		2. Let us say, user 2 requires product 2 image and it is not available on CDN
+			1. If the connection is still alive, CDN will use the persistent connection and download the image (saves round-trips)
+		3. It is an optimization
+
+#### Lower load on the backend ####
+1. Whenever there is a cache hit, user doesn't have to access origin server
+	1. The data comes from edge server/CDN server
+		1. The load on the origin server is reduced
+2. CDN solves the problem of delivery of static content in case of global customers
+
 ### Services ###
+1. Services layer
+	1. Business logic on services
+		1. Business logic can be complex & it can be the largest amount of code we write
+			1. **Main challenge**
+		2. Patterns used to develop services:
+			1. Web-services
+			2. RESTful services
+				1. More light
+				2. With microservices they are even more popular
+	2. If we are doing RESTful services and microservices then we need to worry about
+		1. Caching
+		2. Asynchronous processing
+			1. Messaging queues
+		3. Hosting business logic
+			1. Containers
+				1. Jetty - web-applications
+				2. The containers for web-applications and services are the same
+					1. If we subtract static load, the load is pretty much the same for both
+		4. Load balancing and routing
+			1. Reverse proxy - Nginx
+				1. For both web-applications and services
+
 ### Services Solutions ###
+1. Topics:
+	1. Web Containers
+		1. REST & Spring Containers
+	2. Object Caching
+		1. Memcached
+		2. Redis
+	3. Asynchronous Messaging
+		1. Redis
+		2. RabbitMQ
+		3. Kafka
+	4. Service Mesh
+		1. Netflix
+		2. Istio
+		
+#### Web Containers ####
+1. REST & Spring Containers
+	1. We can use whatever we have used for building web-applications
+		1. The considerations remain almost the same as in web-applications
+
+#### Object Caching ####
+1. Memcache
+2. Redis
+
+#### Asynchronous Messaging ####
+1. Redis - for special case
+2. RabbitMQ - major messaging queue
+3. Kafka - major messaging queue
+
+#### Service Mesh ####
+1. Microservices deployments are difficult
+	1. There are lots of services and lots of instances to be handled
+		1. Mainly handled through k8s
+2. Service Mesh
+	1. Netflix
+	2. Istio
+
 ### Memcached ###
+1. Topics:
+	1. Stores key value pairs
+	2. Values can be
+		1. Any blob
+		2. Any size
+			1. Preferred < 1 MB
+			2. Max is configurable
+			
+#### Stores key value pairs ####
+1. Requirements for caching can arise anywhere in the system
+	1. In Web-application layer
+		1. To cache session objects
+	2. In Service layer
+		1. To cache objects created after long computation, or created after fetching data from database
+2. It makes sense to cache objects if the objects are accessed frequently and the data is not modified very frequently (The data doesn't become stale very soon)
+3. Less scalable way to cache
+	1. Caching in service memory itself
+		1. Whenever node computes an object (which is expensive) caches it in memory because it is built using request from database
+	2. If a request comes to the node, it is returned from the cache
+		1. Works if it is a single node
+			1. Problem with multiple nodes:
+				1. We might have less cache hits
+					1. If request goes to another node for the same data, the second node needs to recompute the object
+				2. Key data duplication
+					1. We will be storing data for the same key in multiple nodes
+						1. Expensive as compared to how Memcache stores
+							1. **Memcache is a centralized cache**
+								1. Memcache stores as key/value pairs
+
+#### Values can be ####
+1. Stores as a blob
+	1. Memcache doesn't care what we store in the cache (store anything)
+		1. Usually used to store strings
+2. We can store any size of data
+	1. There used to be a limit of 1 MB
+		1. Now it is configurable
+	2. We should not use any cache for large objects
+		1. Fills very soon & will store very few objects
+			1. **With cache, we want to store as many keys as possible**
+				1. **Cache hit goes down**
+					1. If the use-case demands using large values and there are very few of them, we could go ahead to configure storing large values
+3. Two more points:
+	1. TTL can be set differently for each data
+		1. If we are putting key-value pair in memcache, we can decide for how long the data can live in the memcache
+			1. In how much time, the memcache can consider the data to be stale
+	2. Eviction expunges expired data followed by LRU data
+		1. First it picks expired data - knows through TTL values
+		2. After that, it evicts using LRU method
+
 ### Memcached Architecture ###
+1. Topics:
+	1. Cache-aside pattern
+	2. Sub-millisecond latency
+	3. Horizontally Scalable
+		1. Data is partitioned
+	4. High Throughput
+		1. Parallel operations
+	5. Cluster Aware Client Library
+		1. Consistent hashing for resolving a node
+	6. Node Failure is Treated as a Cache Miss
+		1. Use large number of nodes with less data
+	7. Data is lost if a node crashes or restarted
+2. Architecture:
+	1. Memcache can be installed as cluster of nodes
+		1. We can have as many nodes as we want
+			1. Depending on how much data we have
+	2. Each node has a number & IP address
+		1. Node-1 - has IP address
+		2. Node-2 - has IP address
+	3. Clients of Memcache know how many nodes exist in the memcache cluster
+	4. Clients also have IP addresses of the nodes
+	5. Memcache Client:
+		1. It uses a client library
+			1. Client library will make a DNS call to get the IP address of any one of the Memcache node (we can get multiple IP addresses as well)
+				1. If there are 10 nodes in the cluster, Memcache may return 2-3 addresses
+			2. Client library will use any one of the IP addresses
+			3. Suppose DNS has returned the IP address of node-1
+			4. Client library will make a call to node-1 for getting cluster info
+			5. Client library will get a response containing (the info is cached):
+				1. How many nodes
+				2. What are the IP addresses
+	
+#### Cache-Aside Pattern ####
+1. Memcache follows Cache-aside pattern
+	1. Client can retrieve only those keys which client itself has put into Memcache
+		1. Example: Client is looking for key3
+			1. There is nothing in the memcache to start with
+			2. There will be a cache miss
+			3. When client tries to get the value of key3, it will get nothing
+			4. Client will go to database (directly), get the value of key3, and put it in Memcache cluster (in a node)
+				1. Key3 will be available in Memcache cluster
+			5. If client goes to Memcache cluster and asks for the value of Key3, it will get the value for key3 (DB access is not required)
+2. How does the client know that it has to go to a particular node for a value?
+	1. To put or get from a particular node:
+	
+			put(key3):
+				Hash(key3) % 2 = 1 -> node-1-IP
+				
+			load_multi(key1, key2): // possible to load multiple values at once
+				Hash(key1) % 2 = 2 -> node-2-IP
+				Hash(key2) % 2 = 1 -> node-1-IP
+				
+		1. It works similar to Hashtable
+		2. Memcache know for each node number, what is the IP address
+			1. It knows where to put the key and retrieve the information
+	2. To retrieve the value:
+		1. Same hash is calculated and moded with number of nodes
+3. **Client itself is managing the state of all the nodes**
+	1. Client is responsible for storing the values in Memcache
+		1. All nodes will arrive at the same information because they are using the same client library & they have the same info about the memcache cluster
+4. Most caches work this way 
+
+#### Sub-Millisecond Latency ####
+1. Time required to fetch a key and value from memcache node will be < 1 ms
+2. If we go to DB, it is in the order of 5 ms for NoSQL dbs
+	1. 5 - 20 ms for RDBMS databases
+3. Hence it improves any architecture in terms of latency
+	1. **Consider using a cache if we want low latency**
+
+#### Horizontally Scalable ####
+1. Since we have partitioned the keys, each node is responsible for different keys
+		1. Results in high throughput
+			1. Since it is horizontally scalable (we can add any number of nodes to memcache)
+
+#### High Throughput ####
+1. Parallel operations
+	1. If there are 100 clients, they can parallelly access the nodes
+		1. The keys can be retrieved independently
+	2. Each node can be made multi-core (increases parallel operations)
+
+#### Cluster Aware Client Library ####
+1. In reality, consistent hashing is used
+	1. Consistent hashing is a variation of hashing that is more advanced
+	2. If we increase or decrease the number of nodes (which affects the mod factor) will not impact the entire cluster
+
+#### Node Failure is Treated as a Cache Miss ####
+#### Data is lost if a node crashes or restarted ####
+1. Drawback:
+	1. If a node crashes or if we need to restart our system:
+		1. **We will lose all the data that we have cached**
+			1. Takes time for cache to build up again
+		2. Cache restart can bring down the performance of a system
+
 ### Redis Cache & Its Architecture ###
+1. Topics:
+	1. Much like Memcached
+	2. It is a [key -> Data structure ] store
+		1. Strings
+		2. Lists
+		3. SortedSets
+		4. Maps
+		5. ...
+	3. Data-Store Made for Persistence
+		1. Stores data on a disk
+		2. Allows backups
+		3. Can be started pre-populated with a backup
+	4. Data Replication
+		1. Asynchronous and synchronous
+		2. Read load distribution
+		3. High Availability
+	5. Can also be used as a Messaging Queue
+	6. Data-Store Mode Requires Fixed Number of Nodes
+		1. Cache mode is suitable for node scaling
+2. Redis came after Memcache
+	1. It filled all the gaps that were there in Memcache
+	2. It has added many more features
+3. Redis does what Memcache does and does much more
+	1. If we are starting a new project, we could use Redis cache
+		1. There is no reason to use Memcache
+		
+#### Much like Memcached ####
+#### It is a [key -> Data structure ] store ####
+1. It is a data-store (as compared to Memcache)
+	1. Values can be data structures
+		1. In Memcache, they are just blobs (Strings usually)
+	2. Why store datastructures?
+		1. Suppose we store list in Redis and has 10k elements
+		2. Suppose we want to append one more element
+			1. In Memcache - we retrieve the entire list, add element, put the whole list in Memcache memory
+				1. High latency - retrieving and storing a lot of data
+			2. In Redis - We can add an element to the list in Redis (it is not just a blob and Redis knows how to append element)
+		3. Redis can perform operations on data structures
+
+#### Data-Store Mode for Persistence ####
+1. Data Store: In Redis, we can store data on disk (asynchronously)
+	1. Allows backups
+	2. Allows us to restart our cache nodes
+		1. If we restart them, they can be pre-populated with the backup we have taken (with data stored on disk)
+2. We can restart the entire Cluster
+	1. The cluster will get re-populated with the backup (data on disk)
+
+#### Data Replication ####
+1. Topics:
+	1. Asynchronous and synchronous
+	2. Read load distribution 
+	3. High Availability
+2. Architecture:
+
+		Client Lib --Cache Miss---> DB
+		    |
+			|        Read
+			+---------------------------------+
+		Read/Write                            |
+			|      (key1,key3)     (key1,key3)|
+			+----> Master-1 ------> Slave-1 <-+
+			|            Async Replication    |
+			|      (key2,key4)     (key2,key4)|
+			+----> Master-2 ------> Slave-2 <-+
+			             Async Replication
+						 
+	1. Masters are similar to Memcache
+	2. If we modify or read, we can go to masters
+	3. Difference: **To support more read load, we can have slaves to masters**
+		1. We can have multiple slaves to master
+		2. Whenever a key is added to master, it is added to slaves
+			1. It is done asynchronously - to ensure good latency numbers
+				1. We can do it synchronously but it degrades performance
+	4. We generally use it as a cache
+		1. We use datastore because we don't want to build it up once again
+			1. If a node goes down
+			2. If we restart the cluster
+	5. If a master goes down, we can elect one of the slaves as the master
+		1. It takes very little time
+		2. Provides HA
+	6. Read load distribution:
+		1. For read load, we can go to master and slaves
+
+#### Can also be used as a Messaging Queue ####
+#### Data-Store Mode Requires Fixed Number of Nodes ####
+1. We can use Redis in Cache mode or Datastore mode
+	1. In Datastore mode: The number of nodes becomes fixed
+2. In cache mode, we can add and remove nodes
+3. Pros & Cons:
+	1. Pros: It is the right option to go for whenever we have a caching requirement
+	2. Cons: It is slightly more complex in terms of installation (setting up of cluster)
+		1. Worth it because it is better than Memcache
+
 ### Cloud Caching Solutions ###
+1. Topics:
+	1. AWS Elastic Cache
+		1. Memcached
+		2. Redis
+	2. Google Memorystore
+		1. Memcached
+		2. Redis
+	3. Features:
+		1. Fully Managed
+		2. Sub-millisecond latency
+		3. Scalable to 5 TB
+		4. Highly available (99.9%)
+2. In terms of caching it is the same as in on-premise environment
+3. We can use it as IaaS - we can deploy it on our own with the infra provided by the cloud
+4. We can use cloud's provided solution - fully managed
+	1. We don't have to deploy
+	2. We can directly use it
+	
+#### Fully Managed ####
+1. We do not have to deploy or install Redis or Memcache on cloud
+	1. They are ready to use 
+	2. Just configure
+		1. Tell the kind of hardware & cloud will configure accordingly
+2. Another option:
+	1. We deploy it as PaaS
+		1. We need to manage the deployment
+
 ### RabbitMQ ###
+1. Topics:
+	1. Design Goals
+		1. At-Least-Once Delivery
+		2. Message Sequencing - FIFO
+		3. Interface Decoupling
+		4. Consumer Decoupling
+		5. Message Rate Decoupling
+	2. Consumer Mode
+		1. Push
+		2. Pull
+	3. Use Cases
+		1. Service Integration
+		2. Message Buffer
+2. It is a general purpose messaging queue
+3. It is most widely used messaging queue
+4. Use-Case:
+	1. We want to pass a message from Service-1 to Service-2
+		1. Service-1 doesn't expect a response OR
+		2. Service-1 waits for sometime to get the response
+			1. Immediate response is not expected
+	2. Asynchronous one-way messaging - MQ can be used
+5. Ways to use MQs:
+	1. Way 1:
+		1. Service-1 will put message into an MQ (instead of sending to Service-2)
+		2. MQ then can push the message to Service-2 (if it is available)
+	2. Way 2:
+		1. MQ can deliver message to multiple services
+			1. one-to-many message delivery
+		2. The messages are pushed when the services become available
+	3. Way 3:
+		1. Subscriber pulls the message
+	4. Way 4:
+		1. Multiple subscribers pull the message
+		
+#### Design Goals ####
+1. At-Least-Once Delivery:
+	1. Why can't we pass directly?
+		1. We want to ensure that the message is delivered at-least once (message delivery is guaranteed)
+			1. Once we send a message, whenever service-2 is available the message is delivered
+			2. Once the message reaches MQ, assuming the MQ is highly available, MQ can deliver the message when service-2 is available
+
+2. Message Sequencing - FIFO
+	1. Message sequence is maintained
+		1. The messages are delivered in the same sequence as they come to the consumer(s)
+
+3. Interface Decoupling
+	1. Service-2 doesn't need to know the communication technology used by Service-1
+		1. If Service-2 is restful service, Service-1 must be RESTful client (no other option)
+			1. If we message queue
+				1. Service-2 can be of any kind
+					1. RESTFul
+					2. EJB
+					3. SOAP based Web-Service
+				2. Service-2 doesn't have to worry about the nature of Service-1
+					1. Service-2 just needs to understand the message
+
+4. Consumer Decoupling
+	1. Service-1 doesn't know to which service it is delivering the message
+		1. Synchronous communication needs service-1 to know:
+			1. Host & port
+		2. Service-1 needs to know the host & port of message queue
+			1. Helps in one-to-many delivery
+		3. MQ will take care of delivering it to all of its consumers
+
+5. Message Rate Decoupling
+	1. Producer is producing messages at a very high rate (temporarily)
+	2. Queue can absorb the messages and deliver the messages at the rate the services can process the messages
+	3. Example: Suppose Service-1 is sending messages at a very high rate
+		1. MQ will acknowledge the messages after receiving them
+		2. MQ can deliver the messages at the rate at which service-2 can receive messages
+			1. Processing of messages in service-2 may not happen at the same rate as service-1 sends
+				1. If we don't have MQ in between, service-2 will go down (because it cannot process at that rate)
+					1. service-2 will reject messages that it cannot process
+			2. MQ can just keep the messages and acknowledge service-1
+			
+#### Use Cases ####
+1. Service Integration
+	1. MQ can be used to integrate two services (asynchronously)
+		1. One way asynchronous messages
+2. Message Buffer
+	1. If service-1 is getting messages at a very high rate, service-2 cannot process the messages at the same rate
+		1. In between MQ can act as a message buffer
+		2. MQ can store all messages temporarily
+		3. If service-2 is not able to cope up with the load, if load decreases on service-1, service-2 will eventually cope up with messages filled in message queue 
+		4. If service-2 is not able to cope up with messages, we can add more consumers
+			1. Consumption can be faster
+	2. Use-case:
+		1. Streaming type of workflow
+			1. Messages are coming from IoT devices
+				1. Coming at a very high right
+					1. Kafka can be used to store messages at a very high rate
+						1. Multiple consumers can process the messages
+	3. RabbitMQ vs Kafka
+		1. RabbitMQ - a general purpose messaging queue for all the use-cases
+			1. Push or pull
+			2. Push: If there are messages at times and no messages at other times, push can be used
+			3. **In service integration, load is not that high (variable), push messaging works better**
+				1. We can use RabbitMQ in those cases
+		2. Kafka - can only be used for pull based messaging
+			1. Consumers have to pull the message
+			2. Streaming workloads:
+				1. Incoming message flow rate is too high and queue is always full
+					1. Pull makes sense
+						1. Or else, service-2 will unnecessarily be poling for messages wasting its CPU cycles
+				2. If messaging queue is guaranteed to be full (usually in the case of streaming workflows)
+					1. There is high inflow of messages
+						1. **We can do pull**
+							1. Reason: It takes away some of the load of messaging queue
+				3. **In streaming workloads, we want Queue to act as a message buffer**
+			3. Kafka shines if:
+				1. Streaming workloads for which we need message buffers
+				2. Incoming message flow rate is extremely high
+					1. RabbitMQ cannot scale beyond a point (in case of streaming scenario)
+
 ### RabbitMQ Architecture ###
+1. Topics:
+	1. General purpose message broker
+	2. Messages are pushed to consumers
+		1. Consumers can also pull the messages (but push is common)
+	3. Message deleted once acknowledged
+		1. Consumers cannot go back to the messages it has already processed
+			1. It is possible with Kafka
+			2. There are use-cases where we need to go back to the messages
+				1. If we are trying to build reliability into consumers and if they need to redo the stuff they did before (generally in long running processes), we cannot do with RabbitMQ
+					1. The use-case generally doesn't arise in service integration where we use RabbitMQ
+	4. Message ordering is guaranteed
+		1. The queue delivers the messages in the order they arrived at the queue
+	5. Useful for asynchronous service integration
+		1. Any service that has to be integrated, and it is possible to integrate them asynchronously, we can integrate with RabbitMQ
+	6. Both persistent and transient messages are supported
+		1. Transient messages: Messages that are not stored by RabbitMQ on disk but straight away delivers them to consumers
+			1. If for some reason RabbitMQ goes down before delivering the messages, the messages are permanently lost
+			2. Why do we use it?
+				1. For high speed processing of messages but if some messages are not delivered, we are fine with it
+		2. Persistent messages: We guarantee that message that was put into messaging queue is definitely delivered to the consumers (at-least once)
+			1. If a message is delivered more than once (say due to the queue going down or the consumer going down), RabbitMQ can deliver messages multiple times (rare)
+				1. Solution: Consumer should be aware of those messages by checking the id of the messages
+					1. Using the id, we can ensure that the processing of the message does not affect the system
+			2. Any message that comes into RabbitMQ, it is permanently stored on the disk
+				1. If RabbitMQ goes down and comes up, it can retrieve the message from the disk and deliver it
+	7. Uses built-in component called exchange for routing
+		1. RabbitMQ uses a component called exchange for routing
+			1. Exchange - a type of router
+				1. It controls to which queue or topic a message has to go
+				2. It applies certain routing rules looking at the message and routes it to appropriate queue or topic
+			2. Flow:
+				1. Step 1: Message is delivered to an exchange
+				2. Step 2: Message will be stored on the hard-disk (applicable for persistent mode)
+					1. Skiped for transient messaging
+				3. Step 3: If we have setup replication (if MQ becomes corrupt, we can recover using replica), we have
+					1. Master/Slave
+						1. Master Queue
+						2. Slave Queues
+							1. When a message arrives to master, it is communicated to slave MQ
+							2. The slave MQ will store it in its queue
+						3. It adds to reliability or availability of MQ (RabbitMQ)
+							1. It is not for scale
+								1. Any message comes to master and message deleted is first in master
+									1. No state changing operation in slave
+							2. **A client can connect to either master or slave but exchange will route to the master queue**
+								1. All the load is handled by the master
+									1. Problem: **It doesn't scale**
+				4. Step 4: Once the message is replicated and stored on the disk, an acknowledgement will be sent to the producer
+				5. Step 5: MQ will then take the responsibility of delivering the message
+					1. Synchronous flow
+				6. Step 6: MQ takes the message from memory and tries to deliver to the consumer (if consumer is available)
+					1. If the consumer is available, it pushes the message out to its consumer
+				7. Step 7: The consumer sends an acknowledgement after receiving (and processing) the message to the MQ
+				8. Step 8: The MQ will delete the message from its memory and from its disk
+				9. Step 9: The same acknowledgement will be forwarded to the replica and replica will also delete the message from its queue and from the disk
+				
+2. Features:
+	1. Scales to 50k messages per second (with vertical scalability)
+		1. It is pretty good because it should cover most of the use-cases
+			1. Except for streaming use-cases (Kafka shines with this)
+	2. Scales well vertically
+	3. Not horizontally scalable (not very well)
+		1. Master-Slave replication for high availability
+			1. Clients can connect to any side
+			2. All publish, consume operations first go to master 
+
 ### Kafka Architecture ###
+1. Topics:
+	1. Performance
+		1. Million messages per second
+		2. Sequential writes and reads on log files
+		3. Relies on page cache for quick reads
+	2. Horizontally Scalable
+		1. Topics and partitioned
+	3. Order of data guaranteed only within a partition
+		1. Producer can decide the partition
+	4. Messages are not deleted, so can be replayed
+	5. Consumers can only pull the data
+		1. No push by Kafka
+		2. Not designed for service integration
+	6. Useful for streaming analytical workloads
+		1. Where high throughput is required
+		2. Click streams, Page views, Logging, Ingestion, Security
+2. Kafka is ideal for streaming workloads where producers are producing data for Kafka at a very high rate
+	1. RabbitMQ cannot do that
+	2. Kafka's architecture supports streaming workloads
+3. Architecture:
+	1. Kafka is just a distributed log-file
+		1. Internally, Kafka writes all its messages on a log-file (main database file for Kafka)
+		2. Producers: Many producers can connect simultaneously to Kafka but the messages written are sequentially appended on a log file
+			1. Append operation is extremely fast, Kafka can support lots of producers simultaneously
+				1. RabbitMQ has to maintain certain data structures instead
+					1. B-Tree - used by databases to write data on hard disks
+						1. Allows writing to disk and fetching to memory
+					2. Kafka doesn't have such navigation
+					3. RabbitMQ maintains data structures in memory and on disk
+						1. Write overheads are significant
+							1. Not as good as sequential write overheads
+								1. It is negligible as compared to RabbitMQ
+			2. Producer write operations are extremely fast
+		3. Consumers: They know the offset and they can start reading from the start of the file
+			1. If a consumer has read upto 9th message, it knows that it has read upto the 9th message
+				1. Consumer tracks (not Kafka)
+					1. Zookeer helps consumer to track this
+				2. Consumer can say I want to read from 9th message (using index)
+				3. Consumer can read from any offset at any time
+					1. Log-files stay for very long time (even forever)
+						1. We can reclaim some of the old files to save disk space
+				4. Kafka helps reading from the offset it decides
+				5. Generally, consumers reads from the latest messages
+					1. The latest messages are readily available in OS page cache
+						1. Once a block of log-file is read by OS into memory, the subsequent messages are already avaialable in memory
+							1. OS maintains page cache - recently written or read messages are available in the page cache
+								1. Improves performance - helps reading very fast (most reads are coming from page cache)
+	
+#### Performance ####
+1. Handls millions of messages per second
+	1. Reasons:
+		1. Due to sequential writes and reads on log files
+			1. Relies on page cache for quick reads
+
+#### Horizontally Scalable ####
+1. Topics are partitioned
+	1. If log file is partitioned
+		1. Some data in partion 0, some in partion 1, etc
+			1. Some producers can write on partion 0, some in partion 1, and some in partion 2
+				1. 1/3 of producers on each partition
+					1. Reduces load on log file by 1/3
+						1. If we increase paritions, we can write in parallel
+		2. If we partion into 100 partions and we keep the partions in 100 machines, we can handle more producers
+			1. 100 times faster for one producer as well
+2. Consumers can be scaled horizontally
+	1. Consumers can be distributed on partitions
+		1. Some consumers can read from partion 0, some from partion 1, etc.
+	2. If the load on Kafka increases, we can increase the load on Kafka and we can increase the number of machines
+		1. Horizontal scalability
+
+#### Order of data guaranteed only within a partition ####
+1. Ordering in a queue is lost to an extent
+	1. If three partitions belong to a particular queue
+		1. Since we are writing the messages to three separate partitions, we have lost the global order
+			1. We have not lost the order within a partition
+	2. Partioning control:
+		1. Producer can decide on which partition to put a certain message
+			1. Example: For certain set of users, partion 0 is chosen etc.
+				1. For a given user, all data will come in one partion and in perfect order
+					1. Local ordering is not lost
+		2. We can also collapse all partitions into one partition
+			1. Cannot scale
+
+#### Messages are not deleted, so can be replayed ####
+1. Kafka does not delete messages
+	1. Any consumer can go back and re-read messages from a older offset
+		1. With RabbitMQ, the message is immediately deleted once it recieves acknowledgement that it has read and consumed the message
+	2. Use-case:
+		1. **Building backups** - DBs can be rebuilt (we have all the events that have taken place in a system)
+			1. If we replay all the events, we get to the final state
+2. Kafka is built for **high throughput incoming data that has to be processed in real-time**
+
+#### Consumers can only pull the data ####
+1. Consumers can only pull the messages
+	1. Kafka cannot push the messages to its consumers
+		1. It is not a trade-off in high-throughput environment for which Kafka is designed
+			1. Reason: There is no difference if the messages are pushed or pulled
+				1. Responsibilities of fetching messages is offloaded to consumers
+					1. Consumers can track their offsets
+					2. Consumers can decide at what rates they want to process the messages
+						1. They are themselves pulling messages
+2. It is not designed for service integration:
+	1. For service integration we need one service to communicate the message to another
+		1. Message needs to be pushed
+			1. Even if Kafka is used, the consumers have to continously poll for messages
+				1. Kafka is not designed for such use-cases
+
+#### Useful for streaming analytical workloads ####
+1. Kafka is designed for high-throughput workloads
+	1. Examples:
+		1. Click streams (we want to analyze)
+		2. Page views (we want to analyze)
+		3. Logging (real-time)
+			1. Can be injested into Kafka
+				1. An analytical tool can fetch the logs and analyze them
+		4. Security
+	2. It is good for data that is coming into Kafka at a very high rate
+		1. We need a message buffer to absorb all the load and we want consumers to process the messages at their own pace
+
 ### Redis Pub/Sub ###
+1. Topics:
+	1. For short lived messages with no persistence
+		1. Much like a synchronous call
+		2. Fire and forget
+			1. No delivery guarantee
+	2. Million operations per second
+	3. Useful for making dashboards
+		1. Leaderboard
+	4. Comparison
+		1. Kafka
+			1. No push
+			2. Writes to log
+		2. RabbitMQ Transient
+			1. Delivery acknowledgement
+			2. Deletion of delivered messages
+2. Pub/Sub
+	1. Forms an excellent messaging-queue (for certain kinds of problems)
+		1. **For fast messaging that does not need any persistence***
+			1. To pass on messages to subscribers without any persistence
+3. Architecture:
+
+				Publisher
+					|
+				TCP Connection
+					|
+					v
+				Channel 1		Channel 1
+				Redis --------> Redis
+					|				|
+			+-------+-------+-------+-------+         
+			|				|				|
+		TCP Connection	TCP Connection	TCP Connection
+			|				|				|
+			v				v				v
+		Subscriber 1   Subscriber 2		Subscriber 3
+		
+	1. Channel 1 - Has on Redis cluster
+	2. Redis cluster - Two nodes
+		1. Node 1 - Two subscribers connected
+		2. Node 2 - Two other subscribers
+	3. **Connections are long lived (TCP connections)**
+		1. Unlike HTTP connections
+			1. Disconnected after a timeout period
+		2. The connection is disconnected only when it is closed by the client or server
+	4. Publisher:
+		1. Sends a message to its channel
+		2. The message is immediately delivered to its subscribers which are connected with Redis
+			1. If a subscriber is not connected to Redis at the moment, it will not get the message
+				1. If the subscriber later on connects with Redis, it would have missed the message
+		3. The subscribers subscribed to the channel 1 on other nodes will also get the message
+			1. Node-1 will relay the message to Node-2
+			2. Node-2 will deliver the message to its subscribers
+		4. It is like synchronous call
+			1. If subscriber is down durng delivery, the message is lost
+			2. Redis will also not re-attempt to deliver the messages
+		
+#### For short lived messages with no persistence ####
+1. Messages are delivered very much like in a synchronous call
+	1. Publisher will publish a message
+	2. If subscriber is connected at that time, subscriber will get the message
+	3. If subscriber goes down at the time, the subscriber will not get the message
+		1. Redis will not try to deliver the message (message is lost)
+	4. Use cases:
+		1. For short-lived messages that do not require any persistence
+			1. If the messages are delivered, we can forget about them and move to the next set of messages
+				1. Example: Leaderboard
+					1. Constantly showing top 10 people leading in the game
+						1. Suppose the position changes every second
+						2. We want to communicate the leaderboard to players in realtime
+					2. If we are unable to deliver the leaderboard to a particular node, it is okay
+						1. Connection could be bad
+						2. The node might have gone down
+					3. The messaging system can move to the next message - it is more relevant
+			2. Focus is to deliver the current message to the subscribers who can receive the message at the current point in time
+		2. Redis is excellent solution
+2. Fire and forget
+	1. No delivery guarantee
+		1. In return, we get millions of operations per second
+
+#### Million operations per second ####
+1. Redis is great for fire-and-forget type of use-cases but who need millions of operations per second
+	1. Delivery guarantees is not important
+
+#### Useful for making dashboards ####
+1. Leaderboard
+	1 Old messages are not delivered
+
+#### Comparison ####
+1. Kafka
+	1. No push
+		1. Doesn't work if subsribers poll Redis server (it might bring down the server)
+	2. Writes to log
+		1. Wherever we don't need these guarantees, the overhead is meaningless
+2. RabbitMQ Transient
+	1. Delivery acknowledgement
+		1. **If subsriber is unavailable at the time of delivery but comes back at a later time, RabbitMQ retries delivery**
+	2. Deletion of delivered messages
+		1. No persistence
+			1. It comes to memory and delivered to subscribers
+			2. **Not written to disk**
+				1. If RabbitMQ goes down and comes back, it is not going to read anything from disk and deliver (transient mode)
+		2. Acknowledged messages are deleted
+
 ### Cloud MQ Solutions ###
+1. Solutions:
+	1. Community
+		1. RabbitMQ
+		2. Kafka
+	2. AWS
+		1. SQS 
+		2. Kinesis
+	3. Google Cloud
+		1. Pub/Sub
+2. The cloud offerings are no different from open source offerings
+		
+#### AWS ####
+1. SQS - Simple Queue Service
+	1. Very much like RabbitMQ
+		1. A few features might be slightly different
+	2. We can use RabbitMQ or replace it with SQS
+2. Kinesis
+	1. Kafka is used where there is high throughput of data
+		1. Used in:
+			1. Big data scenarios
+			2. Streaming scenarios
+			3. IoT scenarios
+		2. Consumers have to pull messages from Kafka
+	2. Kinesis - used in IoT and big-data scenarios where there is high throughput of data
+		1. Use it if we want to replace Kafka with a managed solution provided by AWS
+
+#### Google Cloud ####
+1. Pub/Sub
+	1. It can be used for both scenarios where we can use RabbitMQ and Kafka
+		1. It can take exceptionally heavy loads
+			1. Horizontally scalable
+				1. It is a managed service
+					1. We don't have to manage it
+				2. With RabbitMQ and Kafka, we need to manage the cluster
+	2. It works for:
+		1. General messaging
+		2. High throughput messaging
+
 ### Datastores ###
+1. Data Storage Layer
+	1. It doesn't just store files
+	2. The system reads and/or modifies the same data
+2. Anayltics
+	1. We don't modify any data
+		1. The data is in the final shape
+			1. We just process the data (rarely modified)
+3. Challenges:
+	1. The system needs to be designed for read and write loads simultaneously
+	2. Storage is done on disk
+		1. We have to do disk operations if we want to do read or write
+			1. High latency
+	3. Load on database layer is not much as compared to frontend payer but it is big enough
+		1. There is a high latency of operations involved in accessing disk storage
+
 ### Datastore Solutions ###
+1. Topics:
+	1. RDBMS
+		1. Oracle
+		2. SQL Server
+	2. Distributed Databases
+		1. Key-Value
+			1. Dynamo
+		2. Column Family
+			1. Big Table
+			2. Cassandra
+			3. HBase
+		3. Document Oriented
+			1. MongoDB
+		4. Graph Database (not looking into)
+2. Comparing features of RDBMS with distributed databases
+	1. Why do we need distributed databases?
+	2. Where do the distributed databases help us?
+	3. Where are they a good fit?
+	4. Where are they not a good fit?
+3. Goals:
+	1. Functionality of the DBs
+		1. Unique Features in terms of functionality
+	2. Unique features in terms of non-functional requirements:
+		1. Performance
+		2. Scalability
+		3. Reliability
+	3. With the above perspectives, we look at the DBs
+		1. Each DB has been designed for a particular use-case
+
 ### RDBMS ###
+1. Topics:
+	1. General purpose database (< 1-5 TB data, 10k connections)
+		1. If we do not have any specific functional requirements, this is the right choice
+		2. Generally, we will start getting into problems if data is > 1 TB
+		3. We also get into scalability issues once the number of connections reach about 10k
+			1. Reasons: No of nodes that we can use for RDBMS are limited
+	2. ACID Transactions (possible only on a single node or else it requires 2PC/3PC)
+		1. Update the multiple records or tables - Atomically
+	3. Data Consistency (possible only on a single node or else it requires 2PC/3PC, leads to low availability)
+		1. Data same for all readers at any given time
+			1. If we bring in multiple nodes in RDBMS, **the consistency starts getting relaxed**
+	4. Fixed Schema (Impedes application evolution) (well defined schema)
+		1. Data analysis (we can do queries on the data - because we have well defined schema)
+			1. Columns can be searched (we can select columns)
+			2. Rows can be filtered (by applying different conditions)
+			3. Queries can Join Tables (Joins may slow down a system)
+		2. Query pattern can change or evolve
+			1. Any column can be indexed
+			2. Indexes can be created whenever required (on the fly)
+				1. Speeds the searches
+				2. Possible because, RDBS recognizes the columns
+					1. Values in the columns are not black boxes (like key/value pair DBs)
+						1. RDBMS know what value each column has in a table
+	5. Normalized Data (Joins may slow down a system)
+		1. Efficient storage and writes
+			1. With denormalized data, we can avoid joins
+	6. Overwrite for updates (Allows only one version of data, Old design for expensive disk space)
+		1. Since disk is not expensive, a new row is created with a new timestamp
+			1. It becomes the current row
+			2. Allows us to store older version as well
+			3. Allows versioning
+2. RDBMS capabilities & their shortcomings
+	1. How NoSQL tries to address them
+3. We don't know what kind of queries will be supported on RDBMS
+	1. We decide schema first
+	2. Queries can evolve later
+	3. Disadvantages:
+		1. Adding/removing columns is not easy (especially if DB is in production)
+			1. It might needs DB migration
+		2. Application is tightly coupled with the DB
+			1. If we make object changes, we need to make schema changes to DBMS
+				1. It impedes application evolution
+		3. Joins slow down queries
+			1. However, joins make data analysis flexible
+		4. Normalized data is not scalable
+	4. Advantages:
+		1. Data is normalized
+			1. Data is not duplicated
+				1. Stored efficiently
+					1. No much disk space is consumed
+					2. Amount of memory to load is also reduced (utilized efficiently)
+				2. For large scale systems, disk space is not an issue and memory is not an issue (aggregate memory of multiple nodes is much higher for horizontally scaled systems)
+4. With NoSQL
+	1. We know the access patterns (how we access ata)
+		1. Queries are known
+	2. We then design schema applying the knowledge of the queries
+	3. We can change the structure of our schema in such a way that it is optimized for our query (join is avoided)
+		1. How?
+			1. Aggregate objects
+				1. Object in business layer are as it is put into the NoSQL DBs
+	4. They try to move to denormalized schema
+		1. Has its advantages and disadvantages
+
 ### RDBMS Scalability Architecture ###
+1. RDBMS Scalability Architecture:
+	1. RDBMS is vertically scalable
+		1. Few other things can be done to make RDBMS more scalable and reliable
+			1. Limitations
+				1. Hence we need NoSQL databases
+		2. There are limits to vertical scaling
+	2. RDBMS can be partitioned vertically
+		1. Three services, Catalog, Order, Inventory, were using one RDBMS Database node
+			1. We can have separate node for each service
+				1. Catalog service database node
+					1. Exclusively hosting catalog service database
+				2. Order service database node
+				3. Inventory service database node
+					1. Makes our application considerably scalable
+						1. Load will get reduced to 1/3 on each node (assuming the load is equal for each service)
+							1. Assuming we write code that works in an isolated fashion
+				4. Drawbacks:
+					1. We cannot have database transactions across nodes that combine catalog tables & order tables
+						1. Aleternatives:
+							1. 2PC/3PC
+							2. Eventual consistency
+	3. RDBS can have read replicas (If there is a lot of load on single database)
+		1. Any change that is done to the master is replicated to the secondary databases
+			1. Advantages: Allows us to share read load with master
+			2. Disadvantages: Replication is asynchronous
+				1. Read queries on replicas are not consistent with those in Master
+					1. It will take some time for replication to happen (not instantaneously)
+					2. The state of replicas will be slightly inconsistent for a brief period of time
+				2. Reads are scalable
+				3. Writes are not scalable
+	4. RDBMS Reliability:
+		1. Synchronous replication
+			1. If master goes down, replica must be exactly same as the master
+				1. Why not use read replicas?
+					1. They are many and synchronous writes becomes slow on master
+						1. We need to wait until data is written on all the replicas
+2. Oracle:
+	1. RAC - Real Application Cluster
+		1. Processing nodes can be multiple
+		2. Database shares the same disk
+			1. There are still bottlenecks
+				1. It is not very scalable
+		3. Considering the cost of scalability, it is not a very great option
+			1. If we want to spend a lot of money for a small increment in scalability
+
 ### NoSQL Objectives & Trade-Offs ###
+1. Objectives & Trade-Offs
+	1. Scalability (biggest design objective)
+		1. Architectural Choice:
+			1. Horizontal Partitioning (RDBMS cannot be horizontally scaled)
+			2. Commodity Hardware (no expensive hardware required)
+				1. RDBMS requires extremely reliable hardware
+					1. Cost is extremely high
+						1. Vertically scaled
+				2. NoSQL databases build reliability into software (instead of relying on hardware)
+					1. Cost of scalability comes down
+						1. We can horizontally scale in cost effective manner
+		2. Trade-Off
+			1. ACID Transactions
+				1. Due to horizontal scalability
+					1. 2 PC/3 PC is possible
+						1. They are not replacement of ACID in terms of:
+							1. Performance
+							2. Convencience
+			2. Joins
+				1. Due to horizontal scalability
+	2. Availability (second objective, even if certain nodes are not available, there must be other nodes that are available to serve the database (important because commodity hardware run the database, we can make NoSQL databases work even if there is network partition))
+		1. Architectural Choice
+			1. Data Replication
+			2. Eventual Consistency
+		2. Trade-Off
+			1. Data Consistency
+				1. Transactions are no longer ACID
+					1. They are eventually consistent
+						1. Consistency can be tuned
+							1. We trade consistency for performance
+				2. We lose consistency with NoSQL
+	3. Flexible Schema
+		1. Architectural Choice (There is no hard requirement on columns and their data types - we can add them on the fly - if we change object schema in application the schema automatically changes (no need to run any migration))
+			1. Key-Value
+			2. Column Family
+			3. Document-Oriented
+		2. Trade-Off (We lose the flexibility of SQL because DB usually doesn't know what columns exist and their datatypes)
+			1. SQL
+			2. Secondary Indexes
+				1. We can get objects through keys
+					1. Some document databases have secondary indexes (?)
+						1. But others don't have secondary indexes
+						2. **Secondary indexes** - **Indexes that are not based on the key of objects**
+						
+			3. Integrity Constraints
+				1. We lose this
+					1. It is okay because we gain performance
+						1. Reason: DB doesn't have to check for integrity constraints
+							1. Whenever there are mutations in DB
+	4. Performance
+		1. Architectural Choice
+			1. Aggregate Schema
+				1. Highly de-normalized
+					1. Works for certain queries which are looking at de-normalized structures
+						1. We can get the entire de-normalized structure without doing any joins
+				2. Problem: We cannot do any non-key based queries in a flexible manner
+					1. In RDBMS, we can choose any columns, we can apply filters on any columns (because of the indexes present)
+					2. Since schema evolves freely, we may not have indexes
+						1. Some NoSQL DBs don't allow secondary indexes
+							1. Hence some NoSQL DBs may not perform well
+					3. With NoSQL DBs, we know the query pattern and then the schema is created based on the query pattern
+						1. Any after thought queries may not perform well
+							1. In certain cases, it many not even be possible to do those queries
+								1. Solution: We need to know what kind of queries we are going to make and accordingly we design schema (for higher performance)
+									1. We may not be able to make random queries which are not key-based
+										1. This may require secondary indexes
+			2. In-Memory R/W
+				1. NoSQL DBs are memory based
+					1. Why?
+						1. Since, data is horizontally partitioned
+							1. They are running on many machines so we can have a lot of aggregate memory
+		2. Trade-Off
+			1. Normalization
+			2. Non-Key Queries
+2, NoSQL DBs had some design objectives:
+	1. They were trying to overcome the limitations that were there in RDBMSs (scalability related)
+		1. To achieve the design objectives, there were trade-offs
+			1. Architectural tradeoffs
+			2. Design tradeoffs
+
 ### Amazon DynamoDB ###
+1. Topics
+	1. Key-Value Pair Datastore
+		1. Each record in dynamo db table is identified by a key
+		2. A value is associated with a key
+			1. Value can be blackbox
+				1. Values can be:
+					1. JSON
+					2. XML
+					3. ...
+		3. It is a free schema
+			1. Java object can be transformed into JSON and stored as value
+				1. Object ID can be the key
+			2. Advantages:
+				1. We don't have to convert Java objects into RDBMS normalized format
+					1. Just convert the entire object and put it into dynamo db
+		4. The schema can evolve freely
+			1. We don't have to change anything in database if the object structure changes
+	2. Used for High Scalability & Availability
+		1. It has very high scalability & availability
+	3. Table is a Hash-Map (like in Java)
+		1. Persistent
+			1. They can be stored on disk and retrieved from disk
+		2. Distributed
+			1. All key-value pairs stored get split into multiple key-value pairs
+				1. Some go on some nodes and others go to other nodes
+	4. API (It is a hash-table)
+		1. Put
+		2. Get
+		3. Update
+		4. Delete
+		5. Query (some limited querying)
+			1. Querying is based on primary key columns only
+	5. Index Key - has two parts (helps retrieve a particular row if multiple rows have the same partition key)
+		1. Partition Key (product id)
+			1. Can have only one attribute
+			2. Key is hashed to determine the partition (advanced hashing is used)
+				1. Same partition key goes to one node
+					1. 1001 - same node
+		2. Sort Key (optional, size, if it is specified, it must be specified for everys row)
+			1. Determines sort order of an item within a partition
+				1. Helps us get to a particular row by doing a binary search
+			2. Can be used for range query <, >, like
+				1. Example: Product with id 1001 and all sizes starting from 'A' to 'D'
+	6. R/W ops for a key are atomic
+		1. Example: If we are updating a product with ID 1001 and size L, the change will be atomic
+
 ### DynamoDB Architecture ###
+1. Topics:
+	1. Suitable for storing small chunks of data (DB is for this purpose)
+		1. Key values less than 1 MB
+			1. Supports Big JSON, XML, String
+				1. Not suitable for:
+					1. Big data files
+					2. Binary data files
+	2. Peer-to-Peer cluster (distinctive feature)
+		1. No master - write on any node
+			1. Example: Node B, Node C, Node D are responsible for Key 1
+				1. If client needs to do anything to Key 1, it can go to any of the three nodes
+				2. The client connects to any node in the cluster
+				3. The node forwards the request to any of the three nodes responsible for the key Key 1
+				4. If any of the three nodes is down:
+					1. We can update the key Key 1 in any of the other two nodes
+						1. Even if a node is down, we can still do writes
+							1. This is not possible in a master/slave architecture
+		2. Each node responsible for a set of keys
+		3. Consistent hashing of virtual nodes for key allocation
+			1. It is an advanced form of hashing
+				1. When we add or remove nodes, we don't have to disrupt the entire cluster
+					1. An advanced form of consistent hashing is used
+		4. Vector clocks are business rules to resolve merge conflicts
+			1. Since we can write on any nodes, if two users are writing for k1 on node B and another user writing for k1 on node D - conflict
+				1. Resolution techniques:
+					1. Timestamps
+					2. Vector Clocks (?)
+					3. Business rules (if vector clocks is not possible)
+	3. Highly Scalable
+		1. Practically any number of nodes
+		2. Petabytes of data (because of horizontal scalability)
+		3. Can handle 10 million RW ops requests/second
+	4. Highly Available
+		1. Updates are not rejected even in case of network partitions or server failures
+			1. If any node goes down, there are replica nodes where we can do read and write operations
+	5. Consistency guarantee is adjustable
+		1. R + W > N for strong consistency
+			1. By default, dynamo db is not strongly consistent (it favors availability over consistency)
+				1. When update happens to one node, it takes some time for the update to propagate
+					1. For a brief period of time, the dynamo db is inconsistent
+						1. During this time, we can connect to other nodes for reading or writing the key in-case some nodes are down
+			2. If we don't want eventually consistent but strongly consistent system (anytime two clients read value of k1 from the system, they must read the same value)
+				1. R - min no of nodes to read
+				2. W - min no of nodes to write
+				3. N - total number of nodes
+					1. Example: If N = 3, then R = 2, W = 2 say
+						1. We need to write to at-least 2 nodes
+						2. We need to read from at-least 2 nodes
+							1. If there is inconsistency, we will know that
+2. Architecture:
+
+		                                     K1  Key K1 (Replica 2)
+		Client - Get(K1) -> Node H -> Node A -> Node B -> Node C
+		                       ^                (Replica 1) |
+							   |							v
+							Node G <- Node F <- Node E <- Node D
+		                                                (Replica 3)
+														
+	1. Ring represents range of values for a partition key column
+	2. Machine IP/Name is hashed to occupy a position on the ring
+	3. Gossip protocol:
+		1. Each node randomly connects to other nodes in the cluster
+		2. The node tries to get info as to what nodes are responsible for what keys
+		3. The node talks to enough number of nodes to propagate the state of the cluster across the entire cluster (?)
+3. We use dynamo db for very high scalability
+4. We use dynamo db for free schema
+	1. We can write any values
+5. We use dynamo db for extreme high availability (even if there is network partition)
+	1. If some nodes go down or we get disconnected from other nodes, we can still read and write to a node that is available to a client
+
 ### Google BigTable ###
+1. Topics:
+	1. Basis for Apache HBase
+		1. Apache HBase is open source implementation of Google BigTable
+			1. Interface is slightly different
+				1. Google BigTable supports HBase interface now
+	2. Column-Family Storage
+		1. Data is grouped into column families
+			1. Example:
+			
+					Row Key: (com.airlines.www, com.hotel.www)
+						Document (CF) - contain web pages (home page)
+						Lanuage (CF) - EN
+						Referrer: trips.com    -|
+							1. Check Flights
+							2. (no entry)
+						Referrer: holidays.com -|- (CF)
+							1. (no entry)
+							2. Your Hotel
+						Referrer: news.com     -|
+							1. (no entry)
+							2. Venue
+						
+				1. Referrer - Column Family
+					1. trips.com - Column Name
+					2. holidays.com - Column Name
+					3. news.com - Column Name
+			
+	3. Table is stored as a Tree-Map (Rows are in sorted order)
+		1. Sparse
+		2. Sorted
+		3. Persistent
+		4. Distributed
+	4. Limited CF (<100)
+	5. CFs are compressed
+	6. Unlimited columns
+	7. R/W ops atomic for a key
+	8. Timestamps for versioning
+
 ### BigTable Architecture ###
 ### HBase ###
 ### Cassandra ###
+1. What is it?
+	1. It is an open source DB
+	2. It came after DynamoDB and BigTable
+		1. It has taken features from both DynamoDB and BigTable
+			1. It is a mix of both
+2. Data model:
+	1. Column family data model
+		1. Not exactly similar to BigTable
+		2. There are similarities to DynamoDB data model
+	2. Example:
+	
+			Product Id | Size | Col Name | Col Value
+			1001         L      Name       Blue Denim
+			1001         L      Quantity   150
+			1001         XL     Name       Blue Denim
+			1001         XL     Quantity   780
+			
+			1002         M      Name       Black Shirt
+			1002         M      Quantity   960
+			1002         M      Discount   10
+			1002         L      Name       Black Shirt
+			1002         L      Quantity   900
+			1002         L      Discount   20
+			
+		1. In Cassandra, a table is called a column family
+			1. All columns are included in a column family
+		2. It has a partition key & sort key
+			1. In DynamoDB, we could put any value
+			2. In Cassandra, we have distinct columns
+				1. No multiple column families
+					1. Logically, it becomes an RDBMS table, but this is not how it is stored
+			3. Partitition key - it decides in which partition a particular row is going to recide (like DynamoDB)
+			4. Sort key - What is the order of the rows in that partition for the partition key
+		3. Storage:
+			1. the way it is stored is:
+				1. The column names are stored as column values
+					1. Name
+					2. Quantity
+				2. The column values are stored as column values
+					1. Blue Denim
+					2. 150
+			2. Each column has got converted into a row
+				1. Two columns become two rows
+				2. Three columns become three rows
+			3. Cassandra can have any number of columns
+				1. Because they become rows
+			4. Cassandra can store structured data & get exploded into multiple rows (like in Bigdata)
+				1. Difference:
+					1. Each product id goes to a different partition
+						1. Each partition can go to a different node (like dynamo db)
+						2. In Bigtable, all the rows will be in sorted order
+							1. In Cassandra, the sorting is limited to a partition key (decided by sort key)
+								1. Two partitions will not be sorted and will not be adjacent to each other
+									1. They can be in any relative order depending on the hash values
+			5. We can store millions of columns (column family database)
+		4. Features:
+			1. Cassandra is horizontally scalable
+			2. Cassandra is clustered
+			3. Data can be partitioned into different nodes
+				1. Borrowed from Dynamo DB (exactly same)
+					1. Peer-to-peer topology
+						1. No master
+						2. Decentralized
+						3. Each node is responsible for certain set of nodes
+						4. ...
+					2. It achieves high availability even if there is network partition
+						1. There could be conflicting writes
+							1. Handles write conflicts similar to Dynamo DB
+		5. Performance:
+			1. Write operations: Borrowed from Big Table
+				1. Steps:
+					1. Write operation comes to Cassandra 
+					2. Operation is logged in WAL (write ahead log) file (like BigTable)
+						1. Sequential IO
+							1. Extremely fast operation
+								1. File is open for writes & writes are quickly appended
+					3. Write is also done in Memtable (similar to BigTable) (in memory)
+						1. This is fast operation
+							1. It is not random access
+							2. It is sequential IO
+					4. Write operation is acknowledged
+						1. The write operations are extremely fast
+					5. If there is shortage of memory
+						1. The memtables are flushed into SSTables (Similar to BigTable) (onto disk)
+					6. If the node goes down during the write operation and comes back (temporary problem)
+						1. The Memtable can be re-created by reading from the SSTable from the disk and applying operations there on the LOG
+					7. If node completely goes down and we cannot recover the data, data is available in the replica
+						1. Each time an operation is done on a particular node, it is replicated on other nodes
+							1. On replica nodes responsible for a particular key
+								1. For reliability
+					8. Read operations:
+						1. If keys are in memory, they will come out of memory
+							1. If key is not in memtable, then
+								1. SSTable will be loaded into memory
+								2. Read will be completed
+						2. Read is fast but sometimes it is slow
+							1. It depends on whether the data is cached or not
+			2. Use-Cases:
+				1. Very high write throughput - writes are on memory
+
 ### Cassandra Features ###
+1. Topics:
+	1. Schema-less, Column-Family Structured Data (format)
+		1. Sparse
+		2. Persistent
+		3. Distributed
+			1. By hash partitioning
+			2. It also supports range-partitioning (not known for this)
+	2. Horizontally Scalable
+		1. Petabytes of data
+			1. For lots of data
+			2. If we want to write with very high throughput
+	3. Highly Available
+		1. Even during network partitions
+			1. Due to peer-to-peer model
+				1. Nodes can be in different data centers
+					1. Spread of dynamo or cassandra can spread over the entire world
+	4. High throughput R/W operations
+	5. Merge Conflicts
+		1. Vector clocks
+		2. Timestamps
+		3. Business rules
+2. Features Summary:
+	1. Data Model - Column Family - resembles Big Table
+	2. Storage - Memtable -> SSTable - inspired from Big Table
+	3. Partitioning - Hash Based - Dynamo
+	4. Replication - Peer-to-Peer - Dynamo
+	5. Consistency Model - Eventually Consistent - Dynamo
+		1. High availability at the cost of consistency
+			1. It can be tuned for strong consistency (on a query basis)
+				1. It increases latency (especially if nodes are located very far in different data centers)
+	6. Availability - Highly Available - Dynamo
+3. The features don't show any difference with a small scale database with very few nodes
+	1. There may not be much difference between HBase, Cassandra, BigTable, etc.
+		1. The architecture will give details that can be used to decide the usecases of the database
+
 ### MongoDB ###
+1. Topics:
+	1. Key -> Document (key/value pair database)
+		1. In Binary JSON (bson) format (JSON document in binary format)
+			1. MongoDB knows each field of the JSON document we are inserting
+			2. It can store nested documents - it is the speciality of MongoDB
+				1. We can update portions of a document
+					1. Entire document doesn't need to be updated
+	2. Columns created dynamically
+	3. Columns can be indexed
+	4. Documents can be queried
+		1. on id and or column values
+	5. An operation on a single document is atomic
+		1. 2 PC for multiple documents
+			1. Any operation on a single document is atomic
+				1. Operations on multiple documents is done 2 PC - not scalable
+					1. Only for feature completion
+						1. We usually don't come to NoSQL DBs for transactions
+2. Operations:
+
+		db.inventory.insertMany([
+			{ item: "journal", qty: 25, size: { h: 14, w: 21, uon: "cm" }, status: "A" },
+			{ item: "planner", qty: 75, size: { h: 22.85, w: 30, uon: "cm" }, status: "D" },
+			{ item: "postcard", qty: 45, size: { h: 10, w: 15.25, uon: "cm" }, status: "A" }
+		]); // Insert - it allows nesting (unlike other DBs)
+		
+		db.inventory.find( { status: "A", qty: { $lt: 30 } } ) // Query
+		
+		db.inventory.find( { "size.h": { $lt: 15 } } ) // Query with nested attribute - makes it faster if we index
+		
+		db.inventory.updateOne(
+			{ item: "paper" },
+			{
+				$set: { "size.uom": "cm", status: "P" },
+				$currentDate: { lastModified: true }
+			}
+		) // Update - portions
+		
+		db.products.createIndex(
+			{ item: 1, quantity: -1 }
+		) // Index Creation - for top level columns or nested columns - it makes search fast (we can have indexes on any columns)
+		
+3. Recap:
+	1. We can store structured data in:
+		1. BigTable
+		2. HBase
+		3. Cassandra
+	2. We can store key-value pair data in:
+		1. DynamoDB
+
 ### MongoDB Architecture ###
+1. Topics:
+	1. Indexing for fast search
+		1. It's write overhead (trade-off)
+			1. Insert and update queries will be very slow (indexes need to be updated each time)
+				1. Indexes are B / B+ Trees which need random access
+					1. Similar to what exists in RDBMS (in terms of latencies)
+			2. It is as good or as bad as RDBMS in terms of performance
+				1. Where it differs is it is horizontally scalable
+					1. We can keep data on several nodes
+						1. It can fit much more data than what RDBMS can fit
+	2. Sharding for Scalability (optional and it can be switched off)
+		1. Range sharding
+			1. Enabled by default (we can switch to hash sharding)
+			2. Useful for range queries
+				1. example: id < 10 & id > 200
+		2. Hash sharding
+			1. Good for even distribution
+			2. Good for equality queries:
+				1. example: id = 200
+				2. It is a little faster for equality queries
+	3. Replication
+		1. Master Slave (It is primary for certain keys but secondary for other keys, other nodes can be primary for other keys but secondary for some keys - read requests get diverted to either of the nodes)
+			1. No write conflicts
+				1. Writes go only to primary
+		2. Asynchronous (default)
+			1. Eventual consistency
+				1. We can change it synchronous on query basis
+					1. Strong consistency is possible - latency goes high
+		3. Synchronous (on demand)
+	4. Works very well with Node.js
+		1. Javascript -> Node.js -> Mongo (no better latency but higher scalability)
+			1. JSON format
+				1. Assume SPA:
+					1. Objects are in JSON
+						1. No transformation is required between layers
+2. Architecture:
+	1. Config server holds metadata
+		1. Instances present and shards
+		2. Data ranges on each shard
+	2. Router instances
+		1. Re-directing the client requests
+		2. Caches config server data refreshed periodically
+	3. Diagram:
+	
+			  Client
+	             |
+				 v
+			Mongo Router ---Cache Config---> Config Server
+			     |   |                             ^
+			     |   |                             |
+				 |   +----------+    +-------------+
+				 |              |    |
+				 Write(K1)      |    |
+				 |              |    |
+				 | +-----------_|_-+-+-----+  
+				 v |            v  |       |
+			Primary         Secondary    Secondary  Server Server
+			     |              ^            ^
+			     |              |            |
+			     +--------------+------------+
+				     Asynchronous replication
+
 ### Analytics ###
+1. Last layer in the system
+2. Special properties:
+	1. Does not actively participate in transactions
+		1. No users are actively connected to this layer
+		2. Example: If we book an order
+			1. It will be written into databases and response is returned back
+		3. Analytics is offline:
+			1. Whatever data is accumulated in the Data layer, it is used to analyse the data
+				1. Historical
+				2. Current
+	2. Challenges:
+		1. We may have structured and un-structured data
+			1. Unstructured data: Applications writing log files
+				1. This comes to analytics storage
+		2. We are dealing with huge amount of data
+		3. Realtime data
+			1. IOT Systems
+			2. Social media
+			3. Mobiles
+			4. Logs
+				1. Choice:
+					1. Batch processing: We can accumulate and do a batch processing (we do processing in bulk after some time)
+					2. Stream processing: Processing data as it arrives
+			5. Analytics deals with batch processing & stream processing (real-time processing)
+
 ### Analytics Solutions ###
+1. Topics:
+	1. Data Movement
+		1. Logstash
+		2. Fluentd
+	2. Storage
+		1. Hadoop HDFS
+			1. Map-Reduce
+		2. Elastic Search
+			1. Search
+	3. Stream Processing
+		1. Kafka
+			1. Buffer
+		2. Storm, Flink
+			1. Processing
+
+#### Data Movement ####
+1. Suppose services were generating a lot of log files
+	1. We need to take the log files and move them to analytics
+		1. Done by:
+			1. Logstash
+			2. Fluentd
+
+#### Storage ####
+1. After we receive the data, we need to store it
+	1. Options:
+		1. Hadoop HDFS
+			1. Where we can do Map-Reduce
+		2. Elastic Search
+			1. Where we can do fast searches on data
+			
+#### Stream Processing ####
+1. What is stream prosessing?
+2. What are the challenges of stream processing?
+	1. How do we deal with stream processing?
+		1. We are not discussing processing using:
+			1. Strom, Flink
+		2. Kafka - used as buffer
+
 ### Logstash Architecture ###
+1. Architecture:
+	1. I/O Plugins:
+		1. Collect & Move Log/stream events
+			1. Input plugin collects data
+	2. Queue
+		1. Reliable data movement
+			1. It ensures that data is delivered **at-least once**
+				1. If logstash goes down before it receives the acknowledgement and it gets restarted, it may deliver the data again
+					1. There may be some duplication (> 1 times)
+		2. At least once delivery
+			1. In any streaming solution, data is delivered multiple times at times
+				1. We need to handle duplicate deliveries
+		3. Tracks Acks, Applies Backpressure
+			1. Supposed destination is not able to accept the load
+				1. Queue will start growing in such cases
+					1. **Once it goes beyond a threshold, it will stop accepting values from source**
+						1. Backpressure gets applied
+				2. When queue is eased out, it will start taking requests
+	3. Filter Plugins
+		1. Filter, Transform, Aggregate
+2. Diagram:
+
+		Push Source (Filebeat)	Pull Source (DB, Queue)
+			|						^
+			|						|
+			| +---------------------+
+			v |
+		Input Plugin
+			|
+			v
+		Queue
+			|
+			v
+		Filter Plugin
+			|
+			v
+		Output Plugin
+			|
+			v
+		Destination
+		
+	1. Push Source:
+		1. Access logs
+		2. App logs
+		3. System logs
+		4. DB logs
+		5. ...
+		6. Streaming input
+			1. Twitter say
+	2. Input Plugin (can belong to different vendors)
+		1. File
+		2. Beats - provided by Logstash
+			1. It is used to move around files and other sources
+		3. HTTP
+		4. JMS
+		5. Redis
+		6. Kafka
+		7. ES
+		8. ...
+	3. Queue
+		1. Memory - if we don't need persistence
+			1. It will be very fast
+			2. If logstash goes down, we will lose this data
+		2. File
+			1. Used if we cannot afford to lose some data
+	4. Filter Plugin
+		1. JSON
+		2. CSV
+		3. Grok
+		4. Dissect
+		5. Clone
+		6. Drop
+		7. Aggregate
+		8. ...
+	5. Output Plugin - depending on destination
+		1. ES
+		2. Redis
+		3. Webhdfs - Hadoop
+		4. S3
+		5. Kafka
+		6. File
+		7. Email
+		8. ...
+	6. Destination
+		1. Alerts
+			1. Nagios - Monitoring tool
+		2. Analysis
+			1. Hadoop
+			2. Elsticsearch
+		3. Archives
+			1. Google Cloud Storage
+			2. S3
+3. Example:
+
+		127.0.0.1 - - [05/Feb/2012:17:11:55 +0000]
+		"GET / HTTP/1.1" 200 140 "-" "Mozilla/5.0...
+			
+				|
+				v
+				
+		{
+			"host": "127.0.0.1",
+			"user": "-",
+			"method": "GET",
+			"agent": "Mozilla/5.0 (Windows..."
+		}
+		
+2. Problem: How to collect and move log files:
+	1. Solution: Logstash
+3. We can think of logstash as a pipe
+	1. We can put data at one end
+	2. We can receive the data at the other end
+	3. Inside the pipe, we can do some transformation and/or filtering
+4. Example:
+	1. Apache server is logging all requests
+	2. We want log statements to go to Elasticsearch
+		1. Logstash will either pull from Apache server
+		2. Logstash will either push for Apache server (Apache will not be able to do it but we need another software)
+			1. Logstash can itself do that
+	3. Steps:
+		1. Input plugin accepts the input
+		2. The input is then put into a queue
+			1. This enables acknowledging to the source of data that logstash has taken the input data
+			2. Queue:
+				1. It can be memory based
+				2. It can be file based
+					1. This option is for high reliability
+						1. If logstash crashes, if we again start logstash, then whatever data is put into queue, it will resume from where it left of
+		3. Filter plugin pulls out the data from the queue and processes it
+			1. Multiple processing plugins available
+				1. Example: Space separated Apache log file is converted into JSON file
+					1. We can use:
+						1. JSON plugin
+						2. Grok plugin
+						3. Disect plugin
+						4. ...
+		4. Output plugin will take the transformed output and will communicate it to the destination
+			1. Destination:
+				1. Example: Elasticsearch
+			2. Once it gets acknowledgement from Elasticsearch, the acknowledgement can go all the way upto the queue
+				1. The data is deleted from the queue
+					1. Ensures reliablity - deletes data only if it is reliablity pushed to destination
+5. Logstash is an integration tool that integrates source to a destination
+	1. It reliably transfers data from source to destination
+
 ### Logstash Data Streaming Architecture ###
+1. Topics:
+	1. Streaming log data for Real-Time Analytics
+	2. Horizontally Scalable & Highly Available - Any number of Logstash nodes
+	3. Fault Tolerance - Needs reliable disk storage (RAID, Cloud persistent disks)
+		1. **To ensure that messages are not lost** (if there is a problem with a logstash node)
+			1. Cloud persistent disks - replicated at disk level
+	4. Use Kafka as buffer - For heavy load that Logstash Queue cannot handle
+		1. If system is under very heavy load
+2. Architecture:
+
+		Application-1
+			^
+			|
+		Filebeat/Logstash
+			|
+			v
+		Kafka/Redis
+			|
+			v
+		Logstash
+			|
+			v
+		Elasticsearch (or HDFS - Map/Reduce)
+			|
+			v
+		Kibana
+		
+	1. Data streaming of its source to an analytic engine where we can draw useful info out of the data
+	2. Suppose an application is generating exceptions
+		1. We want to report such exceptions asap
+			1. Previously, we would need to take the log files through batch process and transport them using tools like FTP to an analytical engine which reads log files and reports the errors
+			2. Requirement:
+				1. We want to ship messages automatically from applications generating log messages
+				2. The shipped messages should reach their ultimate destination (analytical engine)
+				3. The analytical engine can anaylize and report the messages in automated fashion, in real-time
+	3. How to use Logstash for streaming data real-time analytics:
+		1. Suppose application-i is constantly generating log-files and appending messages to log-files
+		2. We can install logstash on the same machine where the application is running
+			1. Problems: **Logstash is a heavy tool in terms of memory consumption** (because it is Java application)
+				1. **It also had a lot of processing logic to transform data**
+					1. Solution: We use a lightweight tool called Filebeat (a lightweight version of logstash)
+						1. Features of Filebeat:
+							1. It ships data
+							2. It has very minimal transformation capabilities
+						2. It collects data and ships it
+							1. It doesn't interfere much with the main application
+						3. Filebeat can directly send to analytic engine (Elasticsearch say)
+							1. Problem: **It doesn't scale well, when we have lots of applications generating log files on a continuous basis**
+								1. Solution: Logstash engine in between
+									1. **Highly Scalable**: It can be scaled to a lot of nodes
+										1. 100s of nodes - it can horizontally scale
+									2. **Highly Available**: If any node goes down, Filebeat can send data to other nodes
+									3. **Load Balancing**: Filebeat can use Round-Robbin method to send log messages to available nodes
+		3. Logstash server forwards the messages to Elasticsearch
+		4. Why Kafka/Redis in-between Filebeat and Logstash?
+			1. They are full fledged messaging queues & can act as very good message buffers
+				1. Problem with Logstash: It doesn't have queuing capabilities of Kafka or Rabbit MQ (it doesn't take as much load)
+					1. Kafka & Rabbit MQ can be horizontally scaled (unlike in Logstash)
+						1. Logstash has only one queue (we can have multiple instances but each instance has a single queue)
+							1. Queue inside an instance cannot be scaled horizontally
+								1. Solution:
+									1. Application level Filebeat instances can first send messages to Kafka/Redis
+									2. The messages will be available in Kafka/Redis
+									3. Logstash can pull messages from Kafka/Redis.
+										1. Logstash can pull messages at a pace that it can handle
+											1. The pace depends on the pace that Elasticsearch can handle
+			2. Advantages:
+				1. The streaming infrastructure becomes resilient
+					1. It can take a lot of load (especially during peak times)
+
 ### Fluentd ###
+1. Topics:
+	1. Older than Logstash
+		1. Plugin support that is available with fluent is much more than logstash
+			1. What is in favor of logstash?
+				1. It is part of ELK stack
+					1. It makes sense to use Logstash if using Elasticsearch
+						1. Any other use-case, we can use Fluentd (it is Logstash + other capabilities)
+	2. Memory Footprint
+		1. Logstash - Heavyweight (GB)
+			1. Very high memory footprint
+				1. Not a good solution for acting as a log agent in machines where applications are logging
+		2. Filebeat - Lightweight (MB)
+			1. Part of suite of products called Beats (for different interfaces)
+				1. File interface - FileBeat
+		3. Fluentd - Lightweight (MB)
+			1. Less memory
+			2. It is comparable to FileBeat
+				1. However, in terms of features, it is comparable to Logstash
+		4. Fluent Bit - Super Lightweight (KB)
+			1. Memory footprint is extremely less
+				1. If we need extremely lightweight agent
+	3. All features of Logstash - similar to logstash
+	4. + Routing
+		1. Tags
+			1. Any log events coming out of fluent can be tagged
+				1. Fluent can use the tags to route the messages to different kind of destinations
+	5. + Docker Logging (Fluent integrates very well with Docker)
+		1. Picks log events from container console
+			1. Docker provides a fluent driver (along with its runtime)
+				1. If containers are running on a Docker runtime, if we enable containers for logging with fluent
+					1. We can specify when running a container
+			2. **Any log messages coming on the console will be diverted to fluent running on Docker runtime**
+				1. When we start the containers, we can start fluent driver
+					1. We can run the following command:
+
+							fluentd -c docker-fluent.conf
+
+						1. `docker-fluent.conf` - tells fluentd driver as to where to route the log events
+							1. Elasticsearch
+							2. Google Storage
+							3. Amazon S3
+							4. ...
+			3. fluentd - fluent daemon
+
+2. Architecture:
+
+		Application
+		    |       Fluent Bit/
+			|        Fluentd    ------> Fluentd ----> Alerts 
+			v        |                                Analytics
+		   LOG <-----+ tail                           Archives
+		   
+		   
+		$> docker run --log-driver=fluentd
+		
+		Container-1		Container-2			Alerts
+		(Apache)		(MySQL)				Analytics
+		    |			   |				Archives
+			|			   |			       ^
+			v			   v			       |
+		+--------------------------------------|---------+
+		|                              +---------------+ |
+		|     Docker Runtime           | Fluentd Driver| |
+		|                              +---------------+ |
+		+------------------------------------------------+
+		+------------------------------------------------+
+		|                      Host                      |
+		+------------------------------------------------+
+		
+		$> fluentd -c docker-fluent.conf
+		
+3. Other alternatives for logstash:
+	1. Scribe - Facebook
+	2. Flume - Apache
+
 ### Elasticsearch ###
+1. Topics:
+	1. Full-Text Search
+		1. Filter
+		2. Group
+		3. Aggregate
+	2. Stores JSON Documents
+	3. Document Fetched using id
+	4. Indexes JSON keys and values
+	5. Structure
+		1. Index -> Database
+		2. Type -> Table
+		3. Document -> Row
+			1. JSON keys are flattened
+		4. Supports data types
+	6. Users can specify mapping between terms & documents
+2. Structure:
+
+		Documents				Inverted Index
+		ID 	 | Document			Term     | Frequency | Documents
+		Doc-1| Exception in		created  | 1         | Doc-2
+		       Order module	
+		Doc-2| Your Order is	delivered| 1         | Doc-3
+		       created
+		Doc-3| Your Order is	Exception| 1         | Doc-1
+		       delivered
+		                    	in       | 1         | Doc-1
+		                    	is       | 2         | Doc-1, Doc-3
+		                    	module   | 1         | Doc-1
+		                    	Order    | 3         | Doc-1, Doc-2
+		                    	                     | Doc-3
+		                    	Your     | 2         | Doc-2, Doc-3
+
+		{
+			"_index": "accounts",
+			"_type": "person",
+			"_id": "1",
+			"_source": {
+				"name": "John",
+				"lastname": "Doe",
+				"job_description": "Systems administrator and Linux specialist"
+			}
+		}
+
+		GET localhost:9200/accounts/person/1
+		GET localhost:9200/_search?q=john
+		GET localhost:9200/_search?q=job_description:linux
+		GET localhost:9200/accounts/person/_search?q=job_description:linux
+
+	1. Two options to store data:
+		1. Elasticsearch
+		2. Hadoop
+	2. Two options to store unstructured data:
+		1. Storing as it is as files
+			1. Hadoop is this kind of storage
+		2. Datastore
+			1. RDBMS - not choice for storing un-structured data
+			2. NoSQL - good choice for unstructured data
+				1. Elasticsearch - Not often classified as NoSQL DB
+					1. It is designed for doing full-text search
+						1. We can use indexes for finding records in NoSQL DBs
+					2. It has special kind of index called inverted index - allows us to do full-text search
+
+#### Full-Text Search ####
+1. Suppose we have 3 documents
+	1. An inverted index is created and maintained by ES
+		1. If we want to find out how many times a word is used & in which documents it is used:
+			1. We can use inverted index
+				1. All terms are extracted (string terms but other kinds of terms are also possible (dates, numbers))
+				2. Each term is put in the index
+				3. We store how many times the word occurs
+				4. We store the documents in which the word is found
+					1. This is similar to the index in a book on the back-side
+						1. It is the inverted index
+				5. We can look up a key
+					1. If key is found, the documents can directly be fetched because they are in the inverted index
+						1. **We can search any word**
+				6. Procedure for creation of inverted indexes:
+					1. An inverted index is created for each document
+					2. The documents are merged into one cohesive inverted index
+						1. Merge is run when new rows are added
+							1. Merge is easy because, the indexes are in sorted order
+								1. Merge sort can be used to merge the indexes
+	2. If we replace strings with JSON documents, that is the format in which ES stores
+		1. `_id` - JSON document id
+			1. Internal field used to identify a particular document
+		2. `_source` - this has the entire document that we inserted
+			1. We can do full-text search on a particular field:
+				1. `job_description`
+					1. Finding `administrator` only in this field
+			2. We can do full-text search on the entire document inserted
+			3. ES understands that there are fields inside a document
+		3. `_index` - index name 
+			1. Similar to a database in RDBMS
+				1. Logically disconnected from other indices
+		4. `type`
+			1. Similar to a table in RDBMS
+	3. There are two ways to fetch required data
+		1. Using id:
+
+				GET localhost:9200/accounts/person/1
+
+			1. ES behaves as a key-value store
+		2. Doing query:
+
+				GET localhost:9200/_search?q=job_description:linux
+
+			1. Condition: `job_description` must be `linux`
+			2. ES will fetch the document with `_id` `1`
+			3. No restrictions search:
+
+					GET localhost:9200/_search?q=john
+
+			4. We can specify the db name and table name
+
+					GET localhost:9200/accounts/person/_search?q=job_description:linux
+
+	4. It is useful if ES is aware of the data type we are interested in
+		1. Example: Finding number 0 (not text "0")
+		2. ES can determine the data types of different fields
+			1. Solution: We can use explicit mapping
+
+#### Users can specify mapping between terms & documents ####
+1. Mapping between the document and how we want ES to store it
+2. Since ES stores JSON documents, we used Logstash or Fluentd to convert logs into JSON documents
+
+#### Use-Cases ####
+1. ES is used for full-text search on a DB
+	1. We don't want to do transactions
+		1. There will be write load because we add new documents
+			1. **We do not use ES to modify documents**
+		2. We usually use it for searching documents
+			
 ### Elasticsearch Architecture ###
+1. Topics:
+	1. Document Oriented data-model
+		1. It can store JSON documents
+		2. We can search those documents
+	2. Horizontally Scalable
+		1. Petabytes of data
+			1. Data we can maintain on ES can be in Petabytes
+				1. Cons: Data searched cannot be of that magnitude
+					1. It will be a fraction of its overall size
+					2. If we want search size comparable to the stored data, ES is not a good choice
+			2. How?
+				1. We can shard the data on ES
+					1. 3 shards say - horizontally
+					2. Each node can have shards and replica shards
+						1. Replicas are on different nodes
+		2. Data is sharded with key as Document id
+			1. ES will compute hash using Document id of the database and it will arrive at a particular node id using the hash of document id
+				1. Request will be diverted to a particular node
+		3. Put/Get request goes to specific shard
+			1. If a request arrives any node
+				1. Put Request:
+					1. It will compute a hash
+					2. It will forward the request to the primary shard of the document id
+				2. Get Request is similar
+					1. It will go to a specific shard
+						1. It can go to any of the shard where document can be located
+							1. For load balancing
+				3. Delete request: Similar to Put request
+		4. Search queries go to all shards
+			1. Search request:
+				1. Result can be in any document
+					1. Solution: We need to search on all nodes
+						1. We can connect to any node
+						2. The node forwards requests to all the nodes where the documents can be
+						3. Each node executes the search independently
+						4. Results will be returned back to coordinator
+						5. The coordinator will aggregate the results and returns to the client
+				2. Performance:
+					1. Latency is low - because of parallel search
+					2. Throughput is high - Search requests are distributed
+	3. High Availability
+		1. Shards are replicated
+			1. If a node goes down, copy of the primary shards are available on other nodes
+				1. All of it is coordinated by the master
+					1. It takes care of assigning different data to different nodes
+					2. If a node goes down, master takes care of moving shards to other machines
+	4. Index structure is based on merge sort
+	5. Index not updated with every update or insert
+		1. We can put new documents
+			1. The update will not update the index
+				1. There is no update in ES
+					1. ES disables old document
+					2. ES constructs a new document
+			2. Flow:
+				1. When a document arrives
+				2. ES computes inverted index for the document
+				3. When another document arrives
+				4. ES will compute inveted index for the second document
+				5. etc.
+				6. Once it reaches a size of 3, ES uses Lucene
+					1. Lucene merges three indices into higher level index
+						1. Merge sort is used
+					2. The old indices are discarded
+					3. The new index is used to search documents
+				7. Once we have added three more indices (due to 3 new documents, a higher level index is created and the older indices are discarded
+				8. Once we add 3 more indices, a higher level index is created
+				9. Once we have 3 higher level indices, they will be merged into a unified index and the 3 higher level indices are discarded
+				10. The process is continued
+				11. The indices are in this order:
+					1. 9 documents - very big index
+					2. 3 documents - intermediate index
+					3. 1 document - small index
+					4. 1 document - small index
+				12. Logic:
+					1. When we search, all the indices of different sizes are searched
+						1. Majority of the data should be found in the largest index
+				13. The process is repeated with every 3 indices being merged into higher level index
+					1. When we insert new indices, the index structure is not altered
+						1. When we add a document, a small index gets created apart from bigger indices that already exist
+					2. In the background, when each index layer reaches its threshold reaches its threshold, it does a merge
+						1. It is done periodically to merge newly created indices with older indices
+			3. If we are adding new records to ES, it is extremely fast
+				1. We don't touch older indices
+			4. If we update, a record is removed and new record is added
+				1. Updating a record is slightly expensive
+					1. Adding is not expensive
+			5. All nodes use the structure to search data
+	6. Index maintained in memory (indices are specific to each node)
+		1. Occassionally flushed to disk
+			1. For reliability
+				1. If a node goes down, it can come back and reach the changes saved on the disk
+				2. Remaining changes that were not flushed onto the disk are applied from the WAL file (in memory)
+2. ES architecture:
+
+		Client1 --+          | Shard-1,2 --+
+		          +-Put/Get->|             |
+		                     | Shard-2,3 --+-> Master
+		          +--Search->|             |
+		Client2 --+          | Shard-3,1 --+
+
+	1. Merge:
+
+			[1] [1] [1] [1] [1] [1] [1] [1] [1] [1] [1] [1] [1] [1]
+			 \   |   /   \   |   /   \   |   /   \   |   /   ^   ^
+			   [ 3 ]       [ 3 ]       [ 3 ]       [ 3 ]     |   |
+			     \           |           /           ^       |  []
+                  \          |          /            |       +--[]
+                   v         v         v             +-------+--[]
+                         [   9   ]<-----------------------------[] 
+
+#### Use-Cases ####
+1. Excellent tool for reporting (similar to SQL queries can be implemented):
+	1. Searching records
+	2. Filter records
+		1. Where
+	3. Aggregate records
+	4. Group records
+		1. Group by
+
+#### Non Use-Cases ####
+1. Result set is huge
+	1. Solution: Hadoop
+		1. It can deal with a large amount of result set
+
 ### Hadoop HDFS ###
+1. Topics:
+	1. Distributed File Data Storage
+		1. Unstructured data files
+		2. Petabytes of data
+		3. Large file sizes > 100MB
+	2. Distributed Files
+		1. Files broken into chunks
+		2. For parallel reads
+			1. Map-Reduce
+	3. Sequential Writes - Append
+		1. Large blocks of data - 64MB
+	4. Replication for Reliability
+2. Architecture:
+
+		Client
+			Client Lib ------> Master Node
+		                            Holds directory structure
+		                            Mapping of files to blocks
+		                            Mapping of blocks to datanodes
+		                       ^
+		                       |
+		        +--------------+--------------+
+		        |              |              |
+		    Data Node-1   | Data Node-2     |Data Node-3
+			[Apple Mango  | [Mango Orange]  |[Banana Pineapple]
+			 Plum]        |                 |[Pear Orange Plum]
+			[Plum Grapes] | [Pear Plum      |
+			              |  Graps]         |
+			[Pear Orange  | [Pear Apple]    |
+			 Apple]       |                 |
+		    --------------+-----------------+------------------
+		    [Mango Orange]|[Banana Pineapple|[Apple Mango Plum]
+		    [Pear Plum    |[Pear Orange     |[Plum Grapes]
+		     Grapes]      | Plum]           |[Pear Orange
+			[Plum Apple]  |                 |[Pear Orange
+		                  |                 | Apple]
+
+3. Use-case:
+	1. We want to store our log files into Hadoop HDFS
+		1. Advantages:
+			1. We can store our files as it is
+			2. We can process large amounts of data
+				1. Unlike in Elasticsearch - we can search small chunks of data
+					1. Big data cannot be handled
+				2. If we want to process petabytes of data (large fraction or entire data)
+	2. It can store files
+		1. But it is a distributed file storage
+
+#### Distributed File Data Storage ####
+1. Large file size > 100MB
+	1. It can be broken into 64MB pieces (conigurable)
+	2. Example: 1 GB file is broken into 10 pieces of 100 MB
+	3. Hadoop is not the choice for small files (> 100MB)
+2. Unstructured data files
+	1. Log files is unstructured data - easily stored
+	2. No transformation required
+3. Petabytes of data
+	1. Since it is horizontally scalable
+
+#### Distributed Files ####
+1. Files are broken into chunks
+	1. Chunks are stored on multiple nodes
+		1. Why?
+			1. We can read chunks in parallel
+				1. Example: If we want to count the words in the file (entire file needs to be processed)
+					1. If the 10 chunks are on different machines, we can count words in each chunk in parallel - performance increases 10 times
+		2. Advantages:
+			1. Horizontally scalable
+				1. We can have any number of nodes
+2. For parallel reads
+	1. Map-Reduce - it is able to process large amounts of data
+		1. If a large file is broken into 100 small chunks, we can process the file 100 times faster
+
+#### Replication for Reliability ####
+1. Example: Consider a file
+
+		Apple Mango Plum
+		Plum Grapes
+		Pear Orange Apple
+		Mango Orange
+		Pear Plum Grapes
+		Plum Apple
+		Banana Pineapple
+		Pear Orange Plum
+
+	1. Client contacts Master Node using Hadoop Client library
+	2. Master sends data to Client library as to which data nodes, the file can be written on
+	3. Client then directly works with data nodes to write the entire contents of the file
+		1. Client interaction with Master is minimal
+		2. Advantage: Master doesn't become a bottleneck
+			1. Master node:
+				1. It holds directory structure in memory 
+				2. It has mapping of which file is broken into how many chunks
+				3. Where are the chunks located on Data nodes
+		3. If a client wants to write/read, it gets that info from master node
+		4. Procedure:
+			1. Client breaks data into small chunks
+			2. Each chunk goes to a data node
+			3. Client also replicates each chunk and each replica chunk goes to a different data node
+				1. For reliability (can be controlled)
+					1. If a node goes down, all the chunks are in the remaining data nodes
+	4. It can store petabytes of files permanently 
+		1. It can be used as long-term archive as well
+
+#### Use-Cases ####
+1. Good for storing large files
+2. Good for processing large amounts of data
+
 ### Map-Reduce ###
+1. Topics:
+	1. Parallel file processing on Hadoop cluster
+	2. Processing code executes on datanodes
+	3. Input/Ouptut sources
+		1. HDFS
+		2. HBase
+		3. Cassandra
+	4. Map phase
+		1. Filtering and transformation
+	5. Reduce phase
+		1. Shuffles map output across nodes
+		2. Groups related information
+		3. Computes aggregate data
+2. Design
+
+		Apple Mango Plum
+		Plum Grapes
+		Pear Orange Apple
+		Mango Orange
+		Pear Plum Grapes
+		Plum Apple
+			|
+			+---------------+
+			|               |
+			split 1         Split 2
+			|               |
+			v               v
+		Apple Mango Plum    Mango Orange
+		Plum Grapes         Pear Plum Grapes
+		Pear Orange Apple   Plum Apple
+			|    |    | 	   |
+			v    |    v		   v
+		Apple,1  |  Pear,1	   Mango,1
+		Mango,1  |  Orange,1   Orange,1
+		Plum,1   |  Apple,1    --
+		         v			   Pear,1
+				Plum,1		   Plum,1
+				Grapes,1  	   Grapes,1
+		         |			   --
+		         v			   Plum,1
+		        Apple,1		   Apple,1
+		        Apple,1		   |
+		        Apple,1		   v
+		        --			   Grapes,1
+		        Orange,1	   Grapes,1
+		        Orange,1	   --
+		        --			   Pear,1
+		        Mango,1		   Pear,1
+		        Mango,1		   --
+		         |			   Plum,1
+		         v			   Plum,1
+		        Apple,3		   Plum,1
+		        Orange,2	   Plum,1
+		        Mango,2		   |
+							   v
+							   Grapes,2
+							   Pear,2
+							   Plum,4
+
+	1. Input File -Split-> File Text -Extract-> Key,Value -Shuffle,Sort-> Key,Value -Aggregate-> Result
+	2. Map:
+		1. Split
+		2. Extract
+	3. Reduce:
+		1. Shuffle
+		2. Sort
+		2. Aggregate
+
+#### Map-Reduce ####
+1. It is a processing algorithm that runs on top of Hadoop cluster
+
+#### Parallel fle processing on Hadoop cluster ####
+1. We have stored a log data on Hadoop
+2. We want to count the total number of exceptions we have received in the last one month (huge data)
+	1. Procedure:
+		1. We take all log files and put them in Hadoop
+		2. Hadoop will split our files and put our files on different nodes
+			1. Map doesn't split (Hadoop already splits)
+		3. Map algorithm
+			1. It will further split (based on new-line say) file chunks into smaller records (done on each node in parallel)
+			2. It also parses each record (how to do it is written as part of map handler) (into different words say) and splits
+			3. Key/value pairs are generate (for each word say - handler can do anything here as we define)
+				1. Apple,1
+				2. Mango,1
+				3. ...
+			4. Computations are done in memory 
+			5. The result is written to disk
+				1. Each node writes wherever it is doing computing
+			6. Map phase ran on each node where data was
+		4. Reduce algorithm
+			1. We can choose the number of nodes on which we want to run reduce phase
+				1. If it is one, all the key/value pairs are reduced to that machine
+				2. It finds a machine that is not busy, and it will choose that machine to run the reduce logic
+				3. It can choose multiple nodes
+					1. Example: 2 nodes
+				4. Shuffling
+					1. Reduce phase shuffles all keys to the given nodes
+						1. Which node to shuffle to is decided by hashing of the key
+							1. Apple -> 1 - result will go on node 1
+							2. Plum -> 2 - result will go on node 2
+							3. ...
+					2. All keys on the disk are read and transfered to the appropriate nodes based on hashing
+						1. This is done by the framework
+				5. We can override handler to decide what to do with each key (operation is customizable)
+					1. Sum
+						1. Reduce handler is executed to find sums
+					2. Concatenation
+					3. Average
+					4. ...
+				6. The results are written as files on disk
+					1. The files are stored on Hadoop as output
+4. What have we achieved with map-reduce?
+	1. We have taken a large set of files (each file being huge)
+	2. Each file spread over multiple nodes
+		1. We have GBs of data or TBs or PBs
+	3. Map-reduce has done parallel processing (map) on the same node and the processed data is shuffled on the number of nodes configured (reduce) (grouping and aggregation) and we get the results
+5. Map job:
+	1. Filtering
+		1. We write handler
+	2. Transformation
+		1. We write handler
+6. Reduce job:
+	1. Shuffles the map output across nodes
+	2. Groups related info
+	3. Computes aggregate data
+		1. Custom logic is written in handler for aggregation
+
+#### Why is Map-Reduce successful ####
+1. It executes on nodes where the data is
+	1. The amount of data we deal with in map phase is far more greater than the data we deal with in the reduce phase (in general)
+		1. It is true if we can condense the info
+			1. Example: Each record is a huge line in a log fine and we extract a small key/value pair
+			2. The job for reduce phase becomes small
+				1. Shuffling work also reduces
+		2. We don't have to extract the data out of the nodes to process it
+			1. Example: If we do it using JDBC call interacting with an RDBMS
+				1. We need to run an SQL and feetch the data into memory & process it
+					1. Alternative: Procedures
+						1. Drawbacks: We cannot run the procedures in a distributed fashion on multiple nodes
+					2. If we have data in multiple RDBMS on multiple nodes, we have to bring data into memory of the nodes where we want to do processing (application nodes)
+						1. Drawback: **It is a huge amount of effort if we want to transfer that much amount of data**
+			2. Alternative: Map-Reduce
+				1. Code logic goes to each node
+					1. Code is moved to the data
+					2. Code processes the data in the same node, condense it, and move it around
+					3. We bring logic to data & not data to logic
+	2. It can work on multiple kinds of input and output
+		1. Example:
+			1. Input: HDFS
+			2. Output: HDFS
+		2. We can have other parallel sources of input
+			1. Input: HBase/Cassandra
+			2. Output: HBase/Cassandra
+				1. Whichever has the ability to split the data across multiple nodes (at-least for map phase - data is huge)
+		3. If output is small, we can use any data sync
+			1. We can put our results on something on a single node
+
+#### Intermediate Results ####
+1. They will always be written on Hadoop cluster (where Map-Reduce is running)
+	1. We can run Hadoop map/reduce only on Hadoop cluster
+		1. Initial Input: HBase
+		2. Final Output: Cassandra
+
+#### Use-Case ####
+1. Permanent storage to write huge amount of data, and we want to process the data as batch process
+	1. Hadoop Map/Reduce is good choice
+
 ### Apache Spark ###
+1. Topics:
+	1. Evolution of Map-Reduce
+		1. We can install Apache Spark on HDFS of Hadoop itself
+			1. Instead of running native Hadoop Map-Reduce, we would run Apache Spark
+				1. Why?
+					1. Hadoop run:
+						1. It reads from data nodes (disk) and brings it to memory
+						2. After map function is done, data is written to disk
+						3. Reduce reads data into memory
+						4. Reduce does operation
+						5. Reduce puts data back into disk
+							1. Map - reads and writes once
+							2. Reduce - reads and writes once
+					2. Apache Spark:
+						1. It does some operations in memory
+						2. Reads data from HDFS
+						3. Runs map operation
+							1. Output is not written to disk
+							2. Result set is maintained in memory
+						4. The result set will be used by reduce operation
+							1. Memory data structures will be shuffled
+						5. Once reduce is done, it writes back to HDFS
+							1. It is possible to do more operations
+								1. Other operations: (can be done my modifying map and reduce handlers in Hadoop)
+									1. Union
+									2. Join
+									3. GroupBy
+								2. We don't have to write code for typical tasks to transform data
+				2. The operation of reading from and writing to disk operations are avoided (intermediate steps)
+					1. Only one read for input
+					2. Only one read for output
+	2. In memory
+		1. 10x to 100x times faster
+			1. Apache Spark is used instead of Hadoop's map-reduce
+	3. DAG of operations (in Hadoop we can only model map followed by reduce)
+		1. Multiple operations in a DAG
+			1. We can construct graphs and Spark runs the graph for us
+		2. Multiple inbuilt operations
+			1. We can avoid writing code
+	4. Interactive
+		1. Interactive shell in Scala/Python/R
+			1. To test any of the workflow of DAG
+				1. We can take small data sets
+				2. We can interactively execute
+	5. In built libraries for (libraries are provided by Spark)
+		1. SQL Interface
+			1. Map-Reduce also has other interfaces
+				1. Hive - provides SQL interface over map-reduce
+					1. We can write SQL queries on Hive 
+						1. Hive runs on top of Map-Reduce framework
+							1. It converts SQL queries into map-reduce code and runs on Hadoop cluster
+				2. Pig - scripting language to write map-reduce
+			2. The tools provide convenient interface (we don't have to write map-reduce code in Java)
+				1. We can write:
+					1. SQL
+					2. Pig script
+		2. Machine Learning (library)
+			1. We can run machine learning on Apache Spark
+		3. Graph Processing (library)
+		4. Streaming (library)
+			1. If we want to process streaming input coming from Kafka
+				1. Spark can read from Kafka and constructs micro-batches
+					1. Reads a small amount of data from Kafka
+					2. It will construct a batch
+						1. Batch - DAG of operations (or map-reduce) is run
+						2. It will run map-reduce and write the results
+						3. It will go back to Kafka (huge number of records - whatever we can get in little time window)
+						4. It will run map-reduce and write the results
+							1. It is very quick
+			2. Spark does micro-batching
+				1. It has some overhead
+2. Architecture
+
+		Disk
+		 | (HDFS read)
+		iter,1
+		 | (HDFS write)
+		 v
+		Disk
+		 | (HDFS read)
+		iter,2
+		 | (HDFS write)
+		 v
+		Disk
+		 |
+		 .
+		 .
+		 .
+
+
+		Disk (Input)
+		 |
+		iter,1
+		 |
+		 v
+		Memory
+		 |
+		iter,2
+		 |
+		 v
+		Memory
+		 |
+		 .
+		 .
+		 .
+
+	1. Flow:
+
+		Data 1		Data 2		Data 3		Data 4
+		 |			 |			  |			  |
+		 v			 v			  v			  |
+		Map			Map			Reduce		  |
+		 |			 |			  |			  |
+		 |			 |			  |			  |
+		 +-----------+			  |			  |
+		 |						  |			  |
+		 v						  |			  |
+		Union					  |			  |
+		 |						  |			  |
+		 v						  |			  |
+		Join <--------------------+			  |
+		 |									  |
+		 v									  |
+		GroupBy <-----------------------------+
+		 |
+		 v
+		Output
+
+#### Use-Cases ####
+1. If we want to run batch-processing for huge amount of data
+	1. Consider Apache Spark (not Hadoop)
+
 ### Stream Processing ###
+1. Topics
+	1. Low Latency
+		1. Keep data moving
+	2. High throughput
+		1. Multiple sources
+	3. Event Issues
+		1. Event delay
+		2. Out-of-Order
+		3. Missing
+	4. Fault Tolerance
+		1. Event Replay
+	5. High Availability
+	6. Processing Engine
+		1. Storm
+		2. Flink
+		3. Spark (Micro-Batching)
+	7. Buffer
+		1. Kafka
+2. Architecture
+
+		Application
+			Filebeat
+			|
+		    <> -tail-> Log
+			|
+			v
+		Kafka
+			|
+			v
+		Logstash
+			|
+			v
+		ES/HDFS
+			|
+			+----+
+			|    |
+			v    v
+		Kibana   SQL
+
+
+		Application
+			Filebeat
+			|
+			<> -tail-> Log
+			|
+			v
+		Kafka
+			|
+			v
+		Stream Processing
+			|
+			v
+		Kafka
+			|
+			+----+----+
+			|    |    |
+			v    v    v
+		Kibana  Email Storage
+
+2. Stream processing delivers realtime results over any streaming data
+	1. Example: Log data
+		1. If logs are coming out of services, we want real-time analysis
+			1. Say we want to detect fraud in a bank application
+				1. Batch processing takes hours and days
+					1. Solution: Stream processing
+						1. If we want analysis of data on a realtime basis
+					2. Batch flow:
+						1. Logstash or Fluentd is used
+							1. They cannot do distributed stream processing
+								1. They can parse log events
+								2. The log events can be individually transformed or aggregated within the same node
+								3. **They have a flavor of stream processing**
+									1. They can continously take input data and output processed data
+										1. Drawback: **If we decide to put the data in ES or HDFS, it is not a streaming workflow**
+											1. If data is going into HDFS or ES, we can do bulk processing when we accumulate enough data
+												1. Graphical Interface
+												2. SQL interface
+									2. Why is putting in ES is also batch processing?
+										1. **When we store data in ES, we don't do search on data we received moments ago** (search is on overall data)
+											1. More agile for small queries (low latency)
+												1. Seconds / minutes
+													1. HDFS takes minutes and hours
+										2. **If we need data that arrived few milliseconds or seconds ago, we don't have to store it in ES**
+											1. Solution: The data is taken into stream-processing engine
+												1. Could be logstash or fluentd
+													1. If we have to aggregate data from multiple nodes and do processing, it is not possible with logstash or fluentd
+														1. Alternative tools:
+															1. **Storm**
+															2. **Flink**
+															3. **Spark streaming**
+																1. Small batch process with small amount of data (micro-batching)
+																	1. It has overhead
+																		1. Not as efficient as native streaming processes
+																			1. **Flink is the latest and popular**
+						2. Distributed processing: - **Not possible with Logstash or fluentd**
+							1. We process log events on different nodes
+							2. We bring them to a node
+							3. We aggregate
+							4. We can diverge and converge for other operations
+					3. Stream flow
+						1. Once stream processor processes the data, we store them in Kafka
+							1. Why?
+								1. Destination sources may not be able to absorb the data if the data is coming at a high rate
+									1. Stream processing engine can handle data at a very high rate
+									2. Kafka can buffer the data that is arriving at a very high rate
+						2. Destinations (Notification, real-time dashboards, archives) can process data at their own pace if they cannot handle the rate at which data is arriving in Kafka
+							1. Otherwise, Stream processing engine can put the data directly into the destination
+
+#### Challenges and Properties ####
+1. Streams processing engine has to process the data with very low latency (milliseconds)
+	1. It has to keep the data continously moving
+		1. We keep some buffers on the input side and output side
+			1. To handle peaks
+	2. They are designed to handle data with extremely low latency
+	3. They are designed to handle data with extremely high throughput
+	4. They are designed to handle multiple engines which are streaming data
+2. Stream processing engine must handle events that come after sometime which do not come immediately (they get delayed).
+3. Stream processing engine must handle out of order events
+	1. If event 2 comes before event 1, it needs to decide what to do
+4. Stream processing engine must handle missing data
+	1. Caveat: We need to write a lot of scripting and code to take care of these issues
+		1. The framework makes it easy to handle these scenarios
+			1. Handles fault tolerance
+				1. If a node goes down on consumer side, input side, stream processing node, etc.
+					1. The events will be replayed
+			2. Handles high availability
+				1. The engines are distributed
+					1. Requirement to be used in production
+
+#### Log data processing ####
+1. We use stream processing if we need immediate analysis of log data
+
+### Summary ###
+1. Recap:
+	1. Frontend
+		1. Web applications
+		2. CDN
+		3. Load balancers
+		4. Session cache
+			1. Used to store sessions in memory
+				1. It is much more scalable
+					1. Multiple instances of the web-application can look at the common session cache
+	2. Cache
+		1. Redis
+			1. Preferred
+				1. New solution
+					1. Persistence of cache
+						1. If cache goes down, there is some fault tolerance
+		2. Memcached
+	3. Hosting
+		1. Web-applications
+			1. Jetty + Spring Boot - Java
+			2. Node.js - JavaScript
+	4. Static content storage
+		1. AWS S3
+		2. Google Cloud Storage
+		3. (Any cloud vendor storage solution)
+			1. Reasons:
+				1. They are highly scalable
+				2. They can be made available at multiple locations
+		4. CDN - for serving content at global scale (for static content)
+			1. Akamai
+			2. AWS
+				1. CloudFront
+			3. Google
+				1. Google Cloud CDN
+			4. For on-premises and cloud
+	5. Load Balancers
+		1. Nginx
+			1. Caching static content
+		2. Apache
+			1. Caching static content
+		3. Cloud Load Balancers
+	6. Middle Tier/ Service Tier
+		1. Node.js
+			1. JavaScript services
+		2. Jetty/Tomcat
+			1. Java
+		3. Spring Boot (replacement for Jetty or along with Jetty)
+			1. Java
+	7. Service Caches
+		1. Redis
+		2. Memcached
+	8. Message Queues
+		1. RabbitMQ
+			1. If scale is not too high, it has better features
+				1. If scale is too high, it cannot handle
+					1. It has good scalability
+		2. Kafka
+			1. If RabbitMQ cannot be a choice
+			2. Handles very high scale
+	9. Other services
+		1. Discovery service
+			1. Netflix Eureka
+		2. Aggregator service
+			1. Netflix Zuul				
+		3. Embedded load balancers
+			1. Netflix Hystrix
+				1. Aggregator is a client to other services so we can use Hystrix load balancer
+		4. Spring Cloud
+			1. Provides a good integration with Netflix services & libraries
+	10. OLTP Databases (for online transactions):
+		1. RDBMS
+			1. When scale is not too high
+			2. When we need ACID transactions
+			3. Options:
+				1. PostgreSQL
+				2. MySQL
+		2. Distributed DBs
+			1. For scalability
+			2. If using DBs at different geographical locations
+				1. Cassandra
+					1. For high scalability
+					2. For different geographic locations as well
+					3. It trades-off consistency with availability
+						1. If certain nodes are down, it is still available but not consistent
+				2. HBase
+					1. For high scalability
+					2. Cannot be used for DBs that span different geographic locations
+				3. MongoDB
+					1. Document oriented DB
+					2. Provides good scalability
+					3. It is a distributed database
+					4. Use-cases:
+						1. When we need document oriented dbs and documents are in JSON format
+		3. These databases are not good for analytics
+	11. Analytics
+		1. Un-structured data
+			1. From logs
+				1. Fluentd
+				2. Logstash
+					1. Collect logs from different machines and components and bring the logs to an unstructured storage
+						1. For further analysis
+			2. Unstructured storage
+				1. Elasticsearch
+					1. If search is the only thing we want to do
+				2. Hadoop HDFS
+					1. If want to do more than search
+				3. We can put in both
+					1. ES
+					2. Hadoop HDFS (a general purpose data storage for unstructured data)
+						1. Hadoop Map-Reduce OR
+						2. Spark
+							1. More evolved form of Map-Reduce
+								1. Works in memory
+		2. Data warehouse:
+			1. Processed data can be stored in data warehouse
+				1. We can bring other structured data from DB through ETL processes
+					1. We can have one combined data in a data warehouse
+			2. Options (they can do multi-processing for queries):
+				1. Oracle
+				2. Teradata
+2. Summary:
+	1. We have different layers
+	2. We have different architectural concerns for the layers
+	3. How different products can address the concerns
+	4. Using the products and tools, understanding their strengths and weaknesses, we can build solutions
+3. Where to apply the knowledge:
+	1. When we are enhancing architecture of existing system
+	2. When implementing a new solution from scratch
+
+### Technology Stack Presentation Slides ###
+1. [https://www.udemy.com/course/developer-to-architect/learn/lecture/26921744#overview](https://www.udemy.com/course/developer-to-architect/learn/lecture/26921744#overview)

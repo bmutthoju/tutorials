@@ -1366,8 +1366,9 @@
 	3. What would you tell Jack to do?
 		1. Option 1: This is good if Jack is looking to open a "SAVINGS Account"
 		2. Option 2: This is good if Jack is looking to open a "CREDIT CARD Account"
+			1. He needs to pay less to the company
 3. To make an objective decision you will need additional facts or information on the situation!!!
-	1. You need the **Context**
+	1. You need the **Context** (helps in making a decision)
 		1. Why is Jack asking this question?
 		2. What is his intent?
 		3. What type of an account is Jack planning to open?
@@ -1377,7 +1378,7 @@
 		2. Should I prefer an account with Low fees? (This one)
 5. Business Context: As an IT team, I need to be doing knowledge crunching exercises:
 	1. Focus areas for knowledge crunching
-		1. Be aware of the business Context
+		1. Be aware of the business Context (The IT team must be mindful of the context as they interpret the info and knowledge gained from each of the contexts or products)
 			1. Credit Cards Context
 			2. Savings Account Context
 			3. Merchant Account Context
@@ -1385,11 +1386,15 @@
 	2. In order to understand the business domain, one MUST understand the business context
 		1. Example: Credit Cards: Funds received from the customer are credited to customer's account
 			1. IT team understanding the credit card business context:
-				1. Customer pays the credit card bill
+				1. Interpreted as: Customer pays the credit card bill
+					1. Which results in the following use-case:
+						1. Customer pays the credit card bill:
 				
-						Actor -> Pay Bill - Update Account
+								Actor -> Pay Bill - Update Account
 						
 		2. Example: Savings Account: Funds received from the customer are credited to customer's account
+			1. SME makes the same statement: Funds received from the customer 
+			2. The IT team is aware of the business context 
 
 ### Business Domain Language ###
 ### Strategic Pattern: Ubiquitous Language ###

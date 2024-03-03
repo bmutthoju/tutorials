@@ -1,10 +1,139 @@
 # Modern React with Redux [2023 Update] #
 ## Section 1: Let's Dive In! ##
 ### How to Get Help ###
+1. Udemy QA
+	1. Start from here
+2. Twitter: @ste_grider
+3. Email: ste.grider@gmail.com
+4. Monday to Friday around 9 AM PST
+
 ### Join Our Community! ###
+1. Discord community of fellow students, developers, and engineers
+2. Latest news and announcements
+3. Start a discussion
+3. [Discord link](https://discord.gg/vvcyvjDkdC)
+
 ### Course Resources ###
+1. Finished Code
+	1. Attached to each applicable lecture throughout the course
+	2. Use Diffchecker or VSCode's built-in comparison tool to compare codes
+2. Diagrams
+	1. Diagrams are attached to the lecture note
+		1. Download and extract
+		2. Visit [diagrams.net (formerly draw.io)](https://www.diagrams.net/)
+		3. Select **Open Existing Diagram** and use the file explorer to select the diagram file from computer
+		4. OR
+		5. Click on **File** from diagrams.net menu
+		6. Select **Open From Device** and use file explorer to select diagram file from computer
+3. Envronment
+	1. VS Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+	2. Autoformat: [https://prettier.io/](https://prettier.io/)
+	3. Terminal:
+		1. Iterm2: [https://www.iterm2.com/](https://www.iterm2.com/)
+		2. Run the shell: [https://github.com/robbyrussell/oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) with default theme 'Robby Russell'
+
 ### Let's Build an App! ###
-### Critical Questions ###
+1. Best way to learn React fast?
+	1. Write code!
+	2. Work on projects!
+2. We are going to build an entire language translation app in the video
+	1. Challenging over time
+3. Small react app:
+	1. It translates some English text into another language
+		1. Text input
+		2. Select a language
+		3. Output
+4. [codesandbox.io/s/react-pibc94](codesandbox.io/s/react-pibc94)
+	1. Online editor with a few files already created for me
+		1. All other projects will be created on my computer from scratch
+	2. Copy and paste the URL in browser window
+5. Got stuck?
+	1. [codesandbox.io/s/react-forked-m5bz37](codesandbox.io/s/react-forked-m5bz37)
+6. Code editor:
+	1. We can change the text to: Here is a react app!
+7. Code:
+
+		import './styles.css';
+		...
+
+		export default function App() {
+			const [langauge, setLanguage] = useState('es');
+			const [text, setText] = useState('');
+			
+			return (
+				<div>
+					<Field onChange={setText} />
+					<Languages language={language} onLanguageChange={setLanguage} />
+					<hr />
+					<Translate text={text} language={language} />
+				</div>
+			);
+		}
+	
+### Critical Questions ###[
+1. Critical questions:
+	1. So what's React all about?
+		1. React (It is like a wrapper around HTML)
+			1. Displays HTML
+			2. Changes that HTML when user does something (clicking, typing, dragging, ...)
+		2. How do we tell React to show HTML?
+			1. We define functions that return JSX
+				1. Looks like HTML but a little different
+			2. JSX tells about individual elements and show to the user
+		3. React components
+			1. Are functions that return JSX (stuff that looks like HMTL)
+				1. Primary way we work with react library
+			2. They tell React what to show on the screen
+			3. A project can have many components that work together
+				1. Components in translate app:
+					1. App.js
+						1. Used to coordinate between other components
+							1. Shares info between them
+					2. languages.js
+					3. flower.js
+					4. translate.js
+					5. field.js
+				2. Each component is in-charge of displaying content  for a certain portion of the application
+				3. All react components are going to return some JSX
+					1. JSX tells React to
+						1. To construct a normal HTML element
+							1. `<div></div>`
+							2. `<button>Click</button>`
+							3. `<input type="text" />`
+						2. To show another component
+							1. `<Field />`
+							2. `<Languages />`
+							3. `<Translate />`
+				4. Example:
+					1. App Component
+					
+							function App() {
+								return (
+									<div>
+										<h1>Your Friends</h1>
+										<ContactList />
+									</div>
+								);
+							}
+							
+					2. ContactList Component
+					
+							function ContactList() {
+								return (
+									<ul>
+										<li>Samantha</li>
+										<li>Alex</li>
+									</ul>
+								);
+							}
+							
+					3. Flow:
+						1. 
+					
+	2. How does a React app start up?
+	3. What were the 'useState' functions?
+	4. How did the text get translated to another language?
+
 ### A Few More Critical Questions ###
 ### Node Setup ###
 ### Constructing a React Project ###

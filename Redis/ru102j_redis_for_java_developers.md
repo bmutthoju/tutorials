@@ -91,4 +91,100 @@
 	2. Solar panel installed on rooftops
 	3. Each solar installation is called a site
 	4. Each site has a power Meter
-		1. 
+		1. Meter reports how much energy each solar installation is using and generating, minute by minute basis
+		2. We are building an app that injests and displays the data
+			1. map of solar installations
+			2. Search bar to find installations closest to particular address
+			3. For each site, we can view recent energy data
+				1. Watt hours generated and used per minute
+			4. We can see which sites have greatest and least capacity
+	5. Frontend: Vue.js
+	6. Backend: Java
+		1. com.redislabs.university.ru102j
+			1. api
+			2. dao
+			3. resources
+		2. Dropwizard - REST framework
+	7. Config and install:
+		1. conf.yaml - points to local Redis instance
+		2. `mvn package`
+			1. Builds a fat jar `redisolar-1.0.jar`
+		3. Running: `java -jar target/redisolar-1.0.jar load --flush true`
+		4. Start server: `java -jar target/redisolar-1.0.jar server config.yml`
+		5. Open: http://localhost:8081
+
+## Application Setup Instructions ##
+### Getting Started ###
+1. Attempt programming challenges
+2. Run example application
+3. Examine source code
+4. Pre-requisites:
+	1. Redis stack instance
+	2. Access to Github
+	3. Choice of IDE
+	4. JDK
+5. [Discord](https://discord.gg/jucCB8h)
+6. [Start](https://github.com/redislabs-training/ru102j)
+
+## Running the Sample Application ##
+### Important! ###
+1. The below steps allows us to participate in the programming challenges that appear in the course
+
+### Building the Project ###
+1. Docker container:
+
+		cd project
+		mvn package
+		
+2. Local machine:
+
+		cd ru102j
+		mvn package
+		
+	1. Pre-configured to assume Redis is at port 6379 on localhost with no password
+		1. To change host, port, or password, set values in:
+			1. `config.yml` (for application)
+			2. `src/test/java/com/redislabs/university/RU102J/HostPort.java` (for tests)
+		2. Re-package the application:
+		
+				mvn package
+
+### Running the Test Suite ###
+1. Running tests:
+
+		mvn test
+		
+2. Running individual test:
+
+		mvn test -Dtest=HelloTest
+
+### Loading the Sample Data ###
+1. Application includes data loader
+	1. Run it after completing each programming challenge
+		1. It ensures that the data is up to date
+2. Command:
+
+		java -jar target/redisolar-1.0.jar load
+		
+	1. The data loader can flush Redis database before loading data (this will delete everything from Redis before loading)
+	
+			java -jar target/redisolar-1.0.jar load --flush true
+			
+	2. If using a different host, port, or password:
+	
+			java -jar target/redisolar-1.0.jar load --host myhost --port 6380 --password secret
+			
+		1. Use `--flush true` if we want to delete all data from Redis before loading the course data
+
+### Running the Sample Application ###
+1. Run the following to run the sample application:
+
+		java -jar target/redisolar-1.0.jar server config.yml
+		
+2. Navigate to: `http://localhost:8001` to see the app
+
+### Viewing the Programming Challenge Solutions ###
+1. Docker container:
+	1. `solutions` folder has source code
+2. Local machine/ GitHub:
+	1. `solutions` branch in GitHub repo contains a copy of source code with each programming challenge completed
