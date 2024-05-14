@@ -148,5 +148,67 @@
 		1. Pronunciation (plays on click on a button)
 	4. Macmillan: [macmillandictionary.com](macmillandictionary.com)
 	5. **Task: Pick three or four electronic dictionaries, and bookmark their websites or install their apps.**
+		1. **Use them regularly**
 4. **Look up the word and record it**
-	1. 
+	1. Check if guesses were correct:
+		1. Check part of speech
+			1. Some words functions as different parts of speech in different situations
+		2. Check definition in dictionary
+			1. We might find multiple meanings for the work in a dictionary
+				1. Find the meaning that best fits the context
+			2. Read the definition a few times to ensure we fully understand
+	2. Copy the part of speech and definition to vocabulary notebook
+	3. Other info:
+		1. Copy pronunciation symbols from the dictionary to remind us about the correct pronunciation in the future
+			1. Electronic dictionaries can play correct recording of the pronunciation
+			2. Example:
+				1. Obnoxious (adj.) /eb'na:k.Ses/ (stress is on second syllable (na:k)) (listen a few times and repeat)
+					1. very rude, unacceptable, offensive
+				2. Sentences: (copy them)
+					1. "The waitress's behavior was downright (completely, very - negative) obnoxious"
+					2. "Matt can be quite obnoxious when he's mad about something."
+	4. Make own sentences
+		1. They may sound unnatural - it is okay
+		2. We can revisit the sentences and improve them as we understand the work better
+	5. Use a **thesaurus** to find synonyms and antonyms
+		1. [thesaurus.com](thesaurus.com)
+			1. Obnoxious:
+				1. Synonyms
+					1. objectionable
+					2. disagreeable
+					3. distasteful
+				2. Antonyms
+					1. decent
+					2. friendly
+					3. pleasant
+	6. Learn root, prefix, and suffix
+		1. Example: disinterested (adj.) - dis- + interest + -ed
+			1. prefix: dis- - negative
+			2. suffix: -ed
+				1. It is not the same as uninterested (feeling no interest)
+					1. "She was totally uninterested in modern art" (no liking)
+			3. Meaning:
+				1. impartial
+					1. "Every legal case must be heard by a disinterested judge" (who doesn't favor one party)
+	7. Task: **Pick a word that you learned recently, and**
+		1. Look it up in the dictionary
+		2. Review its part of speech and definition
+		3. Listen to the correct pronunciation and practice it
+		4. Read the examples & make your own sentences
+		5. Try to find some synonyms and antonyms
+		6. Analyze any prefixes, suffixes or roots the word has
+	8. Use Mnemonics /ni'ma:.nik/
+		1. Any technique used to remember something, usually images, funny phrases, or stories
+			1. Example: Think of uninterested, bored, yawning judge and his eyelids **drooping** (hanging down (sleepy eyes)) as the lawyers **fervently** (with strong or sincere feelings (fire)) argue their cases. And keep in mind that that's not the judge you want; you want the alert and impartial, **disinterested** judge
+		2. We can draw cartoons or pictures representing the words in vocabulary notebook (it is fun)
+	9. Review vocabulary
+		1. We must regularly revist and review the words that we have learned in the past
+			1. Peruse (read through) the entries in your vocabulary notebook or app
+				1. Look at words
+				2. Read definitions
+			2. Use flashcards (more interesting)
+				1. Test ourselves
+					1. Today, you don't have to go through the **laborious** (difficult, taking a lot of time and work) process of making flashcards
+					2. There are many flashcard apps available (**plethora** of apps)
+			3. Ultimately, the key is to **incorporate** what you have learned into your speech and writing
+				1. Try to actively use the words in speeking and writing
