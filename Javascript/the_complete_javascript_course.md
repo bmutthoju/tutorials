@@ -9744,43 +9744,1356 @@
 		get3Countries('portugal', 'canada', 'tanzania');
 
 ### Other Promise Combinators: race, allSettled and any ###
+1. `Promise.race`
+	1. Use-case: To prevent against never ending promises or long running promises.
+		1. Example: If a user has very bad internet connection, then `fetch` might take a very long time. We can use a timeout `Promise` which automatically rejects when a certain time has passed.
+2. Code:
 
+		// Promise.race - it receives an array of primises and returns a promise. It is settled as soon as one of the input promise settles (fulfilled or rejected). The first settled promise wins the race. The fulfillment value of the race promise will be the fulfillment value of the winning promise
+
+		(async function () {
+		  try {
+		    const res = await Promise.race([
+		      getJSON('https://restcountries.com/v3.1/name/italy'),
+		      getJSON('https://restcountries.com/v3.1/name/egypt'),
+		      getJSON('https://restcountries.com/v3.1/name/mexico'),
+		    ]);
+		    console.log('RACE:', res[0]);
+		  } catch (err) {
+		    console.error();
+		  }
+		})();
+		
+		const timeout = function (sec) {
+		  return new Promise(function (_, reject) {
+		    setTimeout(function () {
+		      reject(new Error('Request took too long!'));
+		    }, sec * 1000);
+		  });
+		};
+		
+		Promise.race([
+		  getJSON('https://restcountries.com/v3.1/name/tanzania'),
+		  timeout(0.01),
+		])
+		  .then(res => console.log('RACE:', res[0]))
+		  .catch(err => console.error('RACE:', err));
+		
+		// Promise.allSettled - ES2020 **(M)**
+		// It will take an array of `Promise`s and return an array of all settled `Promise`s. If they are rejected or not
+		// Promise.all short-circuits if one promise rejects. Promise.allSettled never short circuits
+		
+		Promise.allSettled([
+		  Promise.resolve('Success'),
+		  Promise.reject('Error'),
+		  Promise.resolve('Another success'),
+		]).then(res => console.log(res));
+		
+		Promise.all([
+		  Promise.resolve('Success'),
+		  Promise.reject('Error'),
+		  Promise.resolve('Another success'),
+		])
+		  .then(res => console.log(res))
+		  .catch(err => console.error(err));
+		
+		// Promise.any - ES2021 **(M)**. It takes an array of promises and returns the first fulfilled promise. Rejected promises are ignored. (Result is always fulfilled promise unless all are rejected)
+		Promise.any([
+		  Promise.resolve('Success'),
+		  Promise.reject('Error'),
+		  Promise.resolve('Another success'),
+		])
+		  .then(res => console.log(res))
+		  .catch(err => console.error(err));
 
 ### Coding Challenge #3 ###
+1. MUST DO:
 
 ## Section 17: Modern JavaScript Development: Modules, Tooling, and Functional ##
 ### Section Intro ###
+1. It is about the development process
+	1. Modern build tools that every developer uses
+	2. Modern ecosystem created around JS
+
 ### Section Roadmap ###
 ### An Overview of Modern JavaScript Development ###
+1. General Overview of how we write JS today
+
+#### Modern JavaScript Development ####
+1. We divide our project into multiple modules
+	1. The modules can share data between them and make code more organized and maintainable
+	2. Advantages:
+		1. We can include 3rd-party modules (packages) into our own code
+			1. There are thousands of open-source modules
+				1. The developers share them in `npm` repository
+					1. Examples:
+						1. React
+						2. jQuery
+						3. Leaflet
+						4. etc.
+					2. We can use the modules (packages) for free in our own code
+3. `npm` - Node Package Manager
+	1. It was initially developed with Node.js and for Node.js
+		1. It is however used for all kinds of packages in modern JS development
+	2. We need to install `npm` software
+	3. `npm` - It is repository in which our packages live, and program we use on our computers to install and manage the packages.
+4. Build Process
+	1. One big JS bundle is build - final file we deploy to production
+		1. Production: Application used by real-users in the real-world
+	2. It can be really complex
+	3. Steps:
+		1. Bundling - Join all modules into one file
+			1. Eliminates un-used code
+			2. Compresses code
+			3. Why?
+				1. Older browsers do not support modules (cannot execute)
+				2. Better for performance:
+					1. Fewer files are sent to the browser
+					2. Compressed files are smaller in size
+		2. Transpiling/Polyfilling - Convert modern JavaScript back to ES5
+			1. Why?
+				1. Older browsers can understand our code without breaking
+			2. How?
+				1. Babel
+	2. We use special tool to implement build process
+		1. JavaScript bunders: They take raw code and transform it into JS bundle
+			1. Webpack
+				1. More popular
+				2. Hard to set it up
+					1. We need to configure many things manually to make it work properly 
+			2. Parcel
+				1. Zero config bundler (works out of the box)
+					1. We don't have to write any setup code
+	3. The tools are in `npm`
+		1. `npm` contains **development tools** that help build our application (e.g. live-server, Parcel, Babel, etc.)
+
 ### An Overview of Modules in JavaScript ###
+#### An Overview of Modules ####
+1. Module: Reusable piece of code that **encapsulates** implementation details (of a certain part of our project)
+	1. It is usually a standalone file, but it doesn't have to be
+	2. It contains code and `import`s and `export`s
+
+			import { rand } from './math.js';
+			const diceP1 = rand(1, 6, 2);
+			const diceP2 = rand(1, 6, 2);
+			const scores = { diceP1, diceP2 };
+			export { scores };
+
+		1. `export` - We can export out values form a module
+			1. Simple values
+			2. Functions
+			3. Exported functions are public API
+			4. Public API
+				1. Consumed by importing values
+					1. The imported module is called dependency of the importing module
+	2. When a code-base grows bigger and bigger, there are many advantages of using modules
+		1. Modules make it very easy to compose software
+			1. **Compose Software:** They are small building blocks we can put together to build complex applications
+				1. Example: Digital camera - many modules are combined
+					1. Each module can be developed in complete isolation
+					2. Each engineer can work independently on their own module without understanding about other modules or the camera as a whole
+			2. **Isolate components:** Modules can be developed in isolation without thinking about the entire codebase
+				1. Developer doesn't need to understand all of it
+					1. Makes it easy to collaborate with larger teams
+			3. **Abstract code:** Implement low-level code in modules and import these abstractions into other modules
+				1. Example: Screen module doesn't care about low-level details of the controller module
+					1. It can import the controller without knowing how it works and use it to control other parts of the camera
+			4. **Organized code:** Modules naturally lead to a more organized codebase
+				1. Makes it easier to understand and maintain
+			5. **Reuse code:** Modules allow us to easily reuse the same code, even across multiple projects
+				1. Copy a module to a new project if we want to reuse
+					1. Example: Screen can be re-used in multiple cameras because it is nicely abstracted out
+
+#### Native Javascript (ES6) Modules ####
+1. JavaScript has built-in native module system (ES6)
+	1. We had modules before ES6 but we had to implement them ourselves or use external libraries
+2. ES6 Modules
+	1. Modules stored in files
+		1. **Exactly one module per file**
+
+3. ES6 Module vs Script
+	1. ES6 Module
+		1. Top-level variables: Scoped to module (by default)
+			1. The only way an outside module can access the value is by exporting the value
+				1. If we do not export, nobody from outside has access
+		2. Default mode: Strict mode (by default)
+			1. No need to explicity declare `"use strict";`
+		3. Top-level `this`: `undefined`
+		4. Imports and exports: Yes
+			1. Need to happen at top-level (outside of any function or if block)
+			2. Imports are hoisted
+				1. No matter where we import, it is as though we are importing on the top
+					1. Import is first thing that happens in a module
+		5. HTML linking: `<script type="module">` **(M)**
+		6. File downloading: Asynchronous (by default)
+			1. For modules loaded by HTML
+			2. For modules loaded by `import`ing one module into another using `import` syntax
+	2. Script
+		1. Top-level variables: Global
+			1. Problems: Global namespace polution
+				1. Multiple scripts might try to declare variables with the same name (variables collide)
+					1. Solution: private variables (ES6 modules)
+		2. Default mode: "Sloppy" mode
+		3. Top-level `this`: `window`
+		4. Imports and exports: No (not possible)
+		5. File downloading: Synchronous
+			1. Blocking, synchronous way, unless we use `async` **(M)** or `defer` **(M)** attributes on the `script` tag
+
+#### How ES6 Modules Are Imported ####
+1. Example: index.js
+
+		import { rand } from './math.js';
+		import { showDice } from './dom.js';
+
+		const dice = rand(1, 6, 2);
+		showDice(dice);
+
+	1. Step 1: Parsing index.js
+		1. Reads without execution
+			1. Imports are hoisted at this point in time
+				1. Importing modules happens before execution of code in the main module
+					1. Modules are **imported synchronously**
+						1. Only after all imported modules are downloaded and executed, the main `index.js` will be executed. 
+							1. Possible because of top-level ("static") imports, which make **imports kown before execution**
+								1. Engine can know all the imports and exports during the parsing phase (while code is read before being executed)
+									1. If import is inside a function, then the function needs to be executed for the import to happen
+				2. Why load modules in a synchronous way?
+					1. The easiest way to bundling and dead-code elimination (deleting code that is not necessary)
+						1. If using 100s of modules, and if we need a small piece
+							1. If we know all the dependencies between modules before execution, bundlers (webpack, parcel) can join multiple modules together and eliminate dead-code
+	2. Step 2: After parsing process has figured out which modules need to be imported, Modules are downloaded from the server
+		1. Downloading happens in an asynchronous way
+			1. Only import operation is synchronous
+		2. Once the module arrives, it is parsed
+	3. Step 3: The module exports are linked to imports (in index.js)
+		1. export in math.js is connected to imports to math.js in index.js
+			1. It is a live connection
+				1. Exported values are not copied to imports
+					1. Import is a reference to the exported value
+						1. **If value changes in the exporting value, the value also changes in the importing module** (Unique to ES6 modules)
+	4. Step 4: Code in the imported modules is executed
+
 ### Exporting and Importing in ES6 Modules ###
+1. 17-Modern-JS-Modules-Tooling
+	1. Importing a module without importing any value
+		1. Module names: In camel-case
+	2. There are two types of `exports`
+		1. Named exports
+			1. We just have to put `export` in front of anything we want to export
+		2. Default exports
+			1. Used if we want to use to export only one thing from a module
+			2. It is the preferred style to export one default thing and import it
+2. Code:
+
+		// Importing module
+		// import { addToCart, totalPrice as price, tq } from './shoppingCart.js';
+		// extension is optional
+		// Needs specifying `type="module"` in HTML
+		// curly braces are required for named imports
+		
+		// import * as ShoppingCart from './shoppingCart.js'; // an object containing everything
+		// A namespace is created
+		
+		import add, { cart } from './shoppingCart.js'; // any name can be used for default export
+		// No need for {} for default exports
+		
+		// import add, { addToCart, totalPrice as price, tq } from './shoppingCart.js'; // Mixing is not usually done
+		
+		// Not recommended to import same module twice
+		
+		console.log('Importing module');
+		
+		// addToCart('bread', 5);
+		// console.log(price, tq);
+		
+		// The following is similar to an object created from a class exporting a public API
+		// ShoppingCart.addToCart('bread', 5);
+		// console.log(ShoppingCart.totalPrice, ShoppingCart.tq);
+		
+		add('pizza', 2);
+		add('pizza', 5);
+		add('pizza', 4);
+		
+		console.log(cart);
+		// Import is not just a copy but a live connection because updates are reflected after the `import` statement
+
 ### Top-Level await (ES2022) ###
+1. We can use `await` keyword outside of `async` functions (at-least in modules)
+	1. It only works in modules
+2. Fake data:
+	1. [https://jsonplaceholder.typicode.com/](https://jsonplaceholder.typicode.com/)
+3. Top-level await - blocks the execution of the entire module
+	1. It can be harmful
+	2. If a module imports another module that has a top-level `await`, then the importing module will wait for the imported module to finish the blocking code
+		1. Example:
+
+				// Blocking code
+				console.log('Start fetching users');
+				await fetch('https://jsonplaceholder.typicode.com/users');
+				console.log('Finish fetching users');
+				// Throttle request using slow 3G
+
+				// Then the importing module is executed
+
+3. Code:
+
+		// Top-level Await
+		console.log('Start fetching');
+		const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+		const data = await res.json();
+		console.log(data);
+		console.log('Something'); // printed after the data is fetched. Printed at the end
+		
+		const getLastPost = async function () {
+		  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+		  const data = await res.json();
+		  console.log(data);
+		  return { title: data.at(-1).title, text: data.at(-1).body };
+		};
+		
+		const lastPost = getLastPost();
+		console.log(lastPost);
+		
+		// Not very clean
+		lastPost.then(last => console.log(last));
+		
+		const lastPost2 = await getLastPost();
+		console.log(lastPost2);
+
 ### The Module Pattern ###
+1. Used in the past (we still see it around)
+2. Main goal of module pattern
+	1. Have private data
+	2. Expose public API
+3. A solution: Using functions
+
+		// Module pattern
+		const ShoppingCart2 = (function () {
+		  // It's purpose is to define a new scope and return data just once
+		  const cart = [];
+		  const shippingCost = 10;
+		  const totalPrice = 237;
+		  const totalQuantity = 23;
+		
+		  const addToCart = function (product, quantity) {
+		    cart.push({ product, quantity });
+		    console.log(
+		      `${quantity} ${product} added to cart (Shipping cost is ${shippingCost})`
+		    );
+		    // `shippingCost` is private
+		  };
+		
+		  const orderStock = function (product, quantity) {
+		    cart.push({ product, quantity });
+		    console.log(`${quantity} ${product} ordered from supplier`);
+		  };
+		
+		  return {
+		    addToCart,
+		    cart,
+		    totalPrice,
+		    totalQuantity,
+		  };
+		})();
+		
+		ShoppingCart2.addToCart('apple', 4);
+		ShoppingCart2.addToCart('pizza', 2);
+		
+		console.log(ShoppingCart2);
+		console.log(ShoppingCart2.shippingCost); // Not accessible
+		
+		// Console is in global scope and this is a module
+		// Works because of closures - Allows a function to have access to all variables and functions that were present at its birthplace
+		// `addToCart` - never loses connection to it's birthplace (contains all variables at that point)
+
+3. Problems:
+	1. If we want one module per file, we need to construct different scripts and link them in the HTML file
+		1. Problems:
+			1. We need to be careful with the order we declare in the HTML
+			2. We will have variables in the global scope
+			3. We cannot bundle them together using module-bundler
+	2. Solution: Native modules
+
 ### CommonJS Modules ###
+1. These module systems are not native to JS so they depended on an external implementations.
+	1. Examples:
+		1. AMD modules
+		2. Common.js modules
+2. common.js - used in Node.js (only recently ES6 modules have been implemented in Node.js)
+	1. Almost all modules in the NPM repo still use `common.js` module system
+		1. NPM was originally intended for Node
+			1. We are stuck with `common.js`
+3. Code:
+
+		// Export
+		export.addToCart = function (product, quantity) {
+		  cart.push({ product, quantity });
+		  console.log(
+		    `${quantity} ${product} added to cart (Shipping cost is ${shippingCost})`
+		  );
+		  // `shippingCost` is private
+		}; // Doesn't work in browser
+		
+		// Import
+		const { addToCart } = require('./shoppingCart.js'); // works in Node.js
+
+	1. There are many more module systems
+
 ### A Brief Introduction to the Command Line ###
+1. All build-tools available in NPM work only in command-line
+
 ### Introduction to NPM ###
+1. NPM - Node Package Manager
+	1. It it a software
+	2. It is a repository
+2. Why do we need NPM?
+	1. We were including external libraries directly inside HTML code
+		1. Problems:
+			1. Exposes global variables
+				1. Problems in large projects
+					1. HTML loading JS is messy
+					2. If we are including local files, we need to manually download and update HTML
+					3. There is no single package with all the dependencies we need
+3. Terminal:
+
+		npm -v # **(M)**. It should be > 6. Use LTS
+
+		# For each project
+		
+		npm init
+		
+		# Hit enter for defaults
+		
+	1. `package.json`
+		1. Stores the entire configuration of our project
+	2. Install `leaflet` library using `npm`
+
+			npm install leaflet
+			npm i leaflet
+
+		1. We cannot direclty import the `common.js` module into our code (we can do it using a module bundler)
+4. Lodash: A collection of useful functions for arrays, object, dates, etc.
+	1. We want native module version (not `lodash`)
+
+			npm i lodash-es
+
+2. Code:
+
+		import cloneDeep from './node_modules/lodash-es/cloneDeep.js'; // Full path is required because we don't have module-bundler
+
+		const state = {
+		  cart: [
+		    {
+		      product: 'bread',
+		      qantity: 5,
+		    },
+		    {
+		      product: 'pizza',
+		      quantity: 5,
+		    },
+		  ],
+		  user: {
+		    loggedIn: true,
+		  },
+		};
+		
+		const stateClone = Object.assign({}, state);
+		console.log(stateClone);
+		
+		const stateDeepClone = cloneDeep(state);
+		console.log(stateDeepClone);
+		
+		state.user.loggedIn = false;
+		console.log(stateClone); // modified original object
+
+	1. Never include `node_modules` folder if we want to share the project
+		1. Reason:
+			1. It is huge
+				1. Slows transfer
+	2. If we don't have `node_modules`
+		1. We can install dependencies again
+
+				npm install # **(M)**
+
 ### Bundling with Parcel and NPM Scripts ###
+1. Parcel:
+	1. A build tool which is on npm
+
+			npm install parcel --save-dev # **(M)**
+			npm install parcel@1.12.4 --save-dev
+
+		1. Dev dependency: It is only a tool to build the application
+			1. It is not a dependency used in the application (used only for development)
+	2. How to run Parcel?
+		1. `npx`
+
+				npx parcel index.html # **(M)**
+
+				# We need to pass entry point html
+				# The file contains the js script (script.js) that we want to bundle up
+				# parcel starts a new development server automatically
+		
+			1. Parcel converts everything to scripts (not modules)
+				1. To support older browsers
+			2. `dist`
+				1. Folder that is sent to the final users (for production)
+					1. `index.html` contains bundled script
+			3. Hot module reload maintains state (if we reload the page)
+				1. The variables are persisted on page reloads
+
+		2. `npm` scripts
+			1. Another way of running locally installed packages in the command-line
+			2. They allow us to automate repetetive tasks
+				1. package.json
+
+						"scripts": {
+							"start": "parcel index.html"
+						},
+
+					1. `start` - name of the script
+					2. `parcel index.html` - we cannot run this on the commandline
+			3. Running the script:
+
+					npm start
+
+			4. Building final bundled (compressed, dead-code eliminated, ...)
+
+					// "main": "clean.js",
+					"source": "index.html",
+					"scripts": {
+						...
+						"build": "parcel build"
+					}
+
+			5. Global installation:
+
+					npm i parcel -g
+
+				1. We can use it directly in the commandline without npm scripts
+					1. Local installation is recommended
+						1. We can choose the version and it is part of the application
+		
 ### Configuring Babel and Polyfilling ###
+1. Babel - transpiling modern JS to ES5
+	1. We will continue to do this in the future
+		1. Why?
+			1. Many people are stuck with old browsers (Windows XP, Windows 7 with IE that cannot be upgraded)
+				1. We want to make the application work for everyone
+	2. Parcel automatically uses Babel to transpile code
+		1. We can configure Babel
+			1. Defining what browsers should be suppported
+				1. Parcel makes default decisions
+	3. [babeljs.io](babeljs.io)
+		1. Plugins
+			1. Babel works with plugins and presets that can both be configured
+			2. Plugin:
+				1. Specific JS feature that we want to transpile
+					1. Example: Arrow functions
+		2. Preset:
+			1. A bunch of plugins bundled together
+			2. Parcel uses `preset-env` preset (`@babel/preset-env`)
+				1. Automatically selects which JS features should be compiled based on browser support
+					1. Happens automatically and out of the box
+					2. Only Browsers with 0.25% market share (say) will not be supported by this preset
+				2. Preset includes only the final features that are in the language (features that passed all 4 stages of ECMA process)
+	4. Polyfilling:
+
+			npm i core-js
+
+		1. `find` and `Promise` will not be removed, but polyfilling will give versions of the functions not available in ES6
+		2. Code:
+		
+				import 'core-js/stable'; // **(M)**
+
+		3. We can cherry-pick features we need (reduces bundle-size)
+
+				import 'core-js/stable/array/find';
+				import 'core-js/stable/promise';
+
+		4. A feature not polyfilled: For polyfilling `async` functions
+
+				npm i regenerator-runtime
+
+				import 'regenerator-runtime/runtime';
+
+2. Code:
+
+		// Only Parcel understands the following code
+		// It does not make it into the final bundle
+		// Hot module reloading - whenever we change a module, it will trigger a rebuild, and the modified bundle automatically gets injected into the browser without whole page reload.
+		// Maintains state. Example: We don't have to login again
+		if (module.hot) {
+		  module.hot.accept();
+		}
+		
+		class Person {
+		  #greeting = 'Hey';
+		  constructor(name) {
+		    this.name = name;
+		    console.log(`${this.#greeting}, ${this.name}`);
+		  }
+		}
+		const jonas = new Person('Jonas');
+		
+		console.log('Jonas' ?? null);
+		
+		console.log(cart.find(el => el.quantity >= 2)); // ES6 `find` is not converted
+		Promise.resolve('TEST').then(x => console.log(x)); // ES6 `Promise` is also not converted.
+		// Babel transpiles only ES6 syntax (arrow functions, classes, const, spread operator, ...). Things having an equivalent way of writing in ES5.
+		// Babel does not convert real features added to the language (`find`, `Promise`, ...). Additions cannot be transpiled.
+		// Solution: Polyfilling
+		// Babel stopped doing polyfilling. We need to import a library. `core-js/stable`
+		
+		import 'core-js/stable';
+		import 'regenerator-runtime/runtime';
+
 ### Review: Writing Clean and Modern JavaScript ###
+#### Review: Modern and Clean Code ####
+1. Principles:
+	1. Readable code:
+		1. Write code so that **others** can understand it
+		2. Write code so that **you** can understand it in 1 year
+		3. Avoid too "clever" and overcomplicated solutions
+			1. Might make the code very confusing and unreadable
+				1. Write most straightforward solutions
+		4. Use descriptive variable names: **what they contain**
+		5. Use descriptive function names: **what they do**
+	2. General
+		1. Use DRY principle (refactor your code)
+		2. Don't pollute global namespace, encapsulate instead (functions, classes, modules)
+		3. Don't use var
+			1. `const` always, and if required `let`
+		4. Use strong type checks (=== and !==)
+			1. `==` does not perform type-checks
+	3. Functions:
+		1. Generally, functions should do **only one thing**
+			1. It must do it really well.
+		2. Don't use more than 3 function parameters
+			1. If a function does only one thing, it may not usually need more than 3 parameters.
+		3. Use default parameters whenever possible
+		4. Generally, return the same data type as received
+		5. Use arrow functions when they make code more readable
+			1. They may make code unreadable
+				1. Use them if they make it more readable
+					1. Example: Callback methods of array functions
+	4. OOP
+		1. Use ES6 classes
+		2. Encapsulate data and **don't mutate** it from outside the class
+			1. Implement public API that can mutate the data as we want
+		3. Implement method chaining
+			1. Makes methods easier to use (for me and other developers)
+		4. Do **not** use arrow functions as methods (in regular objects)
+			1. We will not get access to the `this` keyword
+	5. Avoid Nested Code
+		1. Use early `return` (guard clauses)
+		2. Use ternary (conditional) or logical operators instead of `if`
+			1. ternary operator does not instantiate a code-block
+		3. Use multiple `if` instead of `if/else-if`
+			1. Makes it more readable
+		4. Avoid `for` (and `for-of`) loops (to avoid nested code), use array methods instead
+		5. Avoid callback-based asynchronous APIs
+	6. Asynchronous code
+		1. Consume promises with `async`/`await` for best readability
+			1. `then` and `catch` require callback functions (more nested code)
+		2. Whenever possible, run promises in **parallel** (`Promise.all` **(M)**)
+		3. Handle errors and promise rejections
+
 ### Let's Fix Some Bad Code: Part 1 ###
+1. MUST DO!
+
 ### Declarative and Functional JavaScript Principles ###
+#### Imperative vs Declarative Code ####
+1. Two fundamentally different ways of writing coe (paradigms)
+	1. Imperative
+		1. Programmer explains "HOW to do things"
+		2. We explain the computer every single step it has to follow to achieve a result
+			1. Example: Baking a cake
+				1. Steps-by-step recipe of a cake (every single step)
+			2. Example: Double `arr` array
+		
+					const arr = [2, 4, 6, 8];
+					const doubled = [];
+					for (let i = 0; i < arr.length; i++)
+						doubled[i] = arr[i] * 2;			
+
+	2. Declarative
+		1. Programmer tells "WHAT to do"
+		2. We simply describe the way the computer should achieve the result
+		3. The HOW (step-by-step instructions) gets abstracted away
+			1. Example: Description of a cake (to a person)
+				1. Person comes up the step by step process on their own
+			2. Example: Doubling the array items
+
+					const arr = [2, 4, 6, 8];
+					const doubled = arr.map(n => n * 2);
+
+				1. We are telling it what to do
+			3. Advantages:
+				1. The details are abstracted away
+
+#### Functional Programming Principles ####
+1. Functional Programming
+	1. **Declarative** programming paradigm
+	2. Based on the idea of writing software by combining many **pure functions**, avoiding **side effects** and **mutating** data
+2. It is the modern way of writing code in JS world
+3. **Side effect**:
+	1. Modification (mutation) of any data outside of the function (mutating external variables, logging to console, writing to DOM, etc.)
+4. **Pure function**:
+	1. Function without side effects. Does not depend on external variables. **Given the same inputs, always returns the same outputs**
+5. **Immutability**:
+	1. State (data) is **never** modified! instead, state is **copied** and the copy is mutated and returned.
+		1. Original state is never touched.
+		2. Helps us keep track of how the data flows in our entire application
+			1. Better code
+			2. Less bugs
+			3. More readable code
+6. Functional programming is very difficult to implement
+7. Libraries are built around the functional programming principles
+	1. React
+		1. State is completely immutable
+	2. Redux
+8. Functional Programming Techniques
+	1. Try to avoid data mutations
+	2. Use built-in methods that don't produce side effects
+	3. Do data transformations with methods such as `.map()`, `.filter()`, `.reduce()`
+	4. Try to avoid side effects in functions: this is of course not always possible!
+		1. Not always necessary
+9. Declarative Syntax: (the following ways makes the code more declarative)
+	1. Use array and object destructuring
+	2. Use the spread operator (...)
+	3. Use the ternary (conditional) operator
+	4. Use template literals
+
 ### Let's Fix Some Bad Code: Part 2 ###
+1. MUST DO!
 
 ## Section 18: Forkify App: Building a Modern Application ##
 ### Section Into ###
+1. Beautiful, modern, advanced application
+2. We will use:
+	1. Classes
+	2. Modules
+	3. Async/Await
+	4. Parcel
+3. Flow charts & Project architecture
+	1. For writing application by ourselves
+
 ### Section Roadmap ###
 ### Project Overview and Planning (I) ###
+1. Final project: [http://forkify-v2.nelify.app](http://forkify-v2.nelify.app)
+	1. Searching for recipes
+
+#### Project Planning ####
+1. User Stories
+	1. User story: Description of the application's functionality from the user's perspective
+		1. When we write user stories, we need to put ourselves in user's shoes
+		2. When we put all the user stories together, we will get a clear picture of how the application is going to work
+			1. Application's features will be implemented based on the features
+	2. Common format: As a [type of user], I want [an action] so that [a benefit]
+2. Features
+3. Flowchart
+4. Architecture
+5. Development
+
+#### User Stories ####
+1. As a user, I want to **search for recipes**, so that I can find new ideas for meals
+2. As a user, I want to be able to **update the number of servings**, so that I can cook a meal for different number of people
+3. As a user, I want to **bookmark recipes**, so that I can review them later
+4. As a user, I want to be able to **define my own recipes**, so that I have them all organized in the same app
+5. As a user, I want to be able to **see my bookmarks and own recipes when I leave the app and come back later**, so that I can close the app safely after cooking
+
+#### Features ####
+1. Search for recipes -> 
+	1. Feature 1: Search functionality: input field to send request to API with searched keywords
+	2. Feature 2: Display results with pagination
+	3. Feature 3: Display recipe with cooking time, servings and ingredients
+2. Update the number of servings -> 
+	1. Feature 4: Change servings functionality: update all ingredients according to current number of servings
+3. Bookmark recipes ->
+	1. Feature 5: Bookmarking functionality: display list of all bookmarked recipes
+4. Define my own recipes ->
+	1. Feature 6: User can upload own recipes
+	2. Feature 7: User recipes will automatically be bookmarked
+	3. Feature 8: User can only see their own recipes, not recipes from other users
+		1. Associate recipes with an API key
+		2. We can also use user accounts
+5. See my bookmarks and own recipes when I leave the app and come back later ->
+	1. Store bookmark data in the browser using local storage
+	2. On page load, read saved bookmarks from local storage and display
+
+#### Flowchart (Part 1) ####
+1. Features
+	1. Search functionality: API search request
+	2. Results with pagination
+	3. Display recipe
+	4. ...
+2. Flowchart:
+
+		User searches
+			|
+			v
+		Load search results (async)
+			|
+			v
+		Render search results
+			
+		User clicks pagination
+			|	^
+			v	| Bind handler
+		Render pagination buttons (re-render each time)
+			| Bind handler
+			v
+		User selects recipe		Page loads with recipe ID
+			|						|
+			v						|
+		Load recipe	<---------------+
+			|
+			v
+		Render recipe
+
 ### Latest Code Updates (Parcel v2 and more) ###
+1. If there are issues with Parcel, refer to [updates-and-fixes](https://github.com/jonasschmedtmann/complete-javascript-course/tree/updates-and-fixes)
+	1. Previously: `controller.js` in `dist`
+	2. Now: `index.js`
+	3. Previously: `Fractional`
+	4. Now: `Fracty`
+
 ### Loading a Recipe from API ###
+1. 18-forkify
+	1. src
+		1. img
+		2. js
+		3. sass
+			1. A better way of writing css
+				1. Makes it easier to write css in a large scale application
+					1. Parcel converts sass into css (because browsers cannot understand sass)
+	2. index.html
+	3. Flowchart & architecture diagram
+2. Package:
+
+		npm init
+
+		package name: forkify
+		description: Recipe application
+		...
+		author: <author>
+		...
+		
+3. Open `package.json`
+	1. Remove: `"main": "index.js"` (for Parcel v2)
+	2. scripts:
+
+			"start": "parcel index.html",
+			"build": "parcel build"
+
+4. Install parcel:
+
+		npm i parcel -D # Parcel 2
+
+		# npm i parcel@next -D # beta version
+		# npm i parcel@2 -D
+
+5. Run:
+
+		npm start
+
+		# npm run start
+
+		# If error
+		npm install # installs sass
+	
+		# If more errors
+		npm i sass@1.26.10 -D
+
+		# Run
+		npm start
+
+4. `dist`
+	1. All files are at this level
+		1. Actual css
+		2. Images
+		3. js
+		4. html
+	2. If we reference sass files, Parcel will automatically install sass
+
+			<link rel="stylesheet" href="src/sass/main.scss" />
+
+	3. If using Parcel v2, replace `defer` with `type="module"`
+
+			<script type="module" src="src/js/controller.js"></script>
+
+	4. All we see in browser is coming from `dist` folder
+		1. Bundler packages raw source files into `dist` folder that can be shipped for browsers
+		2. [https://forkify-api.herokuapp.com/v2](https://forkify-api.herokuapp.com/v2)
+			1. search queries
+				1. 100 API requests/hour
+	5. APIs:
+		1. Get recipes
+		2. Get recipe
+			1. Search recipes: [https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza](https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza)
+
+2. Code:
+
+		// console.log('TEST');
+
+		const showRecipe = async function () {
+		  try {
+		    const res = await fetch(
+		      'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+		    );
+		    const data = await res.json();
+		
+		    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+		
+		    console.log(res, data);
+		
+		    let { recipe } = data.data;
+		    recipe = {
+		      id: recipe.id,
+		      title: recipe.title,
+		      publisher: recipe.publisher,
+		      sourceUrl: recipe.source_url,
+		      image: recipe.image_url,
+		      servings: recipe.servings,
+		      cookingTime: recipe.cooking_time,
+		      ingredients: recipe.ingredients,
+		    };
+		
+		    console.log(recipe);
+		  } catch (err) {
+		    alert(err);
+		  }
+		};
+		
+		showRecipe();
+
 ### Rendering the Recipe ###
+1. Installing polyfills
+
+		npm i core-js regenerator-runtime
+
+2. Import them in js file:
+
+		import 'core-js/stable'; // for polyfilling everything else
+		import 'regenerator-runtime/runtime'; // for polyfilling async/await
+
+3. Code:
+
+		// import icons from '../img/icons.svg'; // Parcel 1
+		import icons from 'url:../img/icons.svg'; // Parcel 2
+		
+		// For polyfilling
+		import 'core-js/stable';
+		import 'regenerator-runtime/runtime';
+		
+		console.log(icons); // path to the new icons file
+		
+		const recipeContainer = document.querySelector('.recipe');
+		
+		const timeout = function (s) {
+		  return new Promise(function (_, reject) {
+		    setTimeout(function () {
+		      reject(new Error(`Request took too long! Timeout after ${s} second`));
+		    }, s * 1000);
+		  });
+		};
+		
+		// https://forkify-api.herokuapp.com/v2
+		
+		///////////////////////////////////////
+		// console.log('TEST');
+		
+		const renderSpinner = function (parentEl) {
+		  const markup = `
+		  <div class="spinner">
+		    <svg>
+		      <use href="${icons}#icon-loader"></use>
+		    </svg>
+		  </div>
+		  `;
+		  parentEl.innerHTML = '';
+		  parentEl.insertAdjacentHTML('afterbegin', markup);
+		};
+		
+		const showRecipe = async function () {
+		  try {
+		    const id = window.location.hash.slice(1); // **(M)**
+		    console.log(id);
+		
+		    if (!id) return;
+		
+		    // 1) Loading recipe
+		    renderSpinner(recipeContainer);
+		    const res = await fetch(
+		      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
+		    );
+		    const data = await res.json();
+		
+		    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+		
+		    console.log(res, data);
+		
+		    let { recipe } = data.data;
+		    recipe = {
+		      id: recipe.id,
+		      title: recipe.title,
+		      publisher: recipe.publisher,
+		      sourceUrl: recipe.source_url,
+		      image: recipe.image_url,
+		      servings: recipe.servings,
+		      cookingTime: recipe.cooking_time,
+		      ingredients: recipe.ingredients,
+		    };
+		
+		    console.log(recipe);
+		
+		    // 2) Rendering recipe
+		    const markup = `
+		    <figure class="recipe__fig">
+		      <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
+		      <h1 class="recipe__title">
+		        <span>${recipe.title}</span>
+		      </h1>
+		    </figure>
+		
+		    <div class="recipe__details">
+		      <div class="recipe__info">
+		        <svg class="recipe__info-icon">
+		          <use href="${icons}#icon-clock"></use>
+		        </svg>
+		        <span class="recipe__info-data recipe__info-data--minutes">${
+		          recipe.cookingTime
+		        }</span>
+		        <span class="recipe__info-text">minutes</span>
+		      </div>
+		      <div class="recipe__info">
+		        <svg class="recipe__info-icon">
+		          <use href="${icons}#icon-users"></use>
+		        </svg>
+		        <span class="recipe__info-data recipe__info-data--people">${
+		          recipe.servings
+		        }</span>
+		        <span class="recipe__info-text">servings</span>
+		
+		        <div class="recipe__info-buttons">
+		          <button class="btn--tiny btn--increase-servings">
+		            <svg>
+		              <use href="${icons}#icon-minus-circle"></use>
+		            </svg>
+		          </button>
+		          <button class="btn--tiny btn--increase-servings">
+		            <svg>
+		              <use href="${icons}#icon-plus-circle"></use>
+		            </svg>
+		          </button>
+		        </div>
+		      </div>
+		
+		      <div class="recipe__user-generated">
+		        <svg>
+		          <use href="${icons}#icon-user"></use>
+		        </svg>
+		      </div>
+		      <button class="btn--round">
+		        <svg class="">
+		          <use href="${icons}#icon-bookmark-fill"></use>
+		        </svg>
+		      </button>
+		    </div>
+		
+		    <div class="recipe__ingredients">
+		      <h2 class="heading--2">Recipe ingredients</h2>
+		      <ul class="recipe__ingredient-list">
+		        ${recipe.ingredients
+		          .map(ing => {
+		            return `
+		          <li class="recipe__ingredient">
+		            <svg class="recipe__icon">
+		              <use href="${icons}#icon-check"></use>
+		            </svg>
+		            <div class="recipe__quantity">${ing.quantity}</div>
+		            <div class="recipe__description">
+		              <span class="recipe__unit">${ing.unit}</span>
+		              ${ing.description}
+		            </div>
+		          </li>
+		          `;
+		          })
+		          .join('')}
+		      </ul>
+		    </div>
+		
+		    <div class="recipe__directions">
+		      <h2 class="heading--2">How to cook it</h2>
+		      <p class="recipe__directions-text">
+		        This recipe was carefully designed and tested by
+		        <span class="recipe__publisher">${
+		          recipe.publisher
+		        }</span>. Please check out
+		        directions at their website.
+		      </p>
+		      <a
+		        class="btn--small recipe__btn"
+		        href="${recipe.sourceUrl}"
+		        target="_blank"
+		      >
+		        <span>Directions</span>
+		        <svg class="search__icon">
+		          <use href="${icons}#icon-arrow-right"></use>
+		        </svg>
+		      </a>
+		    </div>
+		    `;
+		    recipeContainer.innerHTML = '';
+		    recipeContainer.insertAdjacentHTML('afterbegin', markup);
+		  } catch (err) {
+		    alert(err);
+		  }
+		};
+		
+		showRecipe();
+		
+		['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
+		// window.addEventListener('hashchange', showRecipe); // **(M)**
+		// window.addEventListener('load', showRecipe); // **(M)**
+
 ### Listening for load and hashchange Events ###
+1. Code:
+
+		const showRecipe = async function () {
+		  try {
+		    const id = window.location.hash.slice(1); // **(M)**
+		    console.log(id);
+		
+		    if (!id) return;
+			...
+		}
+	
+		...
+
+		['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
+
 ### The MVC Architecture ###
+#### Why worry About Architecture? ####
+1. **Structure**: It gives the project a structure using which we can write the code
+	1. Like a house, software needs a structure: the way we **organize our code**
+	2. Structure:
+		1. How we organize and divide the code into modules, classes, and functions
+2. **Maintainability**: We need to think about the future. The project is never done. We need to change things in the future, and we need to maintain the project
+	1. We need to be able to easily **change it in the future**
+3. **Expandability**: The ability to easily add new feature
+	1. Only possible with good structure and good overall architecture
+4. **Perfect architecture**: Allows all the three aspects of **structure**, **maintainability**, and **expandability**
+	1. Option 1: We can construct our own architecture (Mapty project)
+		1. Works only for small projects
+	2. Option 2: We can use a well-established architecture pattern like MVC, MVP (Model View Presenter), Flux, etc (**this project**)
+	3. We can use a framework like React, Angular, Vue, Svelte, etc.
+		1. The frameworks take care of architecture
+		2. Good for large-scale applications
+
+#### Components of Any Architecture ####
+1. Business logic
+	1. Code that **solves the actual business problem**
+	2. Directly related to what business does and what it needs
+	3. **Example**: sending messages (WhatsApp), storing transactions (Bank), calculating taxes (Budget Manager), etc.
+2. State
+	1. Essentially **stores all the data** about the application (running in the browser)
+		1. Data about application's frontend
+			1. Data from API
+			2. Data input by user
+			3. Page viewed by user
+			4. ...
+	2. Should be the "single source of truth"
+	3. UI should be kept in sync with the state (it is one of the most difficult tasks)
+		1. If some data changes in the state, UI should reflect that
+		2. If something changes in the UI, the state needs to change
+	4. State libraries exist
+		1. Redux
+		2. Mobx [https://mobx.js.org/README.html](https://mobx.js.org/README.html)
+3. HTTP Library
+	1. Responsible for making and receiving AJAX requests
+		1. `fetch` function
+	2. Optional but almost always necessary in real-world apps
+4. Application logic (Router)
+	1. Code that is only concerned about the **implementation of application itself**
+		1. Technical aspects of the application (not directly related to the underlying business problem)
+	2. Handles navigation and UI events
+5. Presentation logic (UI layer)
+	1. Code that is concerned about the **visible part** of the application
+	2. Essentially displays application state
+		1. Keeping in sync with **State**
+
+#### Good Architecture ####
+1. Separates the above components (instead of mixing them together in one big file)
+
+#### The Model-View-Controller (MVC) Architecture ####
+1. Model
+	1. About Application's data
+	2. Contains:
+		1. Business Logic
+		2. State
+			1. Business logic manipulates the state
+				1. Hence kept closely together
+		3. HTTP Libary
+			1. Gets some data from the web
+			2. This is also about the data
+2. View
+	1. Presentation Logic
+		1. It is the part that is interacting with the user
+3. Controller
+	1. Application Logic
+		1. Bridge between model and views (which don't know about one another)
+			1. M & V will live completely independent of one another, without knowing anything about the other
+
+##### Goals of MVC Pattern #####
+1. To separate business logic from view logic
+	1. Makes it easier to develop the application
+	2. Consequence: We need something to connect the parts
+		1. Controller
+
+##### Flow of Actions #####
+1. User clicks
+2. Controller handles the event
+	1. Handling event is doing something in the application (application logic)
+	2. It can trigger:
+		1. Updating the UI
+		2. Asking model for some data
+	3. Implementation:
+		1. Handles UI events and **dispatches tasks to model and view**
+			1. It controls and orchestrates the entire action (the whole application)
+3. Model makes ajax request to the web
+	1. When the data arrives, the controller takes the data and sends it to the view
+4. View takes the data and renders to the user
+5. Observations:
+	1. Only the controller imports and calls functions from model and the view (never the other way around)
+		1. Model and view are completely isolated
+			1. They don't know each other
+			2. They don't know that controller exists
+
+#### Model, View and Controller in Forkify (Recipe Display Only) ####
+1. Controller
+	1. Handling events is associated with the controller
+	2. Once data arrives, controller receives it and sends it to the view
+2. Model
+	1. Loading recipe is associated with the model
+		1. Controller calls a function that is in the model
+		2. Model asynchronously gets the recipe data from the API
+3. View
+	1. Once view receives data, it renders it onto the screen
+
+#### MVC Implementation (Recipe Display Only) ####
+1. Module model.js
+
+		Module model.js
+			export state
+			recipe {}           <-+
+			search {}             |
+			bookmarks []          | recipe data
+		                          |
+			export loadRecipe() --+
+
+2. Module controller.js
+
+		Module controller.js
+			controlRecipes()
+			init()				^
+				^				|
+				|				|
+			(program starts)	|
+							(User clicks search result)
+
+3. Class RecipeView
+
+		Class RecipeView
+			_data
+			_parentEl
+
+			render()            --+
+			_generateMarkup()   <-+
+			renderSpinner()
+			addHandlerRender()
+
+		1. `recipe` data (goes through controller)
+		2. `controlRecipes()` calls `loadRecipe()`
+		3. Steps:
+			1. User clicks search result
+			2. `controlRecepes()` handles the event
+			3. Controller invokes `renderSpinner()` and `loadRecipe()` functions (to fetch recipes data)
+			4. Model contains `state` variable
+				1. `state` contains
+					1. `recipe`s
+					2. `search` results
+					3. `bookmark`s
+				2. Model stores that data when it arrives in `state` object
+			5. Controller grabs recipe data from the `state` object
+			6. Controller calls `render()` method on `RecipeView` with the data
+			7. View renders the recipe in the UI
+
 ### Refactoring for MVC ###
+1. Why views are in multiple classes?
+	1. View is much bigger and single file will be too big
+
 ### Helpers and Configuration Files ###
+1. Real-world applications have two modules that are independent of the rest of the architecture
+	1. Module for project configuration
+	2. Module for general helper functions (useful for the entire project)
+
 ### Event Handlers in MVC: Publisher-Subscriber Pattern ###
+#### Event Handling in MVC: Publisher-Subscriber Pattern ####
+1. Module controller.js
+	1. `controlRecipes()`
+		1. View cannot call it directly (because it doesn't know anything about the Controller
+			1. Solution: Publisher/Subscriber design pattern
+				1. Publisher: Code that known when to react:
+					1. `addHandlerRender()` - it contains `addEventListener` function
+				2. Subscriber: Code that wants to react
+					1. `controlRecipes()`
+		2. How to subscribe?
+			1. Subscribe to publisher by passing in the subscriber function
+				1. Implementation:
+					1. When program loads `init()` function is called
+					2. `init()` function immediately calls `addHandlerRender()` function
+						1. Since controller imports both view and the model
+						2. It is called by passing `controlRecipes()` function as an argument
+							1. Connecting the functions
+					3. `addHandlerRender` listens for events (`addEventListener`), and uses `controlRecipes` as callback
+						1. As soon as a publisher publishes an event, the subscriber gets called immediately
+			2. Example:
+
+					A() -> B()
+
+					  B
+					  |
+					  v
+					A(X) -> X()
+					  ^
+					  |
+					  C
+
+				1. Function `A` has no control in the second scenario. It just executes what it receives
+
+	2. init() <- Program starts
+2. Class RecipeView
+	1. addHandlerRender() <- User clicks search result
+3. Handling events:
+	1. Events should be **handled** in the **controller** (otherwise we would have application logic in the view)
+	2. Events should be **listened for** in the **view** (otherwise we would need DOM elements in the controller)
+
 ### Implementing Error and Success Messages ###
+1. Displaying errors in the UI (View)
+
 ### Implementing Search Results - Part 1 ###
+1. Search functionality
+2. Views:
+	1. We can have separate views for search panel & search results section
+		1. We can keep each view focussed
+		2. They are also in different locations
+3. Controllers:
+	1. We don't want to have any DOM elements nor want to know anything about the DOM
+
 ### Implementing Search Results - Part 2 ###
+1. ResultsView
+
 ### Implementing Pagination - Part 1 ###
 ### Implementing Pagination - Part 2 ###
 ### Project Planning II ###
