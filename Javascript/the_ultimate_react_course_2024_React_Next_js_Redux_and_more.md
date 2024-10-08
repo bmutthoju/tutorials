@@ -10116,150 +10116,4643 @@
 
 ## Section 19: Performance Optimization and Advanced useEffect ##
 ### Section Overview ###
+1. Topics:
+	1. Analyzing wasted renders
+	2. Optimizing performance
+		1. To understand React apps better and make apps fast and snappy
+	3. Deep dive into `useEffect`
+		1. Advanced section
+
 ### Performance Optimization and Wasted Renders ###
+1. What can be optimized and how
+
+#### Performance Optimization Tools ####
+1. Techniques:
+	1. Prevent wasted renders
+		1. `memo`
+			1. To memoize components
+		2. `useMemo`
+			1. To memoize objects
+		3. `useCallback`
+			1. To memoize functions
+		4. Passing elements as `children` or regular prop
+			1. To prevent them from being re-rendered (?)
+	2. Improve app speed/responsiveness (to make it 100% fluid and without delays)
+		1. `useMemo`
+		2. `useCallback`
+		3. `useTransition`
+	3. Reduce bundle size
+		1. Using fewer 3rd-party packages
+		2. Code splitting and lazy loading
+2. We don't have to use all the techniques all the time
+	1. We can use whenever a situation calls for it
+		1. We will see in which situations, we need each of the tools
+3. The list of tools and techniques is not exhaustive
+	1. We are already doing many optimizations by following best practices
+		1. Not defining components inside other components
+
+#### When Does a Components Instance Re-Render? ####
+1. A component instance only gets re-rendered in 3 different situations:
+	1. State changes
+	2. Context changes (that the component is subscribed to)
+	3. Parent re-renders
+2. Prop changes technically do to re-render components
+	1. props change only when parent re-renders
+	2. Since parent re-renders, children (which receive the props) re-render anyway
+3. Remember:
+	1. A render does not mean that the DOM actually gets updated
+		1. It just means that component function gets called
+			1. This can be an expensive operation
+				1. React will construct new VDOM, do diffing, and reconciliation
+					1. If DOM doesn't change, it causes **wasted render**
+4. **Wasted Render**
+	1. A render that didn't produce any change in the DOM
+		1. All calculations were for nothing
+			1. Usually not a problem because React is fast
+				1. Only a problem when they happen **too frequently** or when the **component is very slow**
+					1. Application feels laggy and unresponsive
+
 ### The Profiler Developer Tool ###
+1. Profiler
+	1. We can analyze renders and re-renders
+		1. Which components have rendered
+		2. Why the components rendered
+		3. How long the renders took
+	2. Open Dev Tools > Profiler
+		1. Click on "Start profiling"
+	3. Settings
+		1. Profiler
+			1. Record why each component rendered while profiling (state update, context update, parent re-render)
+		2. Reset the setting when we reload the page
+		3. Start profiler
+			1. Do something on the page
+		4. Stop profiler
+			1. Flamegraph
+				1. Gray: Did not render while the application re-render
+				2. More yellow: Longer to re-render
+					1. Hover shows:
+						1. How long it took to re-render
+						2. Why did this render?
+				3. We can see number of commits (a re-render) on the top right corner
+			2. Ranked
+				1. Topmost component took the longest time
+
 ### A Surprising Optimization Trick With children ###
+1. To prevent some components from re-rendering
+	1. Gives insight into how react works iternally
+2. Test.js
+
+		function Counter({ children }) {
+			const [count, setCount] = useState(0);
+			return (
+				<div>
+					<h1>Slow counter?!?</h1>
+					<button onClick={() => setCount((c) => c + 1)}>Increase: {count}</button>
+					{children}
+				</div>
+			);
+		}
+
+		// ...
+		<Counter>
+			<SlowComponent />
+		</Counter>
+
+	1. The component which is passed as `children` is already rendered before it is passed into the component
+		1. The component is not affected by the state change in the outer component
+	2. The following would work as well
+
+			<Counter showThis={<SlowComponent />} />
+
 ### Uderstanding memo ###
+#### What is Memoization? ####
+1. **Memoization**: Optimization technique that executes a pure function once, and saves the result in memory. If we try to execute the function again with teh **same arguments as before**, the previously saved result will be returned, **without executing the function again**
+	1. We can use this technique to optimize React applications
+		1. Memoize **components** with `memo`
+		2. Memoize **objects** with `useMemo`
+		3. Memoize **functions** with `useCallback`
+2. Advantages:
+	1. Prevent wasted renders
+	2. Improve ap speed/responsiveness
+
+#### The Memo Function ####
+1. `memo`
+	1. Memoized component: Used to construct a component that will **not re-render when its parent re-renders**, as long as the **props stay the same between renders** (compents are defined using functions)
+		1. Regular behavior (no memo)
+			1. If a component re-renders, the child components re-render
+		2. Memoized child with `memo`: A memoized child does not re-render if it receives the same props. If props change, the memoized child needs to re-render
+	2. **Only affects props!** A memoized component will still re-render when its **own state changes** or when a **context that it's subscribed to changes**
+		1. The componet has new data to show
+	3. Use-case:
+		1. Only makes sense when the component is **heavy** (slow rendering), **re-renders often**, and does so **with the same props**
+
 ### memo in Practice ###
+1. Memoized version:
+
+		const Archive = memo(function Archive({ show }) {
+			// ...
+		});
+
+	1. It is very heavy
+	2. It re-renders very often
+	3. It re-renders with the same props
+2. Passing an object
+
+		const archiveOptions = {
+			show: false,
+			title: 'Pos: Archive in addition to the main post'
+		}
+
+		//
+
+		const Archive = memo(function Archive ({ archiveOptions }) {
+			// ...
+		});
+
+	1. Memoization doesn't work in this case
+
 ### Understanding useMemo and useCallback ###
+#### An Issue with Memo ####
+1. If React, everyting is **re-created on every render** (including objects and functions) (whenever a component is re-rendered)
+2. In JavaScript, two objects or functions that look the same, **are actually different**
+
+		{} != {}
+
+	1. They are unique
+3. If objects or functions are passed as props, the child component will always see them as **new props on each re-render**
+	1. **If props are different between re-renders, memo will not work**
+4. Solution:
+	1. We need to memoize objects and functions, to make them stable (preserve) between re-renders (memoized {} == memoized {})
+		1. Implementation:
+			1. `useMemo`
+				1. Used to memoize values (`useMemo`) **between renders**
+			2. `useCallback`
+				1. Used to memoize functions (`useCallback`) **between renders**
+			3. Values passed into `useMemo` and `useCallback` will be stored in memory ("cached") and **returned in subsequent re-renders, as long as dependencies** ("inputs") **stay the same**
+				1. `useMemo` and `useCallback` have a **dependency array** (like `useEffect`): Whenever one **dependency changes**, the value will be **re-created** (it will no longer be returned from the cache)
+	2. Understanding
+		1. Regular behavior (no `useMemo`)
+			1. Components re-renders -trigger-> New value [creation]
+		2. Memoizing a value with `useMemo`
+			1. Components re-renders -trigger-> Cache value is returned. No new value.
+				1. True if dependencies in the depedendency array don't change
+				2. If they change, a new value is created
+	2. If props are objects or functions:
+		1. Three big use-cases:
+			1. Memoizing props to prevent wasted renders (together with `memo`)
+				1. Hence we have `useMemo` and `useCallback` hooks
+			2. Memoizing values to avoid expensive re-calculations on every re-render
+				1. Example: A derived state calculated from 100,000 components
+					1. React doesn't have to do this expensive calculation
+						1. Using `useMemo`
+			3. Memoizing values that are used in dependency array of another hook
+				1. For example to avoid infinite `useEffect` loops
+	3. Only use them for one of the three **use cases!**
+
 ### useMemo in Practice ###
+1. Code:
+
+		const archiveOptions = useMemo(() => {
+			return {
+				show: false,
+				title: `Post archive in addition to ${posts.length} main posts`,
+			};
+		}, [posts.length]); // callback is called on initial render
+
+	1. Function can have other intensive calculations.
+		1. The returned object is saved in the cache
+	2. Dependency array
+		1. `[]` - it is computed only once in the beginning (never re-computed again)
+		2. `[posts.length]`: Dependency - only when the `length` changes
+			1. It is better to have only primitives in the dependency array
+
 ### useCallback in Practice ###
+1. Code:
+
+		<Archive archiveOptions={archiveOptions} onAddPost={handleAddPost} />
+
+		// ...
+
+		const Archive = memo(fuction Archive({ archiveOptions, onAddPost }) {
+			// ...
+		}
+
+2. Code: Memoized function
+
+		const handleAddPost = useCallback(function handleAddPost(post) {
+			// ...
+		});
+
+	1. It will not call the function immediately, but it will memoize the function
+		1. The function is memoized
+	2. It is better to find slow components and optimize them using `useCallback`
+	3. React team is working on a compiler that can automatically memoize if required behind the scenes.
+	4. How does it work?
+		1. Initial render: returns the passed function.
+		2. Subsequent renders:
+			1. If dependencies have not changed: returns already stored function from the last render
+			2. If dependencies have changed: returns the function passed during this render
+3. `set...` always have a stable identity
+	1. It will not change on renders
+		1. They are automatically memoized
+		2. We don't have to pass them as dependencies in `memo`, `useMemo`, and `useCallback`
+
 ### Optimizing Context Re-Renders ###
+1. Optimize context only if the following three things are true at the same time
+	1. State in a context needs to change all the time
+	2. Context has many consumers
+	3. App is slow and laggy
+2. Two options for optimization for a context
+	1. Use `{children}` OR
+		1. They are not automatically re-rendered
+			1. They are first created and then passed
+	2. Memoize the direct descendants of the context
+		1. Wrap components inside a `memo`
+3. Examples:
+	1. `PostProvider` is the child of the `App` component
+		1. When `App` component re-renders, the `PostProvider` re-renders as well
+			1. The object will be re-created
+				1. Implies that the context value has changed
+					1. Therefore all components that depend on the context are re-rendered
+						1. Solution: Memoize the object
+
+
+								const value = useMemo(() => {
+								    return {
+								      posts: searchedPosts,
+								      onClearPosts: handleClearPosts,
+								      onAddPost: handleAddPost,
+								      searchQuery,
+								      setSearchQuery,
+								    };
+								  }, [searchedPosts, searchQuery]);
+								
+								  return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
+
+4. If we have a lot of variables in a context value, if any one of them changes, the context changes
+	1. Solution: One context per state
+		1. Example:
+			1. Post context
+			2. SearchQuery context
+				1. All components that consume this context are re-rendered but do not affect components that do not depend on this context
+
 ### Back to the "WorldWise" App ###
+1. Go to "Ranked" tab
+2. Memoize a function to avoid infinite loop
+3. Example:
+
+		function City() {
+		  const { id } = useParams();
+		  const { getCity, currentCity, isLoading } = useCities();
+		
+		  useEffect(
+		    function () {
+		      getCity(id); // it can get recreated
+		    },
+		    [id, getCity]
+		  );
+		// ...
+
+		CitiesContext.jsx
+
+		const getCity = useCallback(
+		    async function getCity(id) {
+		      if (Number(id) === currentCity.id) return;
+		
+		      dispatch({ type: "loading" });
+		      try {
+		        const res = await fetch(`${BASE_URL}/cities/${id}`);
+		        const data = await res.json();
+		        dispatch({ type: "city/loaded", payload: data });
+		      } catch (e) {
+		        dispatch({
+		          type: "rejected",
+		          payload: "There was an error loading city...",
+		        });
+		      }
+		    },
+		    [currentCity.id]
+		  );
+
 ### Optimizing Bundle Size With Code Splitting ###
+#### The Bundle and Code Splitting ####
+1. On initial load, server sends a huge JS file to client
+	1. **Bundle**: JavaScript file containing the **entire application code**. Downloading the bundle will load **the entire app at once**, turning it into a SPA
+		1. It is produced by a tool like Webpack (inside create-react-app) or Vite
+		2. SPA runs entirely on the client
+			1. Whenever a URL changes in the app, the client renders entire React component but without loading any files from the server
+				1. JS code is already there in the bundle
+	2. **Bundle size**: Amount of JS users have to download to start using the app. One of the most important things to be optimized, so that the bundle takes **less time to download**
+	3. **Code splitting**: Splitting bundle into multiple parts that can be downloaded over time ("Lazy loading")
+		1. As they become necessary for the application
+2. Implementation
+	1. There are many ways to split
+		1. We can split at route level
+			1. `lazy()` **(M)**
+				1. A feature of React
+					1. Vite or Webpack automatically split bundle when they see `lazy` function
+			2. Bundle without lazy loading
+
+					npm run build
+
+			3. Example:
+
+					const HomePage = lazy(() => import("./pages/HomePage"));
+					const Product = lazy(() => import("./pages/Product"));
+					const Pricing = lazy(() => import("./pages/Pricing"));
+					const Login = lazy(() => import("./pages/Login"));
+					const AppLayout = lazy(() => import("./pages/AppLayout"));
+					const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+
+				1. We want loading spinner while the lazy loading is happening
+				2. `<Suspense fallback={<SpinnerFullPage />}>...</Suspense>`
+					1. It makes component suspended while it is downloaded, and displays spinner (fallback)
+					2. If page has arrived, the children will be rendered
+					3. If we re-visit the same page, it will be available already
+
 ### Don't Optimize Prematurely! ###
+1. Don't optimize prematurely
+	1. Don't optimize anything if there is nothing to optimize...
+		1. If the application is performing just fine:
+			1. Don't wrap all components in `memo()`
+			2. Don't wrap all values in `useMemo()`
+			3. Don't wrap all functions in `useCallback()`
+		2. Don't optimize context if it's not slow and does't have many consumers
+	2. Memoizing as slight hit on performance. If we add many of them, it will impact performance
+		1. Code also becomes unreadable and too messy
+2. Do
+	1. Find performance bottlenecks using the Profiler and visual inspection (laggy UI)
+		1. Fix those real performance issues
+			1. Memoize expensive re-renders
+			2. Memoize expensive calculations
+			3. Optimize context if it has many consumers and changes often
+				1. Memoize context value + child components (direct child components of the provider)
+					1. Setup separate contexts if required
+			4. Implement code splitting + lazy loading for SPA routes
+
 ### useEffect Rules and Best Practices ###
+#### UseEffect Dependency Array Rules ####
+1. Every **state variable, prop, and context value** used inside the effect **MUST** be included in the dependency array
+2. All **reactive values** must be included! That means any **function** or **variable** that reference **any other** reactie value
+	1.  Reactive value:
+		1.  state
+		2.  prop
+		3.  context value
+		4.  any other value that references a reactive value
+	2. Examples:
+
+			const [number, setNumber] = useSate(5);
+			const [duration, setDuration] = useState(0);
+			const mins = Math.floor(duration);
+			const secs = (duration - mins) * 60;
+
+			const formatDur = function () {
+				return `${min}:${secs} < 10 ? '0' : ''}${secs}`;
+			};
+
+			useEffect(
+				function () {
+					document.title = `${number}-exercise workout (${formatDur()})`;
+				},
+				[number, formatDur]
+			);
+
+		1. Stale closures
+3. Dependencies choose themselves: **NEVER** ignore the `exhaustive-deps` ESLint rule!
+	1. We must include all reactive values in the list
+4. Do **NOT** use **objects** or **arrays** as dependencies (objects are recreated on each render, and React sees new objects as **different**, `{} !== {}`)
+	1. Effect compares using `===` operator
+		1. Objects will have different references each time they are recreated
+			1. How to use objects as dependencies?
+
+#### Removing Unnecessary Dependencies ####
+1. Including too many dependencies can make the effect run too often and cause problems
+	1. Solution: Strategies to make some dependencies unnecessary, so we can remove them
+		1. Removing function dependencies
+			1. Move function **into the effect**
+				1. It is no longer a dependency
+			2. If you need the function in multiple places, **memoize it** (`useCallback`)
+			3. If the function doesn't reference any reactive values, move it **out of the component**
+				1. It is not a dependency
+					1. Function is not recreated on every render
+2. Removing Object Dependencies
+	1. Instead of including the entire object, include **only the properties you need** (primitive values)
+	2. If that doesn't work, use the same strategies as for functions (**moving** or **memoizing** object)
+3. Other Strategies
+	1. If you have **multiple related reactive values** as dependencies, try using a **reducer** (`useReducer`)
+		1. Usually used to get rid of problems due to dependencies
+	2. You don't need to include `setState` (from `useState`) and `dispatch` (from `useReducer`) in the dependencies, as **React guarantees them to be stable** across renders
+
+#### When Not to Use an Effect ####
+1. Effects should be used as a **last resort**, when no other solution makes sense. React calls them an "escape hatch" to step outside of React
+	1. Three cases where effects are overused:
+		1. **Responding to a user event** An event handler function should be used instead
+			1. Even if handler has a side effect
+		2. **Fetching data on component mount** This is fine in small apps, but in real-world app, a library like React Query should be used.
+			1. React Query: Professional data-fetching library
+		3. **Synchronizing state changes with one another** (setting state based on another state variable). (multiple re-renders can get created)
+			1. Solution: Try to use derived state and event handlers
+
 ### CHALLENGE #1: Fix Performance Issues in "Workout Timer" ###
+1. `13-workout-timer` - `starter`
+
 ### Setting State Based on Other State Updates ###
+1. Code:
+
+		useEffect(
+		  function () {
+		    setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
+		  },
+		  [number, sets, speed, durationBreak]
+		);
+		
+		function handleInc() {
+		  setDuration((duration) => Math.floor(duration) + 1);
+		}
+
+		function handleDec() {
+		  setDuration((duration) => (duration > 1 ? Math.floor(duration) - 1 : 0));
+		}
+
+	1. If we have many state variables that influence the value of another variable, we can implement `useEffect`
+
 ### Using Helper Functions in Effects ###
+1. Code:
+
+		const playSound = useCallback(
+		function () {
+		  if (!allowSound) return;
+		  const sound = new Audio(clickSound);
+		  sound.play();
+		},
+		[allowSound]
+		);
+		
+		useEffect(
+		  function () {
+		    setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
+		    playSound();
+		  },
+		  [number, sets, speed, durationBreak, playSound]
+		);
+		
+		function handleInc() {
+		  setDuration((duration) => Math.floor(duration) + 1);
+		  playSound();
+		}
+		
+		function handleDec() {
+		  setDuration((duration) => (duration > 1 ? Math.floor(duration) - 1 : 0));
+		  playSound();
+		}
+
+2. Fix:
+
+		useEffect(
+		  // One effect for each side-effect
+		  function () {
+		    const playSound = function () {
+		    if (!allowSound) return;
+		    const sound = new Audio(clickSound);
+		    sound.play();
+		  };
+		
+		  playSound();
+		  },
+		  [duration, allowSound]
+		); // voluntarily declared, even though we are not using the variable
+		
+		function handleInc() {
+		  setDuration((duration) => Math.floor(duration) + 1);
+		}
+		
+		function handleDec() {
+		  setDuration((duration) => (duration > 1 ? Math.floor(duration) - 1 : 0));
+		}
+
 ### Closures in Effects ###
+1. Stale closures
+2. Why does `useEffect` needs the dependency array? Why can't it run automatically whenever the dependencies change?
+	1. Closures: A function captures all its lexical scope from the place it was defined at the time the function was created.
+		1. When a function is created, it closes over the effects of that lexical environment at the time
+			1. It will always have access to the variables from the place where they were defined.
+		2. Hooks rely on closures
+3. Example:
+	1. A closure in a function closes over props, and state
+		1. If a function is not recreated, it has access to initial snapshot of state and props
+	2. If we use empty dependency array, the function will never be recreated, so it will not have access to the new snapshot
+		1. If we change state variables, effect is not executed and we don't get fresh values
+			1. It is a stale closure
+				1. Function has captured a value when the variable value was something else
+					1. Solution: We need to give it in the dependency array
+	3. Code:
+
+			useEffect(function () {
+			  document.title = `Your ${number}-exercise workout`;
+			}, []);
+
+			// Fix
+
+			useEffect(function () {
+			  document.title = `Your ${number}-exercise workout`;
+			}, [number]);
+
+		1. Effect captures the state values when the function is executed. (current snapshot)
 
 ## Section 20: Redux and Modern Redux Toolkit (With Thunks) ##
 ### Section Overview ###
+1. Topics:
+	1. We'll learn Redux based on `useReducer`
+		1. Redux in isolation
+	2. **Modern** Redux Toolkit
+	3. API requests with **Thunks**
+		1. Inside Redux
+
 ### Introduction to Redux ###
+#### What is Redux? ####
+1. Redux
+	1. 3rd-party library to manage **global state** in a web application
+	2. It is a **standalone** library, but easy to integrate with React apps using `react-redux` library
+		1. Redux is tightly linked to React, but easy to connect using `react-redux` library
+2. Feature
+	1. All global state is stored in one **globally accessible store**, which is easy to update using "**actions**" (like `useReducer`)
+		1. It implements the same mechanism as `useReducer`
+3. Functionality
+	1. Global store is updated
+		1. All consuming components re-render
+	2. It is like combining `useReducer` and context API
+		1. Context API might seem like a replacement for redux
+4. Two "versions": (1) Classic Redux, (2) Modern Redux Toolkit
+	1. Both are compatible
+		1. We will learn both
+
+#### Do You Need to Learn Redux? ####
+1. Historically, Redux was used in most React apps for all global state. Today, that has changed, because there are many alternatives. **Many apps don't need Redux anymore**, unless they need **a lot of global UI state**
+	1. Might not need to learn Redux
+		1. Reasons it is included in the course
+			1. Redux can be hard to learn, and this courses teaches it well (most requested by students)
+			2. You will encounter Redux code in your job, so you should understand it
+			3. Some apps do require Redux (or a similar library)
+2. Use Global State management library only if
+	1. There are lots of state that updates frequently (UI State (that which is not fetched from server. No API involved), Global State)
+		1. For Remote State & Global State (we have better & sophisticated tools)
+			1. React Query
+			2. SWR
+			3. RTK Query
+	2. In real-life, most Global state is Remote state
+		1. Hence we don't need Redux anymore
+
+#### The Mechanism of the `useReducer` Hook ####
+1. Flow:
+
+		Event Handler in Component
+			|
+			action
+				type = 'deposit'
+				payload = 50
+			| (object that contains information
+			| on how the reducer should update state)
+			v
+		dispatch
+			|
+			v
+		reducer (function)
+			| take action, payload, current state
+			| and calculates the next state
+			Next State
+			|
+			v
+		Re-render (the component that originated the state transition)
+			
+2. Redux:
+
+		Event Handler in Component
+			|
+			Action creator function
+			|	action
+			|		type = 'deposit'
+			|		payload = 50
+			| 	(object that contains information
+			| 	on how the reducer should update state)
+			v
+		dispatch
+			| to the store (not to reducer)
+			v
+		Store 
+			| All global state lives in this centralized
+			| container. It's the **single source of truth**
+			| of global state in the app
+			| It contains one or more reducers (a pure function)
+			Next State
+			|
+			v
+		Re-render (the component that originated the state transition)
+
+	1. Each reducer is a pure function that calculates the next state (state transition) based on the **action** and the **current state**. Usually one reducer per **app feature** (e.g. shopping cart + user data + theme)
+	2. Why multiple reducers?
+		1. One reducer per application feature or per data domain
+			1. To keep things separated
+				1. Example:
+					1. Shopping cart reducer
+					2. User data reducer
+					3. App color theme reducer
+	3. Any component that consumes the updated state will get re-rendered by React
+	4. Action Creator Function: (optional feature of Redux)
+		1. Used to automate the process	of writing actions
+			1. Instead of writing action objects by hand, we construct functions that do them automatically
+				1. Advantages:
+					1. Keeps all actions in one central place
+						1. Reduces bugs
+							1. Developers don't have to remember action `type` strings
+2. Redux cycle
+	1. We call action creator
+	2. Action creator dispatches an action
+	3. The action will reach the store where the correct reducer will pick it up and update the state according to the instructions
+	4. Then a re-render of UI is triggered
+3. Goal:
+	1. Make the state update logic separate from the rest of the application
+4. Example:
+	1. Deposit into your bank account
+		1. We go to person at the desk (dispatcher)
+		2. Vault (redux store)
+
 ### Constructing a Reducer: Bank Account ###
+1. New React app
+	1. `npx create-react-app@5 redux-intro`
+2. In Redux reducer, we pass the initial state as the default state (to make it the state at the beginning)
+3. store.js
+
+		const initialState = {
+		  balance: 0,
+		  loan: 0,
+		  loanPurpose: "",
+		};
+		
+		function reducer(state = initialState, action) {
+		  switch (action.type) {
+		    case "account/deposit":
+		      return { ...state, balance: state.balance + action.payload };
+		    case "account/withdraw":
+		      return { ...state, balance: state.balance - action.payload };
+		    case "account/requestLoan":
+		      if (state.loan > 0) return state;
+		      // LATER
+		      return {
+		        ...state,
+		        loan: action.payload,
+		        balance: state.balance + action.payload,
+		      };
+		    case "account/payLoan":
+		      return {
+		        ...state,
+		        loan: 0,
+		        loanPurpose: "",
+		        balance: state.balance - state.loan,
+		      };
+		    default:
+		      return state; // For Redux
+		  }
+		}
+
 ### Constructing a Redux Store ###
+1. Install: `npm install redux`
+2. Code:
+
+		import { createStore } from "redux"; // not used this way anymore
+
+		const initialState = {
+		  balance: 0,
+		  loan: 0,
+		  loanPurpose: "",
+		};
+		
+		function reducer(state = initialState, action) {
+		  switch (action.type) {
+		    case "account/deposit":
+		      return { ...state, balance: state.balance + action.payload };
+		    case "account/withdraw":
+		      return { ...state, balance: state.balance - action.payload };
+		    case "account/requestLoan":
+		      if (state.loan > 0) return state;
+		      // LATER
+		      return {
+		        ...state,
+		        loan: action.payload.amount,
+		        loanPurpose: action.payload.purpose,
+		        balance: state.balance + action.payload.amount,
+		      };
+		    case "account/payLoan":
+		      return {
+		        ...state,
+		        loan: 0,
+		        loanPurpose: "",
+		        balance: state.balance - state.loan,
+		      };
+		    default:
+		      return state; // For Redux
+		  }
+		}
+		
+		const store = createStore(reducer);
+		
+		store.dispatch({ type: "account/deposit", payload: 500 });
+		console.log(store.getState());
+		store.dispatch({ type: "account/withdraw", payload: 200 });
+		console.log(store.getState());
+		
+		store.dispatch({
+		  type: "account/requestLoan",
+		  payload: { amount: 1000, purpose: "Buy a car" },
+		});
+		console.log(store.getState());
+		
+		store.dispatch({ type: "account/payLoan" });
+		console.log(store.getState());
+
 ### Working with Action Creators ###
+1. Action creators are functions that return actions
+	1. Redux works even without them
+2. Code:
+
+		function deposit(amount) {
+		  return { type: "account/deposit", payload: amount };
+		}
+		
+		function withdraw(amount) {
+		  return { type: "account/withdraw", payload: amount };
+		}
+		
+		function requestLoan(amount, purpose) {
+		  return {
+		    type: "account/requestLoan",
+		    payload: { amount: amount, purpose: purpose },
+		  };
+		}
+		
+		function payLoan() {
+		  return { type: "account/payLoan" };
+		}
+		
+		store.dispatch(deposit(500));
+		console.log(store.getState());
+		
+		store.dispatch(withdraw(200));
+		console.log(store.getState());
+		
+		store.dispatch(requestLoan(1000, "Buy a cheap car"));
+		console.log(store.getState());
+		
+		store.dispatch(payLoan());
+		console.log(store.getState());
+
+	1. We can have the action types in separate variables and re-use the variables
+
 ### Adding More State: Customer ###
+1. We need to keep as much logic as possible in the reducer but not side-effects.
+2. Code:
+
+		import { combineReducers, createStore } from "redux"; // not used this way anymore
+
+		const initialStateAccount = {
+		  balance: 0,
+		  loan: 0,
+		  loanPurpose: "",
+		};
+		
+		const initialStateCustomer = {
+		  fullName: "",
+		  nationalID: "",
+		  createdAt: "",
+		};
+		
+		function accountReducer(state = initialStateAccount, action) {
+		  switch (action.type) {
+		    case "account/deposit":
+		      return { ...state, balance: state.balance + action.payload };
+		    case "account/withdraw":
+		      return { ...state, balance: state.balance - action.payload };
+		    case "account/requestLoan":
+		      if (state.loan > 0) return state;
+		      // LATER
+		      return {
+		        ...state,
+		        loan: action.payload.amount,
+		        loanPurpose: action.payload.purpose,
+		        balance: state.balance + action.payload.amount,
+		      };
+		    case "account/payLoan":
+		      return {
+		        ...state,
+		        loan: 0,
+		        loanPurpose: "",
+		        balance: state.balance - state.loan,
+		      };
+		    default:
+		      return state; // For Redux
+		  }
+		}
+		
+		function createCustomer(fullName, nationalID) {
+		  return {
+		    type: "customer/createCustomer",
+		    payload: {
+		      fullName,
+		      nationalID,
+		      createdAt: new Date().toISOString(),
+		    },
+		  };
+		}
+		
+		function updateName(fullName) {
+		  return { type: "account/updateName", payload: fullName };
+		}
+		
+		function customerReducer(state = initialStateCustomer, action) {
+		  switch (action.type) {
+		    case "customer/createCustomer":
+		      return {
+		        ...state,
+		        fullName: action.payload.fullName,
+		        nationalID: action.payload.nationalID,
+		        createdAt: action.payload.createdAt,
+		      };
+		    case "customer/updateName":
+		      return { ...state, fullName: action.payload };
+		    default:
+		      return state;
+		  }
+		}
+		
+		const rootReducer = combineReducers({
+		  account: accountReducer,
+		  customer: customerReducer,
+		}); // names of states
+		const store = createStore(rootReducer);
+		
+		store.dispatch({ type: "account/deposit", payload: 500 });
+		console.log(store.getState());
+		store.dispatch({ type: "account/withdraw", payload: 200 });
+		console.log(store.getState());
+		
+		store.dispatch({
+		  type: "account/requestLoan",
+		  payload: { amount: 1000, purpose: "Buy a car" },
+		});
+		console.log(store.getState());
+		
+		store.dispatch({ type: "account/payLoan" });
+		console.log(store.getState());
+		
+		function deposit(amount) {
+		  return { type: "account/deposit", payload: amount };
+		}
+		
+		function withdraw(amount) {
+		  return { type: "account/withdraw", payload: amount };
+		}
+		
+		function requestLoan(amount, purpose) {
+		  return {
+		    type: "account/requestLoan",
+		    payload: { amount: amount, purpose: purpose },
+		  };
+		}
+		
+		function payLoan() {
+		  return { type: "account/payLoan" };
+		}
+		
+		store.dispatch(deposit(500));
+		console.log(store.getState());
+		
+		store.dispatch(withdraw(200));
+		console.log(store.getState());
+		
+		store.dispatch(requestLoan(1000, "Buy a cheap car"));
+		console.log(store.getState());
+		
+		store.dispatch(payLoan());
+		console.log(store.getState());
+		
+		store.dispatch(createCustomer("Jonas Schmedtmann", "322323"));
+		console.log(store.getState());
+		
+		store.dispatch(deposit(250));
+		console.log(store.getState());
+
 ### Professional Redux File Structure: State Slices ###
+1. It is not practical to have too many reducers in a single file
+	1. Traditionally - too much jumping around
+		1. One reducers folder
+			1. One file per reducer
+		2. One action creators folder
+			1. One file per action creator
+	2. Modern: Organize by features
+		1. Account - folder
+			1. Balance
+			2. Operations
+		2. Customer - folder
+			1. Creation
+			2. Display
+3. Slice:
+	1. A piece or part of the total state
+		1. Entire state lives in the store
+			1. We take one slice of the state
+
 ### Back to React! Connecting our Redux App with React ###
+1. Inject store into the application
+2. Code:
+
+		import React from "react";
+		import ReactDOM from "react-dom/client";
+		import { Provider } from "react-redux";
+		import "./index.css";
+		import App from "./App";
+		
+		import store from "./store"; // simply runs the to level code
+		
+		const root = ReactDOM.createRoot(document.getElementById("root"));
+		root.render(
+		  <React.StrictMode>
+		    <Provider store={store}>
+		      <App />
+		    </Provider>
+		  </React.StrictMode>
+		);
+
+	1. Each component in the application can read data from the store and dispatch actions to the store.
+		1. Similar to context API
+			1. Broadcasting global state into every component
+2. `useSelector` - we must do as much data manipulation as possible to get the data that we need
+	1. `useSelector`: **It defines a subscription to the store**
+		1. Whenever the store changes, the component subscribed to the store gets re-rendered.
+			1. Redux implements performance optimizations (similar to the ones we used for context api)
+				1. If state changes, component re-renders
+
 ### Dispatching Actions from Our React App ###
+1. Code:
+
+		import { useState } from "react";
+		import { useDispatch, useSelector } from "react-redux";
+		import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
+		
+		function AccountOperations() {
+		  const [depositAmount, setDepositAmount] = useState("");
+		  const [withdrawalAmount, setWithdrawalAmount] = useState("");
+		  const [loanAmount, setLoanAmount] = useState("");
+		  const [loanPurpose, setLoanPurpose] = useState("");
+		  const [currency, setCurrency] = useState("USD");
+		
+		  const dispatch = useDispatch();
+		  const {
+		    loan: currentLoan,
+		    loanPurpose: currentLoanPurpose,
+		    balance,
+		  } = useSelector((store) => store.account);
+		
+		  function handleDeposit() {
+		    if (!depositAmount) return;
+		    dispatch(deposit(depositAmount));
+		    setDepositAmount("");
+		  }
+		
+		  function handleWithdrawal() {
+		    if (!withdrawalAmount) return;
+		    dispatch(withdraw(withdrawalAmount));
+		    setWithdrawalAmount("");
+		  }
+		
+		  function handleRequestLoan() {
+		    if (!loanAmount || !loanPurpose) return;
+		    dispatch(requestLoan(loanAmount, loanPurpose));
+		    setLoanAmount("");
+		    setLoanPurpose("");
+		  }
+		
+		  function handlePayLoan() {
+		    dispatch(payLoan());
+		  }
+		
+		  return (
+		    <div>
+		      <h2>Your account operations</h2>
+		      <div className="inputs">
+		        <div>
+		          <label>Deposit</label>
+		          <input
+		            type="number"
+		            value={depositAmount}
+		            onChange={(e) => setDepositAmount(+e.target.value)}
+		          />
+		          <select
+		            value={currency}
+		            onChange={(e) => setCurrency(e.target.value)}
+		          >
+		            <option value="USD">US Dollar</option>
+		            <option value="EUR">Euro</option>
+		            <option value="GBP">British Pound</option>
+		          </select>
+		
+		          <button onClick={handleDeposit}>Deposit {depositAmount}</button>
+		        </div>
+		
+		        <div>
+		          <label>Withdraw</label>
+		          <input
+		            type="number"
+		            value={withdrawalAmount}
+		            onChange={(e) => setWithdrawalAmount(+e.target.value)}
+		          />
+		          <button onClick={handleWithdrawal}>
+		            Withdraw {withdrawalAmount}
+		          </button>
+		        </div>
+		
+		        <div>
+		          <label>Request loan</label>
+		          <input
+		            type="number"
+		            value={loanAmount}
+		            onChange={(e) => setLoanAmount(+e.target.value)}
+		            placeholder="Loan amount"
+		          />
+		          <input
+		            value={loanPurpose}
+		            onChange={(e) => setLoanPurpose(e.target.value)}
+		            placeholder="Loan purpose"
+		          />
+		          <button onClick={handleRequestLoan}>Request loan</button>
+		        </div>
+		
+		        {currentLoan > 0 && (
+		          <div>
+		            <span>
+		              Pay back ${currentLoan} ({currentLoanPurpose})
+		            </span>
+		            <button onClick={handlePayLoan}>Pay loan</button>
+		          </div>
+		        )}
+		      </div>
+		    </div>
+		  );
+		}
+		
+		export default AccountOperations;
+
 ### The Legacy Way of Connecting Components to Redux ###
+1. Connect API - Complicated
+2. Code:
+
+		import { connect } from "react-redux";
+
+		function formatCurrency(value) {
+		  return new Intl.NumberFormat("en", {
+		    style: "currency",
+		    currency: "USD",
+		  }).format(value);
+		}
+		
+		function BalanceDisplay({ balance }) {
+		  return <div className="balance">{formatCurrency(balance)}</div>;
+		}
+		
+		function mapStateToProps(state) {
+		  return {
+		    balance: state.account.balance,
+		  };
+		}
+		
+		export default connect(mapStateToProps)(BalanceDisplay); // returns a component. This was required because there were no hooks, and there wasn't any other way to get state into components
+
 ### Redux Middleware and Thunks ###
+1. Where to make an **asynchronous API call** (or any other async operation) in Redux?
+	1. Store
+		1. No asynchronous operations
+			1. It only does synchronous operations and updates the state
+		2. Reducers need to be pure functions
+			1. No side-effects
+2. A Flow:
+	1. Component -> dispatch -> store
+		1. Fetch data in component
+		2. Dispatch action to store
+	2. Can make asynchronous operations and then disptach
+	3. Fetching data in components is not ideal
+		1. Reason:
+			1. We want to keep components clean and free from data fetching
+			2. We want our data-fetching logic encapsulated somewhere and not spread all over the application
+3. Where then?
+	1. Solution: Middlewhere
+		1. A function that sits between dispatching the action and the store.
+			1. Allows us to run code **after** dispatching [an action], but **before** [action] reaching the reducer in the store.
+				1. We can do something with the action before it gets to the reducer
+					1. Perfect for asynchronous code
+					2. API calls, timers, logging, etc.
+						1. Pausing action
+						2. Cancelling action
+						3. ...
+					3. The place for side effects.
+4. Where does middleware come from?
+	1. We can write middleware ourselves, but we use a third-party package
+		1. Popular middleware - Redux thunk
+5. How does thunks work?
+	1. Action that is dispatched will first get into the middleware (thunk)
+	2. In thunk, we can fetch data, or do some other async operation
+	3. Once we receive the data, we populate the action's payload, and dispatch the action to the the store.
+		1. Defers dispatching to the future
+	4. The state gets immediately updated
+
 ### Making an API Call with Redux Thunks ###
+1. We deposit money in a foreign currency, which will call an external API to do the conversion.
+2. Steps:
+	1. We install middleware package
+		1. `npm i redux-thunk` **(M)**
+		2. `import thunk from 'redux-thunk'`
+		3. Add thunk middleware to the store
+
+				const store = createStore(rootReducer, applyMiddleware(thunk));
+		
+	2. We apply middleware to store
+	3. We use middleware in action creator functions
+4. In action creator, we return a function (instead of action)
+	1. When dispatching, we dispatch a function instead of a value
+		1. The function we dispatch is the thunk
+	2. If we return a function from action creator, Redux knows that it is the async action that we want to execute before dispatching anything to the store
+		1. The function that redux calls internally gets access to `dispatch` function, and the current state through `getState` function
+	3. A component doesn't know that there is currency conversion happening behind the scenes. It is all handled in a redux slice (a centralized place for the feature).
+
 ### The Redux DevTools ###
+1. Installation:
+	1. Install google chrome extension
+		1. Search: Redux DevTools
+	2. Install npm package
+		1. `npm i redux-devtools-extension` **(M)**
+	3. Import: store.js
+
+			import { composeWithDevTools } from 'redux-devtools-extension';
+
+			// ...
+
+			const store = create(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+
+2. Testing:
+	1. Dispatch actions
+		1. Left side has action dispatched
+		2. Right side: Action object
+		3. Right side: State from dispatching object
+	2. We can jump to different states
+		1. The UI reflects the state we jumped to
+	3. We can move slider to transition to different states
+	4. We can manually dispatch actions
+		1. We don't need buttons
+
 ### What is Redux Toolkit (RTK)? ###
+1. It is the more modern way to write redux
+
+#### What is Redux Toolkit? ####
+1. Redux Toolkit
+	1. The **modern and preferred** way to write Redux code
+		1. Redux team recommends this way over classic method
+			1. Why?
+				1. It is an **opinionated** approach, forcing us to use Redux best practices
+					1. It is built on top of classic redux
+		2. 100% compatible with "classic" Redux, allowing us to **use them together**
+			1. We can use classic redux in one part
+			2. We can use the modern redux in another part
+	2. Advantages:
+		1. Allows us to write **a lot less code** to achieve the same result (less "bolierplate")
+			1. Bolerplate - it only sets things up but doesn't do anything meaningful
+				1. Setting up middleware & developer tools
+	3. Gives us 3 big things (but there are many more...):
+		1. We can write code that "mutates" state inside reducers (will be converted to **immutable** logic behind the scenes by "Immer" library)
+			1. Biggest advantage
+				1. Reduces complexity if we have a complex state
+		2. Action creators are **automatically** created (from reducers)
+			1. Helps writing less code
+			2. Can result in additional work in some situations
+		3. **Automatic** setup of thunk middleware and DevTools
+
 ### Constructing the Store with RTK ###
+1. Installation:
+
+		npm i @reduxjs/toolkit // **(M)**
+
+	1. `@reduxjs` - namespace
+		1. The author of the namespace can publish multiple packages under the namespace
+
+2. Use `configureStore` instead of `createStore`
+	1. `configureStore` function wraps around `createStore` and adds a few functionalities.
+		1. It does many things automatically for us
+			1. Combines reducers
+			2. Add thunk middleware
+			3. Set up developer tools
+3. Code: store.js
+
+		import accountReducer from "./features/accounts/accountSlice";
+		import customerReducer from "./features/customers/customerSlice";
+		import { configureStore } from "@reduxjs/toolkit";
+		
+		const store = configureStore({
+		  reducer: {
+		    account: accountReducer,
+		    customer: customerReducer,
+		  },
+		});
+		
+		export default store;
+
+4. RTK also helps in writing state-slices as well
+		
 ### Constructing the Account Slice ###
+1. code: `accountState.js` slice
+
+		import { createSlice } from '@reduxjs/toolkit';
+
+	1. `createSlice`
+		1. Automatically constructs action creators from reducers
+		2. It makes writing reducers a lot easier
+			1. No switch statement
+			2. Default case is automatically handled
+		3. We can mutate state inside reducers
+			1. The biggest advantage
+2. Default action creators accept only one argument which becomes payload
+	1. Solution: prepare data before it reaches reducer (accountSlice.js)
+
+			requestLoan: {
+		      prepare(amount, purpose) {
+		        return {
+		          payload: { amount, purpose }, // New payload for action creator
+		        };
+		      },
+		      reducer(state, action) {
+		        if (state.loan > 0) return; // we don't have to return state
+		        state.loan = action.payload.amount;
+		        state.loanPurpose = action.payload.loanPurpose;
+		        state.balance += action.payload.amount;
+		      },
+		    },
+
+	2. Solution: Pass all arguments in an object
+
 ### Back to Thunks ###
+1. `createAsyncThunk` provided by RTK
+	1. Extra work
+		1. Solution: Re-use action creator function
+			1. Thunks are automatically provided in the RTK (no other installation)
+			2. Code:
+
+					const accountSlice = createSlice({
+					  name: "account",
+					  initialState,
+					  reducers: {
+					    deposit(state, action) {
+					      state.balance += action.payload; // gets converted to immutable logic
+					      state.isLoading = false;
+					    },
+					    withdraw(state, action) {
+					      state.balance -= action.payload;
+					    },
+					    requestLoan: {
+					      prepare(amount, purpose) {
+					        return {
+					          payload: { amount, purpose }, // New payload for action creator
+					        };
+					      },
+					      reducer(state, action) {
+					        if (state.loan > 0) return; // we don't have to return state
+					        state.loan = action.payload.amount;
+					        state.loanPurpose = action.payload.loanPurpose;
+					        state.balance += action.payload.amount;
+					      },
+					    },
+					    payLoan(state, action) {
+					      state.balance -= state.loan;
+					      state.loan = 0;
+					      state.loanPurpose = "";
+					    },
+					    convertingCurrency(state) {
+					      state.isLoading = true;
+					    },
+					  },
+					});
+					
+					export const { withdraw, requestLoan, payLoan } = accountSlice.actions;
+					
+					// Name of slice/name of reducer convention needs to be followed. Redux figures out that this is the action creator for the reducer
+					
+					export function deposit(amount, currency) {
+					  if (currency === "USD") return { type: "account/deposit", payload: amount };
+					
+					  return async function (dispatch, getState) {
+					    dispatch({ type: "account/convertingCurrency" });
+					    // API call
+					    const res = await fetch(
+					      `https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_AR8p14dOxX9mUbXFGb4J5iOXzZyqwYUOfAqRI5z5&&base_currency=${currency}&&currencies=USD`
+					    );
+					    const data = await res.json();
+					    console.log(data);
+					
+					    const converted = Number(amount) * Number(data.data.USD);
+					    console.log(converted);
+					
+					    // return action
+					    dispatch({ type: "account/deposit", payload: converted });
+					  };
+					}
+					
+					export default accountSlice.reducer;
+
 ### Creating the Customer Slice ###
+
+		import { createSlice } from "@reduxjs/toolkit";
+
+		const initialState = {
+		  fullName: "",
+		  nationalID: "",
+		  createdAt: "",
+		};
+
+		const customerSlice = createSlice({
+		  name: "customer",
+		  initialState,
+		  reducers: {
+		    createCustomer: {
+		      prepare(fullName, nationalID) {
+		        return { payload: { 
+		          fullName, 
+		          nationalID, 
+		          createdAt: new Date().toISOString(), // side effects can be executed inside a prepare function, but not in a reducer } };
+		      },
+		      reducer(state, action) {
+		        state.fullName = action.payload.fullName;
+		        state.nationalID = action.payload.nationalID;
+		        state.createdAt = action.payload.createdAt;
+		      },
+		    },
+		    updateName(state, action) {
+		      state.fullName = action.payload.fullName;
+		    },
+		  },
+		});
+		
+		export const { createCustomer, updateName } = customerSlice.actions; // action creators are created and exported
+		
+		export default customerSlice.reducer;
+
 ### Redux vs. Context API ###
+1. Context API vs Redux
+	1. Context API + useReducer - looked at as complete replacement for Redux
+		1. True in certain situations, but not in others
+2. Differences:
+	1. Context API + useReducer
+		1. Built into React
+		2. Easy to set up a **single context**
+			1. Pass state value into context & provide it to app
+		3. Additional state "slice" quires new context **set up from scratch** ("provider hell" in App.js)
+			1. Provider hell - many context providers in main app component
+		4. **No** mechanism for async operations (don't use for remote state)
+		5. Performance optimization is **pain**
+			1. Requires some work
+		6. Only React DevTools
+	2. Redux
+		1. Requires additional packages (more work, large bundle size)
+		2. More work to set up **initially**
+		3. Once set up, it's easy to construct **additional state "slices"**
+			1. A new slice file & add reducers
+				1. No need for another provider and another custom hook
+		4. Supports **middleware** for async operations
+			1. A mechanism to handle async tasks inside the state management tool (don't use for remote state)
+		5. Performance is optimized **out of the box**
+			1. Includes minimizing wasted renders
+		6. Excellent DevTools
+
+#### Whent to Use Context AI or Redux? ####
+1. Context API + useReducer
+	1. Use the Context API for global state management in **small** apps
+	2. When you just need to share a value that **doesn't change often** [Color theme, perferred language, authenticated user, ...]
+		1. Reason? No need to optimize context in this situation
+	3. When you need to solve a simple **prop drilling** problem
+	4. When you need to manage state in a **local sub-tree** of the app
+		1. State that is global to a sub-part of the app (not to the entire app)
+			1. Example: In compound component pattern
+2. Redux
+	1. Use Redux for global state management in **large** apps
+	2. When you have lots of global UI state that needs to be **updated frequently** (because Redux is optimized for this) [Shopping cart, current tabs, complex filters or search, ...]
+		1. Reason? Redux is heavily optimized for frequent updates (not very common)
+	3. When you have **complex state** with nested objects and arrays (because you can mutate state with Redux Toolkit) (not very common)
+3. There is no right answer that fits every projec. It all depends on the project needs
 
 ## Section 21: Part 4: PROFESSIONAL REACT DEVELOPMENT [2 PROJECTS] ##
 ### Introduction to Part 4 ###
+1. Significant shift
+	1. Leverage React + huge library ecosystem to develop two full-blown professional web-applications.
+		1. React Query
+		2. Supabase
+		3. Tailwind
+	2. Features:
+		1. Authentication
+		2. Data filtering & pagination
+		3. Beautiful charts
+		4. Darkmode
+		5. Context menus and modals
+		6. ...
+2. Goal:
+	1. To empower to build high quality apps completely on our own
+
 ### Useful Resources for Part 4 ###
+1. Resources to refer to while studying part 4 (for additional insights and deeper divers)
+	1. [React Libraries for 2023](https://www.robinwieruch.de/react-libraries/?ref=jonas.io)
+		1. Written in 2023 (will be up to date)
+	2. [Styled-components best practices](https://www.joshwcomeau.com/css/styled-components/?ref=jonas.io)
+		1. Josh W. Comeau
+	3. [A Thorough Analysis of CSS-in-JS](https://css-tricks.com/a-thorough-analysis-of-css-in-js/?ref=jonas.io)
+	4. [Practical React Query](https://tkdodo.eu/blog/practical-react-query?ref=jonas.io)
+		1. Series from React Query's maintainer
+		2. Initiated in 2020
+	5. [React Query meets React Router](https://tkdodo.eu/blog/react-query-meets-react-router?ref=jonas.io)
+	6. [Picking the right React compoent pattern](https://www.benmvp.com/blog/picking-right-react-component-pattern/?ref=jonas.io)
+	7. [Bulletproof-react: A simple, scalable, and powerful architecture for building production-ready React applications](https://github.com/alan2207/bulletproof-react?ref=jonas.io)
+2. Library documentation
+	1. [Tailwind CSS: Installation with Vite](https://tailwindcss.com/docs/guides/vite?ref=jonas.io)
+	2. [styled-components](https://styled-components.com/docs?ref=jonas.io)
+	3. [Supabase Javascript Client Library](https://supabase.com/docs/reference/javascript/installing?ref=jonas.io)
+	4. [TanStack (React) Query v4](https://tanstack.com/query/v4/docs/react/overview?ref=jonas.io)
+	5. [Recharts](https://recharts.org/en-US/examples?ref=jonas.io)
+	6. [date-fns](https://date-fns.org/docs/Getting-Started/?ref=jonas.io)
 
 ## Section 22: React Router with Data Loading (v6.4+) ##
 ### Section Overview ###
+1. Topics
+	1. React Router's modern **data loading** capabilities
+	2. How to **plan** a professional project
+		1. That's what this course is all about
+
 ### Setting Up a New Project: "Fast React Pizza Co." ###
+1. Using Vite
+2. New project
+	1. `npm create vite@4` **(M)**
+		1. Project name: fast-react-pizza
+			1. React
+			2. JavaScript
+	2. `npm install`
+	3. `npm i eslint vite-plugin-eslint eslint-config-react-app --save-dev`
+	4. `.eslintrc.json`
+		1. We want to use rules for react apps
+		2. Code
+
+				{
+				  "extends": "react-app"
+				}
+
+	5. `vite.config.js`
+
+			import { defineConfig } from "vite";
+			import react from "@vitejs/plugin-react";
+			import eslint from "vite-plugin-eslint";
+			
+			// https://vitejs.dev/config/
+			export default defineConfig({
+			  plugins: [react(), eslint()],
+			});
+
+		1. We need to add plugin
+2. Delete
+	1. App.css
+	2. index.css
+	3. Assets
+	4. content of App.jsx
+
+			function App() {
+				return <div>Hello Vite!</div>;
+			}
+
+			export default App;
+
 ### Application Planning ###
+1. How to plan a professional React application step-by-step
+
+#### The Project: Fast React Pizza Co ####
+1. Fast React Pizza Co
+	1. Now the same restaurant (business) needs a simple way of allowing customers to **order pizzas and get them delivered** to their home
+	2. We were hired to build the application front-end
+
+#### How to Plan and Build a React Application ####
+1. From the earlier "thinking in React" lecture:
+	1. Break the desired UI into **components**
+	2. Build a **static** version (no state yet)
+	3. Think about **state management + data flow**
+2. This works well for small apps with **one page and a few features**
+3. In **real-world apps**, we need to adapt this process
+4. Steps:
+	1. Gather application **requirements and features**
+	2. Divide the application into **pages**
+		1. Think about the **overall** and **page-level** UI
+		2. Break the desired UI into **components** (from earlier)
+		3. Design and build a **static** version (no state yet) (from earlier)
+			1. Optional (but acts as a guideline)
+	3. Divide the application into **feature categories**
+		1. Place features into a feature categories
+			1. To organize code in a logical way
+		2. Think about **state management + data flow** (from earlier)
+			1. For each feature category
+				1. What data it needs
+				2. Where do we store the data
+	4. Decide on what **libraries** to use (technology decisions)
+5. The above is just a rough overview. In the real-world, things are never this linear
+
+#### Project Requirements from the Business ####
+1. Very simple application, where users can order **one or more pizzas from a menu**
+	1. We need to start by gathering a list of requirements like this
+2. Requires **no user accounts** and no login: users just input their names before using the app
+3. The pizza menu can change, so it should be **loaded from an API** (already done)
+4. Users can add multiple pizzas to a **cart** before ordering
+5. Ordering requires just the **user's name**, **phone number**, and **address**
+6. If possible, **GPS location** should also be provided, to make delivery easier
+7. User's can **mark their order as "priority"** for an additional 20% of the cart price
+8. Orders are made by **sending a POST request** with the order data (user data + selected pizzas) to the API
+9. Payments are made on delivery, so **no payment processing** is necessary in the app
+10. Each order will get a **unique ID** that should be displayed, so the **user can later look up their order** based on the ID
+11. Users should be able to mark their order as "priority" order **even after it has been placed**
+	1. From the requiremets, we can understand the featurs we need to implement
+
+#### Features + Pages ####
+1. Feature categories (extract from requirements)
+	1. User (everything related to user)
+	2. Menu (everything realted to loading and displaying menu)
+	3. Cart (user will be able to take one or more items from menu and add them to cart and also update quantities)
+	4. Order (Many features are related to this topic. Making an order, fetching orders, ...)
+2. All features can be placed into one of the categories
+	1. So this is what the app will essentially be about
+3. From feature categoies, we can come up with necessary pages to implement
+	1. Homepage (/)
+		1. User connects to this
+			1. User will input name
+	2. Pizza menu (/menu)
+		1. Menu
+	3. Cart (/cart)
+		1. Cart
+	4. Placing a new order (/order/new) (or /newOrder)
+		1. Order
+	5. Looking up an order (/order/:orderID)
+		1. Order
+2. Feature categories helps us understand what pages we need in the app
+
+#### State Management + Technology Decisions ####
+1. State "Domain" / "Slices" (term is from Redux)
+	1. They usually map quite nicely to the app features
+		1. User slice
+		2. Menu slice
+		3. Cart slice
+		4. Order slice
+2. Type of State (classification)
+	1. User slice - Global UI state (no accounts, so stays in app, needs to be accessible in many different components in the tree) (technology depends on this)
+	2. Menu - Global remote state (menu is fetched from API)
+	3. Cart - Global UI state (no need for API, just stored in app)
+		1. Not stored in remote DB
+	4. Order - Global remote state (fetched and submitted to API)
+		1. They live on the server
+3. Technology stack
+	1. Routing - React Router (The standard for React SPAs)
+	2. Styling - TailwindCSS (Trendy way of styling applications that we want to learn)
+		1. Trendy
+	3. Remote state management: React Router
+		1. New way of fetching data right inside React Router (v6.4+) that is worth exploring ("render-as-you-fetch" instead of "fetch-on-render"). Not really state management, as it doesn't persist state (in a place that is easy to access from anywhere)
+		2. Nice way to work
+	4. UI State management: Redux
+		1. State is fairly complex.
+		2. Redux has many advantages for UI state.
+		3. Also, we want to practice Redux a bit more.
+4. The above is just one of many tech stacks
+
 ### Setting Up a Professional File Structure ###
+1. Structure
+	1. Feature base structure
+		1. `src/features` folder
+			1. One folder for each feature categories
+				1. Contain all JS files necessary to make each feature work
+		2. `src/ui` folder
+			1. Re-usable UI components
+				1. Buttons, inputs, ...
+					1. Presentational & no side-effects
+		3. `src/services` folder
+			1. Re-usable code for interacting with an API
+		4. `src/utils` folder
+			1. Helper functions to re-use in multiple places of the application
+				1. Stateless - no side-effects
+					1. Date manipulation
+					2. Number manipulation
+		5. For complex applications
+			1. `src/contexts` - re-usable contexts
+			2. `src/hooks` - re-usable hooks
+			3. `src/pages` - re-usable pages
+		6. Copy files to feature categories
+
 ### A New Way of Implementing Routes ###
+1. React v6.4 introduced a new way to define routes (powerful for fetching data into pages, and submitting data from forms)
+2. Install React router
+
+		npm i react-router-dom@6
+
+	1. Open documentation: [https://reactrouter.com/en/main](https://reactrouter.com/en/main)
+		1. Routers/Picking a Router
+		2. Routers/createBrowserRouter
+3. New APIs we can use:
+	1. Data Loaders
+	2. Data Actions
+	3. Data Fetchers
+
 ### Building the App Layout ###
+1. Header & Overview (how many items are in the cart, and a link)
+	1. The other parts change
+2. Code: AppLayout.jsx
+
+		import { Outlet } from "react-router-dom";
+		import CartOverview from "../features/cart/CartOverview";
+		import Header from "./Header";
+		
+		function AppLayout() {
+		  return (
+		    <div>
+		      <Header />
+		      <main>
+		        <Outlet />
+		      </main>
+		      <CartOverview />
+		    </div>
+		  );
+		}
+		
+		export default AppLayout;
+
 ### Fetching Data with React Router "Loaders": Pizza Menu ###
+1. Loaders - powerful data loading feature
+	1. If there is a function that fetches data from an API, a loader runs the function to fetch the data as soon as we navigate to the route
+		1. The data is then provided to the page component using a custom hook
+2. Steps:
+	1. Construct loader
+		1. It is conventional to keep the loader inside the page which needs the data
+	2. Provide loader
+	3. Provide data to the page
+		1. Using custom hook
+3. React Router fetches data as it starts rendering the current route
+	1. Before, we used fetch on render (after we render the component)
+4. Code:
+
 ### Displaying a Loading Indicator ###
+1. `useNavigation` - Helps us know whether application (entire application - if one of the pages is in a given state) is
+	1. Loading
+	2. Idle
+	3. Submitting
+
 ### Handling Errors with Error Elements ###
+1. Whenever an error is thrown in a loader, action, or when rendering a component, we can render error element (instead of actual pages)
+2. Define error element in the parent route, because errors bubble up to the parent route
+3. We can get error message using a custom hook
+4. Code:
+
+		import { createBrowserRouter, RouterProvider } from "react-router-dom";
+		import Home from "./ui/Home";
+		import Error from "./ui/Error";
+		import Menu, { loader as menuLoader } from "./features/menu/Menu";
+		import Cart from "./features/cart/Cart";
+		import CreateOrder from "./features/order/CreateOrder";
+		import Order from "./features/order/Order";
+		import AppLayout from "./ui/AppLayout";
+		
+		const router = createBrowserRouter([
+		  {
+		    element: <AppLayout />, // `path` is not required, because it effectively becomes layout route. It's purpose is to provide layout to the application
+		    errorElement: <Error />,
+		    children: [
+		      {
+		        path: "/",
+		        element: <Home />,
+		      },
+		      {
+		        path: "/menu",
+		        element: <Menu />,
+		        loader: menuLoader,
+		        errorElement: <Error />,
+		      },
+		      {
+		        path: "/cart",
+		        element: <Cart />,
+		      },
+		      {
+		        path: "/order/new",
+		        element: <CreateOrder />,
+		      },
+		      {
+		        path: "/order/:orderId",
+		        element: <Order />,
+		      },
+		    ],
+		  },
+		]);
+		
+		function App() {
+		  return <RouterProvider router={router} />;
+		}
+		
+		export default App;
+
 ### Fetching Orders ###
+1. Loading individual orders (based on id)
+2. We want a search field
+
 ### Writing Data with React Router "Actions" ###
+1. Actions are used to write data, or mutate data
+	1. Actions allows us to manage remote server state
+		1. Using action functions & forms
+			1. No boilerplate code
+				1. No state variables
+				2. No handling requests
+				3. No preventing defaults
+				4. ...
+2. Code: CreateOrder.jsx
+
+		// import { useState } from "react";
+
+		import { Form, redirect } from "react-router-dom";
+		import { createOrder } from "../../services/apiRestaurant";
+		
+		// https://uibakery.io/regex-library/phone-number
+		// const isValidPhone = (str) =>
+		//   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
+		//     str
+		//   );
+		
+		const fakeCart = [
+		  {
+		    pizzaId: 12,
+		    name: "Mediterranean",
+		    quantity: 2,
+		    unitPrice: 16,
+		    totalPrice: 32,
+		  },
+		  {
+		    pizzaId: 6,
+		    name: "Vegetale",
+		    quantity: 1,
+		    unitPrice: 13,
+		    totalPrice: 13,
+		  },
+		  {
+		    pizzaId: 11,
+		    name: "Spinach and Mushroom",
+		    quantity: 1,
+		    unitPrice: 15,
+		    totalPrice: 15,
+		  },
+		];
+		
+		function CreateOrder() {
+		  // const [withPriority, setWithPriority] = useState(false);
+		  const cart = fakeCart;
+		
+		  return (
+		    <div>
+		      <h2>Ready to order? Let&apos;s go!</h2>
+		
+		      {/* <Form method="POST" action="/order/new"> */
+		      /* chooses the closes route */}
+		      <Form method="POST">
+		        <div>
+		          <label>First Name</label>
+		          <input type="text" name="customer" required />
+		        </div>
+		
+		        <div>
+		          <label>Phone number</label>
+		          <div>
+		            <input type="tel" name="phone" required />
+		          </div>
+		        </div>
+		
+		        <div>
+		          <label>Address</label>
+		          <div>
+		            <input type="text" name="address" required />
+		          </div>
+		        </div>
+		
+		        <div>
+		          <input
+		            type="checkbox"
+		            name="priority"
+		            id="priority"
+		            // value={withPriority}
+		            // onChange={(e) => setWithPriority(e.target.checked)}
+		          />
+		          <label htmlFor="priority">Want to yo give your order priority?</label>
+		        </div>
+		
+		        <div>
+		          <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+		          <button>Order now</button>
+		        </div>
+		      </Form>
+		    </div>
+		  );
+		}
+		
+		export async function action({ request }) {
+		  // Intercepts request created when the form is submitted (if it is connected with react router)
+		  const formData = await request.formData();
+		  const data = Object.fromEntries(formData); // transforms a list of key/value pairs into an object
+		  // console.log(data);
+		
+		  /*
+		  const entries = new Map([
+		    ['foo', 'bar'],
+		    ['baz', 42],
+		  ]);
+		
+		  const obj = Object.fromEntries(entries);
+		
+		  console.log(obj);
+		  // Expected output: Object { foo: "bar", "baz": 42 }
+		  */
+		
+		  const order = {
+		    ...data,
+		    cart: JSON.parse(data.cart),
+		    priority: data.priority === "on",
+		  };
+		
+		  // console.log(order);
+		
+		  const newOrder = await createOrder(order);
+		
+		  return redirect(`/order/${newOrder.id}`); // we cannot use hooks, because hooks work only in components. This function returns a new request / response. Fetches from API using an id (it would have been created on the server)
+		}
+		
+		export default CreateOrder;
+
+2. Code: App.jsx
+
+		import { createBrowserRouter, RouterProvider } from "react-router-dom";
+		import Home from "./ui/Home";
+		import Error from "./ui/Error";
+		import Menu, { loader as menuLoader } from "./features/menu/Menu";
+		import Cart from "./features/cart/Cart";
+		import CreateOrder, {
+		  action as createOrderAction,
+		} from "./features/order/CreateOrder";
+		import Order, { loader as orderLoader } from "./features/order/Order";
+		import AppLayout from "./ui/AppLayout";
+		
+		const router = createBrowserRouter([
+		  {
+		    element: <AppLayout />, // `path` is not required, because it effectively becomes layout route. It's purpose is to provide layout to the application
+		    errorElement: <Error />,
+		    children: [
+		      {
+		        path: "/",
+		        element: <Home />,
+		      },
+		      {
+		        path: "/menu",
+		        element: <Menu />,
+		        loader: menuLoader,
+		        errorElement: <Error />,
+		      },
+		      {
+		        path: "/cart",
+		        element: <Cart />,
+		      },
+		      {
+		        path: "/order/new",
+		        element: <CreateOrder />,
+		        action: createOrderAction,
+		      },
+		      {
+		        path: "/order/:orderId",
+		        element: <Order />,
+		        loader: orderLoader,
+		        errorElement: <Error />,
+		      },
+		    ],
+		  },
+		]);
+		
+		function App() {
+		  return <RouterProvider router={router} />;
+		}
+		
+		export default App;
+
 ### Error Handling in Form Actions ###
+1. Code: CreateOrder.jsx
+
+		// import { useState } from "react";
+
+		import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
+		import { createOrder } from "../../services/apiRestaurant";
+		
+		// https://uibakery.io/regex-library/phone-number
+		const isValidPhone = (str) =>
+		  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
+		    str
+		  );
+		
+		const fakeCart = [
+		  {
+		    pizzaId: 12,
+		    name: "Mediterranean",
+		    quantity: 2,
+		    unitPrice: 16,
+		    totalPrice: 32,
+		  },
+		  {
+		    pizzaId: 6,
+		    name: "Vegetale",
+		    quantity: 1,
+		    unitPrice: 13,
+		    totalPrice: 13,
+		  },
+		  {
+		    pizzaId: 11,
+		    name: "Spinach and Mushroom",
+		    quantity: 1,
+		    unitPrice: 15,
+		    totalPrice: 15,
+		  },
+		];
+		
+		function CreateOrder() {
+		  // const [withPriority, setWithPriority] = useState(false);
+		  const cart = fakeCart;
+		  const navigation = useNavigation();
+		  const isSubmitting = navigation.state === "submitting";
+		
+		  const formErrors = useActionData(); // Gives access to data returned from the action
+		
+		  return (
+		    <div>
+		      <h2>Ready to order? Let&apos;s go!</h2>
+		
+		      {/* <Form method="POST" action="/order/new"> */
+		      /* chooses the closes route */}
+		      <Form method="POST">
+		        <div>
+		          <label>First Name</label>
+		          <input type="text" name="customer" required />
+		        </div>
+		
+		        <div>
+		          <label>Phone number</label>
+		          <div>
+		            <input type="tel" name="phone" required />
+		          </div>
+		          {formErrors?.phone && <p>{formErrors.phone}</p>}
+		        </div>
+		
+		        <div>
+		          <label>Address</label>
+		          <div>
+		            <input type="text" name="address" required />{" "}
+		            {/* Used to ensure that form is not submitting without writing any JS */}
+		          </div>
+		        </div>
+		
+		        <div>
+		          <input
+		            type="checkbox"
+		            name="priority"
+		            id="priority"
+		            // value={withPriority}
+		            // onChange={(e) => setWithPriority(e.target.checked)}
+		          />
+		          <label htmlFor="priority">Want to yo give your order priority?</label>
+		        </div>
+		
+		        <div>
+		          <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+		          <button disabled={isSubmitting}>
+		            {isSubmitting ? "Placing order..." : "Order now"}
+		          </button>
+		        </div>
+		      </Form>
+		    </div>
+		  );
+		}
+		
+		export async function action({ request }) {
+		  // Intercepts request created when the form is submitted (if it is connected with react router)
+		  const formData = await request.formData();
+		  const data = Object.fromEntries(formData); // transforms a list of key/value pairs into an object
+		  // console.log(data);
+		
+		  /*
+		  const entries = new Map([
+		    ['foo', 'bar'],
+		    ['baz', 42],
+		  ]);
+		
+		  const obj = Object.fromEntries(entries);
+		
+		  console.log(obj);
+		  // Expected output: Object { foo: "bar", "baz": 42 }
+		  */
+		
+		  const order = {
+		    ...data,
+		    cart: JSON.parse(data.cart),
+		    priority: data.priority === "on",
+		  };
+		
+		  const errors = {};
+		  if (!isValidPhone(order.phone))
+		    errors.phone =
+		      "Please give us your correct phone number. We might need it to contact you.";
+		
+		  if (Object.keys(errors).length > 0) {
+		    return errors;
+		  }
+		
+		  // console.log(order);
+		
+		  const newOrder = await createOrder(order);
+		
+		  return redirect(`/order/${newOrder.id}`); // we cannot use hooks, because hooks work only in components. This function returns a new request / response. Fetches from API using an id (it would have been created on the server)
+		}
+		
+		export default CreateOrder;
 
 ## Section 23: [Optional] Tailwind CSS Crash Course: Styling the App ##
 ### Section Overview ###
+1. Topics:
+	1. A complete Tailwind CSS **crash course**
+	2. Super **popular** technology
+		1. Especially with React
+	3. You can **skip** if you're not interested in Tailwind...
+
 ### What is Tailwind CSS? ###
+1. Tailwind CSS:
+	1. A utility-first framework packed with utility classes like `flex`, `text-center`, and `rotate-90` that can be composed to build any design, directly in your markup (HTML or JSX)
+		1. **Utility-first CSS approach**:
+			1. Writing tiny classes with one single purpose, and then combining them to build entire components, and layouts
+				1. Atomic-CSS - another name
+			2. Tailwind made it popular
+	2. In tailwind, **the classes are already written for us**. So we're not gonna write any new CSS, but instead use some of tailwind's hundreds of classes (to design and build anything)
+
+#### The Good and Bad About Tailwind ####
+1. The good
+	1. **You don't need to think about class names**
+		1. We can just focus on writing styles instead of coming up with class-names
+	2. **No jumping between files to write markup and styles**
+		1. We do it at the same time, and in one place
+	3. We will immediately understand styling in any project that uses tailwind
+		1. Easy to collaborate
+		2. Can understand own projects after months or years
+	4. Tailwind is a design system:
+		1. Many design decisions have been taken for you, which makes UIs look beter and more consistent (makes it easier)
+			1. Saves a lot of time, e.g. on responsive design (fast and easy to implement)
+	5. Docs and VS Code integration are great
+		1. Auto-completion in VS Code
+2. The bad
+	1. Markup (HTML or JSX) looks very unreadable
+		1. with lots of class names (you get used to it)
+			1. Makes the markup look cluttered
+	2. You have to learn a lot of class names (but after a day of usage you know fundamentals)
+		1. But they are well-named and intuitive
+	3. You need to install and set up tailwind on each new project
+		1. It takes 5-10 minutes
+	4. Fealing that we're giving up on "vanilla CSS"
+		1. It is a thin layer of abstraction
+			1. It doesn't makes us feel that we're completely removed from CSS
+
 ### Setting Up Tailwind CSS ###
+1. Search: Tailwind CSS documentation (on Google)
+	1. Getting Started
+		1. Installation
+			1. v3.x
+			2. Framework Guides
+				1. Vite (or search: tailwind install vite)
+
+						npm install -D tailwindcss@3 postcss autoprefixer
+
+						npx tailwindcss init -p # tailwind & postcss config files
+
+				2. Add content: tailwind.config.js
+
+						content: [
+							"./index.html",
+							"./src/**/*.{js,ts,jsx,tsx}",
+						]
+
+				3. index.css
+
+						@tailwind base;
+						@tailwind components;
+						@tailwind utilities;
+
+					1. Preflight - documentation (base styles)
+				4. home.jsx
+
+						<h1 className="text-xl text-yellow-500 font-semibold">
+
+2. VS Code
+	1. Tailwind CSS Intellisense
+	2. Tailwind prettier extension (search in Google)
+		1. Tailwindlabs github
+
+				npm install -D prettier prettier-plugin-tailwindcss # orders classes as recommended
+
+		2. Prettier config: `prettier.config.cjs`
+
+				module.exports = {
+					plugins: [require('prettier-plugin-tailwindcss')],
+					singleQuote: true,
+				};
+
+				// OR
+
+				// .prettierrc
+				{
+				  "plugins": ["prettier-plugin-tailwindcss"]
+				}
+
 ### Working with Color ###
+1. Tailwind docs
+	1. Customization
+		1. Colors
+			1. Color palettes are predefined
+				1. Select one grey
+				2. Select base color
+					1. `text-yellow-500` - maps to color
+						1. 500 - shade (50 - 950)
+				3. Search: `text` (ctrl + k)
+			2. Background color: `bg-<name>-<intensity>`
+
 ### Styling Text ###
+1. We can use tailwind classes inside HTML as well.
+
 ### The Box Model: Spacing, Borders, and Display ###
+1. Spacing
+	1. Margin
+	2. Padding
+	3. Box-model
+		1. Borders
+		2. Display
+2. Adding spacing between elements
+	1. On parent: `space-x-300`
+
 ### Responsive Design ###
+1. Min-width media queries - mobile-first approach (recommended for tailwind)
+	1. Default classes are mobile-first classes
+		1. `sm:px-6` - value starts getting applied when the small screen size ends
+			1. We can customize screen sizes
+				1. Helps change the design at the point when design starts looking wierd.
+
 ### Using Flexbox ###
+1. Make a flex container, align items.
+2. Classes
+
+		flex
+		text-align
+		justify-between
+		justify-center
+
 ### Using CSS Grid ###
+1. Grid:
+
+		grid
+		grid-rows-2
+		grid-rows-[auto_1fr_auto]
+		gap-y-4
+		h-screen
+
 ### Styling Buttons: Element States and Transitions ###
+1. Code: CreateOrder
+
+		<button ...
+			className="inline-block rounded-full bg-yellow-400 px-4 py-3 font-semibold uppercase tracking-wide text-stone-800 transition-colors duration-300 hover:bg-yellow-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed"
+		>
+
 ### Styling Form Elements ###
+1. Code:
+
+		<div>
+          <label>Address</label>
+          <div>
+            <input
+              className="w-full rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 md:px-6 md:py-3"
+              type="text"
+              name="address"
+              required
+            />{' '}
+            {/* Used to ensure that form is not submitting without writing any JS */}
+          </div>
+        </div>
+
+        <div>
+          <input
+            className="h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2"
+            type="checkbox"
+            name="priority"
+            id="priority"
+            // value={withPriority}
+            // onChange={(e) => setWithPriority(e.target.checked)}
+          />
+          <label htmlFor="priority">Want to yo give your order priority?</label>
+        </div>
+
 ### Reusing Styles with @apply ###
+1. We can construct an old-school class by composing many tailwind classes together
+2. Composition should not be the norm
+	1. We will end up writing classes in the old-school way
+		1. Use-case: Only if there are too many classes and we do not want to construct a new component
+			1. It is better to construct a React component instead (which can be re-used)
+3. Code:
+
+		@layer components {
+		  .input {
+		    @apply w-full rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 md:px-6 md:py-3;
+		  }
+		}
+
+		// ...
+		<input className="input" type="text" name="customer" required />
+
 ### Reusing Styles with React Components ###
+1. New components can embed tailwind styles, which enables us to re-use the components, and their styles.
+
 ### Absolute Positioning, z-index, and More ###
+1. Code: Loader
+
+		function Loader() {
+		  return (
+		    <div className="absolute inset-0 flex items-center justify-center bg-slate-200/20 backdrop-blur-sm">
+		      {/* `inset-0` top, left, right, bottom = 0 */}
+		      <div className="loader"></div>
+		    </div>
+		  );
+		}
+		
+		export default Loader;
+
+2. Code: index.css
+
+		@layer components {
+		  .input {
+		    @apply w-full rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 md:px-6 md:py-3;
+		  }
+		
+		  /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
+		  .loader {
+		    width: 45px;
+		    aspect-ratio: 0.75;
+		    --c: no-repeat linear-gradient(theme(colors.stone.800) 0 0);
+		    background:
+		      var(--c) 0% 50%,
+		      var(--c) 50% 50%,
+		      var(--c) 100% 50%;
+		    background-size: 20% 50%;
+		    animation: loading 1s infinite linear;
+		  }
+		
+		  @keyframes loading {
+		    20% {
+		      background-position:
+		        0% 0%,
+		        50% 50%,
+		        100% 50%;
+		    }
+		    40% {
+		      background-position:
+		        0% 100%,
+		        50% 0%,
+		        100% 50%;
+		    }
+		    60% {
+		      background-position:
+		        0% 50%,
+		        50% 100%,
+		        100% 0%;
+		    }
+		    80% {
+		      background-position:
+		        0% 50%,
+		        50% 50%,
+		        100% 100%;
+		    }
+		  }
+		}
+
 ### Configuring Tailwind: Custom Font Family ###
+1. tailwind.config.js
+
+		/** @type {import('tailwindcss').Config} */
+		export default {
+		  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+		  theme: {
+		    // Overrides everything
+		    fontFamily: {
+		      sans: 'Roboto Mono, monospace',
+		    },
+		    extend: {
+		      // Adds to texisting properties
+		      colors: {
+		        pizza: '#123456',
+		      },
+		      fontSize: {
+		        huge: ['80rem', { lineHeight: '1' }],
+		      },
+		      height: {
+		        screen: '100dvh', // dynamic viewport height units
+		      },
+		    },
+		  },
+		  plugins: [],
+		};
+
 ### Styling the Menu ###
 ### Styling the Cart ###
 ### Styling the Order Form ###
+1. Don't immediately go for a new component, if we need to re-use styles
+2. Never use `width` when using `flex` property
+
 ### Styling the Order Overview ###
 
 ## Section 24: Adding Redux and Advanced React Router ##
 ### Section Overview ###
+1. Topics:
+	1. Implementing a **shopping cart**
+	2. **Advanced** parts of React Router
+		1. Data loading
+	3. **Real-world** use cases of Redux
+		1. Pre-requisite: Redux
+
 ### Modeling the "User" State with Redux Toolkit ###
+1. We can use Redux for global UI state
+2. Code: userSlice.js
+
+		import { createSlice } from '@reduxjs/toolkit';
+		
+		const initialState = {
+		  username: '',
+		};
+		
+		const userSlice = createSlice({
+		  name: 'user',
+		  initialState,
+		  reducers: {
+		    updateName(state, action) {
+		      state.username = action.payload;
+		    },
+		  },
+		});
+		
+		export const { updateName } = userSlice.actions;
+		
+		export default userSlice.reducer;
+
+2. Code: UserName.jsx
+
+		import { useSelector } from 'react-redux';
+
+		function UserName() {
+		  const username = useSelector((state) => state.user.username);
+		
+		  if (!username) return null;
+		
+		  return (
+		    <div className="hidden text-sm font-semibold md:block">{username}</div>
+		  );
+		}
+		
+		export default UserName;
+
 ### Reading and Updating the User State ###
+1. Always try to derive state from other states.
+
 ### Modeling the "Cart" State ###
 ### Adding Menu Items to the Cart ###
 ### Building the Cart Overview with Redux Selectors ###
 ### Building the Cart Page ###
 ### Deleting Cart Items ###
 ### Updating Cart Quantities ###
+1. Calling a reducer from another reducer:
+
+		decreaseItemQuantity(state, action) {
+	      const item = state.cart.find((item) => item.pizzaId === action.payload);
+	      item.quantity--;
+	      item.totalPrice = item.quantity * item.unitPrice;
+	
+	      if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
+	    }
+
 ### Using the Cart for New Orders ###
+1. To dispatch actions in a normal function (not a component)
+
+		store.dispatch(clearCart);
+
 ### Redux Thunks with createAsyncThunk ###
+1. `createAsyncThunk` function
+	1. To use geolocation - to get GPS position and address
+	2. It is RTK native way of using Thunks
+2. Code: userSlice.js (Thunks)
+
+		import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+		import { getAddress } from '../../services/apiGeocoding';
+		
+		function getPosition() {
+		  return new Promise(function (resolve, reject) {
+		    navigator.geolocation.getCurrentPosition(resolve, reject);
+		  });
+		}
+		
+		// async function fetchAddress() {
+		//   // 1) We get the user's geolocation position
+		//   const positionObj = await getPosition();
+		//   const position = {
+		//     latitude: positionObj.coords.latitude,
+		//     longitude: positionObj.coords.longitude,
+		//   };
+		
+		//   // 2) Then we use a reverse geocoding API to get a description of the user's address, so we can display it the order form, so that the user can correct it if wrong
+		//   const addressObj = await getAddress(position);
+		//   const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
+		
+		//   // 3) Then we return an object with the data that we are interested in
+		//   return { position, address };
+		// }
+		
+		const initialState = {
+		  username: '',
+		  status: 'idle',
+		  position: {},
+		  address: '',
+		  error: '',
+		};
+		
+		const userSlice = createSlice({
+		  name: 'user',
+		  initialState,
+		  reducers: {
+		    updateName(state, action) {
+		      state.username = action.payload;
+		    },
+		  },
+		  extraReducers: (builder) =>
+		    builder
+		      .addCase(fetchAddress.pending, (state) => (state.status = 'loading'))
+		      .addCase(fetchAddress.fulfilled, (state, action) => {
+		        state.position = action.payload.position;
+		        state.address = action.payload.address;
+		        state.status = 'idle';
+		      })
+		      .addCase(fetchAddress.rejected, (state, action) => {
+		        state.status = 'error';
+		        state.error = action.error.message; // gets automatically placed
+		      }),
+		});
+		
+		// RTK way of constructing thunk
+		// 'user/fetchAddress' - action
+		// second arg: Promise, the code executed as soon as the action is dispatched
+		// The function produces 3 action states
+		// 1 - Pending Promise state
+		// 2 - Fulfilled Promise state
+		// 3 - Rejected Promise state
+		export const fetchAddress = createAsyncThunk(
+		  'user/fetchAddress',
+		  async function () {
+		    // 1) We get the user's geolocation position
+		    const positionObj = await getPosition();
+		    const position = {
+		      latitude: positionObj.coords.latitude,
+		      longitude: positionObj.coords.longitude,
+		    };
+		
+		    // 2) Then we use a reverse geocoding API to get a description of the user's address, so we can display it the order form, so that the user can correct it if wrong
+		    const addressObj = await getAddress(position);
+		    const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
+		
+		    // 3) Then we return an object with the data that we are interested in
+		    // Payload of the FULFILLED state
+		    return { position, address };
+		  },
+		);
+		
+		export const { updateName } = userSlice.actions;
+		
+		export default userSlice.reducer;
+		
 ### Integrating Geolocation ###
 ### Fetching Data Without Navigation: useFetcher ###
+1. Fetching data without moving to another page
+	1. Data from another route (without causing navigation)
+		1. Example: Loading menu data in order page
+
+				`useFetcher()` # returns a fetcher
+
+2. Code: Order.jsx
+
+		const fetcher = useFetcher();
+		useEffect(
+		  function () {
+		    if (!fetcher.data && fetcher.state === 'idle') fetcher.load('/menu'); // `fetcher` can be in different states. Default state: `idle`
+		  },
+		  [fetcher],
+		);
+
+	1. We might use this hook quite often if we need data from a different page
+
 ### Updating Data Without Navigation ###
+1. Example: Updating priority after the order is placed.
+2. Revalidation:
+	1. It means, if data has changed as a result of an action it will re-fetch the data in the background, and re-render the page with the new data
+		1. `fetcher.Form` - we can update data without a navigation
+3. Code: UpdateOrder.jsx
+
+		import { useFetcher } from 'react-router-dom';
+		import Button from '../../ui/Button';
+		import PropTypes from 'prop-types';
+		import { updateOrder } from '../../services/apiRestaurant';
+		
+		function UpdateOrder({ order }) {
+		  const fetcher = useFetcher();
+		
+		  console.log(order);
+		  return (
+		    <fetcher.Form method="PATCH" className="text-right">
+		      {' '}
+		      {/* will not navigate away, it submits form, and re-validate the page */}
+		      <Button type="primary">Make priority</Button>
+		    </fetcher.Form>
+		  );
+		}
+		
+		UpdateOrder.propTypes = {
+		  order: PropTypes.object.isRequired,
+		};
+		
+		export async function action({ request, params }) {
+		  console.log('update');
+		  console.log(request);
+		  console.log(params);
+		
+		  const data = { priority: true };
+		
+		  await updateOrder(params.orderId, data);
+		  return null;
+		}
+		
+		export default UpdateOrder;
+
+2. Code: App.jsx
+
+		import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+		import Home from './ui/Home';
+		import Error from './ui/Error';
+		import Menu, { loader as menuLoader } from './features/menu/Menu';
+		import Cart from './features/cart/Cart';
+		import CreateOrder, {
+		  action as createOrderAction,
+		} from './features/order/CreateOrder';
+		import Order, { loader as orderLoader } from './features/order/Order';
+		import AppLayout from './ui/AppLayout';
+		import { action as updateOrderAction } from './features/order/UpdateOrder';
+		
+		const router = createBrowserRouter([
+		  {
+		    element: <AppLayout />, // `path` is not required, because it effectively becomes layout route. It's purpose is to provide layout to the application
+		    errorElement: <Error />,
+		    children: [
+		      {
+		        path: '/',
+		        element: <Home />,
+		      },
+		      {
+		        path: '/menu',
+		        element: <Menu />,
+		        loader: menuLoader,
+		        errorElement: <Error />,
+		      },
+		      {
+		        path: '/cart',
+		        element: <Cart />,
+		      },
+		      {
+		        path: '/order/new',
+		        element: <CreateOrder />,
+		        action: createOrderAction,
+		      },
+		      {
+		        path: '/order/:orderId',
+		        element: <Order />,
+		        loader: orderLoader,
+		        errorElement: <Error />,
+		        action: updateOrderAction,
+		      },
+		    ],
+		  },
+		]);
+		
+		function App() {
+		  return <RouterProvider router={router} />;
+		}
+		
+		export default App;
 
 ## Section 25: Setting Up Our Biggest Project + Styled Components ##
 ### Section Overview ###
+1. Topics
+	1. Plan and build this **stunning** application
+		1. Using many professional libraries from React ecosystem
+			1. React Query
+			2. React forms
+			3. React Router
+			4. Backend (with database)
+				1. Using Supabase
+	2. Styling with **Styled Components** in this section
+
 ### Application Planning ###
+#### The Project: The Wild Oasis ####
+1. Requirement
+	1. The Wild Oasis is a small boutique **hotel** with 8 luxurious wooden cabins
+	2. They need a custom-built application to manage everything about the hotel: **bookings**, **cabins**, and **guests**
+	3. This is the **internal application** used inside the hotel to **check in guests as they arrive**
+	4. They have nothing right now, so they **also need the API**
+		1. We need to model the data & store it
+		2. Application functions as a backoffice that manages the data and API
+			1. API -> Internal Hotel Management App
+			2. API -> Customer-facing Website to Book Stays on their own
+	5. Later they will probably want a **customer-facing** website as well, where customers will be able to **book stays**, using the same API
+
+#### Review: How to Plan a React Application ####
+1. Gather application **requirements and features**
+2. Divide the application into **pages**
+	1. Think about UI
+	2. How we divide into components
+3. Divide the application into **feature categories**
+	1. Features from requirements can be gathered into categories
+4. Decide on what **libraries** to use (technology decisions)
+
+#### Project Requirements form the Business ####
+1. Users of the app are hotel employees. They need to be logged into the application to perform tasks (**Authentication**)
+2. New users can only be signed up inside the applications (to guarantee that only actual hotel employees can get accounts) (**Authentication**)
+3. Users should be able to upload an avatar, and change their name and password (**Authentication**)
+4. App needs a table view with all cabins, showing the cabin photo, name, capacity, price, and current discount (**Cabins**)
+5. Users should be able to update or delete a cabin, and to construct new cabins (including uploading a photo) (**Cabins**)
+6. App needs a table view with all bookings, showing arrival and departure dates, status, and paid amount, as well as cabin and guest data (**Bookings**)
+7. The booking status can be "unconfirmed" (booked but not yet checked in), "checked in", or "checkout out". The table should be filterable by this important status. (**Bookings**)
+8. Other booking data includes: number of guests, number of nights, guest observations, whether they booked breakfast, breakfast price (**Bookings**)
+9. Users should be able to delete, check in, or check out a booking as the guest arrives (no editing necessary for now) (**Check In/Out**)
+10. Bookings may not have been paid yet on guest arrival. Therefore, on check in, users need to accept payment (outside the app), and then confirm that payment has been recieved (inside the app). (**Check In/Out**)
+11. On check in, the guest should have the ability to add breakfast for the entire stay, if they hadn't already. (**Check In/Out**)
+12. Guest data should contain: full name, email, national ID, nationality, and a country flag for easy identification. (**Guests**)
+13. The initial app screen should be a dashboard, to display important information for the last 7, 30, or 90 days. (**Dashboard**)
+	1. A list of guests checking in and out on the current day. Users should be able to perform these tasks from here.
+	2. Statistics on recent bookings, sales, check ins, and occupancy rate.
+	3. A chart showing all daily hotel sales, showing both "total" sales and "extras" sales (only breakfast at the moment)
+	4. A chart showing statistics on stay durations, as this is an important metric for the hotel
+14. Users should be able to define a few application-wide settings: breakfast price, min and max nights/booking, max guests/booking (**Settings**)
+15. App needs a dark mode (**Settings**)
+
+#### Features + Pages ####
+1. Feature Category:
+	1. Bookings
+	2. Cabins
+	3. Guests
+	4. Dashboard
+	5. Check in and out
+	6. App settings
+	7. Authentication
+2. Necessary pages:
+	1. Dashboard `/dashboard`
+	2. Bookings `/bookings`
+	3. Cabins `/cabins`
+		1. Edit & delete cabins
+	4. Guests
+		1. Nothing in the requirements
+	5. Booking check in `/checkin/:bookingID`
+	6. App settings `/settings`
+	7. User sign up `/users`
+		1. Existing users can register new ones
+	8. Login `/login`
+		1. Default homepage
+3. We will discuss state later. Most of it will be **global**
+4. We will discuss APIs later
+
+#### Client-Side Rendering (CSR) OR Server-Side Rendering (SSR)? ####
+1. React team has been advocating moving back to server (NextJS)
+	1. CSR with Plain React (Vanilla React)
+		1. Use to build **single**-page applications (SPAs)
+		2. All HTML is rendered in the **client**
+			1. All done by JS
+				1. JS needs to be downloaded even before the application starts running
+					1. Bad for performance if users
+						1. Are using a low-end device
+						2. Have low internet connection
+		3. **One perfect use case:** apps that are used "internally" as tools inside companies (not downloaded by many users), that are entirely hidden behind a login (no need for SEO)
+	2. SSR with Famework (NextJS, Remix)
+		1. Use to build **multi**-page applications (SPAs)
+		2. Some HTML is rendered in the **server**
+			1. **More performant**, as less JS needs to be downloaded
+		3. The React team is moving more and more in this direction
+			1. Not true for all applications
+
+#### Technology Decisions ####
+1. Routing - React Router - The standard for React SPAs
+2. Styling - Styled Components - Very popular way of writing component-scoped CSS, right inside JS. A technology worth learning
+	1. It is used inside components
+	2. Used by
+		1. IMDB
+		2. Spotify
+		3. Coinbase
+		4. ...
+3. State management - React Query
+	1. All state will be remote state
+	2. Application will implemet an easy to interface to remote data that will be used in server
+	3. We load and mutate data a lot
+	4. The best way of managing remote state, with features like **caching**, **automatic re-fetching**, **pre-fetching** (pagination), **offline support**, etc.
+	5. Alternatives are SWR and RTK Query, but this is the most popular
+4. UI State management - Context API
+	1. There is almost no UI state needed in this app, so one simple context with `useState` will be enough. No need for Redux.
+5. Form management - React Hook Form
+	1. Handling bigger forms can be a lot of work, such as manual state creation and error handling (library takes care of that). A library can simplify all this
+6. Other tools
+	1. React icons
+	2. React hot toast
+	3. Recharts (beautiful charts)
+	4. date-fns (date manipulation)
+	5. Supabase (build API, store remote state)
+
 ### Setting Up the Project: "The Wild Oasis" ###
+1. Creation of vite project
+2. Open it in VS Code
+3. Install dependencies (`npm install`)
+4. Configure ES Lint (`npm i --save-dev vite-plugin-eslint eslint-config-react-app eslint`)
+	1. Add `.eslintrc.json`
+	2. Update `vite.cnfig.js`
+5. Start the app: `npm run dev`
+6. Structure:
+	1. pages
+		1. All pages
+		2. One component file per route
+			1. Each of the pages will not have any side effects, but delegate all functionality to component associated with the feature
+				1. Pages created once and forgotten
+
 ### Introduction to Styled Components ###
+1. Allow us to write CSS right inside JS component files
+	1. Procedure:
+		1. We take a regular HTML element & using `styled` function, we construct a brand new React component with some CSS styles applied to it
+		2. We can then use the new React component instead of the regular HTML element
+2. Installation:
+
+		npm i styled-components
+
+	1. VS Code extension: vscode-styled-components
+		1. For highlighting
+3. Code:
+
+		const H1 = styled.h1`
+		  font-size: 30px;
+		  font-weight: 600;
+		`; // ES6 - tagged template literals. It returns a new component
+		// A randomly named class is created, and added styles into it
+		/*
+		
+		<h1 class="sc-gTRrQi sgasdf">The Wild Oasis</h1>
+		
+		.sgasdf{
+		  font-size: 30px;
+		  font-weight: 600;
+		}
+		
+		It doesn't apply globally, and there won't be name collisions.
+		The CSS is available is available only for this component
+		*/
+
+	1. The styled components receive the same props that regular HTML or JSX elements can receive
+
+			const Button = styled.button`
+			  font-size: 1.4rem;
+			  padding: 1.2rem 1.6rem;
+			  font-weight: 500;
+			  border: none;
+			  border-radius: 7px;
+			  background-color: purple;
+			  color: white;
+			`;
+			
+			function App() {
+			  return (
+			    <div>
+			      <H1>The Wild Oasis</H1>
+			      <Button onClick={() => alert("Check in")}>Check in</Button>
+			    </div>
+			  );
+			}
+
+4. How to style existing components?
+	1. If the component is called `App`, we can construct a `StyledApp` for a `div` inside the component.
+
 ### Global Styles with Styled Components ###
+1. We construct a Gobal styled component (instead of using `index.css`)
+2. Code: App.css
+
+		function App() {
+		  return (
+		    <>
+		      <GlobalStyles /> {/* Doesn't accept children */}
+		      <StyledApp>
+		        <H1>The Wild Oasis</H1>
+		        <Button onClick={() => alert("Check in")}>Check in</Button>
+		        <Button onClick={() => alert("Check out")}>Check in</Button>
+		
+		        <Input type="number" placeholder="Number of guests" />
+		      </StyledApp>
+		    </>
+		  );
+		}
+
+3. Code: GlobalStyles.js
+
+		import { createGlobalStyle } from "styled-components";
+
+		const GlobalStyles = createGlobalStyle`
+		
+		/* Colors adapted from https://tailwindcss.com/docs/customizing-colors */
+		
+		:root {
+		  /* Indigo */
+		  --color-brand-50: #eef2ff;
+		  --color-brand-100: #e0e7ff;
+		  --color-brand-200: #c7d2fe;
+		  --color-brand-500: #6366f1;
+		  --color-brand-600: #4f46e5;
+		  --color-brand-700: #4338ca;
+		  --color-brand-800: #3730a3;
+		  --color-brand-900: #312e81;
+		
+		  /* Grey */
+		  --color-grey-0: #fff;
+		  --color-grey-50: #f9fafb;
+		  --color-grey-100: #f3f4f6;
+		  --color-grey-200: #e5e7eb;
+		  --color-grey-300: #d1d5db;
+		  --color-grey-400: #9ca3af;
+		  --color-grey-500: #6b7280;
+		  --color-grey-600: #4b5563;
+		  --color-grey-700: #374151;
+		  --color-grey-800: #1f2937;
+		  --color-grey-900: #111827;
+		
+		  --color-blue-100: #e0f2fe;
+		  --color-blue-700: #0369a1;
+		  --color-green-100: #dcfce7;
+		  --color-green-700: #15803d;
+		  --color-yellow-100: #fef9c3;
+		  --color-yellow-700: #a16207;
+		  --color-silver-100: #e5e7eb;
+		  --color-silver-700: #374151;
+		  --color-indigo-100: #e0e7ff;
+		  --color-indigo-700: #4338ca;
+		
+		  --color-red-100: #fee2e2;
+		  --color-red-700: #b91c1c;
+		  --color-red-800: #991b1b;
+		
+		  --backdrop-color: rgba(255, 255, 255, 0.1);
+		
+		  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+		  --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
+		  --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+		
+		  --border-radius-tiny: 3px;
+		  --border-radius-sm: 5px;
+		  --border-radius-md: 7px;
+		  --border-radius-lg: 9px;
+		
+		  /* For dark mode */
+		  --image-grayscale: 0;
+		  --image-opacity: 100%;
+		}
+		
+		*,
+		*::before,
+		*::after {
+		  box-sizing: border-box;
+		  padding: 0;
+		  margin: 0;
+		
+		  /* Creating animations for dark mode */
+		  transition: background-color 0.3s, border 0.3s;
+		}
+		
+		html {
+		  font-size: 62.5%;
+		}
+		
+		body {
+		  font-family: "Poppins", sans-serif;
+		  color: var(--color-grey-700);
+		
+		  transition: color 0.3s, background-color 0.3s;
+		  min-height: 100vh;
+		  line-height: 1.5;
+		  font-size: 1.6rem;
+		}
+		
+		input,
+		button,
+		textarea,
+		select {
+		  font: inherit;
+		  color: inherit;
+		}
+		
+		button {
+		  cursor: pointer;
+		}
+		
+		*:disabled {
+		  cursor: not-allowed;
+		}
+		
+		select:disabled,
+		input:disabled {
+		  background-color: var(--color-grey-200);
+		  color: var(--color-grey-500);
+		}
+		
+		input:focus,
+		button:focus,
+		textarea:focus,
+		select:focus {
+		  outline: 2px solid var(--color-brand-600);
+		  outline-offset: -1px;
+		}
+		
+		/* Parent selector, finally 😃 */
+		button:has(svg) {
+		  line-height: 0;
+		}
+		
+		a {
+		  color: inherit;
+		  text-decoration: none;
+		}
+		
+		ul {
+		  list-style: none;
+		}
+		
+		p,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+		  overflow-wrap: break-word;
+		  hyphens: auto;
+		}
+		
+		img {
+		  max-width: 100%;
+		
+		  /* For dark mode */
+		  filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
+		}
+		
+		/*
+		FOR DARK MODE
+		
+		--color-grey-0: #18212f;
+		--color-grey-50: #111827;
+		--color-grey-100: #1f2937;
+		--color-grey-200: #374151;
+		--color-grey-300: #4b5563;
+		--color-grey-400: #6b7280;
+		--color-grey-500: #9ca3af;
+		--color-grey-600: #d1d5db;
+		--color-grey-700: #e5e7eb;
+		--color-grey-800: #f3f4f6;
+		--color-grey-900: #f9fafb;
+		
+		--color-blue-100: #075985;
+		--color-blue-700: #e0f2fe;
+		--color-green-100: #166534;
+		--color-green-700: #dcfce7;
+		--color-yellow-100: #854d0e;
+		--color-yellow-700: #fef9c3;
+		--color-silver-100: #374151;
+		--color-silver-700: #f3f4f6;
+		--color-indigo-100: #3730a3;
+		--color-indigo-700: #e0e7ff;
+		
+		--color-red-100: #fee2e2;
+		--color-red-700: #b91c1c;
+		--color-red-800: #991b1b;
+		
+		--backdrop-color: rgba(0, 0, 0, 0.3);
+		
+		--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+		--shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
+		--shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
+		
+		--image-grayscale: 10%;
+		--image-opacity: 90%;
+		*/
+		`;
+		
+		export default GlobalStyles;
+
+3. Why use variables?
+	1. Helps us update them independently
+		1. Helps with dark-mode
+4. Styled components provides similar variables using a mechanism called themes
+	1. We can inject design tokens like the above into application
+		1. The mechanism was introduced before css variables became popular in modern css
+			1. This is better
+	2. However the documentation is in Styled components - Go to Themes
+
+			<ThemeProvider theme={theme}>
+				...
+			<color: ${props => props.theme.main};
+
+5. We can leave styles used only in a particular component inside the component
+
 ### Styled Component Props and the "css" Function ###
+1. Code: Heading.jsx
+
+		import styled, { css } from "styled-components";
+
+		// const test = css`
+		//   text-align: center;
+		//   ${10 > 5 && "background-color: yellow"}
+		// `; // css function. For syntax highlighting
+		
+		// const Heading = styled.h1`
+		//   // This is a template literal
+		//   /* font-size: ${10 > 5 ? "30px" : "5px"}; */
+		//   font-size: 20px;
+		//   font-weight: 600;
+		//   background-color: yellow;
+		//   /* ${test} */
+		// `;
+		
+		const Heading = styled.h1`
+		  ${(props) =>
+		    props.as === "h1" &&
+		    css`
+		      font-size: 3rem;
+		      font-weight: 600;
+		    `}
+		
+		  ${(props) =>
+		    props.as === "h2" &&
+		    css`
+		      font-size: 2rem;
+		      font-weight: 600;
+		    `}
+		
+		  ${(props) =>
+		    props.as === "h3" &&
+		    css`
+		      font-size: 2rem;
+		      font-weight: 500;
+		    `}
+		
+		  line-height: 1.4;
+		`; // ES6 - tagged template literals. It returns a new component
+		// A randomly named class is created, and added styles into it
+		/*
+		
+		<h1 class="sc-gTRrQi sgasdf">The Wild Oasis</h1>
+		
+		.sgasdf{
+		  font-size: 30px;
+		  font-weight: 600;
+		}
+		
+		It doesn't apply globally, and there won't be name collisions.
+		The CSS is available is available only for this component
+		*/
+		
+		export default Heading;
+
+2. Code: App.jsx
+
+		function App() {
+		  return (
+		    <>
+		      <GlobalStyles /> {/* Doesn't accept children */}
+		      <StyledApp>
+		        <Heading as="h1">The Wild Oasis</Heading> {/* We can give any name */}
+		        <Heading as="h2">Check in and out</Heading>
+		        <Button onClick={() => alert("Check in")}>Check in</Button>
+		        <Button onClick={() => alert("Check out")}>Check in</Button>
+		        <Heading as="h3">Form</Heading>{" "}
+		        {/* `as` specifies the HTML element to be rendered as */}
+		        <Input type="number" placeholder="Number of guests" />
+		      </StyledApp>
+		    </>
+		  );
+		}
+
 ### Building More Reusable Styled Components ###
+1. Code: App.jsx
+
+		import styled from "styled-components";
+		import GlobalStyles from "./styles/GlobalStyles";
+		import Button from "./ui/Button";
+		import Input from "./ui/Input";
+		import Heading from "./ui/Heading";
+		import Row from "./ui/Row";
+		
+		const StyledApp = styled.div`
+		  /* background-color: orangered; */
+		  padding: 20px;
+		`;
+		
+		function App() {
+		  return (
+		    <>
+		      <GlobalStyles /> {/* Doesn't accept children */}
+		      <StyledApp>
+		        <Row>
+		          <Row type="horizontal">
+		            <Heading as="h1">The Wild Oasis</Heading>{" "}
+		            {/* We can give any name */}
+		            <div>
+		              <Heading as="h2">Check in and out</Heading>
+		              <Button onClick={() => alert("Check in")}>Check in</Button>
+		              <Button
+		                variation="secondary"
+		                size="small"
+		                onClick={() => alert("Check out")}
+		              >
+		                Check in
+		              </Button>
+		            </div>
+		          </Row>
+		          <Row type="vertical">
+		            <Heading as="h3">Form</Heading>{" "}
+		            {/* `as` specifies the HTML element to be rendered as */}
+		            <form>
+		              <Input type="number" placeholder="Number of guests" />
+		            </form>
+		          </Row>
+		        </Row>
+		      </StyledApp>
+		    </>
+		  );
+		}
+		
+		export default App;
+
+2. Code: Button.jsx
+
+		import styled, { css } from "styled-components";
+
+		const sizes = {
+		  small: css`
+		    font-size: 1.2rem;
+		    padding: 0.4rem 0.8rem;
+		    text-transform: uppercase;
+		    font-weight: 600;
+		    text-align: center;
+		  `,
+		  medium: css`
+		    font-size: 1.4rem;
+		    padding: 1.2rem 1.6rem;
+		    font-weight: 500;
+		  `,
+		  large: css`
+		    font-size: 1.6rem;
+		    padding: 1.2rem 2.4rem;
+		    font-weight: 500;
+		  `,
+		};
+		
+		const variations = {
+		  primary: css`
+		    color: var(--color-brand-50);
+		    background-color: var(--color-brand-600);
+		
+		    &:hover {
+		      background-color: var(--color-brand-700);
+		    }
+		  `,
+		  secondary: css`
+		    color: var(--color-grey-600);
+		    background: var(--color-grey-0);
+		    border: 1px solid var(--color-grey-200);
+		
+		    &:hover {
+		      background-color: var(--color-grey-50);
+		    }
+		  `,
+		  danger: css`
+		    color: var(--color-red-100);
+		    background-color: var(--color-red-700);
+		
+		    &:hover {
+		      background-color: var(--color-red-800);
+		    }
+		  `,
+		};
+		
+		const Button = styled.button`
+		  border: none;
+		  border-radius: var(--border-radius-sm);
+		  box-shadow: var(--shadow-sm);
+		
+		  ${(props) => sizes[props.size]}
+		  ${(props) => variations[props.variation]}
+		`;
+		
+		Button.defaultProps = {
+		  variation: "primary",
+		  size: "medium",
+		};
+		
+		export default Button;
+
 ### Setting Up Pages and Routes ###
+1. Installing React router:
+
+		npm i react-router-dom@6
+
+2. Icons for links
+
+		npm i react-icons
+
+	1. It imports many popular icon sets
+		1. Heroicons 2
+			1. `import { IconName } from "react-icons/hi2";`
+
 ### Building the App Layout ###
 ### Building the Sidebar and Main Navigation ###
 
 ## Section 26: Supabase Crash Course: Building a Back-End! ##
 ### Section Overview ###
+1. Topics:
+	1. **Plan** application data
+		1. All data we need
+		2. Constructing tables that we need
+	2. Model **relationships** between data tables
+	3. Load data into the app via **Supabase API**
+
 ### What is Supabase? ###
+Supabase: Service that allows developers to easily **construct a back-end with a Postgres database**
+	1. Automatically construct a **database** and **API** so we can easily request and receive data from the server.
+	2. No back-end development needed
+	3. Perfect to get up and running **quickly!**
+	4. Not just an API: Supabase also comes with easy-to-use **user authentication** and **file storage**
+		1. Accessible using API or JS library
+2. It enables building 
+
 ### Constructing a New Database ###
+1. [supabase.com](supabase.com)
+	1. Firebase alternative & open-source
+		1. Free - 2 projects
+			1. Pauses project if not used for a week (data is retained)
+2. Sign up
+3. Start a project
+4. A new organization
+5. Features:
+	1. Table editor
+		1. New Table
+	2. Authentication
+	3. Upload
+	4. API Docs
+	5. Project settings
+
 ### Modeling Application State ###
+#### Modeling State ####
+1. We need to think about state slices at a much higher level
+	1. We think about state at application feature level and page level
+2. State "Domains"/"Slices"
+	1. Feature Categories: (each feature needs their own state)
+		1. Bookings
+			1. **Bookings** - state
+		2. Cabins
+			1. **Cabins** - state
+		3. Guests
+			1. **Guests** - state
+		4. Dashboard
+			1. Bookings
+				1. Dashboards display a few statistics about recent bookings
+		5. Check in and out
+			1. Bookings:
+				1. Updating the bookings from checkout to checked in
+		6. App settings
+			1. **Settings**
+		7. Authentication
+			1. **Users**
+3. All the state will be **global remote state**, stored within supabase
+	1. Managed using React Query
+	2. There will be one **table** for each state "slice" in the **database**
+
+#### The Bookings Table ####
+1. Booking:
+	1. It is about:
+		1. **Guest** renting a **Cabin**
+	2. A booking needs information about what **guest** is booking which **cabin**: we need to **connect** them
+	3. Supabase uses a Postgres DB, which is SQL (relational DB). So we **join** tables using **foreign keys**
+	4. Guest's `id` (primary key) is stored in Booking as `guestId` (foreign key)
+	5. Cabin's `id` (primary key) is stored in Booking as `cabinId` (foreign key)
+
 ### Constructing Tables ###
+1. Cabins table
+	1. Enable row level security
+	2. Columns:
+		1. id
+		2. created_at
+		3. name
+			1. text
+			2. No default value
+		4. maxCapacity (how many people can rent a cabin)
+			1. int2 (2-byte integer)
+		5. regularPrice
+			1. int2
+		6. discount
+			1. int2
+		7. description
+			1. text
+		8. image
+			1. text (URL)
+				1. Stored in storage buckets
+2. Insert row:
+	1. name: 001
+	2. maxCapacity: 2
+	3. regularPrice: 250
+	4. discount: 50
+	5. description: Small luxury cabin in the woods
+	6. image: null
+3. guests table
+	1. fullName: text
+	2. email: text
+	3. nationalID: text
+	4. nationality: text
+	5. countryFlag: text
+4. Insert row:
+	1. fullName: Jonas Schmedtmann
+	2. email: test@email.com
+	3. nationalID: gasdfdsf
+	4. nationality: german
+	5. countryFlag: 
+5. settings table (special table which has only one row)
+	1. minBookingLength: int2
+	2. maxBookingLength: int2
+	3. maxGuestsPerBooking: int2
+	4. breakfastPrice: float4
+6. Insert row:
+	1. maxBookingLength: 3
+	2. maxBookingLength: 90
+	3. maxGuestsPerBooking: 8
+	4. breakfastPrice: 15
+
 ### Relationships Between Tables ###
+1. Bookings table
+	1. startDate: timestamp
+	2. endDate: timestamp
+	3. numNights: int2 (auto-calculated)
+	4. numGuests: int2
+	5. cabinPrice: float4
+	6. extrasPrice: float4
+	7. totalPrice: float4
+	8. status: text
+	9. hasBreakfast: bool
+	10. isPaid: bool
+	11. observations: text (when they arrived, ...)
+	12. cabinID: Edit foreign key relation
+		1. Select a teable to reference to: cabins
+		2. Select a column from `public.cabins` to reference to: `id`
+	13. guestID: Edit foreign key relation
+		1. Select a table to reference to: guests
+		2. Select a column from `public.guests` to reference to: `id`
+2. Insert row:
+	1. startDate: any date
+	2. endDate: any date
+	3. numNights: 4
+	4. numGuests: 2
+	5. cabinPrice: 300
+	6. extrasPrice: 120
+	7. totalPrice: 420
+	8. status: unconfirmed
+	9. hasBreakfast: TRUE
+	10. isPaid: TRUE
+	11. observations: I will arrive at 10pm
+	12. cabinId: Select the row
+	13. guestId: Select the row
+
 ### Adding Security Policies (RLS) ###
+1. API Docs
+	1. API docs are automatically created for the tables
+	2. cabins
+		1. copy JS code
+		2. READ ALL ROWS
+			1. Project API Key
+			2. Copy Curl code
+			3. Paste in terminal
+				1. Row level security is enabled so no data
+					1. Row level security tables
+						1. They prevent anyone who owns a particular key (Bearer token) to do whatever they want
+2. RLS policies
+	1. Authentication
+		1. Policies
+			1. New Policy
+				1. Get started quickly
+					1. Enable read access to everyone
+
+							CREATE POLICY "policy_name"
+							ON public.cabins
+							FOR SELECT USING (
+								true
+							);
+
+						1. Use this template
+						2. Review
+						3. Save policy
+			2. Enable access to other tables
+
 ### Connecting Supabase with Our React App ###
+1. API Docs
+	1. Introduction
+		1. All instructions are given to connect
+			1. Client Libraries
+				1. Install
+
+						npm install --save @supabase/supabase-js
+
+					1. services/supabase.js
+						1. Copy and paste initializing code
+2. Code: Cabins.jsx
+
+		import { useEffect } from "react";
+		import Heading from "../ui/Heading";
+		import Row from "../ui/Row";
+		import { getCabins } from "../services/apiCabins";
+		
+		function Cabins() {
+		  useEffect(function () {
+		    getCabins().then((data) => console.log(data));
+		  }, []);
+		
+		  return (
+		    <Row type="horizontal">
+		      <Heading as="h1">All cabins</Heading>
+		      <p>TEST</p>
+		    </Row>
+		  );
+		}
+		
+		export default Cabins;
+
+3. Code: apiCabins.js
+
+		import supabase from "./supabase";
+
+		export async function getCabins() {
+		  const { data, error } = await supabase.from("cabins").select("*");
+		
+		  if (error) {
+		    console.error(error);
+		    throw new Error("Cabins could not be loaded");
+		  }
+		
+		  return data;
+		}
+
 ### Setting up Storage Buckets ###
+1. Storage
+	1. New Bucket:
+		1. Name of bucket: avatars
+		2. Public bucket
+			1. RLS policies are required
+	2. New Bucket:
+		1. Name of bucket: cabin-images
+		2. Public bucket
+			1. src/data/cabins
+				1. Drag and drop
+					1. Get URL
+	3. Add the URL in the table
 
 ## Section 27: React Query: Managing Remote State ##
 ### Section Overview ###
+1. Topics:
+	1. **Remote state** management
+	2. **React Query** will take over data fetching and storage (of remote data)
+		1. Simplifies state management
+
 ### What is React Query? ###
+1. Integration of React query for all data fetching, and remote state management.
+
+#### What is React Query? ####
+1. Powerful library for managing **remote (server) state** (to load into application)
+	1. What React is missing
+2. Many features that allow us to write a **lot less code**, while also **making the UX a lot better**
+3. Useful features:
+	1. Data is stored in a cache
+		1. To be re-used in different points of the application
+
+				fetch("api.com/cabins"); // Component A
+
+			1. API fetches data and stores it in cache
+			2. Component can use it
+			3. If component B wants to use the data, not API request is necessary, the data is provided from the cache
+				1. No loading spinner is required for subsequent components
+	2. Automatic loading and error states
+	3. Automatic re-fetching to keep state synced
+		1. After timeout
+		2. Leave browser window and come back
+		3. State updated
+			1. Example: If cabin is updated, the updated data is automatically fetched
+	4. Pre-fetching
+		1. To fetch data that will be used later, but before displaying it on the screen
+			1. Example: Pagination
+				1. We can pre-fetch the next page
+	5. Easy remote state mutation (updating)
+		1. Tools built into React query
+	6. Offline support
+		1. If user is offline, cached data can be used
+4. Needed because remote state is **fundamentally** different from regular (UI) state
+	1. Asynchronous
+	2. Usually shared by many users
+		1. Data in browsers can get out of sync with the remote data stored on a server
+	3. (other special needs)
+5. Other libraries (don't work as well, and not as popular)
+	1. RTK Query (Remote state solution integrated into Redux Took Kit)
+	2. SWR
+
 ### Setting up React Query ###
+1. Installation:
+
+		npm i @tanstack/react-query@4
+
+	1. The library is no longer called `react-query` because it supports other frameworks like Svelte & Vue.
+	2. The official name is `tanstack`
+2. Steps:
+	1. Construct a place where the data lives
+	2. Provide the data to the application
+3. Code: App.jsx
+
+		const queryClient = new QueryClient({
+		  defaultOptions: {
+		    queries: {
+		      staleTime: 60 * 1000,
+		    },
+		  },
+		}); // Sets up cache
+
+		function App() {
+			return(
+				<QueryClientProvider client={queryClient}>
+					<GlobalStyles />
+					<BrowserRouter>
+						...
+					</BrowserRouter>
+				</QueryClientProvider>
+			)
+		}
+
+4. React Query dev tools:
+
+		npm i @tastack/react-query-devtools@4
+
+	1. App.jsx
+
+			<QueryClientProvider ...>
+				<ReactQueryDevtools initialIsOpen={false} />
+
+		1. `QueryClientProvider` - helps having data in one place, and providing it to the whole component tree
+
 ### Make Sure to Use React Query v4! ###
+1. Use the following dependency:
+
+		npm i @tanstack/react-query@4
+
+	1. To use React Query v5
+		1. `isLoading` is now `isPending`
+		2. `cacheTime` is called `gcTime`
+
 ### Fetching Cabin Data ###
+1. Instead of fetching in `useEffect`
+2. Install `date-fns`
+
+		npm i date-fns
+
+3. Code: App.js
+
+		const queryClient = new QueryClient({
+		  defaultOptions: {
+		    queries: {
+		      // staleTime: 60 * 1000,
+		      staleTime: 0,
+		    },
+		  },
+		}); // Sets up cache
+
+4. Code: Cabins.jsx
+
+		import CabinTable from "../features/cabins/CabinTable";
+		import Heading from "../ui/Heading";
+		import Row from "../ui/Row";
+		
+		function Cabins() {
+		  return (
+		    <>
+		      <Row type="horizontal">
+		        <Heading as="h1">All cabins</Heading>
+		        <p>Filter / Sort</p>
+		      </Row>
+		
+		      <Row>
+		        <CabinTable />
+		      </Row>
+		    </>
+		  );
+		}
+		
+		export default Cabins;
+
 ### Mutations: Deleting a Cabin ###
+3. Code: CabinRow.jsx
+
+		const queryClient = useQueryClient();
+
+		const { isLoading: isDeleting, mutate } = useMutation({
+		    // mutationFn: (id) => deleteCabin(id),
+		    mutationFn: deleteCabin,
+		    onSuccess: () => {
+		      alert("Cabin successfully deleted");
+		      queryClient.invalidateQueries({
+		        queryKey: ["cabins"],
+		      });
+		    },
+		    onError: (err) => alert(err.message), // If there is an error React Query tries to fetch multiple times.
+		}); // **(M)**
+		
+		// mutate - callback function that we can connect to the button
+
+		return (
+		    <TableRow role="row">
+		      {/* ... */}
+		      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+		        Delete
+		      </button>
+		    </TableRow>
+		);
+
 ### Displaying Toasts (Notifications) ###
+1. Another library:
+
+		npm i react-hot-toast
+
+2. Code: App.jsx
+
+			<Toaster
+	        position="top-center"
+	        gutter={12}
+	        containerStyle={{ margin: "8px" }}
+	        toastOptions={{
+	          success: {
+	            duration: 3000,
+	          },
+	          error: {
+	            duration: 5000,
+	          },
+	          style: {
+	            fontSize: "16px",
+	            maxWidth: "500px",
+	            padding: "16px 24px",
+	            backgroundColor: "var(--color-grey-0)",
+	            color: "var(--color-grey-700)",
+	          },
+	        }}
+	      />
+		</QueryClientProvider>
+
+3. Code: CabinRow.jsx
+
+		const { isLoading: isDeleting, mutate } = useMutation({
+	      // mutationFn: (id) => deleteCabin(id),
+	      mutationFn: deleteCabin,
+	      onSuccess: () => {
+	        toast.success("Cabin successfully deleted");
+	        queryClient.invalidateQueries({
+	          queryKey: ["cabins"],
+	        });
+	      },
+	      onError: (err) => toast.err(err.message), // If there is an error React Query tries to fetch multiple times.
+	    }); // **(M)**
+
 ### Introducing Another Library: React Hook Form ###
+1. Form setup: It only handles form submission, or form errors (no pre-built components)
+	1. Installation:
+
+			npm i react-hook-form@7
+
+		1. No need for controlled elements
+			1. No state variable for them
+		2. The library can handle the inputs
+			1. Generates event-handlers
+			2. Handles submit
+
 ### Constructing a New Cabin ###
+1. Code: CreateCabinForm.jsx
+
+		function CreateCabinForm() {
+		  const { register, handleSubmit } = useForm();
+		  // `register` - to register inputs into the hook
+		
+		  function onSubmit(data) {
+		    console.log(data);
+		  }
+		
+		  return (
+		    <Form onSubmit={handleSubmit(onSubmit)}>
+		      <FormRow>
+		        <Label htmlFor="name">Cabin name</Label>
+		        <Input type="text" id="name" {...register("name")} />{" "}
+		        {/* adds `onChange`, and `onBlur` functions */}
+		      </FormRow>
+		
+		      <FormRow>
+		        <Label htmlFor="maxCapacity">Maximum capacity</Label>
+		        <Input type="number" id="maxCapacity" {...register("maxCapacity")} />
+		      </FormRow>
+		
+		      <FormRow>
+		        <Label htmlFor="regularPrice">Regular price</Label>
+		        <Input type="number" id="regularPrice" {...register("regularPrice")} />
+		      </FormRow>
+		
+		      <FormRow>
+		        <Label htmlFor="discount">Discount</Label>
+		        <Input
+		          type="number"
+		          id="discount"
+		          defaultValue={0}
+		          {...register("discount")}
+		        />
+		      </FormRow>
+		
+		      <FormRow>
+		        <Label htmlFor="description">Description for website</Label>
+		        <Textarea
+		          type="number"
+		          id="description"
+		          defaultValue=""
+		          {...register("description")}
+		        />
+		      </FormRow>
+		
+		      <FormRow>
+		        <Label htmlFor="image">Cabin photo</Label>
+		        <FileInput id="image" accept="image/*" />
+		      </FormRow>
+		
+		      <FormRow>
+		        {/* type is an HTML attribute! */}
+		        <Button variation="secondary" type="reset">
+		          Cancel
+		        </Button>
+		        <Button>Add cabin</Button>
+		      </FormRow>
+		    </Form>
+		  );
+		}
+
 ### Handling Form Errors ###
+1. Code: FormRow.jsx
+
+		import styled from "styled-components";
+		import PropTypes from "prop-types";
+		
+		const StyledFormRow = styled.div`
+		  display: grid;
+		  align-items: center;
+		  grid-template-columns: 24rem 1fr 1.2fr;
+		  gap: 2.4rem;
+		
+		  padding: 1.2rem 0;
+		
+		  &:first-child {
+		    padding-top: 0;
+		  }
+		
+		  &:last-child {
+		    padding-bottom: 0;
+		  }
+		
+		  &:not(:last-child) {
+		    border-bottom: 1px solid var(--color-grey-100);
+		  }
+		
+		  &:has(button) {
+		    display: flex;
+		    justify-content: flex-end;
+		    gap: 1.2rem;
+		  }
+		`;
+		
+		const Label = styled.label`
+		  font-weight: 500;
+		`;
+		
+		const Error = styled.span`
+		  font-size: 1.4rem;
+		  color: var(--color-red-700);
+		`;
+		
+		function FormRow({ label, error, children }) {
+		  return (
+		    <StyledFormRow>
+		      {label && <Label htmlFor={children.props.id}>{label}</Label>}
+		      {children}
+		      {/* adds `onChange`, and `onBlur` functions */}
+		      {error && <Error>{error}</Error>}
+		    </StyledFormRow>
+		  );
+		}
+		
+		FormRow.propTypes = {
+		  label: PropTypes.string.isRequired,
+		  error: PropTypes.string,
+		  children: PropTypes.object.isRequired,
+		};
+		
+		export default FormRow;
+
+2. Code: CreateCabinForm.jsx
+
+		import Input from "../../ui/Input";
+		import Form from "../../ui/Form";
+		import Button from "../../ui/Button";
+		import FileInput from "../../ui/FileInput";
+		import Textarea from "../../ui/Textarea";
+		import { useForm } from "react-hook-form";
+		import { useMutation, useQueryClient } from "@tanstack/react-query";
+		import { createCabin } from "../../services/apiCabins";
+		import toast from "react-hot-toast";
+		import FormRow from "../../ui/FormRow";
+		
+		function CreateCabinForm() {
+		  const { register, handleSubmit, reset, getValues, formState } = useForm();
+		  // `register` - to register inputs into the hook
+		
+		  const { errors } = formState;
+		  console.log(errors);
+		
+		  const queryClient = useQueryClient();
+		
+		  const { mutate, isLoading: isAdding } = useMutation({
+		    mutationFn: createCabin,
+		    onSuccess: () => {
+		      toast.success("New cabin successfully created!");
+		      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+		      reset();
+		    },
+		    onError: (err) => toast.error(err.message),
+		  });
+		
+		  function onSubmit(data) {
+		    mutate(data);
+		  }
+		
+		  function onError(errors) {
+		    console.log(errors);
+		  }
+		
+		  return (
+		    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+		      <FormRow label="Cabin name" error={errors?.name?.message}>
+		        <Input
+		          type="text"
+		          id="name"
+		          disabled={isAdding}
+		          {...register("name", {
+		            required: "This field is required",
+		          })}
+		        />
+		        {/* adds `onChange`, and `onBlur` functions */}
+		      </FormRow>
+		
+		      <FormRow label="Maximum capacity" error={errors?.maxCapacity?.message}>
+		        <Input
+		          type="number"
+		          id="maxCapacity"
+		          disabled={isAdding}
+		          {...register("maxCapacity", {
+		            required: "This field is required",
+		            min: {
+		              value: 1,
+		              message: "Capacity should be at least 1",
+		            },
+		          })}
+		        />
+		      </FormRow>
+		
+		      <FormRow label="Regular price" error={errors?.regularPrice?.message}>
+		        <Input
+		          type="number"
+		          id="regularPrice"
+		          disabled={isAdding}
+		          {...register("regularPrice", {
+		            required: "This field is required",
+		            min: {
+		              value: 1,
+		              message: "Price should be at least 1",
+		            },
+		          })}
+		        />
+		      </FormRow>
+		
+		      <FormRow label="Discount" error={errors?.discount?.message}>
+		        <Input
+		          type="number"
+		          id="discount"
+		          disabled={isAdding}
+		          defaultValue={0}
+		          {...register("discount", {
+		            required: "The field is required",
+		            validate: (value) =>
+		              value <= getValues().regularPrice ||
+		              "Discount should be less than regular price",
+		          })}
+		        />
+		      </FormRow>
+		
+		      <FormRow
+		        label="Description for website"
+		        error={errors?.description?.message}
+		      >
+		        <Textarea
+		          type="number"
+		          id="description"
+		          disabled={isAdding}
+		          defaultValue=""
+		          {...register("description", {
+		            required: "This field is required",
+		          })}
+		        />
+		      </FormRow>
+		
+		      <FormRow label="Cabin photo">
+		        <FileInput id="image" accept="image/*" />
+		      </FormRow>
+		
+		      <FormRow>
+		        {/* type is an HTML attribute! */}
+		        <Button variation="secondary" type="reset">
+		          Cancel
+		        </Button>
+		        <Button disabled={isAdding}>Add cabin</Button>
+		      </FormRow>
+		    </Form>
+		  );
+		}
+		
+		export default CreateCabinForm;
+
 ### Uploading Images to Supabase ###
+1. supabase.com
+	1. API Docs
+		1. Introduction
+			1. Javascript
+				1. Upload a file
+	2. Storage
+		1. Policies
+			1. cabin-images
+				1. New policy
+					1. Full customization
+						1. Enable everything for everyone
+2. Code: apiCabins.js
+
+		export async function createCabin(newCabin) {
+		  const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
+		    "/",
+		    ""
+		  );
+		  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+		  // https://pwvrahphsegoojprrclx.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
+		
+		  const { data, error } = await supabase
+		    .from("cabins")
+		    .insert([{ ...newCabin, image: imagePath }])
+		    .select();
+		
+		  if (error) {
+		    console.log(error);
+		    throw new Error("Cabin could not be created");
+		  }
+		
+		  console.log(data);
+		
+		  // 2. Upload image
+		  const { error: storageError } = await supabase.storage
+		    .from("cabin-images")
+		    .upload(imageName, newCabin.image);
+		
+		  // 3. Delete the cabin if there was an error uploading image
+		  if (storageError) {
+		    console.log(storageError);
+		    await supabase.from("cabins").delete().eq("id", data.id);
+		    throw new Error(
+		      "Cabin image could not be uploaded and the cabin was not created"
+		    );
+		  }
+		}
+
 ### Editing a Cabin ###
 ### Abstracting React Query into Custom Hooks ###
-### Duplication Cabins ###
+1. Code: useCabins.js
+
+		import { useQuery } from "@tanstack/react-query";
+		import { getCabins } from "../../services/apiCabins";
+		
+		export function useCabins() {
+		  const {
+		    isLoading,
+		    data: cabins,
+		    // error,
+		  } = useQuery({
+		    queryKey: ["cabins"], // uniquely identifies data we are going to query
+		    queryFn: getCabins, // Function which is used for querying. Needs to return a promise
+		  });
+		  // console.log(x); // We get data, error, states (isLoading, isPaused, isStale, ..., status: "loading")
+		
+		  return { isLoading, cabins };
+		}
+
+2. Code: useCreateCabins.js
+
+		import { useMutation, useQueryClient } from "@tanstack/react-query";
+		import toast from "react-hot-toast";
+		import { createEditCabin } from "../../services/apiCabins";
+		
+		export function useCreateCabin() {
+		  const queryClient = useQueryClient();
+		
+		  const { mutate: addCabin, isLoading: isAdding } = useMutation({
+		    mutationFn: createEditCabin,
+		    onSuccess: () => {
+		      toast.success("New cabin successfully created!");
+		      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+		    },
+		    onError: (err) => toast.error(err.message),
+		  });
+		
+		  return { isAdding, addCabin };
+		}
+
+3. Code: useDeleteCabins.js
+
+		import { useMutation, useQueryClient } from "@tanstack/react-query";
+		import toast from "react-hot-toast";
+		import { deleteCabin as deleteCabinApi } from "../../services/apiCabins";
+		
+		export function useDeleteCabin() {
+		  const queryClient = useQueryClient();
+		
+		  const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
+		    // mutationFn: (id) => deleteCabin(id),
+		    mutationFn: deleteCabinApi,
+		    onSuccess: () => {
+		      toast.success("Cabin successfully deleted");
+		      queryClient.invalidateQueries({
+		        queryKey: ["cabins"],
+		      });
+		    },
+		    onError: (err) => toast.err(err.message), // If there is an error React Query tries to fetch multiple times.
+		  }); // **(M)**
+		
+		  // mutate - callback function that we can connect to the button
+		
+		  return { isDeleting, deleteCabin }; // extracting logic that contains hook into a custom hook. We had two hooks combined into a custom hook
+		}
+
+4. Code: useEditCabins.js
+
+		import { useMutation, useQueryClient } from "@tanstack/react-query";
+		import { createEditCabin } from "../../services/apiCabins";
+		import toast from "react-hot-toast";
+		
+		export function useEditCabin() {
+		  const queryClient = useQueryClient();
+		
+		  const { mutate: editCabin, isLoading: isEditing } = useMutation({
+		    mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
+		    onSuccess: () => {
+		      toast.success("New cabin successfully edited!");
+		      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+		    },
+		    onError: (err) => toast.error(err.message),
+		  });
+		
+		  return { isEditing, editCabin };
+		}
+
+5. Code: CabinTable.jsx
+
+		function CabinTable() {
+		  const { isLoading, cabins } = useCabins(); // re-usable
+
+6. Code: CabinRow.jsx
+
+		function CabinRow({ cabin }) {
+		  const [showForm, setShowForm] = useState(false);
+		  const { isDeleting, deleteCabin } = useDeleteCabin();
+
+7. Code: CreateCabinForm.jsx
+
+		function CreateCabinForm({ cabinToEdit = {} }) {
+		  const isWorking = isAdding || isEditing;
+		
+		  const { isAdding, addCabin } = useCreateCabin();
+		  const { isEditing, editCabin } = useEditCabin();
+
+### Duplicating Cabins ###
+1. Code: CabinRow.jsx
+
+		function CabinRow({ cabin }) {
+		  const [showForm, setShowForm] = useState(false);
+		  const { isDeleting, deleteCabin } = useDeleteCabin();
+		  const { isAdding, addCabin } = useCreateCabin();
+		
+		  const {
+		    id: cabinId,
+		    name,
+		    maxCapacity,
+		    regularPrice,
+		    discount,
+		    image,
+		    description,
+		  } = cabin;
+		
+		  function handleDuplicate() {
+		    addCabin({
+		      name: `Copy of ${name}`,
+		      maxCapacity,
+		      regularPrice,
+		      discount,
+		      image,
+		      description,
+		    });
+		  }
+		
+		  return (
+		    <>
+		      <TableRow role="row">
+		        <Img src={image} />
+		        <Cabin>{name}</Cabin>
+		        <div>Fits up to {maxCapacity} guests</div>
+		        <Price>{formatCurrency(regularPrice)}</Price>
+		        {discount ? (
+		          <Discount>{formatCurrency(discount)}</Discount>
+		        ) : (
+		          <span>&mdash;</span>
+		        )}
+		        <div>
+		          <button onClick={handleDuplicate} disabled={isAdding}>
+		            <HiSquare2Stack />
+		          </button>
+		          <button onClick={() => setShowForm((show) => !show)}>
+		            <HiPencil />
+		          </button>
+		          <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
+		            <HiTrash />
+		          </button>
+		        </div>
+		      </TableRow>
+		      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+		    </>
+		  );
+		}
+
 ### Fetching Applications Settings ###
+1. RLS security policies - Read and Update
+2. Code: useSettings.js
+
+		import { useQuery } from "@tanstack/react-query";
+		import { getSettings } from "../../services/apiSettings";
+		
+		export function useSettings() {
+		  const {
+		    isLoading,
+		    error,
+		    data: settings,
+		  } = useQuery({
+		    queryKey: ["settings"],
+		    queryFn: getSettings,
+		  });
+		
+		  return { isLoading, error, settings };
+		}
+
+3. Code: UpdateSettingsForm.jsx
+
+		import Form from "../../ui/Form";
+		import FormRow from "../../ui/FormRow";
+		import Input from "../../ui/Input";
+		import Spinner from "../../ui/Spinner";
+		import { useSettings } from "./useSettings";
+		
+		function UpdateSettingsForm() {
+		  const {
+		    isLoading,
+		    settings: {
+		      minBookingLength,
+		      maxBookingLength,
+		      maxGuestsPerBooking,
+		      breafastPrice,
+		    } = {},
+		  } = useSettings();
+		
+		  if (isLoading) return <Spinner />;
+		
+		  return (
+		    <Form>
+		      <FormRow label="Minimum nights/booking">
+		        <Input type="number" id="min-nights" defaultValue={minBookingLength} />
+		      </FormRow>
+		      <FormRow label="Maximum nights/booking">
+		        <Input type="number" id="max-nights" defaultValue={maxBookingLength} />
+		      </FormRow>
+		      <FormRow label="Maximum guests/booking">
+		        <Input
+		          type="number"
+		          id="max-guests"
+		          defaultValue={maxGuestsPerBooking}
+		        />
+		      </FormRow>
+		      <FormRow label="Breakfast price">
+		        <Input
+		          type="number"
+		          id="breakfast-price"
+		          defaultValue={breafastPrice}
+		        />
+		      </FormRow>
+		    </Form>
+		  );
+		}
+		
+		export default UpdateSettingsForm;
+
 ### Updating Application Settings ###
+1. Code: useUpdateSetting.js
+
+		import { useMutation, useQueryClient } from "@tanstack/react-query";
+		import toast from "react-hot-toast";
+		import { updateSettingApi } from "../../services/apiSettings";
+		
+		export function useUpdateSetting() {
+		  const queryClient = useQueryClient();
+		
+		  const { mutate: updateSetting, isLoading: isUpdating } = useMutation({
+		    mutationFn: updateSettingApi,
+		    onSuccess: () => {
+		      toast.success("Setting successfully edited!");
+		      queryClient.invalidateQueries({ queryKey: ["settings"] });
+		    },
+		    onError: (err) => toast.error(err.message),
+		  });
+		
+		  return { isUpdating, updateSetting };
+		}
+
+2. Code: UpdateSettingsForm.jsx
+
+		import Form from "../../ui/Form";
+		import FormRow from "../../ui/FormRow";
+		import Input from "../../ui/Input";
+		import Spinner from "../../ui/Spinner";
+		import { useSettings } from "./useSettings";
+		import { useUpdateSetting } from "./useUpdateSetting";
+		
+		function UpdateSettingsForm() {
+		  const {
+		    isLoading,
+		    settings: {
+		      minBookingLength,
+		      maxBookingLength,
+		      maxGuestsPerBooking,
+		      breafastPrice,
+		    } = {},
+		  } = useSettings();
+		
+		  const { isUpdating, updateSetting } = useUpdateSetting();
+		
+		  if (isLoading) return <Spinner />;
+		
+		  function handleUpdate(e, field) {
+		    const { value } = e.target.value;
+		    console.log(value);
+		    if (!value) return;
+		    updateSetting({ [field]: value });
+		  }
+		
+		  return (
+		    <Form>
+		      <FormRow label="Minimum nights/booking">
+		        <Input
+		          type="number"
+		          id="min-nights"
+		          defaultValue={minBookingLength}
+		          disabled={isUpdating}
+		          onBlur={(e) => handleUpdate(e, "minBookingLength")}
+		        />
+		      </FormRow>
+		      <FormRow label="Maximum nights/booking">
+		        <Input
+		          type="number"
+		          id="max-nights"
+		          defaultValue={maxBookingLength}
+		          disabled={isUpdating}
+		          onBlur={(e) => handleUpdate(e, "maxBookingLength")}
+		        />
+		      </FormRow>
+		      <FormRow label="Maximum guests/booking">
+		        <Input
+		          type="number"
+		          id="max-guests"
+		          defaultValue={maxGuestsPerBooking}
+		          disabled={isUpdating}
+		          onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
+		        />
+		      </FormRow>
+		      <FormRow label="Breakfast price">
+		        <Input
+		          type="number"
+		          id="breakfast-price"
+		          defaultValue={breafastPrice}
+		          disabled={isUpdating}
+		          onBlur={(e) => handleUpdate(e, "breafastPrice")}
+		        />
+		      </FormRow>
+		    </Form>
+		  );
+		}
+		
+		export default UpdateSettingsForm;
 
 ## Section 28: Advanced React Patterns ##
 ### Section Overview ###
+1. Topics:
+	1. Advanced patterns used by **senior React engineers** (in most professional code bases)
+	2. Render props
+	3. Higher-order components
+	4. **Compound components**
+	5. Reusable modal window and context menu (we build)
+	6. **Unique** content! (we build)
+
 ### An Overview of Reusability in React ###
+1. How to reuse different types of code in React
+2. How do advanced patterns fit into the picture
+
+#### How to Reuse Code in React? ####
+1. I need to reuse:
+	1. UI
+		1. Components & props
+			1. Use props as a component API, to enable custom behavior.
+				1. To customize how it works, and what it looks like
+			2. Can be:
+				1. Stateless
+				2. Stateful
+				3. Structural
+			3. We can pass content or other components
+				1. Using `children` prop
+					1. To customize the component's content
+	2. Stateful Logic
+		1. Logic that contains at least one React hook
+		2. Custom hooks
+			1. Using any number of any other hooks
+	3. Non-stateful logic
+		1. JS functions will suffice
+	4. **To combine visuals & stateful logic**
+		1. More advanced patterns
+			1. **Render props pattern**
+				1. They are not React features
+					1. They are clever ways to use React that have emerged over time to solve certain patterns
+				2. For complete control over **what** the component renders, by passing in a function that tells the component what to render. Was more commn before hooks, but still useful.
+					1. The function tells the component, what and how to render
+						1. We can reuse logic that has UI (some JSX attached to it) while giving component more ability to recieve more JSX
+							1. This is different from `children` prop
+	5. **Compound component pattern**
+		1. Compound - multiple components that play together to construct one big super-component
+			1. For very self-contained components that need/want to manage their own state (internally). Compound components are like fancy super-components
+				1. The state is not necessary to exist in the parent component that uses the compound component
+
 ### Setting Up an Example ###
+1. Code-sandbox
+	1. [https://codesandbox.io/s/react-render-props-starter-7tomkd](https://codesandbox.io/s/react-render-props-starter-7tomkd)
+	2. Understand the implementation
+		1. We want to re-use the logic and UI for both products & companies
+			1. `children` only allows us to pass in only content
+				1. However, in this case, we want to pass content & how the items need to be rendered
+					1. Solution: Render props pattern
+
 ### The Render Props Pattern ###
+1. A prop called `render` can be passed
+	1. It is a function that a component uses to know:
+		1. What it must render
+		2. How it must render
+2. Example:
+
+		function List({ title, items, render }) {
+			// ...
+			{isOpen && <ul className="List">{displayItems.map(render)}</ul>}
+			// ...
+		}
+
+		<List title="Product" items={products} render={(product) => {
+			<ProductItem key={product.productName} product={product} />
+		}} />
+
+	1. We inverted the control of how it must render to the user of the component
+		1. Inversion of control
+	2. `displayItems.map` only calls the function passed for each item in the array
+		1. It doesn't know what it is rendering
+			1. It makes it easy to use it for other render props
+
+					<List
+						title="companies"
+						items={companies}
+						render={(company) => (
+							<CompanyItem key={company.companyName} company={company} defaultVisibility={false} />
+						)}
+					/>
+
+				1. We were able to re-use collapsing logic
+				2. We were able to re-use showing fewer or more items
+					1. We were able to re-use stateful logic & UI
+	3. `render` - it must be a function
+		1. It was the main way of sharing stateful logic across multiple components
+			1. After React hooks was introduced, the pattern is not used much
+				1. It is used in certain complex situations
+					1. Custom hooks helps us share logic
+
 ### A Look at Higher-Order Components (HOC) ###
+1. It is less used
+	1. Some libraries expose HOCs (hence useful to know, but not know how to write them)
+2. Example: We got the `ProductList` from a third-party vendor, and we cannot change it
+	1. Solution: HOC to enhance or improve the existing component
+		1. What is HOC?
+			1. **A component that takes in another component and returns a new component that is an enhanced version of the original component**
+				1. Example:
+
+						export default function withToggles(WrappedComponent) { // `with` is convention
+							// ...
+							{isOpen && <WrappedComponent {...props} items={displayItems} />
+
+							<button onClick={() => setIsCollapsed(...) />
+						}
+
+						export default App() {
+							const ProductListWithToggles = withToggles(ProductList); // If we pass the original component, it returns an enhanced component
+							// ...
+							<div className='col-2'>
+								{/*<ProductList title='Products HOC' items={products} />*/}
+								<ProductListWithToggles title='Products HOC' items={products} />
+							</div>
+						}
+
 ### The Compound Component Pattern ###
-### Building a Model Window Using a React Portal ###
+1. We can construct a set of related components
+	1. Use-cases:
+		1. Modal windows
+		2. Pagination
+		3. Tables
+		4. ...
+2. Imlementation:
+	1. A parent component is implemented
+	2. Child components are implemented, that belong to the parent, and make sense when used together with parent component
+		1. Example: HTML Select & Option elements
+			1. Select - implements select box
+			2. Option - implements each of the select options inside the select box
+				1. It can only be used inside `Select` element.
+	3. Advantages:
+		1. Highly flexible & highly re-usable components
+		2. Very expressive APIs
+		3. No props
+2. Example: 
+	1. Prop explosion:
+
+			<Counter
+				iconIncrease="+"
+				iconDecrease="-"
+				label="My NOT so flexible counter"
+				hideLabel={false}
+				hideIncrease={false}
+				hideDecrease={false}
+			/>
+
+		1. Solution: 
+
+				<Counter>
+					<Counter.Decrease icon="-" />
+					<Counter.Count />
+					<Counter.Increase icon="+" />
+					<Counter.Label>My super flexible counter</Counter.Label> {/* We could delete this if not required */}
+				</Counter>
+
+			1. We can re-order
+			2. We can delete some and keep the others
+			3. ...
+				1. How to implement this, since we cannot pass any props?
+					1. Using Context API (the biggest use-case of context)
+2. Code:
+
+		import {
+		  createContext,
+		  useContext,
+		  useState,
+		} from "react/cjs/react.production.min";
+		
+		// 1. Creation of a context
+		const CounterContext = createContext();
+		
+		// 2. Creation of a parent component
+		function Counter() {
+		  const [count, setCount] = useState(0);
+		  const increase = () => setCount((c) => c + 1);
+		  const decrease = () => setCount((c) => c - 1);
+		
+		  return (
+		    <CounterContext.provider value={{ count, increase, decrease }}>
+		      <span>{children}</span> {/* children get access to the three values */}
+		    </CounterContext.provider>
+		  );
+		}
+		
+		// 3. Creation of child components to help implementing the common task
+		function Count() {
+		  const { count } = useContext(CounterContext);
+		  return <span>{count}</span>;
+		}
+		
+		function Label({ children }) {
+		  return <span>{children}</span>;
+		}
+		
+		function Increase({ icon }) {
+		  const { increase } = useContext(CounterContext);
+		  return <button onClick={increase}>{icon}</button>;
+		}
+		
+		function Decrease() {
+		  const { decrease } = useContext(CounterContext);
+		  return <button onClick={decrease}>{icon}</button>;
+		}
+		
+		// 4. Add child components as properties to parent component
+		Counter.Count = Count;
+		Counter.Label = Label;
+		Counter.Increase = Increase;
+		Counter.Decrease = Decrease;
+		
+		export default Counter;
+
+	1. Another usage:
+
+			<div>
+				<Counter>
+					<Counter.Decrease icon="<" />
+					<Counter.Count />
+					<Counter.Increase icon=">" />
+				</Counter>
+			</div>
+
+### Building a Modal Window Using a React Portal ###
+1. Re-usable modal component
+2. React Portal:
+	1. A feature that allows us to render an element outside of parent component's DOM structure while keeping the element in the original position of the component tree
+		1. Render a component in any place inside the DOM tree while leaving the component inside the React component tree.
+			1. Use-case: For elements to stay on top of other components
+				1. Tool-tips
+				2. Modal windows
+				3. Menus
+				4. ...
+	2. Why portal?
+		1. To avoid conflicts with css property `overflow` set to `hidden`
+			1. If a developer uses it somewhere else where `overflow: hidden` is set on the parent, the modal will get cut off
+				1. Solution: We render modal completely outside the rest of the DOM. (On top of the DOM tree)
+3. Problems:
+	1. The way we opened the modal
+
 ### Converting the Modal to a Compound Component ###
+1. State:
+	1. We don't want component which uses the modal to be responsible for maintaining the piece of state, and keeping track of whether the modal is open or not.
+		1. `Modal` should keep the state internally (encapsulated)
+			1. We should simply be able to pass content & display inside the modal
+	2. `cloneElement`
+		1. uncommon - can lead to fragile code
+			1. Don't overuse
+		2. Let you construct a new React element using another element as a starting point
+
+				const clonedElement = cloneElement(element, props, ...children);
+
+			1. Usage: overriding props of an element
+
 ### Detecting a Click Outside the Modal ###
 ### Confirming Cabin Deletions ###
 ### Building a Reusable Table ###

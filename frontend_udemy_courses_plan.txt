@@ -1,0 +1,31 @@
+The Complete JavaScript Course 2024: From Zero to... - 5 days
+Bootstrap 5 From Scratch | Build 5 Modern Websites - 15 days
+React Testing Library with Jest / Vitest - 10 days
+-- September 2024
+Advanced CSS and Sass: Flexbox, Grid, Animations a... - 30 days
+-- October 2024
+Sass Workflow - 3 days
+Web Design for Web Developers: Build Beautiful Websites! - 5 days
+The Ultimate React Course 2024: React, Next.js, Redux & More - 20 days
+---- November 2024
+5 + 15 + 10 + 30 + 5 + 20 = 85 days ~ 3 months
+
+React Native - The Practical Guide [2024] - 30 days = 1 month
+---- January 2025
+
+Figma UI UX Design Essentials - 14 days
+The Complete SEO Course from Beginner to... - 16 days
+-- February 2025
+Advanced React Component Patterns - 6 days
+Webpack 2: The Complete Developer's Guide - 6 days
+Learning Path: Functional Programming in JavaScript - 6 days
+Mastering GitHub Copilot for JavaScript and React... - 3 days
+How to Design & Prototype in Adobe XD - 1 day
+-- March 2025
+The Complete Sketch 5 Course - Design Apps &... - 16 days
+Progressive Web Apps (PWA) - The Complete Guide - 16 days
+---- May 2025
+14 + 16 + 6 + 6 + 3 + 6 + 3 + 1 + 16 + 16 = 87 days ~ 3 months
+
+Running a Web Development Business: The Complete... - 20 days ~ 1 month
+---- April 2025

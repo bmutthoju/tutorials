@@ -1,0 +1,57 @@
+Graph Theory Algorithms - 10 days
+PostgreSQL Tutorial (https://www.postgresqltutorial.com/) - 15 days
+Database Design - 5 days
+-- September 2024
+MongoDB - The Complete Dev BootCamp | Beginner - Expert... - 11 days
+Complete Elasticsearch Masterclass with Logstash and Kibana - 6 days
+---- October 2024
+5 + 6 + 11 + 10 + 15 = 47 days ~ 1 1/2 months
+
+Java Multithreading, Concurrency & Performance Optimization - 3 days
+Testing Spring Boot: Beginner to Guru - 20 days
+Advanced Java Topics: Java Reflection - Master Class - 5 days
+-- November 2024
+Reactive Programming with Spring Framework 5 - 13 days
+Ready for Production with Spring Boot Actuator - 3 days
+Microservices Contract Testing with Pact - 4 days
+Distributed Systems & Cloud Computing with Java - 8 days
+-- February 2024
+Advanced Java Challenge - Interview Practice Tests - 5 days
+Java Multithreading & Concurrency - Interview Practice Exams - 5 days
+Azure ChatGPT and OpenAI Service - The Complete Guide - 5 days
+Mastering GitHub Copilot for Java & Spring Boot... - 4 days
+Spring rSocket Masterclass: High Performance... - 10 days
+-- May 2025
+Be a Java professional. Let's implement a database server - 16 days
+Practical Java Concurrency with the Akka Actor Model - 7 days
+Gradle for Java Developers - 5 days
+---- June 2025
+3 + 20 + 13 + 5 + 3 + 4 + 8 + 5 + 4 + 10 + 7 + 16 + 10 = 118 days ~ 4 months
+
+Istio Hands-On for Kubernetes - 14 days
+Helm Kubernetes Packaging Manager for Developers and... - 6 days
+--- April 2025
+14 + 6 = 20 days ~1 month
+
+Software Architecture & Technology of Large-Scale Systems - 25 days
+Software Architecture & Design of Modern Large Scale Systems - 4 days
+-- December 2025
+Software Architecture Security - The Complete Guide - 2 days
+Domain-Driven Design & Microservices for Architects - 11 days
+The Complete Cloud Computing Software Architecture Patterns - 5 days
+Implementing Software Architecture of a Large-Scale... - 12 days
+-- January 2025
+Design Microservices Architecture with Patterns & Principles - 18 days
+Microsoft Azure: Cloud Architecture Case Studies - 4 days
+Software Architecture & System Design Practical Case Studies - 4 days
+Advanced Object Oriented Analysis of Hard Problems... - 10 days
+Software Architecture & System Design - Practice Tests - 5 days
+Software Architecture Interview Questions - 5 days
+--- March 2025
+2 + 11 + 25 + 5 + 18 + 12 + 4 + 4 + 4 + 10 + 10 = 105 days ~ 4 months
+
+Node.js, Express, MongoDB & More: The Complete... - 1 1/2 months
+---- July 2025
+
+Master the Coding Interview: Big Tech (FAANG) Interviews - 1 1/2 months
+Mastering Job Interviews - The Complete Guide - 5 days

@@ -1732,27 +1732,85 @@
 
 		1. Just first document:
 
-				db.<collection>.findOne()
+				db.<collection>.findOne() # gives the first document in the collection
 
 	2. Example:
 
-			db.exam.findOne()
+			db.exam.findOne() # first document
 
 	3. `query` - filter
 		1. Example:
 
 				db.exams.findOne({name: "Geoff"}) # finds first match
+				# Even if there are multiple that matched
+
+				db.exams.find({Math: "C"}) # finds all that match
 
 ### CODE: Understanding findOne() ###
+
+		db.exam.insert(
+			[
+				{
+					name:"Jessica",
+					Math:"A",
+					Science:"B",
+					History:"B"
+				},
+				{
+					name:"Amber",	
+					Math:"C",
+					Science:"A",
+					History:"B"
+				},
+				{
+					name:"Lauren",	
+					Math:"B",
+					Science:"C",
+					History:"A"
+				},
+				{
+					name:"Geoff",	
+					Math:"C",
+					Science:"A",
+					History:"B"
+				},
+				{
+					name:"Caleb",	
+					Math:"B",
+					Science:"B",
+					History:"B"
+				}
+			]
+		)
+
 ### Class & Lab - No Match ###
+1. Returns `null` if there is no match
+
 ### Class & Lab - Query Operators ###
+1. `db.exam.findOne({price: {$gt: 200}})`
+	1. First document that the criterion
+	2. Example:
+
+			db.sales.findOne({unitPrice: {$gt: 18}})
+			db.sales.findOne({unitPrice: {$lt: 18}})
+			db.sales.findOne({unitPrice: {$lt: 5, $gt: 18}})
+
 ### Lab - Exercise and Solution I ###
+
+		db.customers.findOne({city: "Las Vegas"})
+
 ### CODE - Exercise and Solution I ###
 ### Lab - Exercise and Solution II ###
+	
+		db.sales.findOne({unitPrice: {$eq: 40}})
+		db.sales.findOne({unitPrice: {$gt: 18}})
+
 ### CODE - Exercise and Solution II ###
 
 ## Projection ##
 ### Class & Lab - Understanding Projection ###
+1. 
+
 ### CODE: Understanding Projection ###
 ### Lab - Exercise and Solution I ###
 ### CODE: Exercise and Solution I ###

@@ -3466,9 +3466,402 @@
 		
 	1. `ALL` operator must be preceded by a comparison operator such as `=`, `!=`, `>`, `>=`, `<`, or `<=`
 	2. `ALL` operator must be followed by a subquery which also must be surrounded by parantheses
+3. How does it work?
+	1. Assuming subquery returns a non-empty list
+		1. `value > ALL (subquery)` - returns true if value is greater than biggest value returned by the subquery
+		2. `value >= ALL (subquery)` - returns true if value is greater than or equal to the biggest value returned by the subquery
+		3. `value < ALL (subquery)` - returns true if value is less than the smallest value returned by the subquery
+		4. `value <= ALL (subquery)` - returns true if value is less than or equal to the smallest value returned by the subquery
+		5. `value = ALL (subquery)` - returns true if value is equal to every value returned by the subquery
+		6. `value != ALL (subquery)` - returns true if value is equal to none of the values returned by the subquery
+	2. If subquery returns no rows, `ALL` operator evaluates to `true`
+3. Example:
 
-### Overview of the PostgreSQL ALL Operator ###
-### PostgreSQL ALL Operator Examples ###
+		CREATE TABLE employees (
+			id SERIAL PRIMARY KEY,
+			first_name VARCHAR(255) NOT NULL,
+			last_name VARCHAR(255) NOT NULL,
+			salary DECIMAL(10, 2) NOT NULL
+		);
+
+		CREATE TABLE managers (
+			id SERIAL PRIMARY KEY,
+			first_name VARCHAR(255) NOT NULL,
+			last_name VARCHAR(255) NOT NULL,
+			salary DECIMAL(10, 2) NOT NULL
+		);
+
+		INSERT INTO employees (first_name, last_name, salary)
+		VALUES
+		('Bob', 'Williams', 75000.00),
+		('Charlie', 'Davis', 55000.00),
+		('David', 'Jones', 50000.00),
+		('Emma', 'Brown', 48000.00),
+		('Frank', 'Miller', 52000.00),
+		('Grace', 'Wilson', 49000.00),
+		('Harry', 'Taylor', 53000.00),
+		('Ivy', 'Moore', 47000.00),
+		('Jack', 'Anderson', 56000.00),
+		('Kate', 'Hill',  44000.00),
+		('Liam', 'Clark', 59000.00),
+		('Mia', 'Parker', 42000.00);
+
+		INSERT INTO managers (first_name, last_name, salary)
+		VALUES
+		('John', 'Doe',  60000.00),
+		('Jane', 'Smith', 55000.00),
+		('Alice', 'Johnson',  58000.00);
+
+### Using the ALL Operator with the Greater than Operator (>) Example ###
+1. Example:
+
+		SELECT
+			*
+		FROM
+			employees
+		WHERE
+			salary > ALL (
+				SELECT
+					salary
+				FROM
+					managers
+			);
+
+### Using the All Operator with the Less than Operator (<) ###
+1. Example:
+
+		SELECT
+			*
+		FROM
+			employees
+		WHERE
+			salary < ALL (
+				SELECT
+					salary
+				FROM
+					managers
+			);
+
+### Summary ###
+1. `ALL` is used to compare with all values returned by a subquery.
+
+## PostgreSQL INSERT - (16 days) ##
+1. Summary: Learn how to use `INSERT` statement to insert a new row into a table
+
+### Introduction to PostgreSQL INSERT statement ###
+1. Basic syntax:
+
+		INSERT INTO table1(column1, column2, ...)
+		VALUES (value1, value2, ...);
+
+	1. `table1` - name of the table
+		1. `column1`, `column2`, ... - comma separated columns
+	2. `(value1, value2, ...)` - value list (should be in the same order)
+2. `INSERT` returns command tag of the following form:
+
+		INSERT oid count
+
+	1. `OID` - Object identifier
+		1. PostgreSQL used the `OID` internally as a [primary key](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-primary-key/) for its system tables
+			1. Typically, `INSERT` statement returns `OID` with a value of `0`
+	2. `count` is number of rows that `INSERT` statement inserted successfully
+	3. Example:
+
+			INSERT 0 1
+
+### RETURNING clause ###
+1. 
+
+### PostgreSQL INSERT statement examples ###
+#### Basic PostgreSQL INSERT statement example ####
+#### Inserting character string that contains a single quote ####
+#### Inserting a date value ####
+#### Getting the last inserted ID ####
+### Summary ###
+
+## PostgreSQL INSERT Multiple Rows ##
+## PostgreSQL UPDATE ##
+## PostgreSQL UPDATE JOIN ##
+## PostgreSQL DELETE ##
+## PostgreSQL DELETE JOIN ##
+## PostgreSQL UPSERT using INSERT ON CONFLICT Statement ##
+## PostgreSQL MERGE Statement ##
+## PostgreSQL Transaction ##
+## Import CSV File Into PostgreSQL Table ##
+## Export PostgreSQL Table to CSV File ##
+## PostgreSQL Data Types ##
+## PostgreSQL CREATE TABLE ##
+## PostgreSQL SELECT INTO ##
+## PostgreSQL CREATE TABLE AS ##
+## Using PostgreSQL SERIAL to Construct Auto-Increment Column ##
+## PostgreSQL Sequences ##
+## PostgreSQL Identity Column ##
+## PostgreSQL Generated Columns ##
+## PostgreSQL ALTER TABLE ##
+## PostgreSQL Rename Table: A Step-by-Step Guide ##
+## PostgreSQL ADD COLUMN: Add One or More Columns to a Table ##
+## PostgreSQL DROP COLUMN: Remove One or More Columns of a Table ##
+## PostgreSQL Change Column Type ##
+## PostgreSQL RENAME COLUMN: Renaming a Column ##
+## PostgreSQL DROP TABLE ##
+## PostgreSQL TRUNCATE TABLE ##
+## PostgreSQL Temporary Table ##
+## PostgreSQL Copy Table: A Step-by-Step Guide with Practical Examples ##
+## PostgreSQL Primary Key ##
+## PostgreSQL Foreing Key ##
+## PostgreSQL DELETE Cascade ##
+## PostgreSQL CHECK Constraints ##
+## PostgreSQL UNIQUE Constraint ##
+## PostgreSQL Not-Null Constraint ##
+## PostgreSQL DEFAULT Value ##
+## PostgreSQL Boolean Data Type with Practical Examples ##
+## PostgreSQL Character Types: CHAR, VARCHAR, and TEXT ##
+## PostgreSQL NUMERIC Type ##
+## PostgreSQL DOUBLE PRECISION Data Type ##
+## PostgreSQL REAL Data Type ##
+## PostgreSQL Integer Data Types ##
+## PostgreSQL DATE Data Type ##
+## PostgreSQL Timestamp Data Types ##
+## PostgreSQL Interval Data Type ##
+## PostgreSQL TIME Data Type ##
+## PostgreSQL UUID Data Type ##
+## PostgreSQL Array ##
+## PostgreSQL hstore ##
+## PostgreSQL JSON ##
+## A Look at PostgreSQL User-defined Data Types ##
+## PostgreSQL enum ##
+## PostgreSQL XML Data Type ##
+## PostgreSQL BYTEA Data Type ##
+## PostgreSQL Composite Types ##
+## How to Compare Two Tables in PostgreSQL ##
+## How to Generate a Random Number in a Range ##
+## How to Delete Duplicate Rows in PostgreSQL ##
+## PostgreSQL CASE ##
+## PostgreSQL COALESCE ##
+## PostgreSQL ISNULL ##
+## PostgreSQL NULLIF ##
+## PostgreSQL CAST: Convert a value of One Type to Another ##
+## PostgreSQL EXPLAIN ##
+## PostgreSQL DISTINCT ON ##
+## PostgreSQL vs MySQL ##
+## PostgreSQL generate_series() Function ##
+
+## PostgreSQL PL/pgSQL - (7 days) ##
+## Introduction to PostgreSQL PL/pgSQL ##
+## Dollar-Quoted String Constants ##
+## PL/pgSQL Block Structure ##
+## PL/pgSQL Variables ##
+## PL/pgSQL Select Into ##
+## PL/pgSQL Row Types ##
+## PL/pgSQL Record Types ##
+## PL/pgSQL Constants ##
+## PL/pgSQL Errors and Messages ##
+## PL/pgSQL Assert Statement ##
+## PL/pgSQL IF Statement ##
+## PL/pgSQL CASE Statement ##
+## PL/pgSQL Loop Statements ##
+## PL/pgSQL While Loop ##
+## PL/pgSQL For Loop ##
+## PL/pgSQL Exit Statement ##
+## PL/pgSQL Continue Statement ##
+## PostgreSQL Exception ##
+## PostgreSQL Create Function Statement ##
+## PL/pgSQL Function Parameter Modes: IN, OUT, INOUT ##
+## PL/pgSQL Function Overhoading ##
+## How to Develop a PL/pgSQL Function That Returns a Table ##
+## PL/pgSQL Returns SetOf ##
+## PostgreSQL Drop Function ##
+## PostgreSQL CREATE PROCEDURE ##
+## PostgreSQL DROP PROCEDURE Statement ##
+## PostgreSQL Stored Procedure with INOUT Parameters ##
+## PL/pgSQL Cursor ##
+
+## PostgreSQL Triggers - (4 days) ##
+## Introduction to PostgreSQL Trigger ##
+## PostgreSQL CREATE TRIGGER Statement ##
+## PostgreSQL DROP TRIGGER Statement ##
+## PostgreSQL ALTER TRIGGER Statement ##
+## PostgreSQL BEFORE INSERT Trigger ##
+## PostgreSQL AFTER INSERT Trigger ##
+## PostgreSQL BEFORE UPDATE Trigger ##
+## PostgreSQL AFTER UPDATE Trigger ##
+## PostgreSQL BEFORE DELETE Trigger ##
+## PostgreSQL AFTER DELETE Trigger ##
+## PostgreSQL INSTEAD OF Triggers ##
+## PostgreSQL BEFORE TRUNCATE Trigger ##
+## Disable Triggers ##
+## Enable Triggers ##
+## How to List All Triggers in PostgreSQL ##
+## PostgreSQL Event Trigger ##
+## Constructing a PostgreSQL Trigger with a When Condition ##
+
+## PostgreSQL Views - (2 days) ##
+## PostgreSQL CREATE VIEW ##
+## PostgreSQL Drop View ##
+## Create PostgreSQL Updatable Views ##
+## PostgreSQL WITH CHECK OPTION ##
+## PostgreSQL ALTER VIEW Statement ##
+## PostgreSQL Materlized Views ##
+## PostgreSQL Recursive View ##
+## PostgreSQL List Views ##
+
+## PostgreSQL Indexes - (3 days) ##
+## PostgreSQL CREATE INDEX Statement ##
+## PostgreSQL UNIQUE Index ##
+## PostgreSQL Index on Expression ##
+## PostgreSQL Partial Index ##
+## PostgreSQL Multicolumn Indexes ##
+## PostgreSQL REINDEX ##
+## PostgreSQL DROP INDEX ##
+## PostgreSQL List Indexes ##
+## PostgreSQL Index Types ##
+## PostgreSQL Full Text Search ##
+## PostgreSQL JSON Index ##
+
+
+## PostgreSQL Administraion - (10 days) ##
+## PostgreSQL CREATE DATABASE ##
+## PostgreSQL ALTER DATABASE ##
+## PostgreSQL DROP DATABASE ##
+## PostgreSQL Rename Database ##
+## PostgreSQL Copy Database Made Easy ##
+## How to Get Sizes of Database Objects in PostgreSQL ##
+## How to Change the Owner of a PostgreSQL Database ##
+## PostgreSQL Schema ##
+## PostgreSQL CREATE SCHEMA ##
+## PostgreSQL ALTER SCHEMA ##
+## PostgreSQL DROP SCHEMA Statement ##
+## PostgreSQL CREATE ROLE Statement ##
+## PostgreSQL GRANT ##
+## PostgreSQL REVOKE Statement ##
+## PostgreSQL Role Membership ##
+## PostgreSQL SET ROLE Statement ##
+## PostgreSQL CURRENT_USER ##
+## PostgreSQL ALTER ROLE Statement ##
+## PostgreSQL DROP ROLE Statement ##
+## PostgreSQL List Users ##
+## How to Define Superuser in PostgreSQL ##
+## PostgreSQL Row-Level Security ##
+## Reset Forgotten Password For postgres User ##
+## How to Change the Password of a PostgreSQL User ##
+## PostgreSQL CREATE TABLESPACE ##
+## PostgreSQL ALTER TABLESPACE ##
+## PostgreSQL DROP TABLESPACE Statement ##
+## PostgreSQL Backup ##
+## PostgreSQL Restore Database ##
+## PostgreSQL Show Databases ##
+## PostgreSQL Show Tables ##
+## PostgreSQL Describe Table ##
+## 17 Practical psql Commands You Don't Want to Miss ##
+## How to Uninstall PostgreSQL for Ubuntu ##
+## PostgreSQL Password File .pgpass ##
+## PostgreSQL Uptime ##
+## How to Check PostgreSQL Version ##
+## How to Restart PostgreSQL on Ubuntu ##
+## How to Restart PostgreSQL on Windows ##
+## PostgreSQL pg_terminate_backend() Function ##
+
+## PostgreSQL Functions ##
+## PostgreSQL Aggregate Functions ##
+## PostgreSQL AVG Function ##
+## PostgreSQL COUNT Function ##
+## PostgreSQL MAX Function ##
+## PostgreSQL MIN() Function ##
+## PostgreSQL SUM Function ##
+## PostgreSQL ARRAY_AGG Function ##
+## PostgreSQL BOOL_AND() Function ##
+## PostgreSQL STRING_AGG Function ##
+## PostgreSQL BOOL_OR() Function ##
+## PostgreSQL Date Functions ##
+## PostgreSQL CURRENT_DATE Function ##
+## PostgreSQL CURRENT_TIME Function ##
+## PostgreSQL CURRENT_TIMESTAMP Function ##
+## PostgreSQL CLOCK_TIMESTAMP() Function ##
+## PostgreSQL STATEMENT_TIMESTAMP() Function ##
+## PostgreSQL NOW() Function ##
+## PostgreSQL LOCALTIME Function ##
+## PostgreSQL LOCALTIMESTAMP Function ##
+## PostgreSQL DATE_PART() Function ##
+## PostgreSQL EXTRACT() Function ##
+## PostgreSQL TO_DATE() Function ##
+## PostgreSQL TO_TIMESTAMP Function ##
+## PostgreSQL MAKE_DATE() Function ##
+## PostgreSQL MAKE_TIME() Function ##
+## PostgreSQL AGE() Function ##
+## PostgreSQL JUSTIFY_DAYS() Function ##
+## PostgreSQL JUSTIFY_HOURS() Function ##
+## PostgreSQL JUSTIFY_INTERVAL() Function ##
+## PostgreSQL MAKE_INTERVAL() Function ##
+## PostgreSQL AT TIME ZONE Operator ##
+## PostgreSQL DATE_TRUNC() Function ##
+## PostgreSQL ISFINITE() Function ##
+## PostgreSQL TIMEOFDAY() Function ##
+## PostgreSQL PG_SLEEP() Function ##
+## PostgreSQL String Functions ##
+## PostgreSQL ASCII() Function ##
+## PostgreSQL CHR() Function ##
+## PostgreSQL INITCAP() Function ##
+## PostgreSQL POSITION() Function ##
+## PostgreSQL SUBSTRING() Function ##
+## PostgreSQL SPLIT_PART() Function ##
+## PostgreSQL REPLACE() Function ##
+## PostgreSQL REGEXP_REPLACE() Function ##
+## PostgreSQL REGEXP_MATCHES() Function ##
+## PostgreSQL REVERSE() Function ##
+## PostgreSQL REPEAT() Function ##
+## PostgreSQL LENGTH() Function ##
+## PostgreSQL TRIM() Function ##
+## PostgreSQL LTRIM() Function ##
+## PostgreSQL LOWER() Function ##
+## PostgreSQL UPPER() Function ##
+## PostgreSQL RTRIM() Function ##
+## PostgreSQL FORMAT() Function ##
+## PostgreSQL MD5() Function ##
+## PostgreSQL LEFT() Function ##
+## PostgreSQL RIGHT() Function ##
+## PostgreSQL LPAD() Function ##
+## PostgreSQL RPAD() Function ##
+## PostgreSQL CONCAT() Function ##
+## PostgreSQL CONCAT_WS() Function ##
+## PostgreSQL TRANSLATE() Function ##
+## PostgreSQL TO_CHAR() Function ##
+## PostgreSQL TO_NUMBER() Function ##
+## PostgreSQL Math Functions ##
+## PostgreSQL ABS() Function ##
+## PostgreSQL CEIL() Function ##
+## PostgreSQL CBRT() Function ##
+## PostgreSQL DEGREES() Function ##
+## PostgreSQL DIV() Function ##
+## PostgreSQL EXP() Function ##
+## PostgreSQL FLOOR() Function ##
+## PostgreSQL MOD() Function ##
+## PostgreSQL LN() Function ##
+## PostgreSQL LOG() Function ##
+## PostgreSQL POWER() Function ##
+## PostgreSQL RANDOM() Function ##
+## PostgreSQL RADIANS() Function ##
+## PostgreSQL ROUND() Function ##
+## PostgreSQL PI() Function ##
+## PostgreSQL SIGN() Function ##
+## PostgreSQL SCALE() Function ##
+## PostgreSQL SQRT() Function ##
+## PostgreSQL TRUNC() Function ##
+## PostgreSQL TRIM_SCALE() Function ##
+## PostgreSQL WIDTH_BUCKET() Function ##
+## PostgreSQL Window Function ##
+## PostgreSQL CUME_DIST ##
+## PostgreSQL DENSE_RANK ##
+## PostgreSQL FIRST_VALUE ##
+## PostgreSQL LAG ##
+## PostgreSQL LAST_VALUE ##
+## PostgreSQL LEAD ##
+## PostgreSQL NTILE ##
+## PostgreSQL NTH_VALUE ##
+## PostgreSQL PERCENT_RANK ##
+## PostgreSQL RANK ##
+## PostgreSQL ROW_NUMBER ##
+
+## PostgreSQL JSON Functions ##
 
 ---
 ## Section 2: Filtering Data ##
