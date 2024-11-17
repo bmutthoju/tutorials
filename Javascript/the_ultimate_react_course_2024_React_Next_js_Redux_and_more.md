@@ -14802,12 +14802,127 @@ Supabase: Service that allows developers to easily **construct a back-end with a
 
 ## Section 31: PART 5: FULL-STACK REACT WITH NEXT.JS [1 PROJECT] ##
 ### Introduction to Part 5 ###
+1. Taking React to the server
+2. Taking advantage of cutting edge features
+	1. Using Next.js
+3. Topics
+	1. Wind Oasis website
+		1. Server side rendering
+		2. File-based routing
+		3. Suspense
+		4. Server components
+4. Almost mandatory for React JS developers to master Next.js
+
 ### Useful Resources for Part 5 ###
+1. High quality resources while studying this part
+	1. [28 advanced Nest.js features that everyone should know](https://codedrivendevelopment.com/posts/rarely-known-nextjs-features)
+		1. A must read for everyone after finishing the course
+	2. [How React server components work](https://www.plasmic.app/blog/how-react-server-components-work)
+		1. React Server Components - RSC
+			1. Few more visualizations
+	3. [RSC DevTools](https://www.alvar.dev/blog/creating-devtools-for-react-server-components)
+		1. Nice way of visualizing RSC payload in Chrome's DevTools
+	4. [Next.js Image Component Tutorial](https://www.fullstackfoundations.com/blog/nextjs-image-component-tutorial)
+		1. Going deep into `<Image />` component
+	5. [Understanding Next.js cache](https://blog.webdevsimplified.com/2024-01/next-js-app-router-cache/)
+		1. Caching article
+	6. [Static Site Generation (SSG) Next.js documentation page](https://nextjs.org/docs/app/building-your-application/deploying/static-exports)
+	7. [High-quality open-source Next.js app for learning](https://tx.shadcn.com/)
+		1. Codebase to learn a lot from
+2. Framework/Library documentation
+	1. [Next.js documentation](https://nextjs.org/docs)
+	2. [React Server Components documentation](https://react.dev/reference/rsc/server-components)
+		1. Important section
+	3. [Auth.js documentation](https://authjs.dev/getting-started)
 
 ## Section 32: Overview of Next.js with the "App" Router ##
 ### Section Overview ###
+1. Full-stack server-side rendered React Apps with Next.js
+2. Topics
+	1. What is **server-side rendering (SSR)** and why do we need it?
+	2. What is **Next.js**?
+		1. App router
+	3. Deep dive into **React Server Components**
+		1. Diagrams
+
 ### Download Fresh Starter Files + Slides! ###
+1. [https://www.udemy.com/course/the-ultimate-react-course/learn/lecture/38736100#content](https://www.udemy.com/course/the-ultimate-react-course/learn/lecture/38736100#content)
+	1. [ultimate-react-course](https://github.com/jonasschmedtmann/ultimate-react-course)
+
 ### An Overview of Server-Side Rendering (SSR) ###
+1. What is SSR and when should we use it
+
+#### Review: The Rise of Single-Page Applications ####
+1. SSR:
+	1. Old days
+		1. Webpages were rendered on the server and sent to the browser
+	2. Modern days
+		1. A shift to SSR for certain types of apps
+		2. Powered by
+			1. Next.js
+			2. Remix
+			3. Nuxt.js
+			4. SwelteKit
+			5. SolidStart
+		3. The frameworks combine both aspects of SSR and CSR
+			1. Blending both
+2. CSR:
+	1. Modern way
+		1. Webpages are rendered on the browser
+			1. Frameworks to do that
+				1. React
+				2. Vue
+				3. Swelte
+				4. Angular
+		2. We will continue with this for many types of applications
+
+#### Client-Side Rendering (CSR) vs Server-Side Rendering (SSR) ####
+1. CSR
+	1. HTML is rendered on the **client** (the user's computer) using JS
+		1. Generated on the client (user's computer)
+			1. React
+	2. **Problems**
+		1. Slower initial page loads
+			1. Bigger JS bundle needs to be downloaded before app starts running
+				1. It must be completely downloaded until anyting happens on the page
+			2. Data is fetched after components mount (apps require them)
+				1. After they are rendered on the client
+				2. Request waterfall
+					1. **Slows down the entire experience** - main criticism
+		2. SEO can be problematic (if it is a concern)
+			1. Content is not rendered until after JS is executed and data is fetched
+				1. **Search engines might find a blank page, when they try to index the site**
+			2. **It is getting better with SPAs now**
+	3. **Advantage**
+		1. Highly interactive (UX):
+			1. All the code and content has already been loaded (except some data)
+				1. SSP application feel
+		2. **SPAs**: Perfect for building highly interactive web apps
+2. SSR
+	1. HTML is rendered on the **server** (the developer's computer)
+		1. Server sends already generated website to the client whenever requested
+			1. Rendering is transfered to developer's computer
+	2. Done by
+		1. PHP
+		2. Next.js
+	3. **Advantages**
+		1. Faster initial page loads
+			1. Less JS needs to be downloaded and executed
+				1. Client doesn't need JS to render the HTML (already rendered on the server)
+			2. Data is fetched (on the server) before HTML is rendered
+				1. Data is incorporated into the page that is sent to browser
+		2. **Less interactive**
+			1. Pages might be downloaded on demand and require full page reloads
+				1. Navigating from page to page requires server to render a new page each time
+					1. Next.js blurs the line
+						1. **SSR pages get hidrated on the client to become interactive later**
+		3. **SEO-friendly**
+			1. Content is easier for search engines to index
+				1. Pre-generated content is much easier for search engines (Google) to index
+			2. If this is super important, then SSR can be chosen
+				1. **Content-driven websites or apps where SEO is essential:** E-commerce, blogs, news, marketing websites, etc. (SSR is a great choice)
+					1. SEO is crucial for users to get onto the site
+
 ### Experiment: Manual SSR With React DOM + Node.js ###
 ### The Missing Piece: Hydration ###
 ### Implementing Hydration ###
@@ -14854,7 +14969,7 @@ Supabase: Service that allows developers to easily **construct a back-end with a
 ### Making Dynamic Pages Static with generateStaticParams ###
 ### Static Site Generation (SSG) ###
 ### Partial Pre-Rendering ###
-### How Nest.js Caches Data ###
+### How Next.js Caches Data ###
 ### Experimenting with Caching and ISR ###
 ### CHALLENGE #1: Fetching the Number of Cabins ###
 
