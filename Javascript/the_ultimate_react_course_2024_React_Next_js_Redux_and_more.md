@@ -15411,7 +15411,6 @@ Supabase: Service that allows developers to easily **construct a back-end with a
    1. The way we opened the modal
 
 ### Converting the Modal to a Compound Component
-
 1.  State:
 
     1.  We don't want component which uses the modal to be responsible for maintaining the piece of state, and keeping track of whether the modal is open or not.
@@ -15426,97 +15425,281 @@ Supabase: Service that allows developers to easily **construct a back-end with a
                 const clonedElement = cloneElement(element, props, ...children);
 
             1. Usage: overriding props of an element
+2. Code: Modal.jsx
+
+```javascript
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import { HiXMark } from "react-icons/hi2";
+import { createPortal } from "react-dom";
+import { cloneElement, createContext, useContext, useState } from "react";
+
+const StyledModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-grey-0);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 3.2rem 4rem;
+  transition: all 0.5s;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--backdrop-color);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transition: all 0.5s;
+`;
+
+const Button = styled.button`
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  border-radius: var(--border-radius-sm);
+  transform: translateX(0.8rem);
+  transition: all 0.2s;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.9rem;
+
+  &:hover {
+    background-color: var(--color-grey-100);
+  }
+
+  & svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    /* Sometimes we need both */
+    /* fill: var(--color-grey-500);
+    stroke: var(--color-grey-500); */
+    color: var(--color-grey-500);
+  }
+`;
+
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, close, open }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open(opensWindowName) }); // clones the element with new props
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+
+  if (name !== openName) return null;
+
+  return createPortal(
+    <Overlay>
+      <StyledModal>
+        <Button onClick={close}>
+          <HiXMark />
+        </Button>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
+      </StyledModal>
+    </Overlay>,
+    document.body
+  ); // **(M)**. The returned element is a child of `document.body`. The modal is still in the same place in the Component tree.
+}
+
+Modal.Open = Open;
+Modal.Window = Window;
+
+Window.propTypes = {
+  children: PropTypes.object,
+  name: PropTypes.string,
+};
+
+Modal.propTypes = {
+  children: PropTypes.array,
+  onClose: PropTypes.func,
+};
+
+export default Modal;
+```
+
+3. Code: AddCabin.jsx
+
+```javascript
+import Button from "../../ui/Button";
+import CreateCabinForm from "./CreateCabinForm";
+import Modal from "../../ui/Modal";
+import CabinTable from "./CabinTable";
+
+function AddCabin() {
+  return (
+    <Modal>
+      {/* State is maintained here, inside the Modal */}
+      <Modal.Open opens="cabin-form">
+        <Button>Add new cabin</Button>
+      </Modal.Open>
+      <Modal.Window name="cabin-form">
+        <CreateCabinForm />
+      </Modal.Window>
+
+      <Modal.Open opens="table">
+        <Button>Show table</Button>
+      </Modal.Open>
+      <Modal.Window name="table">
+        <CabinTable />
+      </Modal.Window>
+    </Modal>
+  );
+}
+
+export default AddCabin;
+```
 
 ### Detecting a Click Outside the Modal
+1. Code: useOutsideClick.js
+
+```javascript
+import { useEffect, useRef } from "react";
+
+export function useOutsideClick(handler, listenCapturing = true) {
+  const ref = useRef();
+
+  useEffect(() => {
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) handler();
+
+      // ref.current: DOM node that references `StyleModal` element will be stored here
+      // contains: returns true if the current element contains the passed element
+    }
+
+    document.addEventListener("click", handleClick, listenCapturing); // `true`: event will be handled only in capturing phase (when it moves down the tree)
+
+    return () => document.removeEventListener("click", handleClick);
+  }, [handler, listenCapturing]);
+
+  return ref;
+}
+```
 
 ### Confirming Cabin Deletions
+1. We need to be asked if cabin needs to be deleted.
 
 ### Building a Reusable Table
+1. Using compound component pattern
 
 ### Applying the Render Props Pattern
+1. Code: CabinTable.jsx
+
+```javascript
+function CabinTable() {
+  const { isLoading, cabins } = useCabins(); // re-usable
+
+  if (isLoading) return <Spinner />;
+
+  return (
+    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      ...
+      <Table.Body
+        data={cabins}
+        render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
+      />
+    </Table>
+  );
+}
+```
+
+2. Code: Table.jsx
+
+```javascript
+...
+function Body({ data, render }) {
+  if (!data.length) <Empty>No data to show at the moment</Empty>;
+
+  return <StyledBody>{data.map(render)}</StyledBody>;
+}
+...
+```
 
 ### Building a Reusable Context Menu
+1. When a button is clicked, a small context menu appears with the actions of duplicating, editing, and deleting.
 
 ## Section 29: [Optional] Implementing More Features: Authentication, Dark Mode, Dashboard, etc
-
 ### Section Overview
+1. Topics:
+	1. Building real-world app features
+	2. Filter, sort, pagination
+	3. Dark mode
+	4. Dashboard with charts
+	5. Authentication and authorization
+		1. Only logged in users can access the application and data
+			1. Powered by Supabase
 
 ### Client-Side Filtering: Filtering Cabins
+1. Ability to filter cabin data on the client side - make it re-usable (to be used in the future)
+2. Cabin table must be filterable
+	1. Only cabins with discount
+	2. Only cabins without a discount
+3. URL - filter criteria is stored here
 
 ### Client-Side Sorting: Sorting Cabins
+1. Dropdown menu
+	1. Which field we want to sort data by
 
 ### Building the Bookings Table
-
 ### Uploading Sample Data
 
+
 ### API-Side Filtering: Filtering Bookings
-
 ### API-Side Sorting: Sorting Bookings
-
 ### Building a Reusable Pagination Component
-
 ### API-Side Pagination: Paginating Bookings
-
 ### Prefetching with React Query
-
 ### Building the Single Booking Page
-
 ### Checking in a Booking
-
 ### Adding Optional Breakfast
-
 ### Checking Out a Booking (+ Fixing a Small Bug)
-
 ### Deleting a Booking
-
 ### Authentication: User Login with Supabase
-
 ### Authorization: Protecting Routes
-
 ### User Logout
-
 ### Fixing an Important Bug
-
 ### Building the Sign Up Form
-
 ### User Sign Up
-
 ### Authorization on Supabase: Protecting Database (RLS)
-
 ### Building The App Header
-
 ### Updating User Data and Password
-
 ### Implementing Dark Mode with CSS Variables
-
 ### Building the Dashboard Layout
-
 ### Computing Recent Bookings and Stays
-
 ### Displaying Statistics
-
 ### Displaying a Line Chart with the Recharts Library
-
 ### Displaying a Pie Chart
-
 ### Displaying Stays for Current Day
-
 ### Error Boundaries
-
 ### Final Touches + Fixing Bugs
 
 ## Section 30: Deployment with Netlify and Vercel
-
 ### Section Overview
-
 ### Deploying to Netlify
-
 ### Setting Up a Git and GitHub Repository
-
 ### Deploying to Vercel
 
 ## Section 31: PART 5: FULL-STACK REACT WITH NEXT.JS [1 PROJECT]
-
 ### Introduction to Part 5
 
 1. Taking React to the server
@@ -19046,20 +19229,621 @@ export default async function Page() {
 ```
 
 ### Manual Cache Revalidation
+1. Clear cache and refill it
+	1. Time base revalidation - after certain defined time
+	2. On demand revalidation - re-fetch right away (whenever we need it)
+2. Code: actions.js
+
+```javascript
+
+export async function updateGuest(formData) {
+	...
+	revalidatePath("/account/profile");
+}
+```
+
 ### Displaying a Loading Indicator: The useFormStatus Hook
+1. New React hook: `useFormStatus`
+	1. It must be used in a component that is rendered inside a form
+		1. A new component is created that is used inside the form
+2. Code: ReservationForm.js
+
+```javascript
+function ReservationForm({ cabin, user }) {
+	...
+	<div className="flex justify-end items-center gap-6">
+	  <Button />
+	</div>
+	...
+}
+
+function Button() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
+      disabled={pending}
+    >
+      {pending ? "Updating..." : "Update profile"}
+    </button>
+  );
+}
+...
+```
+
 ### Building the Guest's Reservations Page
+1. Code: reservations/page.js
+
+```javascript
+import ReservationList from "@/app/_components/ReservationList";
+import { auth } from "@/app/_lib/auth";
+import { getBookings } from "@/app/_lib/data-service";
+
+export const metadata = {
+  title: "Reservations",
+};
+
+export default async function Page() {
+  const session = await auth();
+  const bookings = await getBookings(session.user.guestId);
+
+  return (
+    <div>
+      <h2 className="font-semibold text-2xl text-accent-400 mb-7">
+        Your reservations
+      </h2>
+
+      {bookings.length === 0 ? (
+        <p className="text-lg">
+          You have no reservations yet. Check out our{" "}
+          <a className="underline text-accent-500" href="/cabins">
+            luxury cabins &rarr;
+          </a>
+        </p>
+      ) : (
+        <ReservationList bookings={bookings} />
+      )}
+    </div>
+  );
+}
+```
+
 ### Deleting a Reservation
+1. To define a server action in SC or CC:
+
+```javascript
+  function deleteReservation() {
+    "use server";
+    // code
+  }
+```
+
+2. `revalidateTag` - We can add a tag to some data. Only the data with tag will be revalidated
+	1. `fetch` function needs to be used
+3. Code: actions.js
+
+```javascript
+...
+export async function deleteReservation(bookingId) {
+  const session = await auth();
+
+  if (!session) throw new Error("You ust be logged in");
+
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingIds = guestBookings.map((booking) => booking.id);
+
+  if (!guestBookingIds.includes(bookingId))
+    throw new Error("You are not allowed to delete this booking");
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+
+  revalidatePath("/account/reservations");
+}
+...
+```
+
 ### Another Loading Indicator: The useTransition Hook
+1. `useTransition` - concurrent feature released in React 18
+	1. Allows us to mark a state update as transition
+		1. When it is marked using `useTransition` hook, the update will happen without blocking the UI (stays responsive during a re-render and indicates that a state transition is happening)
+			1. Updates can be done in the background so that the UI stays responsive
+	2. The hook can be used mark a server action as a transition
+		1. To get indication that something is happening in the background
+2. The hook is used for `button`s
+3. Code: deleteReservation.js
+
+```javascript
+"use client";
+
+import { TrashIcon } from "@heroicons/react/24/solid";
+import { deleteReservation } from "../_lib/actions";
+import { useTransition } from "react";
+import SpinnerMini from "./SpinnerMini";
+
+function DeleteReservation({ bookingId }) {
+  const [isPending, startTransition] = useTransition();
+
+  function handleDelete() {
+    if (confirm("Are you sure you want to delete this reservation?"))
+      startTransition(() => deleteReservation(bookingId)); // marks the function passed as a transition. While this work is pending, `isPending` becomes true
+  }
+
+  return (
+    <button
+      onClick={handleDelete}
+      className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900"
+    >
+      {isPending ? (
+        <>
+          <TrashIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
+          <span className="mt-1">Delete</span>
+        </>
+      ) : (
+        <span className="mx-auto">
+          <SpinnerMini />
+        </span>
+      )}
+    </button>
+  );
+}
+
+export default DeleteReservation;
+```
+
 ### CHALLENGE #1: Updating a Reservation
 ### Removing Reservations Immediately: The useOptimistic Hook
+1. Optimistic UI - Technique to improve percieved performance
+	1. We assume that a certain async operation is successful before it even finished (while it is working on the background)
+2. Example: Remove the reservation from the UI as soon as Delete button is clicked
+	1. If the operation didn't succeed, the data will be revalidated and fetched
+		1. Makes app feel faster and more responsive
+			1. Avoids too many spinner
+			2. Snappy experience
+3. `useOptimistic`
+	1. Allows us to show new state while an async operation is happening
+4. Code: ReservationList.js
+
+```javascript
+"use client";
+
+import { deleteReservation } from "../_lib/actions";
+import ReservationCard from "./ReservationCard";
+import { useOptimistic } from "react";
+
+function ReservationList({ bookings }) {
+  const [optimisticBookings, optimisticDelete] = useOptimistic(
+    bookings,
+    (curBookings, bookingId) => {
+      return curBookings.filter((booking) => booking.id !== bookingId);
+    }
+  ); // two states. Actual state, optimistic state. Initial state & updating function
+  // `bookings` - current state that will be rendered initially
+  // `() => {}` - state update function that determines the next optimistic state. Takes current state & new info required to compute the optimistic state (usually the same as the one required for the async operation)
+  // `optimisticDelete` - Sumilar to the dispatch function. It triggers the optimistic operation
+
+  async function handleDelete(bookingId) {
+    // async operation that runs in the background
+    optimisticDelete(bookingId); // optimistic operation (optimistically deleting first)
+    await deleteReservation(bookingId); // actual operation
+  }
+
+  return (
+    <ul className="space-y-6">
+      {optimisticBookings.map((booking) => (
+        <ReservationCard
+          booking={booking}
+          key={booking.id}
+          onDelete={handleDelete}
+        />
+      ))}
+    </ul>
+  );
+}
+
+export default ReservationList;
+```
+
 ### Back to the Cabin Page: Finishing the Date Selector
-### Constructing a New Rerservation
+1. Code: DateSelector.js
+
+```javascript
+"use client";
+
+import {
+  differenceInDays,
+  isPast,
+  isSameDay,
+  isWithinInterval,
+} from "date-fns";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { useReservation } from "./ReservationContext";
+
+function isAlreadyBooked(range, datesArr) {
+  return (
+    range.from &&
+    range.to &&
+    datesArr.some((date) =>
+      isWithinInterval(date, { start: range.from, end: range.to })
+    )
+  );
+}
+
+function DateSelector({ settings, cabin, bookedDates }) {
+  const { range, setRange, resetRange } = useReservation();
+
+  const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
+  const { regularPrice, discount } = cabin;
+  const { minBookingLength, maxBookingLength } = settings;
+
+  const numNights = differenceInDays(displayRange.to, displayRange.from);
+
+  const cabinPrice = numNights * (regularPrice - discount);
+
+  return (
+    <div className="flex flex-col justify-between">
+      <DayPicker
+        className="pt-12 place-self-center"
+        mode="range"
+        onSelect={setRange}
+        selected={displayRange}
+        min={minBookingLength + 1}
+        max={maxBookingLength}
+        fromMonth={new Date()}
+        fromDate={new Date()}
+        toYear={new Date().getFullYear() + 5}
+        captionLayout="dropdown"
+        numberOfMonths={2}
+        disabled={(curDate) =>
+          isPast(curDate) ||
+          bookedDates.some((date) => isSameDay(date, curDate))
+        }
+      />
+
+      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
+        <div className="flex items-baseline gap-6">
+          <p className="flex gap-2 items-baseline">
+            {discount > 0 ? (
+              <>
+                <span className="text-2xl">${regularPrice - discount}</span>
+                <span className="line-through font-semibold text-primary-700">
+                  ${regularPrice}
+                </span>
+              </>
+            ) : (
+              <span className="text-2xl">${regularPrice}</span>
+            )}
+            <span className="">/night</span>
+          </p>
+          {numNights ? (
+            <>
+              <p className="bg-accent-600 px-3 py-2 text-2xl">
+                <span>&times;</span> <span>{numNights}</span>
+              </p>
+              <p>
+                <span className="text-lg font-bold uppercase">Total</span>{" "}
+                <span className="text-2xl font-semibold">${cabinPrice}</span>
+              </p>
+            </>
+          ) : null}
+        </div>
+
+        {range.from || range.to ? (
+          <button
+            className="border border-primary-800 py-2 px-4 text-sm font-semibold"
+            onClick={resetRange}
+          >
+            Clear
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export default DateSelector;
+```
+
+### Constructing a New Reservation
+1. Code: actions.js
+
+```javascript
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { auth, signIn, signOut } from "./auth";
+import { supabase } from "./supabase";
+import { getBookings } from "./data-service";
+import { redirect } from "next/navigation";
+
+export async function updateGuest(formData) {
+  const session = await auth();
+
+  if (!session) throw new Error("You must be logged in"); // caught by closest error boundary `Error.js`
+
+  const nationalID = formData.get("nationalID");
+  const [nationality, countryFlag] = formData.get("nationality").split("%");
+
+  if (!/^[a-zA-Z0-9]{6,12}$/.test(nationalID))
+    throw new Error("Please provide a valid national ID");
+
+  const updateData = { nationality, countryFlag, nationalID };
+
+  const { data, error } = await supabase
+    .from("guests")
+    .update(updateData)
+    .eq("id", session.user.guestId);
+
+  if (error) throw new Error("Guest could not be updated");
+
+  revalidatePath("/account/profile");
+}
+
+export async function deleteBooking(bookingId) {
+  const session = await auth();
+
+  if (!session) throw new Error("You ust be logged in");
+
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingIds = guestBookings.map((booking) => booking.id);
+
+  if (!guestBookingIds.includes(bookingId))
+    throw new Error("You are not allowed to delete this booking");
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+
+  revalidatePath("/account/reservations");
+}
+
+export async function createBooking(bookingData, formData) {
+  // bound data is sent as `bookingData`, and the remaining form data is sent as `formData`
+  const session = await auth();
+
+  if (!session) throw new Error("You ust be logged in");
+
+  // Object.entries(formData.entries); // for huge form data
+
+  const newBooking = {
+    ...bookingData,
+    guestId: session.user.guestId,
+    numGuests: formData.get("numGuests"),
+    observations: formData.get("observations").slice(0, 1000),
+    extrasPrice: 0,
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: false,
+    status: "unconfirmed",
+  };
+
+  // zod - library to validate input fields
+
+  // console.log(newBooking);
+
+  const { error } = await supabase.from("bookings").insert([newBooking]);
+
+  if (error) throw new Error("Booking could not be created");
+
+  revalidatePath(`/cabins/${bookingData.cabinId}`); // clears browser cache (router cache), for static sites: data cache, full-route cache (on server)
+
+  redirect("/cabins/thankyou");
+}
+
+export async function signInAction() {
+  await signIn("google", { redirectTo: "/account" });
+}
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
+}
+```
+
+2. Code: ReservationForm.js
+
+```javascript
+"use client";
+
+import { differenceInDays } from "date-fns";
+import { useFormStatus } from "react-dom";
+import { createBooking } from "../_lib/actions";
+import { useReservation } from "./ReservationContext";
+import { revalidatePath } from "next/cache";
+import SubmitButton from "./SubmitButton";
+
+function ReservationForm({ cabin, user }) {
+  const { range, resetRange } = useReservation();
+  const { maxCapacity, regularPrice, discount, id } = cabin;
+
+  const startDate = range.from;
+  const endDate = range.to;
+
+  const numNights = differenceInDays(endDate, startDate);
+  const cabinPrice = numNights * (regularPrice - discount);
+
+  const bookingData = {
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+    cabinId: id,
+  };
+
+  const createBookingWithData = createBooking.bind(null, bookingData);
+
+  return (
+    <div className="scale-[1.01]">
+      <div className="bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center">
+        <p>Logged in as</p>
+
+        <div className="flex gap-4 items-center">
+          <img
+            // Important to display google profile images
+            referrerPolicy="no-referrer"
+            className="h-8 rounded-full"
+            src={user.image}
+            alt={user.name}
+          />
+          <p>{user.name}</p>
+        </div>
+      </div>
+
+      <form
+        // action={createBookingWithData}
+        action={async (formData) => {
+          await createBookingWithData(formData);
+          resetRange();
+        }}
+        className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
+      >
+        <div className="space-y-2">
+          <label htmlFor="numGuests">How many guests?</label>
+          <select
+            name="numGuests"
+            id="numGuests"
+            className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+            required
+          >
+            <option value="" key="">
+              Select number of guests...
+            </option>
+            {Array.from({ length: maxCapacity }, (_, i) => i + 1).map((x) => (
+              <option value={x} key={x}>
+                {x} {x === 1 ? "guest" : "guests"}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="observations">
+            Anything we should know about your stay?
+          </label>
+          <textarea
+            name="observations"
+            id="observations"
+            className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+            placeholder="Any pets, allergies, special requirements, etc.?"
+          />
+        </div>
+
+        {/* <div className="flex justify-end items-center gap-6">
+          <Button />
+        </div> */}
+
+        <div className="flex justify-end items-center gap-6">
+          {!startDate && !endDate ? (
+            <p className="text-primary-300 text-base">
+              Start by selecting dates
+            </p>
+          ) : (
+            <SubmitButton pendingLabel="Reserving...">
+              Reserver now
+            </SubmitButton>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function Button() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
+      disabled={pending}
+    >
+      {pending ? "Updating..." : "Update profile"}
+    </button>
+  );
+}
+
+export default ReservationForm;
+```
 
 ## Section 38: Deployment with Vercel
 ### Section Overview
+1. Topics:
+	1. Deploy "The Wild Oasis" website to Vercel
+	2. Set up environment variables and authentication credentials (a little challenging)
+
 ### Setting up the GitHub Repository
+1. `git init`
+2. `git add A`
+3. `git commit -m "Initial commit"`
+4. Github: `the-wild-oasis-website`
+	1. No gitignore, README, ...
+5. Pushing the code:
+
+```bash
+git remote add origin https://github.com/bmutthoju/the-wild-oasis-website.git
+git branch -M main
+git push -u origin main
+```
+
 ### Deploying to Vercel
+1. [https://vercel.com/pricing](https://vercel.com/pricing)
+	1. Cheaper alternatives ([https://opennext.js.org/](https://opennext.js.org/))
+		1. Cloudflare
+		2. Netlify
+	2. Nextjs.com - Vercel
+		1. Has optimizations out of the box
+			1. Image optimization
+			2. Cache
+			3. ...
+2. Deployment
+	1. New project
+		1. Select project
+		2. Environment Veriables
+			1. Copy all in `.env.local`
+			2. Paste
+		3. Deploy
+	2. Continue to dashboard
+		1. Domain
+
 ### Updating Environment Variables and OAuth Credentials
+1. Copy URL
+	1. Settings > Environment Variables
+		1. `NEXTAUTH_URL` - paste the URL
+	2. Needs redeployment
+		1. Env variables are loaded at the beginning when the app is deployed 
+		2. Redeploy
+2. Google Developer Console
+	1. APIs & Services
+		1. Credentials
+			1. Authorized JavaScript origins:
+				1. URIs
+					1. ADD URI: paste the URL
+			2. Authorized redirect URIs
+				1. URIs
+					1. ADD URI: paste the URL + `/api/auth/callback/google`
+		2. Save
+3. Features of Vercel
+	1. Web Analytics
+		1. Enable
+			1. Requires a few changes in the code
+				1. Github push will automatically redeploy the application
+	2. Speed insights
+	3. Logs
+		1. Every request made to the page
 
 ## Section 39: [OPTIONAL] Legacy Next.js: The "Pages" Router
 ### Section Overview
