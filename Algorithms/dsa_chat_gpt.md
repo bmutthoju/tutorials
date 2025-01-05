@@ -1642,3 +1642,429 @@ Collision handling in the context of **hashing** and **hash maps** is crucial wh
 ---
 
 Let me know if you'd like solutions, explanations, or additional resources on any of these problems!
+
+## Give good Anagram Grouping problems for FAANG interviews. ##
+Here are **anagram grouping problems tailored for FAANG interviews**. These problems are designed to test your ability to efficiently manipulate strings, use data structures, and optimize for time and space complexity.
+
+---
+
+### 1. **Classic Group Anagrams**  
+**Problem:**  
+Given an array of strings, group the strings that are anagrams of each other.  
+
+**Constraints:**  
+1. Optimize for both time and space complexity.
+2. Handle edge cases like empty strings or single-character strings.
+
+**Example:**  
+Input: `["eat", "tea", "tan", "ate", "nat", "bat"]`  
+Output: `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`
+
+**Key Concepts:**  
+Hashing, sorting, dictionary usage.
+
+---
+
+### 2. **Find Anagram Pairs in a List**  
+**Problem:**  
+Given an array of strings, count the number of pairs of strings that are anagrams of each other.  
+
+**Constraints:**  
+1. Return only the count of pairs, not the pairs themselves.
+2. Aim for linear or near-linear time complexity.  
+
+**Example:**  
+Input: `["listen", "silent", "enlist", "abc", "bca", "cab"]`  
+Output: `6`  
+Explanation: Pairs are `(listen, silent), (listen, enlist), (silent, enlist), (abc, bca), (abc, cab), (bca, cab)`.
+
+**Key Concepts:**  
+Hashing, counting character frequencies.
+
+---
+
+### 3. **Anagram Subarray Groups**  
+**Problem:**  
+Given an array of strings, find the largest subarray where all strings are anagrams of each other.  
+
+**Constraints:**  
+1. Subarray must be contiguous.  
+2. Return the start and end indices of the subarray.  
+
+**Example:**  
+Input: `["abc", "bca", "cab", "xyz", "yxz", "zxy"]`  
+Output: `(0, 2)`  
+Explanation: The largest contiguous subarray of anagrams is `["abc", "bca", "cab"]`.
+
+**Key Concepts:**  
+Sliding window, hash maps.
+
+---
+
+### 4. **Find All Anagrams of a Target String in a List**  
+**Problem:**  
+Given a target string and a list of words, return all words in the list that are anagrams of the target.  
+
+**Constraints:**  
+1. Target string is fixed, while the list size can be large.
+2. Case-insensitive comparison.  
+
+**Example:**  
+Input: `words = ["enlist", "google", "inlets", "banana", "silent"]`, `target = "listen"`  
+Output: `["enlist", "inlets", "silent"]`
+
+**Key Concepts:**  
+Efficient comparison using sorted strings or character frequency counts.
+
+---
+
+### 5. **Count Anagrammatic Pairs in a String**  
+**Problem:**  
+Given a single string, count the number of pairs of substrings that are anagrams of each other.  
+
+**Constraints:**  
+1. Optimize to avoid generating all substrings explicitly.
+2. Handle strings with repeated characters.  
+
+**Example:**  
+Input: `"abba"`  
+Output: `4`  
+Explanation: The pairs are `("a", "a"), ("b", "b"), ("ab", "ba"), ("abb", "bba")`.
+
+**Key Concepts:**  
+Frequency hash map, combinatorics.
+
+---
+
+### 6. **K-Anagram Grouping**  
+**Problem:**  
+Two strings are called **K-anagrams** if you can replace at most `K` characters in one string to make it an anagram of the other. Group all `K-anagrams` in a list.  
+
+**Constraints:**  
+1. Handle cases with large `K` and long strings.
+2. Group strings that are identical under the K-anagram rule.  
+
+**Example:**  
+Input: `words = ["anagram", "mangaar", "grammar", "rangama"]`, `K = 2`  
+Output: `[["anagram", "mangaar", "rangama"], ["grammar"]]`
+
+**Key Concepts:**  
+Dynamic programming, hash map optimization.
+
+---
+
+### 7. **Anagram Palindrome Groups**  
+**Problem:**  
+Group strings that can form palindromes when rearranged.  
+
+**Constraints:**  
+1. A string can form a palindrome if at most one character has an odd frequency.  
+2. Return grouped strings.  
+
+**Example:**  
+Input: `["civic", "ivicc", "hello", "oellh", "banana"]`  
+Output: `[["civic", "ivicc"], ["hello", "oellh"], ["banana"]]`
+
+**Key Concepts:**  
+Character frequency analysis.
+
+---
+
+### 8. **Largest Anagram Group Size**  
+**Problem:**  
+Find the size of the largest group of anagrams in a list of strings.  
+
+**Constraints:**  
+1. Return only the size, not the group itself.
+2. Handle large input arrays efficiently.  
+
+**Example:**  
+Input: `["rat", "tar", "art", "cat", "act", "bat"]`  
+Output: `3`  
+Explanation: The largest anagram group is `["rat", "tar", "art"]`.
+
+**Key Concepts:**  
+Hashing, sorting.
+
+---
+
+### 9. **Transform to Anagrams with Minimum Swaps**  
+**Problem:**  
+Given two strings of equal length, find the minimum number of adjacent swaps required to transform one string into an anagram of the other.  
+
+**Constraints:**  
+1. Both strings contain the same characters in different orders.  
+2. Optimize for both time and space complexity.  
+
+**Example:**  
+Input: `str1 = "abcd"`, `str2 = "dcba"`  
+Output: `4`
+
+**Key Concepts:**  
+Greedy algorithms, two-pointer techniques.
+
+---
+
+### 10. **Real-Time Anagram Groups**  
+**Problem:**  
+Design a system to group anagrams in real-time as new words are streamed in.  
+
+**Constraints:**  
+1. Maintain a dynamic data structure to update groups on the fly.
+2. Optimize for insertion and query efficiency.  
+
+**Example:**  
+Input: Stream of words: `"tea"`, `"eat"`, `"bat"`, `"ate"`, `"tab"`, `"cat"`.  
+Output after processing:  
+`[["tea", "eat", "ate"], ["bat", "tab"], ["cat"]]`
+
+**Key Concepts:**  
+Dynamic hash maps, streaming algorithms.
+
+---
+
+These problems will challenge candidates to think critically about efficient data structures, algorithm design, and edge case handling—skills essential for FAANG-level interviews.
+
+## Give good Two-Sum and related problems for FAANG interviews. ##
+
+Here’s a list of **Two-Sum and related problems** tailored for FAANG interviews. These problems emphasize mastery of hash maps, sorting, and two-pointer techniques.
+
+---
+
+### 1. **Classic Two-Sum**  
+**Problem:**  
+Given an array of integers `nums` and a target integer `target`, return the indices of the two numbers that add up to the target.  
+
+**Constraints:**  
+1. Assume exactly one solution exists.  
+2. Optimize for time complexity.  
+
+**Example:**  
+Input: `nums = [2, 7, 11, 15], target = 9`  
+Output: `[0, 1]`
+
+**Key Concepts:**  
+Hash map for O(n) time complexity.
+
+---
+
+### 2. **Two-Sum with Duplicates**  
+**Problem:**  
+Given an array of integers, find all unique pairs of numbers that sum to the target.  
+
+**Constraints:**  
+1. Return pairs, not indices.  
+2. Avoid duplicate pairs in the output.  
+
+**Example:**  
+Input: `nums = [2, 7, 11, 15, 2, -2], target = 9`  
+Output: `[[2, 7]]`
+
+**Key Concepts:**  
+Set or sorting with two-pointer technique.
+
+---
+
+### 3. **Two-Sum for Sorted Array**  
+**Problem:**  
+Given a sorted array of integers, return the indices of the two numbers that add up to the target.  
+
+**Constraints:**  
+1. Solve in O(n) time using the two-pointer technique.  
+
+**Example:**  
+Input: `nums = [2, 3, 4, 6], target = 6`  
+Output: `[0, 2]`
+
+**Key Concepts:**  
+Two-pointer approach.
+
+---
+
+### 4. **Two-Sum Closest to Target**  
+**Problem:**  
+Find two numbers in the array whose sum is closest to a given target.  
+
+**Constraints:**  
+1. Return the numbers, not indices.  
+2. Handle edge cases with ties.  
+
+**Example:**  
+Input: `nums = [1, 2, 3, 4, 5], target = 8`  
+Output: `[3, 5]`
+
+**Key Concepts:**  
+Sorting, two-pointer technique.
+
+---
+
+### 5. **Three-Sum**  
+**Problem:**  
+Given an array of integers, find all unique triplets that sum to zero.  
+
+**Constraints:**  
+1. Avoid duplicate triplets.  
+2. Optimize for O(n²) time complexity.  
+
+**Example:**  
+Input: `nums = [-1, 0, 1, 2, -1, -4]`  
+Output: `[[-1, -1, 2], [-1, 0, 1]]`
+
+**Key Concepts:**  
+Sorting and two-pointer technique.
+
+---
+
+### 6. **Four-Sum**  
+**Problem:**  
+Given an array of integers, find all unique quadruplets that sum to a target.  
+
+**Constraints:**  
+1. Avoid duplicate quadruplets.  
+2. Optimize for O(n³) time complexity.  
+
+**Example:**  
+Input: `nums = [1, 0, -1, 0, -2, 2], target = 0`  
+Output: `[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]`
+
+**Key Concepts:**  
+Sorting and k-sum generalization.
+
+---
+
+### 7. **K-Sum**  
+**Problem:**  
+Extend the Two-Sum problem to find `k` numbers in an array that add up to a target.  
+
+**Constraints:**  
+1. Optimize for higher dimensions using recursion.  
+
+**Example:**  
+Input: `nums = [1, 0, -1, 0, -2, 2], target = 0, k = 3`  
+Output: `[[-2, 0, 2], [-1, 0, 1]]`
+
+**Key Concepts:**  
+Recursive backtracking with two-pointer optimization.
+
+---
+
+### 8. **Two-Sum with Multiples**  
+**Problem:**  
+Find all pairs of indices such that the two numbers add up to the target and allow using the same number multiple times.  
+
+**Example:**  
+Input: `nums = [2, 4, 6], target = 8`  
+Output: `[[0, 1], [1, 1]]`
+
+**Key Concepts:**  
+Dynamic programming or nested iteration.
+
+---
+
+### 9. **Two-Sum in a Stream**  
+**Problem:**  
+Design a class that supports adding numbers and finding if any two numbers sum to a target.  
+
+**Example:**  
+```python
+add(1)  
+add(3)  
+add(5)  
+find(4) # True  
+find(7) # False
+```
+
+**Key Concepts:**  
+Hash map for efficient insertion and lookup.
+
+---
+
+### 10. **Subarray Two-Sum**  
+**Problem:**  
+Find the number of subarrays whose elements sum to a given target.  
+
+**Constraints:**  
+1. Subarrays must be contiguous.  
+
+**Example:**  
+Input: `nums = [1, 1, 1], target = 2`  
+Output: `2`  
+Explanation: Subarrays are `[1, 1]` and `[1, 1]`.
+
+**Key Concepts:**  
+Prefix sum with hash map.
+
+---
+
+### 11. **Two-Sum with Absolute Difference**  
+**Problem:**  
+Find all pairs of numbers with an absolute difference equal to a given value.  
+
+**Example:**  
+Input: `nums = [1, 5, 3, 4, 2], diff = 2`  
+Output: `[[1, 3], [3, 5], [2, 4]]`
+
+**Key Concepts:**  
+Sorting and binary search or hash map.
+
+---
+
+### 12. **Weighted Two-Sum**  
+**Problem:**  
+Each number in the array has a weight. Find two numbers such that their weighted sum equals the target.  
+
+**Example:**  
+Input: `nums = [2, 3, 5], weights = [1, 2, 3], target = 11`  
+Output: `[2, 5]` (2×1 + 5×3 = 11)
+
+**Key Concepts:**  
+Sorting, hash map.
+
+---
+
+### 13. **Two-Sum in BST**  
+**Problem:**  
+Given the root of a Binary Search Tree and a target, find if there are two numbers in the tree that sum to the target.  
+
+**Constraints:**  
+1. Solve without flattening the tree into an array.  
+
+**Example:**  
+Input: BST with nodes `[5, 3, 6, 2, 4, null, 7]`, target = 9  
+Output: `True`
+
+**Key Concepts:**  
+In-order traversal with hash set.
+
+---
+
+### 14. **Two-Sum Modulo Problem**  
+**Problem:**  
+Find all pairs of numbers in the array whose sum modulo a given value equals a target remainder.  
+
+**Example:**  
+Input: `nums = [2, 3, 7, 11, 6], mod = 5, target = 2`  
+Output: `[[2, 11], [3, 6]]`
+
+**Key Concepts:**  
+Hash map for modular arithmetic.
+
+---
+
+### 15. **Two-Sum for a Rotated Array**  
+**Problem:**  
+Given a rotated sorted array, find two numbers that sum to a target.  
+
+**Constraints:**  
+1. Solve in O(n) time.  
+
+**Example:**  
+Input: `nums = [6, 7, 8, 1, 2, 3], target = 9`  
+Output: `[6, 3]`
+
+**Key Concepts:**  
+Modified two-pointer approach with rotation detection.
+
+---
+
+These problems cover a range of difficulties and techniques and are commonly asked at FAANG interviews to test problem-solving, optimization, and understanding of data structures.

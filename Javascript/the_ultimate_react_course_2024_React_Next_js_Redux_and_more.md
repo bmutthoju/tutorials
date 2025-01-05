@@ -15662,42 +15662,253 @@ function Body({ data, render }) {
 
 ### Building the Bookings Table
 ### Uploading Sample Data
-
-
 ### API-Side Filtering: Filtering Bookings
+1. We want to do filtering on the server side (API side)
+	1. API should send only the bookings that have a particular status
+2. Code: useBookings.js
+
+```javascript
+import { useQuery } from "@tanstack/react-query";
+import { getBookings } from "../../services/apiBookings";
+import { useSearchParams } from "react-router-dom";
+
+export function useBookings() {
+  // It flexibly reads filter value from the URL
+  const [searchParams] = useSearchParams();
+
+  // FILTER
+  const filterValue = searchParams.get("status");
+  const filter =
+    !filterValue || filterValue === "all"
+      ? null
+      : { field: "status", value: filterValue };
+  // { field: "totalPrice", value: 5000, method: "gte" };
+
+  const {
+    isLoading,
+    data: bookings,
+    error,
+  } = useQuery({
+    queryKey: ["bookings", filter], // uniquely identifies data we are going to query. Whenever filter changes, React Query re-fetches data (dependency array). New query key is created and data is stored in cache.
+    queryFn: () => getBookings({ filter }), // Function which is used for querying. Needs to return a promise
+  });
+  // console.log(x); // We get data, error, states (isLoading, isPaused, isStale, ..., status: "loading")
+
+  return { isLoading, error, bookings };
+}
+
+```
+
 ### API-Side Sorting: Sorting Bookings
 ### Building a Reusable Pagination Component
 ### API-Side Pagination: Paginating Bookings
 ### Prefetching with React Query
+1. What is prefetching
+	1. Fetching some data that we know might become necessary before we need the data to render it on the UI
+		1. We fetch the next page before it is displayed
+			1. If page=7, we have page=8 in cache
+				1. It loads is on the fly otherwise
+2. Code: useBookings.js
+
+```
+  // PRE-FETCHING'
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  if (page < pageCount)
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filter, sortBy, page + 1],
+      queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
+    });
+
+  if (page > 1)
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filter, sortBy, page - 1],
+      queryFn: () => getBookings({ filter, sortBy, page: page - 1 }),
+    });
+```
+
+3. Infinite Queries - for infinite scroll
+	1. React Query feature - Documentation
+
 ### Building the Single Booking Page
+1. Rule: A page should not fetch data and should not have any side-effects (makes pages folder a lot cleaner)
+
 ### Checking in a Booking
 ### Adding Optional Breakfast
 ### Checking Out a Booking (+ Fixing a Small Bug)
 ### Deleting a Booking
+1. `onSettled` - always executed whether success or not.
+
 ### Authentication: User Login with Supabase
+1. Supabase
+	1. Authentication tab
+		1. Providers
+			1. Email provider - enabled by default
+				1. Deactivate Confirm email
+			2. Github
+			3. Azure
+			4. ...
+		2. Users
+			1. Add user
+				1. Email: ...
+				2. Password: ...
+				3. Create user
+		3. API Docs
+			1. Authentication
+				1. JWT is used
+			2. User Management
+				1. Sign up
+				2. Sign in
+					1. Log in With Email/Password
+				3. OAuth
+				4. Reset
+				5. Updating
+				6. Logging out
+	2. Supabase changes the auth token in local storage
+2. Authorization - protecting routes from access to non-authenticated users 
+
 ### Authorization: Protecting Routes
+1. Each time we reload a page, we want to fetch the user and verify
+
 ### User Logout
 ### Fixing an Important Bug
+1. `queryClient.setQueryData(["user"], user.user);`
+
 ### Building the Sign Up Form
+1. Since the application is used only by internal staff, so users can be signed up in the application
+
 ### User Sign Up
+1. Turn on Confirm email
+	1. Sign up works only if they have confirmed the email address
+		1. Email Templates:
+		2. URL Configuration (need to be updated when deployed to a production server)
+			1. Site URL: http://localhost:5173/dashboard (for redirection)
+			2. Redirect URL: http://localhost:5173
+	2. temp-mail.org - for temporary emails
+		1. Copy the email
+			1. We get emails into inbox
+	3. New user
+		1. New email address
+		2. Any password
+			1. New user gets created in Users table
+				1. Waiting for verification
+					1. We need to open the email and click on confirm your email
+
 ### Authorization on Supabase: Protecting Database (RLS)
+1. Row Level Security policies
+	1. Malicious user can figure out URLs from the HTML pages
+		1. Solution: RLS
+			1. Policies
+				1. Apply all to authenticated users only
+					1. Target role: authenticated
+
 ### Building The App Header
 ### Updating User Data and Password
+1. Storage
+	1. Policies
+		1. Custom access
+			1. Policy name: Allow access for auth users
+			2. Select, Insert, Update, Delete
+			3. Authenticated (users)
+		2. We can change policies to allow only authenticated users
+
 ### Implementing Dark Mode with CSS Variables
 ### Building the Dashboard Layout
 ### Computing Recent Bookings and Stays
 ### Displaying Statistics
 ### Displaying a Line Chart with the Recharts Library
+1. Recharts: `npm i recharts@2`
+	1. Go through the documentation
+
 ### Displaying a Pie Chart
 ### Displaying Stays for Current Day
 ### Error Boundaries
+1. Errors that might occur during React rendering
+	1. Getting white screen in production is unaccaptable
+		1. Solution: Error Boundaries
+			1. Like try-catch for React (quite hard to use in React - Use class components)
+				1. Solution: `npm i react-error-boundary`
+					1. Error boundaries only catch errors while React is rendering
+						1. Don't catch: event handler errors, bugs in async code are not caught
+
 ### Final Touches + Fixing Bugs
+1. `e.stopPropagation()`
+	1. The `stopPropagation()` method of the `Event` interface prevents further propagation of the current event in the capturing and bubbling phases.
+2. React Dev tools don't appear in production
+3. Suggestions:
+	1. New bookings from the application
+	2. Edit booking
+	3. Add checkin and checkout times
+	4. Implement changing prices for cabins for each day
+	5. Add restaurant
+		1. A new page - register a bill value when customer goes to restaurant
+	6. Checkout can lead to a page that generates PDF invoice and mail to user
 
 ## Section 30: Deployment with Netlify and Vercel
 ### Section Overview
+1. Topics:
+	1. Let's finish by deploying our project
+	2. Top hosting providers: Netlify and Vercel
+		1. Upload prod build to Netlify
+	3. Git and GitHub
+	4. Continuous deployment (with Vercel - Similar to what real companies do)
+
 ### Deploying to Netlify
+1. Application bundle
+	1. Vite takes all the files and bundle them into a single file which is deployed to production (and other related files)
+	
+	```
+	npm run build
+	```
+	
+	2. If the bundle is too big, we could use code-splitting, but the application is behind a login and used internally, so it is not required.
+	3. Generates: `dist` folder
+2. [https://netlify.com](https://netlify.com)
+	1. VS Code
+		1. `dist/netlify.toml` (also copy into the main `public` folder (it is automatically copied to the `dist` folder))
+		
+		```
+		[[redirects]]
+		from = "/*"
+		to = "/index.html"
+		status = 200
+		```
+		
+	2. Login with Github
+		1. Add new site
+			1. Deploy manually
+				1. Drag and drop `disk` folder
+	3. Site overview
+		1. Site settings: the-wild-oasis (it must be available)
+	4. We can buy our own domain name
+		1. Domain settings
+	5. Deploy:
+		1. Deploys - Drag and drop
+
 ### Setting Up a Git and GitHub Repository
 ### Deploying to Vercel
+1. Free for small projects. Good hosting provider for React projects
+2. Netlify
+	1. New site
+		1. Import an existing project
+			1. Github Account
+			2. Select the project
+3. [https://vercel.com](https://vercel.com)
+	1. For Next.js and React.js apps
+	2. Sign up
+		1. Continue with GitHub
+			1. Add new
+				1. Select git repo from the list
+					1. Import
+						1. Framework - Vite
+						2. Build and Output Settings
+							1. Build command - npm run build (override is not required) - Vercel will do it
+								1. Each time we commit and push to GitHub, vercel will detect and run the command and deploy
+						3. Deploy
+							1. Continue to Dashboard
+								1. Domain - Vercel chooses based on the name of the repo
+				2. Settings
+	3. Preferred way to deploy - makes is easy to push changes.
 
 ## Section 31: PART 5: FULL-STACK REACT WITH NEXT.JS [1 PROJECT]
 ### Introduction to Part 5
