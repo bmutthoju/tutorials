@@ -3570,25 +3570,487 @@
 			INSERT 0 1
 
 ### RETURNING clause ###
-1. 
+1. Optional `RETURNING` **(M)** clause
+	1. It returns information of inserted row
+		1. `*` returns the entire inserted row
+		
+		```sql
+		INSERT INTO table1 (column1, column2, ...)
+		VALUES (value1, value2, ...)
+		RETURNING *;
+		```
+		
+		2. `id` returns the id of the inserted row
+		
+		```sql
+		INSERT INTO table1 (column1, column2, ...)
+		VALUES (value1, value2, ...)
+		RETURNING id;
+		```
+		
+		3. `AS` keyword is used to rename the returned output
+		
+		```sql
+		INSERT INTO table1 (column1, column2, ...)
+		VALUES (value1, value2, ...)
+		RETURNING output_expression AS output_name;
+		```
+		
+2. To insert multiple rows: [https://neon.tech/postgresql/postgresql-tutorial/postgresql-insert-multiple-rows](https://neon.tech/postgresql/postgresql-tutorial/postgresql-insert-multiple-rows)
+
+```sql
+INSERT INTO table_name (column_list)
+VALUES
+    (value_list_1),
+	(value_list_2),
+	(value_list_3),
+	...
+	(value_list_n);
+```
 
 ### PostgreSQL INSERT statement examples ###
+1. New table creation:
+
+```sql
+CREATE TABLE links (
+  id SERIAL PRIMARY KEY,
+  url VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
+  last_update DATE
+);
+```
+
 #### Basic PostgreSQL INSERT statement example ####
+1. Example:
+
+```sql
+INSERT INTO links (url, name)
+VALUES ('https://neon.tech/postgresql', 'PostgreSQL Tutorial');
+```
+
+```sql
+-- output
+INSERT 0 1
+```
+
+2. To insert character data, we eclose it in single quotes `''`
+3. `NOT NULL` - An error is thrown if value is not provided
+	1. Otherwise, a default value is used
+		1. `NULL` is used for `description` column
+4. `SERIAL` - Automatically generates a sequential number for serial column
+
 #### Inserting character string that contains a single quote ####
+1. To insert a string containing `'`, we need to use additional `'` to escape it
+
+```sql
+INSERT INTO links (url, name)
+VALUES ('http://www.oreilly.com', 'O''Reilly Media');
+```
+
 #### Inserting a date value ####
+1. Use date in the format `'YYYY-MM-DD'` **(M)**
+
+```sql
+INSERT INTO links (url, name, last_update)
+VALUES ('https://www.google.com', 'Google', '2013-06-01');
+```
+
 #### Getting the last inserted ID ####
+1. Use `RETURNING` clause.
+2. Example:
+
+```sql
+INSERT INTO links (url, name)
+VALUES ('https://www.postgresql.org', 'PostgreSQL')
+RETURNING id;
+```
+
+```sql
+INSERT INTO links (url, name)
+VALUES ('https://www.postgresql.org', 'PostgreSQL')
+RETURNING id, url;
+```
+
 ### Summary ###
+1. `RETURNING` - to get inserted rows
 
 ## PostgreSQL INSERT Multiple Rows ##
+### Inserting multiple rows into a table ###
+1. Syntax:
+
+```sql
+INSERT INTO table_name (column_list)
+VALUES
+  (value_list_1),
+  (value_list_2),
+  (value_list_3),
+  ...
+  (value_list_n);
+```
+
+2. Syntax:
+	1. Specify name of the table to insert data into
+	2. List the required columns of the table in parantheses
+	3. Supply a comma separated list of rows after `VALUES` keyword
+3. To return multiple rows after inserting:
+
+```sql
+INSERT INTO table_name (column_list)
+VALUES
+  (value_list_1),
+  (value_list_2),
+  ...
+  (value_list_n)
+RETURNING * | output_expression;
+```
+
+4. Advantages of inserting multiple rows compared to one row at a time:
+	1. Performance: Reduces the number of round-trips between an application and PostgreSQL server
+	2. Atomicity: Entire `INSERT` statement is atomic (either all rows are inserted, or none are).
+		1. Ensures data consistency
+
+### Inserting multiple rows into a table examples ###
+#### Setting up a sample table ####
+
+```sql
+CREATE TABLE contacts (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(384) NOT NULL UNIQUE,
+);
+```
+
+#### Basic inserting multiple rows example ####
+1. Example:
+
+```sql
+INSERT INTO contacts (first_name, last_name, email)
+VALUES
+  ('John', 'Doe', '[[email protected]](../cdn-cgi/l/email-protection.html)'),
+  ('Jane', 'Smith', '[[email protected]](../cdn-cgi/m/email-protection.html)'),
+  ('Bob', 'Johnson', '[[email protected]](../cdn-cgi/n/email-protection.html)');
+  
+SELECT * FROM contacts;
+```
+
+#### Inserting multiple rows and returning inserted rows ####
+1. Example:
+
+```sql
+INSERT INTO contacts (first_name, last_name, email)
+VALUES
+  ('Alice', 'Johnson', '[[email protected]](../cdn-cgi/o/email-protection.html)'),
+  ('Charlie', 'Brown', '[[email protected]](../cdn-cgi/p/email-protection.html)')
+RETURNING *;
+```
+
+1. Example: Returning id list only
+
+```sql
+INSERT INTO contacts (first_name, last_name, email)
+VALUES
+  ('Eva', 'Williams', '[[email protected]](../cdn-cgi/q/email-protection.html)'),
+  ('Michael', 'Miller', '[[email protected]](../cdn-cgi/r/email-protection.html)'),
+  ('Sophie', 'Davis', '[[email protected]](../cdn-cgi/s/email-protection.html)')
+RETURNING id;
+```
+
+### Summary ###
+
 ## PostgreSQL UPDATE ##
+**Summary**: How to use `UPDATE` statement to update existing data in a table
+
+### Introduction to the PostgreSQL UPDATE statement ###
+1. `UPDATE` allows us to update data in one or more columns of one or more rows in a table
+2. Syntax:
+
+```sql
+UPDATE table_name
+SET column1 = value1,
+SET column2 = value2,
+    ...
+WHERE condition;
+```
+
+2. Explanation:
+	1. `table_name` - name of table to update data. Comes after `UPDATE` clause
+	2. `SET` - column name is specified after the keyword
+		1. The columns that do not appear in the `SET` clause retain their original values
+	3. `WHERE` - determines which rows to update
+		1. It is optional.
+			1. If omitted, all rows are updated.
+3. Return: `UPDATE count`
+	1. `count` - number of rows updated (including rows whose values did not change)
+
+#### Returning updated rows ####
+1. `RETURNING` - returns updated rows
+
+```sql
+UPDATE table_name
+SET column1 = value1,
+SET column2 = value2,
+    ...
+WHERE condition
+RETURNING * | output_expression AS output_name;
+```
+
+### PostgreSQL UPDATE examples ###
+1. Some examples of `UPDATE` statement
+
+#### Setting up a sample table ####
+1. Table creation:
+
+```sql
+CREATE TABLE courses (
+  course_id serial PRIMARY KEY,
+  course_name VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  description VARCHAR(500),
+  published_date date
+);
+
+INSERT INTO courses (course_name, price, description, published_date)
+VALUES
+('PostgreSQL for Developers', 299.99, 'A complete PostgreSQL for Developers', '2020-07-13'),
+('PostgreSQL Admininstration', 349.99, 'A PostgreSQL Guide for DBA', NULL),
+('PostgreSQL High Performance', 549.99, NULL, NULL),
+('PostgreSQL Bootcamp', 777.99, 'Learn PostgreSQL via Bootcamp', '2013-07-11'),
+('Mastering PostgreSQL', 999.98, 'Mastering PostgreSQL in 21 Days', '2012-06-30');
+
+SELECT * FROM courses;
+```
+
+### Basic PostgreSQL UPDATE example ###
+1. To update course with id 3 by changing the `published_date` to `'2020-08-01`
+
+```sql
+UPDATE courses
+SET published_date = '2020-08-01'
+WHERE course_id = 3;
+```
+
+2. Return: `UPDATE 1`
+3. The following statement retrieves course with id 3 to verify the update:
+
+```sql
+SELECT course_id, course_name, published_date
+FROM courses
+WHERE course_id = 3;
+```
+
+### Updating a row and returning the updated row ###
+1. Statement to `UPDATE` `published_date` of course with id 2 to `'2020-07-01'` and return updated course:
+
+```sql
+UPDATE courses
+SET published_date = '2020-07-01'
+WHERE course_id = 2
+RETURNING *;
+```
+
+### Updating a column with an expression ###
+1. `UPDATE` price by increasing it by 5%:
+
+```sql
+UPDATE courses
+SET price = price * 1.05;
+```
+
+2. Output: `UPDATE 5`
+3. To retrieve all courses:
+
+```sql
+SELECT * FROM courses;
+```
+
+```sql
+SELECT
+  course_name,
+  price
+FROM
+  courses;
+```
+
+### Summary ###
+
 ## PostgreSQL UPDATE JOIN ##
+1. How to update data in a table based on values in another table
+
+### Introduction to the PostgreSQL UPDATE join syntax ###
+1. We use PostgreSQL `UPDATE` join
+2. Syntax:
+
+```sql
+UPDATE table1
+SET table1.c1 = new_value
+FROM table2
+WHERE table1.c2 = table2.c2;
+```
+
+3. `FROM` - joins `table1` with `table2`
+	1. Must appear soon after the `SET` clause
+4. `WHERE` - join condition
+5. Logic:
+	1. For each row of `table1`, `UPDATE` statement examines if a row in `table2` can be found with such that the `c2` value in `table1` row equals the `c2` value in `table2` row. If a matching row is found, `c1` value in the `table1` row is updated to the `new_value`.
+
+### PostgreSQL UPDATE JOIN example ###
+1. `product_segment` stores `Grand Luxury`, `Luxury`, or `Mass`
+	1. It has `discount` column that stores the discount percentage based on a specific segment
+		1. Grand Luxury: 5%
+		2. Luxury: 6%
+		3. Mass: 10%
+		
+```sql
+CREATE TABLE product_segment (
+  id SERIAL PRIMARY KEY,
+  segment VARCHAR NOT NULL,
+  discount NUMERIC(4, 2)
+);
+
+INSERT INTO
+  product_segment (segment, discount)
+VALUES
+  ('Grand Luxury', 0.05),
+  ('Luxury', 0.06),
+  ('Mass', 0.1);
+```
+
+2. `product` - stores product data.
+	1. `segment_id` - foreign key column (links `id` of `product_segment` table)
+	
+```sql
+CREATE TABLE product (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  price NUMERIC(10, 2),
+  net_price NUMBERIC(10, 2),
+  segment_id INT NOT NULL,
+  FOREIGN KEY(segment_id) REFERENCES product_segment(id)
+);
+
+INSERT INTO
+  product (name, price, segment_id)
+VALUES
+  ('diam', 804.89, 1),
+  ('vestibulum aliquet', 228.55, 3),
+  ('lacinia erat', 366.45, 2),
+  ('scelerisque quam turpis', 145.33, 3),
+  ('justo lacinia', 551.77, 2),
+  ('ultrices mattis odio', 261.58, 3),
+  ('hendrerit', 519.62, 2),
+  ('in hac habitasse', 843.31, 1),
+  ('orci eget orci', 254.18, 3),
+  ('pellentesque', 427.78, 2),
+  ('sit amet nunc', 936.29, 1),
+  ('sed vestibulum', 910.34, 1),
+  ('turpis eget', 208.33, 3),
+  ('cursus vestibulum', 985.45, 1),
+  ('orci nullam', 841.26, 1),
+  ('est quam pharetra', 896.38, 1),
+  ('posuere', 575.74, 2),
+  ('ligula', 530.64, 2),
+  ('convallis', 892.43, 1),
+  ('nulla elit ac', 161.71, 3);
+```
+
+3. Problem: Calculate the net price of every product based on the discount of the product segment.
+
+```sql
+UPDATE product
+SET net_price = price * (1 - discount)
+FROM product_segment
+WHERE product.segment_id = product_segment.id;
+```
+
+4. Making query shorter using table aliases:
+
+```sql
+UPDATE
+  product p
+SET 
+  net_price = price * (1 - discount)
+FROM 
+  product_segment s
+WHERE
+  p.segment_id = s.id;
+RETURNING *;
+```
+
+### Summary ###
+1. `UPDATE` join is used to update data in a table based on values in another table
+
 ## PostgreSQL DELETE ##
+1. Summary: How to use `DELETE` statement to delete data from a table.
+
+### Introduction to PostgreSQL DELETE statement ###
+1. `DELETE` allows us to delete one or more rows in a table
+2. Basic syntax:
+
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+
+	1. Specify name (`table_name`) of the table from which we want to delete data after `DELETE FROM`
+	2. `WHERE` - used to specify condition to determine the rows to delete
+		1. If ommitted, all rows will be deleted.
+	3. Returns the number of rows deleted
+3. `RETURNING` - to return the deleted rows to the client
+
+```sql
+DELETE FROM table_name
+WHERE condition
+RETURNING (select_list | *)
+```
+
+	1. `*` - all columns of deleted rows
+4. Delete Join - to delete data based on data in another table
+5. `ON DELETE CASCADE` - **(M)**
+
+### PostgreSQL DELETE statement examples ###
+#### Setting up a sample table ####
+1. `todos` creation and insertion of data:
+
+```sql
+CREATE TABLE todos (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  completed BOOLEAN NOT NULL DEFAULT false
+);
+
+INSERT INTO todos (title, completed)
+VALUES
+  ('Learn basic SQL syntax', true),
+  ('Practice writing SELECT queries', false),
+  ('Study PostgreSQL data types', true),
+  ('Create and modify tables', false),
+  ('Explore advanced SQL concepts', true),
+  ('Understand indexes and optimization', false),
+  ('Backup and restore databases', true),
+  ('Implement transactions', false),
+  ('Master PostgreSQL security features', true),
+  ('Build a sample application with PostgreSQL', false);
+  
+SELECT * FROM todos;
+```
+
+#### Using PostgreSQL DELETE to delete one row from the table ####
+#### Using PostgreSQL DELETE to delete a row and return the deleted row ####
+#### Using PostgreSQL DELETE to delete multiple rows from the table ####
+#### Using PostgreSQL DELETE to delete all rows from the table ####
+### Summary ###
+
 ## PostgreSQL DELETE JOIN ##
 ## PostgreSQL UPSERT using INSERT ON CONFLICT Statement ##
 ## PostgreSQL MERGE Statement ##
+
 ## PostgreSQL Transaction ##
+
 ## Import CSV File Into PostgreSQL Table ##
 ## Export PostgreSQL Table to CSV File ##
+
 ## PostgreSQL Data Types ##
 ## PostgreSQL CREATE TABLE ##
 ## PostgreSQL SELECT INTO ##
@@ -3607,13 +4069,15 @@
 ## PostgreSQL TRUNCATE TABLE ##
 ## PostgreSQL Temporary Table ##
 ## PostgreSQL Copy Table: A Step-by-Step Guide with Practical Examples ##
+
 ## PostgreSQL Primary Key ##
-## PostgreSQL Foreing Key ##
+## PostgreSQL Foreign Key ##
 ## PostgreSQL DELETE Cascade ##
 ## PostgreSQL CHECK Constraints ##
 ## PostgreSQL UNIQUE Constraint ##
 ## PostgreSQL Not-Null Constraint ##
 ## PostgreSQL DEFAULT Value ##
+
 ## PostgreSQL Boolean Data Type with Practical Examples ##
 ## PostgreSQL Character Types: CHAR, VARCHAR, and TEXT ##
 ## PostgreSQL NUMERIC Type ##
@@ -3633,9 +4097,11 @@
 ## PostgreSQL XML Data Type ##
 ## PostgreSQL BYTEA Data Type ##
 ## PostgreSQL Composite Types ##
+
 ## How to Compare Two Tables in PostgreSQL ##
 ## How to Generate a Random Number in a Range ##
 ## How to Delete Duplicate Rows in PostgreSQL ##
+
 ## PostgreSQL CASE ##
 ## PostgreSQL COALESCE ##
 ## PostgreSQL ISNULL ##
@@ -3644,6 +4110,7 @@
 ## PostgreSQL EXPLAIN ##
 ## PostgreSQL DISTINCT ON ##
 ## PostgreSQL vs MySQL ##
+
 ## PostgreSQL generate_series() Function ##
 
 ## PostgreSQL PL/pgSQL - (7 days) ##
@@ -3701,7 +4168,7 @@
 ## Create PostgreSQL Updatable Views ##
 ## PostgreSQL WITH CHECK OPTION ##
 ## PostgreSQL ALTER VIEW Statement ##
-## PostgreSQL Materlized Views ##
+## PostgreSQL Materialized Views ##
 ## PostgreSQL Recursive View ##
 ## PostgreSQL List Views ##
 

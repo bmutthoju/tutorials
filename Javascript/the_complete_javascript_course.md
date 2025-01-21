@@ -1846,7 +1846,266 @@
 
 		TEST DATA 1: [17, 21, 23]
 		TEST DATA 2: [12, 5, -5, 0, 4]
+		
+### The Rise of AI Tools (ChatGPT, Copilot, Cursor AI, etc.) ###
+#### The Workflo of Using AI for Coding ####
+1. Examples:
+	1. ChatGPT
+	2. GitHub Copilot
+	3. Cursor
+2. They are powered by an LLM (Large Language Model) (GPT, Claude)
+	1. They generate code based on the prompts the user gives the model
+3. Different tools give a different UX
+4. We can ask the tools to write code snippets, functions, and even generate entire files
+5. Copilot and Cursor have a very powerful autocomplete feature that is aware of the code we are writing, the comments, clipboard, and the entire code-base
+	1. We can also chat with our code-base
+		1. Ask questions like:
+			1. How certain parts of the app work?
+			2. ...
+	2. They work well sometimes and not so well some other times
+6. We need to follow a workflow when we are using an AI tool
+	1. Step 1: Make sure you 100% understand the problem. Ask questions to get a clear picture (How to think like a developer) (Don't use an AI tool)
+		1. Apply divide and conquer to divide the problem into sub-problems
+	2. Step 2: Choose AI (tool) and give it a very specific prompt and enough context (language, style, etc.)
+		1. Telling it exactly what we want to get done
+			1. Requires feeding the AI the exact context of the problem
+				1. What's the topic?
+				2. What's the exact goal to be achieved?
+				3. What language it has to write the solution in?
+				4. What coding style do we want?
+				5. ...
+					1. AI generates a solution to the problem and output the code
+	3. Step 3: Review and test the output solution. Make sure you introduce no bugs into your app
+		1. AI code can contain a lot of bugs which can be hidden
+		2. AI can suggest a solution that is more complicated or convoluted than necessary
+	4. Step 4: Use the AI to correct or improve the solution
+		1. Generate a new specific prompt telling AI what's wrong and want we need fixed.
+		2. Repeat the steps 2-4 until the solution is good enough
+		3. If we are not able to reach a good solution, we need to stop it
+	5. Step 5: Integrate the solution into your app
+		1. If we are satisfied with the solution
+8. The tools are meant for developers who already know what they are doing
 
+#### Guidelines for Safe use of AI ####
+1. Before you use AI:
+	1. You need to know **how to code on your own**. Fundamental skills are 100% essential!
+		1. Don't rely on AI
+	2. You need to be able to solve problems on your own
+	3. You need to have very **critical thinking** (AI code contains a suprising amount of **bugs or bad code**)
+		1. The bugs may be hard to find
+		2. The code may not be good enough
+	4. You need to have **curiosity and joy** while coding
+		1. If you lack the passion for writing code, it is not the right career
+2. Don't use AI without knowing what you're doing. Otherwise, AI will turn you into a terrible programmer (or not a programmer at all)
+	1. You might become a copy-paster
+		1. Who cannot generate a good app
+		2. Who cannot fix bugs
+		3. Who cannot maintain code
+		4. ...
+3. Use AI as an assistant, not a replacement!
+	1. Save time on repititive and boring tasks (like boilerplace code - things that don't require much thinking). It's also great for **learning!**
+		1. Ask programming questions
+		2. Ask for code solutions and analyze the solutions step by step
+		3. We can learn new tools and techniques
+
+#### Incorporate AI Code ####
+1. When you could have **written the code yourself**
+	1. Think about the steps and JS features we might need to solve the problem
+		1. Better to imagine the code in the mind
+		2. AI generates code faster than you typing the code by hand
+2. When you **truly understand** the generated code
+3. When you have ensured the code is **100% correct**
+	1. Ensures errors made by AI don't make it into the codebase
+4. When you're not using the code for **mission-critical parts** of your apps
+	1. AI can be used to be faster at non-crucial tasks even if we could have done it ourselves (we must be able to fix code if it breaks)
+
+#### Will AI Take Your Job? ####
+1. Will AI take my job?
+	1. No
+		1. Why?
+			1. **There is a lot of hype around AI right now!** In the past, tools like Dreamweaver, Wordpress, or Wix were supposed to replace web developers...
+				1. AI only helps developers
+			2. **Things will change**: a portion of apps will be written by AI. You might write less code in the future, but that's not a bad thing!
+				1. AI is good for mundane tasks
+			3. **You will still be needed!** You're the one who maintains control and implements the app architecture. **You** are the one who asks AI to write the code in the first place, reviews it, corrects it, and integrates it into the app
+				1. Developer will be in control of implementing and adapting the application's architecture, and writing the core business logic
+				2. Developer is the one who asks AI to generate the code, test it, and integrate it into the app (in control)
+				3. Developers also decide how much of AI code to incorporate in projects
+			4. Software developers do a **lot more than just writing code**: maintain the bigger picture of huge projects / think about software / implement complex design principles / are creative / they collaborate with other developers and clients
+				1. They are many things that AI is not capable of solving
+					1. Humans are more creative than AI
+			5. AI-generated code is **still buggy**, and AI is **not very good at debugging** (non-trivial problems that span multiple functions or files)
+				1. Solutions might make the code worse each time we ask it to improve the solution
+			6. The world **needs more software** than can be built by humans right now!
+				1. AI can improve bad or non-existing software
+				2. If AI makes us 10 times faster in the future, we might be ble to write 10 times more software
+			7. **AI will help us, not replace use!**
+		2. There may be even more jobs in the future
+		
+### Solve CHALLENGE #2 With AI ###
+1. Question:
+	1. Let's say you're building a time tracking application for freelancers. At some point in building this app, you need a function that receives daily work hours for a certain week, and returns:
+		1. Total hours worked
+		2. Average daily hours
+		3. The day with the most hours worked
+		4. Number of days worked
+		5. Whether the week was full-time (worked 35 hours or more)
+	2. TEST DATA: [7.5, 8, 6.5, 0, 8.5, 4, 0]
+2. AI Assistant tool: ChatGPT
+
+```
+I'm building a time-tracking application for freelancers. Write a function called analzeWorkWeek that receives an array of daily work hours for a certain week, and returns an object with the following data: 
+1. Total hours worked 
+2. Average daily hours 
+3. The day with the most hours worked 
+4. Number of days worked 
+5. Whether the week was full-time (worked 35 hours or more)
+```
+
+```javascript
+function analyzeWorkWeek(dailyHours) {
+    // Ensure input is valid
+    if (!Array.isArray(dailyHours) || dailyHours.length !== 7) {
+        throw new Error("Input must be an array of 7 numbers representing daily work hours.");
+    }
+
+    // Calculate total hours worked
+    const totalHours = dailyHours.reduce((sum, hours) => sum + hours, 0);
+
+    // Calculate average daily hours
+    const averageHours = +(totalHours / dailyHours.length).toFixed(1);
+
+    // Find the day with the most hours worked
+    const maxHours = Math.max(...dailyHours);
+    const maxHoursDay = dailyHours.indexOf(maxHours);
+
+    // Count the number of days worked
+    const daysWorked = dailyHours.filter(hours => hours > 0).length;
+
+    // Determine if the week was full-time
+    const isFullTime = totalHours >= 35;
+
+    // Return the result as an object
+    return {
+        totalHours,
+        averageHours,
+        maxHoursDay,
+        daysWorked,
+        isFullTime
+    };
+}
+
+// Example usage:
+const weekHours = [8, 7.5, 6, 8.5, 0, 4, 5];
+console.log(analyzeWorkWeek(weekHours));
+```
+
+	1. We need to test the code properly before incorporating it into the application
+	
+2. Iteration 2: Change maxHoursDay to an actual work day like Monday.
+
+```
+function analyzeWorkWeek(dailyHours) {
+    // Ensure input is valid
+    if (!Array.isArray(dailyHours) || dailyHours.length !== 7) {
+        throw new Error("Input must be an array of 7 numbers representing daily work hours.");
+    }
+
+    // Days of the week
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Calculate total hours worked
+    const totalHours = dailyHours.reduce((sum, hours) => sum + hours, 0);
+
+    // Calculate average daily hours
+    const averageHours = +(totalHours / dailyHours.length).toFixed(1);
+
+    // Find the day with the most hours worked
+    const maxHours = Math.max(...dailyHours);
+    const maxHoursDay = daysOfWeek[dailyHours.indexOf(maxHours)];
+
+    // Count the number of days worked
+    const daysWorked = dailyHours.filter(hours => hours > 0).length;
+
+    // Determine if the week was full-time
+    const isFullTime = totalHours >= 35;
+
+    // Return the result as an object
+    return {
+        totalHours,
+        averageHours,
+        maxHoursDay,
+        daysWorked,
+        isFullTime
+    };
+}
+
+// Example usage:
+const weekHours = [8, 7.5, 6, 8.5, 0, 4, 5];
+console.log(analyzeWorkWeek(weekHours));
+```
+
+3. Iteration 3: The function should require the input array to have exactly 7 days. Update the function accordingly.
+	1. Already taken care of.
+4. To learn more:
+	1. What does the `filter` method do? Why is it useful? Give me a few examples.
+	2. What is a callback? Explain the filter method in simple terms to a JavaScript beginner.
+5. Iteration 4: Add JavaScript docs to the function.
+
+```javascript
+/**
+ * Analyzes a week of work hours and provides insights.
+ * 
+ * @param {number[]} dailyHours - An array of 7 numbers representing daily work hours (Monday to Sunday).
+ * @returns {Object} - An object containing the analysis of the work week:
+ *   - {number} totalHours: Total hours worked in the week.
+ *   - {number} averageHours: Average daily hours worked (rounded to one decimal place).
+ *   - {string} maxHoursDay: The day of the week with the most hours worked.
+ *   - {number} daysWorked: The number of days with more than 0 hours worked.
+ *   - {boolean} isFullTime: Whether the total hours worked is 35 or more.
+ * 
+ * @throws {Error} - Throws an error if the input is not a valid array of 7 numbers.
+ */
+function analyzeWorkWeek(dailyHours) {
+    // Ensure input is valid
+    if (!Array.isArray(dailyHours) || dailyHours.length !== 7) {
+        throw new Error("Input must be an array of 7 numbers representing daily work hours.");
+    }
+
+    // Days of the week
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Calculate total hours worked
+    const totalHours = dailyHours.reduce((sum, hours) => sum + hours, 0);
+
+    // Calculate average daily hours
+    const averageHours = +(totalHours / dailyHours.length).toFixed(1);
+
+    // Find the day with the most hours worked
+    const maxHours = Math.max(...dailyHours);
+    const maxHoursDay = daysOfWeek[dailyHours.indexOf(maxHours)];
+
+    // Count the number of days worked
+    const daysWorked = dailyHours.filter(hours => hours > 0).length;
+
+    // Determine if the week was full-time
+    const isFullTime = totalHours >= 35;
+
+    // Return the result as an object
+    return {
+        totalHours,
+        averageHours,
+        maxHoursDay,
+        daysWorked,
+        isFullTime
+    };
+}
+
+// Example usage:
+const weekHours = [8, 7.5, 6, 8.5, 0, 4, 5];
+console.log(analyzeWorkWeek(weekHours));
+```
+ 
 ## Section 6: [OPTIONAL] HTML & CSS Crash Course ##
 ### Section Info ###
 ### Basic HTML Structure and Elements ###
@@ -3251,6 +3510,69 @@
 		console.log(jessicaCopy);
 		
 		// Deep-clone: Using lodash
+		
+### Memory Management: Garbage Collection ###
+#### Review: The Memory Lifycycle ####
+1. Allocate memory: `let temp = 23.7`
+2. Use memory: 
+
+```
+temp = temp + 5;
+round(temp);
+```
+
+3. `temp` is removed from memory
+	1. How is it done?
+	
+#### Garbage Collection ####
+1. How is memory freed up after we no longer need a value?
+	1. Call Stack
+		1. Simple:
+			1. Variable environment is **simply deleted when EC pops off stack**
+			2. Global variables will never be deleted (stay in stack for ever)
+	2. Heap
+		1. Garbage collection (central memory managemet tool)
+			1. It's an engine that runs automatically whenever it sees fit
+			2. Mark-and-Sweep Algorithm:
+				1. Suppose stack has references to objects in the heap
+				2. The objects in the heap may have references to other objects in the heap
+				3. **Mark**: Mark all objects that are reachable from a root as "alive"
+					1. Root: Starting points
+						1. Global EC
+						2. Function EC
+						3. Active event listener or timer
+							1. Reachable from an event listener or timer
+						4. Closure
+				4. **Sweep**: Delete un-marked (**unreachable**) objects and reclaim memory for future allocations
+			3. When does the GC happen?
+				1. It depends on
+					1. How much memory is available
+					2. How much memory is being consumed
+					3. Which JS engine the browser is using
+					4. ...
+			4. The objects referenced from the Global Execution Context can never be deleted
+		2. Memory leak:
+			1. When objects that are no longer needed are **incorrectly still reachable**, and therefore **not being garbage collected**
+				1. Objects are marked alive and no longer deleted
+					1. Source:
+						1. Unnecessary event listeners
+							1. Needs to be de-activated when no longer needed.
+						2. Unnecessary timers
+							1. Developer needs to actively delete the timer when it is no longer needed (or else the objects created in the timer are always reachable)
+						3. Large global objects
+							1. Avoid declaring unnecessary large global objects (they can never be garbage collected)
+								1. Can lead to memory leaks
+		3. In reality, memory management is a huge topic:
+			1. There are multiple heaps.
+			2. Objects are moved from one heap to another depending on their age
+			3. GC has multiple algorithms for different heaps
+				1. Generational GC
+				2. ...
+2. How JS Works Behind the Scenes Topics for Later:
+	1. Closures - A closer look at functions
+	2. Prototypal Inheritance - Object Oriented Programming (OOP) with JS
+	3. Event Loop - Asynchronous JS: Promises, Async/Await, and AJAX
+	4. How the DOM Really Works - Advanced DOM and Events
 
 ## Section 9: Data Structures, Modern Operators and Strings ##
 ### Section Info ###
@@ -11096,30 +11418,213 @@
 
 ### Implementing Pagination - Part 1 ###
 ### Implementing Pagination - Part 2 ###
+1. Data attributes - JS can read it and perform element specific tasks
+
 ### Project Planning II ###
+1. Core functionality is complete
+2. Other features
+	1. Changing servings functionality
+	2. Bookmarking functionality
+		1. Stored in local storage
+		2. We load and render them
+	3. Store bookmark data in the browser
+	4. On page load, read saved bookmarks
+
 ### Updating Recipe Servings ###
 ### Developing a DOM Updating Algorithm ###
+1. Code: view.js
+
+```javascript
+  update(data) {
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+
+    const newDOM = document.createRange().createContextualFragment(newMarkup); // converts string to real DOM node objects. Like a Virtual DOM. Sits in memory
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    // console.log(newElements);
+    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+    // console.log(curElements);
+
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+      console.log(curEl, newEl.isEqualNode(curEl)); // contents must be the same.
+
+      // Updates changed TEXT
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue?.trim() !== ''
+      ) {
+        curEl.textContent = newEl.textContent;
+      }
+
+      // Updates changed ATTRIBUTES
+      if (!newEl.isEqualNode(curEl)) {
+        // console.log(newEl.attributes); // logs attributes property of all elements that have changed
+        Array.from(newEl.attributes).forEach(attr =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+      }
+    });
+  }
+```
+
 ### Implementing Bookmarks - Part 1 ###
 ### Implementing Bookmarks - Part 2 ###
 ### Storing Bookmarks with localStorage ###
 ### Project Planning III ###
+1. Features
+	1. Own recipe upload
+	2. Own recipes automatically bookmarked
+	3. User can only see own recipes, not from others
+		1. Done using API developer key
+
 ### Uploading a New Recipe - Part 1 ###
+1. API calls happen in the model
+
 ### Uploading a New Recipe - Part 2 ###
 ### Uploading a New Recipe - Part 3 ###
 ### Wrapping Up: Final Considerations ###
+1. Documentation for code
+	1. Standard way to write docs for JS functions
+		1. JS Docs ([jsdoc.app](jsdoc.app))
+			1. Examples:
+			
+			```
+			/**
+			 * Render the received object to the DOM
+			 * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+			 * @param {boolean} [render=true] If false, construct markup string instead of rendering to the DOM
+			 * @returns {undefined | string} A markup string is returned if render=false
+			 * @this {Object} View instance
+			 * @author Jonas Schmedtmann
+			 * @todo Finish implementation
+			 */
+			render(data, render = true) {
+			  ...
+			}
+			```
+			
+				1. If we hover over the function, VS Code gives an overview with the docs information
+			
+2. Challenges and improvements
+
+### Improvement and Feature Ideas: Challenges ###
+1. Display **number of pages** between the pagination buttons
+	1. User will know how many pages there are
+2. Ability to **sort** search results by duration or number of ingredients - needs API changes or get all results and sort
+3. Perform **ingredient validation** in view, before submitting the form
+	1. Warn if format is wrong - User friendly
+4. **Improve recipe ingredient input**: Separate in multiple fields and allow more than 6 ingredients
+5. **Shopping list feature: button recipe to add ingredients to a list
+	1. We can display the list in another hidden panel beside menu bar
+	2. Contains different ingredients added from different recipes
+6. **Weekly meal planning feature**: assign recipes to the next 7 days and show on a weekly calendar
+	1. Dropdown menu and choose on which of the 7 days you want the recipe to appear
+	2. Panel to show recipes for 7 days
+7. **Get nutrition data** on each ingredient from spoonacular API ([https://spoonacular.com/food-api](https://spoonacular.com/food-api)) and calculate total calories of recipe.
+	1. One recipe
+	2. Per serving
+8. Implementing the challenges is good to practice skills
 
 ## Section 19: Setting Up Git and Deployment ##
 ### Section Intro ###
+1. Hosting on the internet
+	1. Netlify
+	2. Fundamentals of Git
+
 ### Section Roadmap ###
 ### Simple Deployment with Netlify ###
+1. In development mode
+	1. Contains dev server
+	2. Code is not compressed
+2. Building for production
+	1. Pre-requisite:
+		1. Delete `.parcel-cache` and `dist` folders
+	2. Config:
+		1. Version 2.x: `parcel build index.html --dist-dir ./dist`
+			1. `package.json`: Change `main` to `default`
+			
+			```
+			"default": "index.html"
+			```
+		2. Version 1.x:
+		
+		```
+		"out": "index.html"
+		```
+
+```bash
+npm run build
+```
+
+3. [netlify.com](netlify.com) - for static web pages (HTML, CSS, JS, images, ...) (not server side code)
+	1. Free plan
+		1. CI with Git
+	2. Alternative: surge
+		1. `npm install --global surge`
+		2. `surge` - deploy without an account
+	3. Deployment:
+		1. Drag and drop `dist` folder into the interface
+	4. Settings > Change site name
+		1. `forkify-abdullah` - unique name
+	5. Features
+		1. Automatically secured using HTTPS (free)
+		2. Site assets were deployed to a CDN (lives in many locations spread out across the world)
+			1. Users get from servers closest to them
+	6. Another way to deploy - Git
+
 ### Setting up Git and GitHub ###
 ### Git Fundamentals ###
 ### Pushing to GitHub ###
+1. New repo in Github
+2. Name: forkity-course-video
+	1. Private
+	2. Don't add README etc...
+	3. Click: Create repository
+3. Copy and push
+4. Add README.md file
+
 ### Setting up Continuous Integration with Netlify ###
+1. Netlify
+	1. Settings
+		1. Build & deploy
+			1. Link site to Git (Continuous Deployment)
+				1. If we push our changes, the site will be rebuilt and deployed
+				2. Github (Gitlab, Bitbucket)
+				3. Search: forkify-course
+				4. Branch - Main
+				5. Build command: parcel build index.html --dist-dir ./dist
+				6. Publish directory: dist
+			2. Reload the page
 
 ## Section 20: The End! ##
 ### Where to Go from Here ###
+1. Practice JS skills
+	1. Own small applications
+	2. Find new challenges
+	3. Rebuild apps and challenges
+	4. Learn frameworks / Libraries
+		1. React
+		2. Angular
+		3. View
+		4. Node.js
+2. To find real job in the industry
+3. Never stop learning
+	1. Things change very fast
+4. Newsletter
+	1. News
+	2. Tutorials
+	3. Articles
+
 ### My Other Courses + Updates ###
+1. Ultimate React Course
+2. Node.js Bootcamp
+3. Beginner HTML+CSS course
+4. Advanced CSS course
+5. [@jonasschmedtmann](https://twitter.com/jonasschmedtman)
+6. [Sign up for my mailing list](https://app.convertkit.com/landing_pages/90434)
+	1. Gives discounts for all future courses
+7. [my YouTube channel](https://www.youtube.com/channel/UCNsU-y15AwmU2Q8QTQJG1jw)
 
 ## Section 21: [LEGACY] Access the Old Course ##
 ### Access the Old Course ###

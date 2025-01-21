@@ -1,7 +1,33 @@
 # Figma UI UX Design Essentials #
 ## Getting Started ##
 ### Introduction to Figma Essentials Training Course ###
+1. UX Designer
+2. Figma
+	1. Prototypes
+	2. Real-world expectations from UX designer
+3. Topics
+	1. Brief
+	2. UX persona
+	3. Wireframes 
+	4. Colors, images properly in high fidelity mockups
+	5. Dos and don'ts for choosing fonts for Web and Mobile apps
+	6. Creation of icons, buttons, UI components
+	7. Component sets, constraints, multi-dimensional variants
+	8. Free UI kits, and plugins for Figma - to speed up workflow
+	9. Style-guide ready for colleague or client handoff
+	10. Simple and advanced micro-interactions, page transitions, and animations
+	11. Fully ready prototypes for user-testing
+	12. Collaborating with other team members
+	13. Exporting the right files ready to hand-off to a developer or SE
+	14. Assignments
+
 ### Getting Started with Figma Training ###
+1. Download exercise files
+	1. Files for course
+	2. Shortcut sheet
+	3. Sign up for Figma:
+		1. BYOL.COM/FIG - credit
+
 ### What is Figma For & Does It Do the Coding? ###
 ### Whats the Difference Between UI and UX in Figma ###
 ### What We are Making in This Figma Course ###
