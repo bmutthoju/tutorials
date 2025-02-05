@@ -27,9 +27,48 @@
 	2. Shortcut sheet
 	3. Sign up for Figma:
 		1. BYOL.COM/FIG - credit
+			1. We can download desktop version or use the browser version
+			2. We use free version for most of the course
+			3. We might need to use the paid version for some of the features
+2. Figma is always updating
+	1. Check comments
+	2. To make Figma look like previous version: Click on ? on the bottom right and select **Go back to previous UI**
 
 ### What is Figma For & Does It Do the Coding? ###
+1. It is good for rapid prototyping of websites and apps
+	1. It can do other things
+2. It is the main tool of a UX/UI designer
+3. Used for:
+	1. Wireframes: Quick look and feel for an app or website
+	2. High-Fidelity mockups: Looks exactly like the website with interactivity
+4. It does enough for testing - we can make some observations and test some theories about what we think what the users want. If things need to be changed, we can change really quickly. It is about rapid prototyping. Quick changes. Until we are satisfied with it (user testing)
+	1. Clients
+	2. Intended audience
+5. It doesn't code the website for us
+	1. It hands over little pieces to the developer to use
+		1. CSS
+		2. SVGs
+		3. Graphics
+		4. ...
+	2. We need to build it from scratch
+6. It is used for graphic design
+	1. Social media campaigns
+		1. Instagram story posts
+		2. Carousels
+		3. Ads for different sizes
+
 ### Whats the Difference Between UI and UX in Figma ###
+1. UI design
+	1. How something looks
+	2. UI designer
+		1. Designing websites and mobile apps
+			1. Based on intuition
+				1. Button should be this big
+				2. This element should be here
+				3. ...
+2. UX design
+	1. How something works. How somebody uses it
+
 ### What We are Making in This Figma Course ###
 ### Class Project 01 - Construct Your Own Brief ###
 ### Assignment 1: Class Project 01 - Construct Your Own Brief ###

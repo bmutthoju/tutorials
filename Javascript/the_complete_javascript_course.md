@@ -2105,6 +2105,82 @@ function analyzeWorkWeek(dailyHours) {
 const weekHours = [8, 7.5, 6, 8.5, 0, 4, 5];
 console.log(analyzeWorkWeek(weekHours));
 ```
+
+6. Iteration 5: Write unit tests for the function covering all the possible edge cases, and verify if all the test cases pass.
+
+```javascript
+/**
+ * Analyzes a week of work hours and provides insights.
+ * 
+ * @param {number[]} dailyHours - An array of 7 numbers representing daily work hours (Monday to Sunday).
+ * @returns {Object} - An object containing the analysis of the work week:
+ *   - {number} totalHours: Total hours worked in the week.
+ *   - {number} averageHours: Average daily hours worked (rounded to one decimal place).
+ *   - {string} maxHoursDay: The day of the week with the most hours worked.
+ *   - {number} daysWorked: The number of days with more than 0 hours worked.
+ *   - {boolean} isFullTime: Whether the total hours worked is 35 or more.
+ * 
+ * @throws {Error} - Throws an error if the input is not a valid array of 7 numbers.
+ */
+function analyzeWorkWeek(dailyHours) {
+    // Ensure input is valid
+    if (!Array.isArray(dailyHours) || dailyHours.length !== 7) {
+        throw new Error("Input must be an array of 7 numbers representing daily work hours.");
+    }
+
+    // Days of the week
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Calculate total hours worked
+    const totalHours = dailyHours.reduce((sum, hours) => sum + hours, 0);
+
+    // Calculate average daily hours
+    const averageHours = +(totalHours / dailyHours.length).toFixed(1);
+
+    // Find the day with the most hours worked
+    const maxHours = Math.max(...dailyHours);
+    const maxHoursDay = daysOfWeek[dailyHours.indexOf(maxHours)];
+
+    // Count the number of days worked
+    const daysWorked = dailyHours.filter(hours => hours > 0).length;
+
+    // Determine if the week was full-time
+    const isFullTime = totalHours >= 35;
+
+    // Return the result as an object
+    return {
+        totalHours,
+        averageHours,
+        maxHoursDay,
+        daysWorked,
+        isFullTime
+    };
+}
+
+// Unit Tests
+function runTests() {
+    const testCases = [
+        { input: [8, 8, 8, 8, 8, 0, 0], expected: { totalHours: 40, averageHours: 5.7, maxHoursDay: "Monday", daysWorked: 5, isFullTime: true } },
+        { input: [4, 5, 6, 7, 8, 0, 0], expected: { totalHours: 30, averageHours: 4.3, maxHoursDay: "Friday", daysWorked: 5, isFullTime: false } },
+        { input: [0, 0, 0, 0, 0, 0, 0], expected: { totalHours: 0, averageHours: 0.0, maxHoursDay: "Monday", daysWorked: 0, isFullTime: false } },
+        { input: [10, 10, 10, 10, 10, 10, 10], expected: { totalHours: 70, averageHours: 10.0, maxHoursDay: "Monday", daysWorked: 7, isFullTime: true } },
+        { input: [0, 0, 0, 0, 0, 8, 9], expected: { totalHours: 17, averageHours: 2.4, maxHoursDay: "Sunday", daysWorked: 2, isFullTime: false } },
+    ];
+
+    testCases.forEach(({ input, expected }, index) => {
+        const result = analyzeWorkWeek(input);
+        const passed = JSON.stringify(result) === JSON.stringify(expected);
+        console.log(`Test Case ${index + 1}: ${passed ? "PASSED" : "FAILED"}`);
+        if (!passed) {
+            console.log("  Input:", input);
+            console.log("  Expected:", expected);
+            console.log("  Received:", result);
+        }
+    });
+}
+
+runTests();
+```
  
 ## Section 6: [OPTIONAL] HTML & CSS Crash Course ##
 ### Section Info ###
