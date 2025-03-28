@@ -1828,60 +1828,2005 @@
 				3. On-Demand economy - Uber, Lyft, Postmates, Shyp
 					1. They add convenience
 						1. Take out app
-							1. Put a pin
+							1. Drop a pin
 							2. Press a button
 							3. Person picks you up and take you
 							4. It is cashless
+					2. The model requires fewer steps from end-customer
+						1. Convenience innovation
+							1. **Look at a product or service, and think to yourself, how could I deliver that with more convenience to the buyer**
+								1. **How can I make it easier for the buyer to get and purchase?
+							2. Example: Market of Healthcare
+								1. To see a doctor, they typically call and make a phone appointment
+									1. To make it more convenient: Make a mobile phone application 
+										1. Person can search based on the the specialty they are looking for and book online
+											1. Example: Zocdoc
+	3. Speed
+		1. How quickly the value we are delivering can be delivered to the customer
+			1. Example: Consider a shipping company. Find a faster way to deliver the package
+			2. Example: Amazon focus on making majority of packages eligible for Amazon prime (delivering within 2 days anywhere)
+			3. Example: Pizza delivery in 30 minutes
+			4. Example: Computer & Software
+				1. Something that can compute or run faster, or export faster
+	4. Quality
+		1. Tricky
+			1. It is not just what people consider to be good
+				1. Also applies to
+					1. How quickly was it delivered
+					2. How easy was it to find
+					3. ...
+		2. It is the individual characteristics people use to judge whether or not something is good, high quality, or bad, low quality, ...
+			1. Did the food taste good?
+			2. Did the table last a long time?
+			3. Is the car pretty aesthetic and sleek looking?
+			4. ...
+		3. Don't generalize it
+		4. Where does quality apply?
+			1. Pocurement & Product - obvious
+			2. Delivery & Promotion - not so obvious where the opportunities are
+				1. These areas typically care about other things
+		5. Examples of innovations that people think are quality innovation but they are pitching other types of innovation
+			1. Example: Bus that gets you somewhere faster - it is a speed innovation
+		6. Quality: Pertaining to product or service, and how it compares to other products or services. We need to figure out how to judge whether it is high quality or low quality
+	5. Self Expression
+		1. Many innovations or products benefit from self-expressive benefits
+			1. As a customer buys a product or service, do they feel better about themselves because of it?
+				1. Lower quality, slower, less-convenient products can have better self-expressive benefits
+					1. Example: GoPro - miniaturized cameras mounted on head
+						1. Lower quality, more expensive, no innovation on delivery, no fast component (slower recording speed)
+							1. It has self-expressive benefits
+								1. Shows we can afford it
+								2. Shows we are adventurous kind of person
+					2. Example: Apple
+						1. Lower quality, higher price, better self-expressive benefit
+							1. People can feel that they are:
+								1. Upper-middle class
+								2. Active
+								3. Young
+								4. Potentially cool
+		2. What type of markets?
+			1. Fashion - more
+			2. Electronics - little bit
+		3. B2B - Generally don't have self-expressive benefits
+			1. Unless it makes employees/management feel better to present it down to their employees
+4. Whenever we are coming up with business idea, see if any of the 5 levers can be pulled (any one of them can potentially have a business opportunity. We can also improve in one-demension or multiple-dimensions)
+	1. Price
+	2. Convenience
+	3. Speed
+	4. Quality
+	5. Self-expression
 
 ### Recap of idea dynamics ###
+1. Recap
+	1. Components of ideas
+		1. Incomplete ideas
+			1. Recognizing a problem (no logistics. Who would buy or sell it)
+			2. Observations - very valuable
+				1. Figure out the other parts to complete as a full idea
+		2. Complete ideas
+			1. Subject + Problem/Benefit + Busienss model
+				1. Subject
+					1. Who are we selling it to
+						1. Who's buying it from you?
+						2. Who's the end customer
+						3. Who do you have in mind that's going to be receiving the business value
+				2. Problem/benefit
+					1. What itch are you scratching?
+					2. What problem is your subject having that you're going to solve with this business?
+					3. Alternative: Benefit
+						1. Adding value to a non-existing problem
+							1. I am going to make this tool/service do X, Y, and Z - The customer didn't crave for X, Y, and Z (value add)
+								1. Once they are added, they are more productive, they have more opportunities, and it's a benefit to them
+	2. Business Model
+		1. How do you sell your business?
+		2. How do they purchase it?
+		3. Is it?
+			1. Sibscription
+			2. Online SaaS tools
+			3. Mailing boxes of physical tools
+			4. Charge them nothing and charge for further usage (after free trial)
+	4. Innovation
+		1. 4 different faces
+		2. We think of one of them, and how to deliver value in that sphere
+		3. Areas
+			1. Procurement
+				1. Every that happens behind/before the product
+					1. How they trained people, vetted them, got them upto the point where they could help customers do something
+						1. Example: Auto mechanics
+							1. How to find mechanics, train them to fix vehicles
+							2. How to find tools & supplies
+			2. Product
+				1. Customer facing
+				2. What's delivered
+					1. Combination of unique characteristics that go into whatever we are selling
+						1. Pizza: Everything we put into it
+							1. Ingredients
+							2. Assembly
+							3. Display
+							4. ...
+			3. Delivery
+				1. How do we get the product to the customer?
+					1. Courier service?
+					2. Physical?
+					3. Ship it?
+					4. Download it offline?
+					5. Ship slowly through the mail
+			4. Marketing
+				1. How did you hear about the product to begin with
+				2. Add ideas about fixing a problem or adding a benefit in the marketing section of a type of business
+		4. 5 Types of innovation
+			1. Price
+				1. How much are we charging? (Doing one of the below is price innovation)
+				2. Can we go lower?
+				3. Can we go higher?
+					1. To increase the perception of quality
+			2. Convenience
+				1. How can we get the customer get value from the product in a more convenient way?
+					1. Can we isolate the steps the customer has to go through to get to the product and remove them? 
+			3. Speed
+				1. Example: Can a shipping company ship faster?
+				2. Example: Can ride-sharing company get the car to the customer faster?
+			4. Quality
+				1. Good is not just the product but everything associated with the product.
+				2. Think about what goes into the product to increase the quality of it or value of it?
+					1. T-Shirts - Think of a material that makes it super comfortable (may be on the chest area)
+						1. Quality innovation
+			5. Self-expression
+				1. Does it feel people good about what they have purchased
+					1. Something they can associate lifestyle with - a way of thinking or acting with it
+						1. Self-expressive innovation
+							1. Example: GoPro
+2. Next section:
+	1. Realize what your expectations are & set your goals
+	2. How we can use the goals to influence the process
+3. Two more levels:
+	1. Passions & hobbies
+	2. Skills & experience
+
 ### Section 9 review material ###
 ### Quiz 7: Concepts from Section 9 ###
 
 ## Section 10: Making it fit ##
 ### Intro to Section 10 ###
+1. You as a component of business ideas
+	1. You are unique and you have your own preferences
+	2. You cannot come up with an idea detached from yourself, detached from the context of your life, resources you have, your job, and other commitments and expect it to be a fantastic idea that sits on its own.
+		1. There is no point in coming up with the best idea in the world when we cannot act on it? 
+			1. It is not worth it if it doesn't fit what I want to do, and doesn't fit my goals
+2. This section:
+	1. Understand your goals, expectations, passions, and hobbies (makes it easier to go forward because we know what to shoot for)
+		1. If we know what to shoot for, we are that much closer to coming up with a good business idea
+
 ### The Fit quadrant: Hobbies & Passions ###
+1. Hobbies & Passions
+	1. Hobbies: Things we do for fun
+	2. Passions: Things we really care about
+2. Business ideas must fit you and your personal circumstance
+	1. Have a decent idea of your passion and a decent idea of what hobbies you have and what hobbies you could potentially parlay into a business
+	2. **Hobbies and passions are the biggest source of business ideas**
+3. **Hobbies**
+	1. Whether we have a natural inclination towards something
+		1. It is hard to start a business that you don't care at all (drudgework, we don't enjoy the actual detail of it)
+			1. Starting business is hard but it is harder if we don't like what we are doing
+				1. **Building a business out of hobbies is fantastic**
+					1. Hobbies identify what I care about and what I could do for long periods of time
+					2. Hobbies also help us build skills. Skills we might not think are immediately relevant. They are things that we can build upon and turn into a business
+	2. Examples:
+		1. Walt Disney - He enjoyed sketching and doodling (cartoon work)
+			1. Potential market and value to it
+		2. Microsoft - Studied programming as a hobby. He used it to entertain himself and kept up with boring course-work. He built applications for fun at school. He started a business with it
+		3. Facebook - Mark liked to build
+		4. Ebay - He had a hobbie with beanie babies
+			1. He wanted to offload extra ones he wanted to sell.
+	3. Hobbies I have
+		1. Anything done for fun
+			1. When I have nothing to do, what do I find myself doing?
+				1. **List out everything I did not a Saturday, and a Sunday**
+				2. **List what you wished had done on those days**
+					1. Hobbies are what you enjoy doing
+			2. Examples:
+				1. If running is a hobby - build a business around running/fitness
+				2. If there is a routine that you think is better than everybody else's build that into a regimen and sell that
+		2. Analyze what you're Doing
+			1. Try to dwell on what exactly you do in it
+			2. Think about the specific things you do that are quirky or unique
+				1. Anything we do that adds value to the activity we do
+		3. Come up with a list of hobbies
+			1. Pick one and come apply one of the techniques and apply it to the subject
+		4. Ask: Could you do the hobby all day?
+			1. Would you still be happy with the hobby?
+		5. Case:
+			1. You build a business around your hobby but you don't get to do anything related to it.
+				1. We get to do all the things around it - only support functions
+					1. Example: starting an app for people who run
+						1. Time spent on how app looks like
+						2. Time spent on finding contractors
+						3. Time spent on launch strategy
+						4. ...
+					2. Example: Suppose we love cats
+						1. We cannot spend all day with cats - we cannot survive
+		6. **My hobbies**
+			1. Travel
+			2. Craft
+			3. Drawing & painting
+			4. Video games
+			5. Badminton
+			6. Table Tennis
+			7. Chess
+			8. Carrom Board
+			9. Self-help books
+			10. Islamic lectures
+			11. Watching Documentaries
+			12. Learning about Islam
+			13. Learning technology
+			14. Cooking new dishes
+			15. Driving
+			16. Shopping
+			17. Taking care of pets
+			18. Watch selected movies
+			19. Watch technology related videos
+	4. Passions
+		1. Passions are the things that you spend a lot of time thinking about that you really, really care about
+			1. You probably want to spend a large amount of time, and a large portion of your life working on or working towards.
+		2. Examples:
+			1. Causes
+			2. Things we want to fix
+			3. Things we want to the become best at (an expert in)
+			4. About learning a lot about an industry, a practice, or a profession.
+		3. Things that we are passionate about should be relatively obvious
+			1. Everyone cares about something
+		4. Dig up some of your passions
+			1. **Write 5 things you care about**
+				1. Dogs chase tennis ball - they are crazy about it
+					1. Find what your tennis ball is
+						1. Apply technology to connect Muslims & Non-Muslims to Islam, or apply Islam to solve problems
+							1. Connecting Muslims & Non-Muslims to Islam
+							2. Applying Islam to solve problems
+						2. Apply technology to solve real-world problems (general)
+							1. Medical
+							2. Automotive
+							3. Education
+							4. Aerospace
+						3. Identifying problems and suggesting solutions in general
+						4. Yoga/Meditation/Workout to stay fit
+						5. Learning language and applying it properly
+						6. Making love
+		5. Things we are passionate about typically are things you are going to be happier doing
+			1. **What do you do that makes you happy?**
+4. Skills and Experiences
+	1. Helping you bring out things I care about and writing them down
+
 ### The Fit quadrant: Skills & Experiences ###
+1. What are your skills, and what do you have domain knowledge or experience with (skills and experience are more important than passion)
+	1. "Don't follow your passions. Do what you are good at."
+		1. Sometimes skills, and experience are much more important when it comes to your career or business ventures
+			1. Passion can get you only so far
+				1. It enables
+					1. Spending a lot of time on the subject
+					2. Push a lot of effort towards it
+					3. We can have a great time recruiting people
+				2. But it says nothing about whether we are good at it
+					1. Example: Painting - If I am not good at it, it is unlikely that you will start a successful business
+		2. Do what you are good it
+			1. You will enjoy doing it intrinsically
+				1. You can follow your passion by painting on the weekend (not start a business if you are not good at it)
+2. Activity:
+	1. Uncover skills & passions
+3. Business needs to fit me and I must be satisfied with it
+
+#### Skills ####
+1. Specific things I am good at (not generic)
+	1. **My list**
+		1. Software engineering
+			1. Web Development
+				1. FE Engineering
+					1. UX design
+					2. UI programming
+				2. BE Engineering
+					1. Architecture
+					2. Design
+					3. Programming
+			2. Mobile Development
+				1. Cross-platform development
+		2. Identifying problems & devising technical solutions
+		3. Researching
+		4. Crafts
+		5. Drawing & painting
+		6. Learning
+		7. Documentation
+2. Questions to ask to know your skills
+	1. What could you teach someone?
+		1. If somebody sits beside you and ask you a question about it, can you answer the question?
+	2. What do you consider yourself an expert at?
+		1. Whatever you do for your job
+		2. Whatever you've done in the past
+	3. I am in the top 10% of people who can do ________
+3. Write down as many skills as possible
+
+#### Experience ####
+1. Go to LinkedIn and see what you have worked in
+	1. If we have experience in something, if we start a business in the learning space, we will have a much shorter learning curve
+		1. We can also know a way around the business a lot better
+		2. We might have contacts in that space
+2. Questions to ask:
+	1. What do you have inside knowledge on?
+		1. What industry do I think I know something about that other people don't know
+			1. It's a great candidate & we have experience in it
+				1. **My experience**
+					1. **Automotive Industry**
+						1. **EV**
+					2. **Logistics**
+					3. **DevOps**
+					4. **E-Commerce**
+					5. **Ride-Sharing**
+	2. Think about industries we have been in
+	3. Think about circles we feel well aquanted with
+3. Next:
+	1. Worksheet - next step of the course
+		1. Passions
+		2. Skills
+		3. Experiences
+		4. Hobbies
+
 ### ACTIVITY: Hobbies, Passions, Skills, & Experience ###
+1. Activity:
+	1. Look for business that fits skillset, passion, hobbies, experience (any combination)
+		1. A good idea is not a great idea until it fits you personally
+2. Worksheet
+	1. Fill out
+		1. Top 10 list
+
 ### WORKSHEET: Hobbies, passions, skills, & experience ###
+1. Top 3 sheet
+	1. Passions
+		1. **Apply technology to connect Muslims & Non-Muslims to Islam, or apply Islam to solve problems**
+			1. Connecting Muslims & Non-Muslims to Islam
+			2. Applying Islam to solve problems
+		2. **Apply technology to solve real-world problems (general)**
+			1. **Medical**
+			2. **Automotive**
+			3. **Aerospace**
+			4. Education
+		3. **Identifying problems and suggesting solutions in general**
+		4. Yoga/Meditation/Workout to stay fit
+		5. Learning language and applying it properly
+		6. Making love
+	2. Hobbies
+		1. **Islamic lectures**
+		2. **Learning about Islam**
+		3. **Watch technology related videos & learning technology**
+		4. Playing with children
+		5. Watch selected movies
+		6. Cooking new dishes
+		7. Make love
+		8. Shopping
+		9. Watching Documentaries		
+		10. Travel
+		11. Craft
+		12. Drawing & painting
+		13. Video games
+		14. Carrom Board
+		15. Badminton
+		16. Table Tennis
+		17. Chess
+		18. Self-help books
+		19. Driving
+		20. Taking care of pets
+	3. Experience
+		1. **Industries**
+			1. **Automotive Industry**
+				1. **EV**
+			2. **Logistics**
+			3. **E-Commerce**
+			4. Ride-Sharing
+			5. DevOps
+	4. Skills
+		1. **Software engineering**
+			1. **Web Development**
+				1. FE Engineering
+					1. UX design
+					2. UI programming
+				2. BE Engineering
+					1. Architecture
+					2. Design
+					3. Programming
+			2. **Mobile Development**
+				1. Cross-platform development
+		2. **Identifying problems & devising technical/otherwise solutions**
+		3. **Researching**
+		4. Learning
+		5. Crafts
+		6. Drawing & painting
+		7. Documentation
+
 ### ACTIVITY: List out your goals ###
+1. Goals:
+	1. How do they fit with the idea that we are going to come up with
+2. Next: Types of businesses and building context around how much effort we need to put into the business idea, and what to expect out of it
+3. Worksheet
+	1. To align the goals
+	2. **What do you want to get out of your next venture?**
+	3. Questions:
+		1. How big do you want the next business to be?
+			1. Think critically.
+				1. Everyone wants a huge business but does it ring true to me?
+				2. Do you want a multi-thousand employee business?
+					1. How happy would you be with 1/2 the size?
+					2. How happy would you be with a 100 employees?
+					3. How happy would you be with 10, 3, or 5 employees?
+				3. People will be happy with a more modest amount of success which is much more likely
+		2. How long are you willing to work on your next business?
+			1. If we are not willing to spend a lot of time on the next business, we need to keep it in mind when going through the course and coming up with ideas
+			2. If we are willing to spend a lot of time to make it successful, it allows to swing for the fences
+			3. In the middle?
+				1. Go through the ideas and narrow down to the ones you think are worth pursuing
+					1. To large ideas need to be swapped for smaller ideas
+		3. How much money will the business need to make for me to be satisfied?
+			1. Do you need to make money in the first month?
+			2. Do you want to make 500 bucks a month?
+			3. Do you want to make 1500 bucks a month? Pay your rent?
+			4. Do you want to make 5000 bucks, a full time salary?
+			5. Several hundrends of thousands or millions?
+				1. You might be satisfied with a modest amount of money (with certain businesses)
+					1. How happy would you be at each level (be honest)
+						1. Get to the optimal endpoint to shoot for
+		4. How any hours per week are you willing to work on this business?
+			1. Lifestyle business: You don't spend much time but it pays for your basic necessities
+			2. Starup: You have to spend every moment you have on it
+			3. There are businesses in between
+				4. If you have a full-time job, be realistic about how many hours you can put into it
+					1. If it is only on weekend, you can give only 5 hours a week.
+					2. If you are unemployed, do you want to be full-time on the business, part-time (that pays part-time immediately)?
+		5. How long can you wait for the business to become profitable?
+			1. Boils down to: How much money are you going to burn before it becomes successful
+				1. Small online business: Profitable and successful and profitable relatively soon
+				2. Startup: We could go many years without any money
+					1. Twitter: They didn't make money for 10 years
+			2. Guage what you are comfortable with and write that down
+		6. How long are you willing to work on the next business
+			1. It is about longevity
+				1. Next decade?
+				2. Your legacy? Biggest thing I have ever done? (longest time possible)
+				3. Something in-between?
+					1. Pay bills and move on to something else?
+
 ### WORKSHEET: Fill out your goals ###
+1. How big do you want your next business to be?
+	1. (Space: 15k, Automotive: 150k, Healthcare: 50k, Islamic: 10k ~ 250k) = **100k to 300k employees**
+2. How long are you willing to work on this next business?
+	1. Forever
+3. How much money will the business need to make, to be satisfied?
+	1. 12 crores/annum (10 years ~ 120 crores) ~ $ 1.4 M ($ ~116k / month) 
+4. How many hours per week are you willing to work on this business?
+	1. 1-2 hours per day + 4 + 4 hours on weekends
+		1. **13 - 18 hours per week**
+5. How long could you wait for this business to become profitable?
+	1. **1-2 years**
+6. How much of your resources are you willing to commit?
+	1. **Everything I have + investments from potential customers + Angel investors + Islamic Banks (if possible)**
+
 ### The 3 business types: Pick yours ###
+1. 3 Main types of businesses we can start
+	1. What goes into each business type will be discussed
+		1. We can decide after
+2. Types of business 
+	1. Criteria
+		1. Know what they are called
+		2. Understand what differentiates them
+	2. Distinguishing criteria:
+		1. Criteria: **The quality of the idea**: Quality of idea needed to be successful in this business type (certain businesses may not require the best business ideas in the world)
+		2. Criteria: **Sensitivity to competition**
+		3. Criteria: **Time commitment**
+		4. Criteria: **The ratio of the risk of failure vs the actual likelihood of profit**
+	2. Types:
+		1. Startup businesses
+			1. **The quality of the idea: ambitious ideas**
+				1. The best business idea in the world
+			2. **Sensitivity to competition**
+				1. Very sensitive to competition
+					1. Need to worry about
+						1. Resources of the competition
+						2. What are they doing right?
+						3. What are they doing wrong?
+						4. Do they have an opportunity to do that better?
+							1. If they can't startups will not pursue the opportunity
+			3. **Time commitment**
+				1. Highest time commitment
+					1. Big ideas take a lot of time and energy
+			4. **The ratio of the risk of failure vs the actual likelihood of profit**
+				1. Extremely high risk of failure
+					1. 95% of new startups fail
+					2. 5% who succeed: The outcome could be from making minimum amount of money, going on forever and not maing tons of money, bought cheap all the way to being sold for billions of dollars
+				2. High potential to make enormous amount of money
+		2. Lifestyle businesses - It is a business designed to generate enough money for you to uphold a certain lifestyle. They are obsessed with the ratio of R in ROI (money made to time spent). Business owners first look at their ideal lifestyle, and figuring out the size of business they need to establish to accommodate the lifestyle. (to live in a mantion and make 100s of 1000s per year, then it's a lifestyle business. Read: **The four-hour work week**)
+			1. **The quality of the idea: medium sized ideas**
+				1. Medium to small sized
+			2. **Sensitivity to competition**
+				1. Moderately sensitive
+					1. Limited to
+						1. Are there too many competitors?
+						2. Is it too saturated?
+					2. If somebody wants to do the same thing better, it doesn't matter
+						1. It is approached as a pool, there is plenty of space in the pool unless it is so packed that we cannot get in
+			3. **Time commitment**
+				1. In the middle - between full-time and part-time
+			4. **The ratio of the risk of failure vs the actual likelihood of profit**
+				1. medium risk and profit
+					1. Lifestyle businesses do fail but if we spend enough time with them, they usually succeed
+					2. Profit expectations are in the middle
+						1. ~ $ 2k a month, say (whatever is relevant where we live)
+							1. Enough to pay your expenses
+		3. Side businesses
+			1. **The quality of the idea: templates, minimum innovation** (it doesn't mean it is bad. It needs to match your goals)
+			2. **Sensitivity to competition**
+				1. Not sensitive (competition doesn't matter)
+				2. Profit goals are also lower
+				3. You just want to get people to buy your stuff
+			3. **Time commitment**
+				1. It is only to augment your income
+				2. Just on weekends - not much time
+			4. **The ratio of the risk of failure vs the actual likelihood of profit**
+				1. Low risk
+					1. We might spend some money upfront to buy some materials
+				2. Low profit
+					1. If we put time and if we are persistent enough, we will eventually make our money back
+					
+#### Lifestyle Business: The four-hour work week ####
+1. We can build businesses that require a minimal amount of time investment that can actually return a significant amount of money for us.
+	1. You build a business that requires you to work only 4 hours a week
+		1. Building a "muse" - Think about all time and we are passionate about
+			1. Something we bring in, and there is automatic cash-flow or income
+	2. We have a total amount of money in mind - not true for startups
+	3. A lifestyle business is only designed to meet your financial needs
+		1. If I want to travel the world and want to live the life I want, I need the money to spend on that
+			1. Economic duress: We make a decision because of economic needs (we do something because we need money)
+				1. Lifestyle business is designed to get away from the economic duress
+					1. It takes a lot of time and hours upfront, but are designed to work somewhat on autopilot so that it gives time for you to do whatever you want
+						1. Examples:
+							1. Drop-shipping
+							2. Online teaching
+							3. Ebay power sellers
+							4. Amazon FBA game
+							5. Stock trading
+							6. Small hobby businesses
+						2. Examples: They can or cannot be lifestyle businesses
+							1. Consulting
+							2. Service businesses	
+								1. Web design firm - it depends on how much money you design for
+									1. Depends on how many clients you want to hold
+								2. If we want to have a 40 hour week and we want to grow rapidly, it is not a lifestyle business
+								3. If we have only 4-5 clients and takes only 4 hours per week, it can be considered as a lifestyle business
+	4. If lifestyle business appeals to you:
+		1. Focus on businesses that are not particularly sensitive to competition
+		2. Look for templates we can use to build a business around
+		3. Ensure it is large enough market to make whatever income we want to make (it doesn't have to be huge)
+		4. **Set a timeline, reach a goal, then quit**
+			1. No one is inspired by their lifestyle business (it is not fulfilling)
+		
+#### Startup Business ####
+1. It's a beast
+2. Paul Graham's quote (founder of incubator Y combinator)
+	1. **A startup is any business that's designed to grow rapidly**
+		1. There's no top limit
+		2. No goal to reach
+		3. Grow as fast as possible
+		4. Grow as big as possible
+3. They are big ideas
+4. They are ambitious
+5. They are things that take a lot of time
+6. They have a very high risk of failure
+7. There are ideas that often sound crazy but there are ideas that frequently change the world
+8. There are buisnesses that take a lot of time to get something out of
+
+#### Side Business ####
+1. They are very small
+2. They are not designed for or concerned with scaling
+3. **We need to look for any basic market opportunity, any service, or product you can reasonably make and just sell**
+	1. We don't think about
+		1. Changing ecosystem
+		2. How we are going to be a big entrant in a big market
+	2. We just think
+		1. Something we can build that has value
+		2. Something we can offload and sell easily in a minimal amount of time
+	3. Look for something that you can use your skills and hobbies or we are good at (that could potentially immediately come out of a hobby)
+	4. We don't care about scaling and that other people are doing it
+
 ### How good does my idea have to be? ###
+1. The quality and level of thoughtfulness you need to go into the business idea depends on
+	1. Good idea
+		1. It is a relative term
+			1. It depends on what it is suited for
+				1. A lifestyle business would be a terrible startup
+				2. A startup would be a terrible side-business
+				3. A side-business could be a terrible lifestyle business
+2. Example: Udemy
+	1. Side-business - Help people design thumbnails for Udemy courses
+		1. How good do you have to be to make thumbnails to be successful?
+		2. How good of an idea does it really have to be to be successful?
+		3. It is just people need, and potentially there is demand for it
+			1. No uniqueness
+			2. No competition
+			3. No profitability
+			4. No discovering hidden marketing avenue to scale the business
+			5. No uncommon observation
+		4. Ensure that the demand is real and it is not oversaturated
+			1. If 50 people are doing it - it is okay
+			2. If 50,000 people are doing it - it may not be a great idea
+	2. Lifestyle business - Being an instructor on the platform
+		1. Recognize an unmet need within the marketplace or a topic that does not have enough competition or you don't think is being properly served
+			1. Match that to your skills
+			2. Build a launch plan around that
+			3. Need to build your own unique style, your own pitch, your own tone
+			4. Figure out how you can differentiate yourself in a couple ways
+		2. It is a little more difficult and not as easy as a side-business
+		3. We are still operating within the constraints of the Udemy platform
+			1. Try to be good in the given system
+		4. Little bit more of observation, information gathering, to decide if it is or not a good idea
+	3. Startup - You want to change the world of education by constructing an online education maretplace, because you think there is a growing demand for this type of education. (people are unsatisfied with traditional eduction - hypothesis)
+		1. Need to predict that there is much larger market that's festering in the blind-spots of traditional universities - they are too expensive, and they don't teach specific skills.
+		2. We also figured out that there are many life skills that do not fit in any real curriculum or traditional education structure
+		3. We think that online education has reached inflection point where people can trust online education enough and technology is far enough that you can maintain a minimum standard of production quality
+		4. We believe that a number of people will trust online systems, pay for it, and actually have a service or experience delivered back to them that is acceptable quality
+		5. It is a lot more complex
+			1. We are noticing macro trends
+			2. We are taking a lot of information that other people don't know or find controversial
+			3. You are merging your understanding of markets, and trends, and sticking them all together and making a bold prediction
+		6. **It takes a lot of different predictions, shows that you have an accute understanding of multiple domains, multiple industries, and you can bring all together to make a big bet on the future 
+		7. **A good startup may be an observation that very few people have made in the world, about the world, or about people. It could also be based on deep domain knowledge that's made by someone who is an expert or one of the best in their field**
+		8. **Startup ideas to be successful, they need to be original**
+			1. **They need to have a core unchanging truth that is essential to them**
+			2. **They need to plan in making a big impact on their subject**
+			3. **They should be comfortable with the idea that they could potentially move a market and become a thought leader in it**
+				1. Not all startups meet that level of caliber
+					1. The more the startup fits the description, the better chance we have of making a big impact and growing to something big
+3. Idea advice
+	1. Everyone struggles to come up with those ideas for startups
+4. Next:
+	1. Eureka meth
+	2. **How do people get to the complex assumptions, and complex predictions?**
+5. Look at goal sheet 
+	1. Look at what you are shooting for ask yourself:
+		1. **Do you need a world-changing idea to be happy?**
+			1. Not everyone wants to be the next Steve Jobs
+6. All ideas are worth considering
+	1. None of them are immediately bad
+	2. You might have ideas that match all 3 business types
+	3. Startup:
+		1. Try to pinpoint ideas you have that bring in the most streams of information and bring in the most domain expertise, or things you can pull from your specific experience
+		2. Big idea: insert judgement
+	4. Lifestyle business
+		1. Focus on skills you have and see if you can match that to a reasonable unmet need (a platform, your own system)
+			1. Not enormous
+	5. Side-business
+		1. Look for something that you can do and people will buy
+
 ### The Eureka Myth ###
+1. The myth: All brilliant people have brilliant ideas and when they have brilliant ideas, they happen with a snap of a finger.
+	1. Makes you wait for the perfect idea that just comes to them and they don't need any active learning on their part
+2. The ideas that changed the world started as a drastically different idea
+	1. The current idea is usually after either a steady evolution of changes or a pivot (take a different direction by sometimes using the same resources, and customers)
+		1. Pivot - Very substantial
+			1. Founders, CEO, ... is very conciensious of
+				1. There's big meeting and made the decision
+			2. Drastic, and made at an executive level. Big decisions
+3. Evolution of ideas
+	1. Happens in every organization
+		1. Ideas started differently, and over time, they learned more things
+		2. The more they learned, the more they experienced, the idea changed
+		3. As the idea changes, it gets, better, and better, and sooner you can't even recognize the original idea
+		4. Happens whether or not we embrace it
+4. Brilliant people can have dumb ideas
+	1. They started as dumb ideas
+		1. Example: Facebook - It was an application for one college used to compare attractiveness between classmates
+		2. Example: AirBnb - It was started for people to sleep on the floor or air mattress while attending conferences when all hotel rooms were booked.
+		3. Example: Groupon - It was started as a website where people could donate to charities.
+		4. Example: PayPal - started as application to bean cryptocurrency between palmpilots
+		5. Example: Pintarest - started as a tool to mark things we are interested in in a designers website, and email you when they went on sale
+		6. Example: Twitter - started as a podcast subscription service
+		7. Example: Flickr - started as a video game
+			1. The game had photo sharing widget - it was realised to be popular and they pivoted
+		8. Example: Instagram - started as a checkin app
+		9. Example: Nintendo - started off by selling vacuum cleaners
+	2. All ideas are subject to 100s or even 1000s of miniature revelations That've been exposed to new information
+	3. **Business ideas thrive on information that is not accessible by the public**
+		1. Companies change them as they move forward with them
+		2. Ideas never get out of the lab, and never get to a point where they get inside information.
+		3. As businesses grow they peek into the market, find out more information, and change
+5. **For idea generation, follow what the Lean startup said**
+	1. Startups should validate their ideas
+		1. Start with all ideas suck
+			1. Most of our ideas are actually terrible
+	2. Great ideas might sound terrible and terrible ideas might come of positively
+	3. Evaluating ideas can be tough
+		1. Bessemer Venture Partners
+			1. Terrible mistakes they made in venture capital
+6. **Every idea comes with [a key set of] business assumptions**
+	1. We think they are true, but we will not know unless we test them
+		1. We might find that we were wrong
+	2. Brilliant people tried their ideas, figured out that they were wrong sooner, pivoted, changed, and eventually got it right
+
 ### Section 10 review material ###
 ### Quiz 8: Making it fit ###
 
 ## Section 11: Ways of coming up with ideas ##
 ### Problem-based business ideas ###
+1. Solving [your/someone else's] problems: The most common way
+	1. Founder story: Wikipedia
+		1. A lot of founders based their business on solving a problem [they have]
+	2. This is the most promoted strategy [by media, hollywood, ...]
+	3. It is easier to connect with a product or a service. If we have a story that the founder had a problem and couldn't figure out a solution, and the figured out a way to solve it, and they solved it for everybody
+		1. Gives some basic affinity for what they are doing
+2. How does this work?
+	1. You have a problem
+		1. Something we have issue with, something we are struggling with
+		2. You try to find a solution for it, but cannot find one
+		3. Try to build a solution yourself, or try to figure out a workaround, you get especially good or adept at getting around a certain problem.
+			1. You solved it
+	2. Does the solution apply to other people?
+	3. Example:
+		1. Dropbox
+			1. Sync all files in all computers, tablets, phones, ...
+			2. Founder: He often worked on something, put it on a flash-drive, and bring it to work. He sometimes forgot to bring it.
+			3. He solved it himself and thought that maybe other people want to use
+		2. mint.com - Founder: Own personal finances. He constructed his own system. Quickin alternative.
+			1. Spending behavior based on bank account
+			2. Financial well-being
+			3. Wealth-manager
+			4. Someone who does your finances
+3. Problem-based business solutions are incredibly effective
+	1. Reasons
+		1. People are invested in solving problems
+			1. Nice to have vs need to have
+				1. Solving a problem is need to have
+				2. Pain avoidance
+				3. Making things convenient and make their lives better
+			2. Solve a problem for the people, they are much more likely to pay you money and stay with your service
+		2. Problems are worth fixing
+			1. If a lot of people kind of want. Not worth doing
+				1. Is it worth the time?
+				2. Is it worth putting it out there?
+				3. Does it make the world better in any way?
+			2. If it isn't broke don't fix it
+		3. Problems are often the source of big business ideas
+			1. Founders stumbled upon the business
+				1. They ended up solving something for themselves, or for their organization, or a friend
+	2. Sitcom startup: Opposite. It's a made-up startup. Something that's plausible, but doesn't meet a need or doesn't actually have a market
+		1. They will not have interest or ability to pick an idea that's actually useful
+4. Steps to follow:
+	1. **Identification**
+		1. Sitting down and recognizing that these are the problems I have
+			1. Something I struggled with today
+			2. Something I am invested in fixing
+				1. **Write down every single thing I had a problem with today**
+					1. **My problems**
+						1. Medical
+							1. Booking for rides back and forth multiple times
+							2. Sending medical prescriptions to pharmacy
+							3. Make payments
+							4. Submitting for re-imbursement
+							5. Looking through prescriptions each time for taking medicine
+							6. Forgetting to take medicines
+							7. Reports are not handy and searching for them
+							8. Losing track of updates
+						2. Financial
+							1. Struggling with savings
+							2. Often account runs dry no matter the salary package
+							3. Not sure where to invest
+							4. Unable to make big investments without traditional bank loans
+						3. Health
+							1. Increased weight
+							2. Alergies to sea food
+							3. Worrying about the past
+							4. Spending too much time on work
+							5. Worrying about the future
+							6. Catching severe cold during winter
+						4. Skills
+						5. Not breaking up goals into sub-goals, and routines. No sense of timelines
+						6. Not keeping in touch with relatives and friends
+						7. No plan to learn Islam
+						8. Could not find an app to pay Zaka in India
+						9. Not sure how to entertain children with specific personalities
+						10. Bombarded with propaganda and lies on the internet
+						11. Getting disturbing how priority calls and unable to identify in advance
+						12. Not being regular with commitments
+		2. It can be vague or specific
+		3. Give a generic indication of how strong of a problem it is
+		4. Some problems are minor but some are quite big
+	2. **Asking basic questions to see if others have that problem too**
+		1. If the answer is yes, you have a business
+			1. If no, we don't have a business
+			2. How many people have the problem?
+			3. Is it a strong problem for them?
+				1. Every problem doesn't need to be fixed
+					1. Some are small
+					2. Some are local to me
+		2. If we identify the people who share some degree of severity of the prolem with me, they are theoretical customers
+	3. **The tier test: Is this a tier one problem?**
+		1. Tier one problem: It makes it to the top tier of their concerns for the day
+			1. Is the problem we are solving in the top 3?
+		2. See how big of an itch is the problem
+			1. Smaller problems are smaller business opportunities
+		3. It is better to have **a small group of people who have a strong desire to solve a problem** than a large group of people with a low amount of desire to solve a problem
+			1. Deep well vs. wide well
+				1. Deep well is better
+					1. Easier to launch business in that space
+						1. We know who to exactly go after and those people can put up with a low quality version of your first product
+5. If working on problems that someone else has, it works exactly the same
+	1. Follow the same 3 steps
+		1. Ask who else has the same problem
+		2. How big is that group
+		3. Do tier test
+6. Think of problems you faced today. See if they are worth solving
+	1. Missing a forearm: 1 in 2200 people - not a big group of people. But they are willing to fix it (deep well).
+		1. It is in top tier
+			1. Solution: Upto you
+7. Someone else's problem:
+	1. Etsy - crafts (made by hand or manufactured)
+		1. They get pirated
+			1. Chinese companies imitating (intellectual property)
+				1. Solution: Protexi - image matching service (compares with Alibaba images)
+					1. It is medium rating - one of the things (not tier 1)
+						1. Not a huge concern
+8. Deep and Wide wells have:
+	1. Tons of competition
+	2. Millions of dollars to solve the problem
+9. Niche
+	1. Sometimes we solve very specific problem that has a very small market
+		1. It might open up opportunities to expand horizontally and become a big business
+
 ### Wouldn't it be great if ###
+1. Common thought experiment to come up with business ideas 
+	1. Wouldn't it be great if ________
+		1. Think of something that would be awesome if it were true
+			1. It could be a price thing
+			2. It could be a convenience thing
+			3. It could be I didn't have to do this because it was much easier
+			4. I do this all the time but wouldn't it be great if the price was significantly reduced?
+			5. I do this all the time but wouldn't it be good if it took less time? (maybe 1/2 the time)
+		2. Think in terms of the 5 types of innovation
+			1. We don't have to look at any guides
+				1. **We are looking at benefits based businesses**
+					1. It is value adding on top of what someone is capable of doing (nice to haves vs we need this)
+					2. These types of businesses are tough to flesh out. They rely entirely on your imagination
+					3. Example: Uber
+						1. They just thought wouldn't it be great if I could order a limo from my phone?
+							1. Wouldn't it be cool if we take out our phone, request for a limo, the limo arrives, and we jump in and go
+								1. They just realized that technology worked really well for the problem and they started applying it to other things
+		3. **My ideas**
+			1. **Wouldn't it be great if I open a phone, press 2 buttons, an ambulance arrives at the spot quickly?**
+			2. **Wouldn't it be great if farmers rent out whatever they want in an app, it arrives shortly, they use it, and then when done, it will be picked up automatically?**
+			3. **Wouldn't it be great if I could verbally ask a chatbot to do things for me like, booking a cab, or auto, booking appointments, booking tickets, etc.?**
+			4. **Wouldn't it be great if I could open my phone and find out the selling prices of my produce as a farmer?**
+			5. **Wouldn't it be great if I augment my tractor and other existing tools to automate them?**
+			6. **Wouldn't it be great if I had an alarm clock that actually speaks out the tasks instead of just beeping?**
+			7. **Wouldn't it be great if I had an app that sets up automatic payments based on bills generated?**
+			8. **Wouldn't it be great if I had an app that suggests where to invest (specifically) to secure the future?**
+			9. **Wouldn't it be great if I had an app that suggests what to do next with my current skills and knowledge?**
+			10. **Wouldn't it be great if my phone teaches me Islam based on my pace of learning?**
+			11. **Wouldn't it be great to have an app that assesses how well I am following Islam based on my day-to-day activities (we can maintain a personal diary in the app), and suggest how to improve?**
+			12. **Wouldn't it be great if my phone/watch monitors my health, and automatically books doctor appointments, sends the diagnostics data, gets prescriptions, orders medicines, etc.?**
+			13. **Wouldn't it be great if my phone/watch monitors my health, and prescribes exercises, or therapies?**
+			14. **Wouldn't it be nice to have games that teach children Islam?**
+			15. **Wouldn't it be nice for my phone to show me the nearest Masjid that I can reach for offering Salah in congregation on time?**
+			16. **Wouldn't it be nice if my phone tells me the mood and feelings of loved ones, and report to me and give suggestions to improve bonding, love, and care?**
+			17. **Wouldn't it be nice if my phone tells me how my loved ones are doing?**
+			18. **Wouldn't it be nice to have an assistant that helps giving Da'wa effectively?**
+		4. "Great": If you can get excited about something, others can too
+			1. If you can pull it of, people are going to be excited about it
+				1. Wouldn't it be great if I could do this
+				2. Wouldn't it be great if this is available
+				3. Wouldn't it be great if I can get this task done in a fraction of the time?
+				4. ...
+			2. Screenflow - screencast - we cannot see ourselves while recording
+			3. Something that matches time preferences of clients and my preferences for setting up time slots for talking
+				1. Avoids back and forth
+	2. **Can I pull it off?**
+		1. **Do some research**
+			1. How complicated is it?
+			2. Are other people doing it?
+				1. We are just not aware of the service
+	3. If other people have the same problem, do they feel the same way?
+		1. Maybe some people enjoy going to doctor's office
+			1. **Do research**
+
 ### Imagine the future ###
+1. Thought experiment: Imagining the future
+	1. It is harder
+	2. Doesn't always work
+	3. If we put enough thought into it, we can come away with something
+	4. **It is a technique we can parlay into other techniques**
+		1. **We can combine the two and we can come up with ideas**
+2. Peter Thiel - Zero to One (Investor - Facebook, PayPal)
+	1. Checks how invested they are in constructing the future, or seeing the future they want to build
+	2. Thinking in a different way helps coming up with ideas
+	3. Question: **What great business in the future isn't built today?**
+		1. Open-ended
+		2. **Can you imagine the future?**
+			1. **Helps in building great companies doing great things fulfilling needs that we need in the future**
+				1. The world has big problems. We are only tackling so many of them. 
+					1. **What big problems are we going to be tackling in the future?**
+					2. **What big companies are going to be there that are doing it?**
+			2. How to imagine?
+				1. In different dimensions
+					1. Your country
+					2. Your politics
+					3. Technology in general
+				2. Think which of those companies that will be doing great things in the future is not being built right now?
+					1. Ideas don't sound that great at first
+						1. People are skeptical when they try to imagine new innovation
+					2. Suppose the idea has grown into a huge business with 1000s of employees, it is well designed, everyone has heard of it, ...
+						1. The idea doesn't sound so ridiculous
+		3. **Make predictions for the future**
+			1. 5 things that we think will happen
+				1. **What are those?**
+					1. Only electric cars or with hydrogen fuel cells or natural gas?
+					2. What sectors can grow in the future?
+				2. **Then work backwards**
+					1. **If we are thinking of big companies working in the future with future problems, and problems are opportunities that are based on your predictions**
+						1. It is plausible that this company does X, Y, and Z. We are missing the boat right now, and we should start working on it now.
+				3. **My predictions**
+					1. **All repetitive tasks (that have clear defined patterns) will be done by bots**
+					2. **Personal gadgets work as personal assistants & care-takers for everything**
+					3. **Flying machines (drones, small planes, transformer vehicles, ...) become common, cheaper, faster, safer, automated, and door-to-door**
+					4. **Robots used to uphold law and order at local, state, country, and international level**
+					5. **Robots used to save lives**
+					6. **Languages and paradigms will be built to instruct bots to perform complex tasks for Engineers to use**
+					7. **3 D videos to become common**
+					8. **Systems to verify and authenticate information shared at a global level**
+					9. **Everything to be done like shopping and will be door-to-door**
+					10. **Systems to interact, and communicate with other creatures**
+	4. All big businesses are based off of secrets
+		1. They are based off of information that other people simply don't have
+		2. **What do you know that others don't?**
+			1. What's something that you know is absolutely true but the vast majority of people in the world simply do not know that it's true?
+				1. Take a position that is unpopular or unknown and take an absolute position
+					1. Big businesses are built over contrarian position
+						1. I disagree with the majority of the population and with this trend, or what's happening in this sector
+
 ### Reverse imagination ###
+1. We imagine the future, and we imagine what's happening in the future, and then go backwards and think **what in the future is not being seeded right now and it should be being seeded**?
+	1. Inverse of previous one
+2. Reverse imagination
+	1. Example: When we look ads of the past, we think that we did things in an ignorant way (in the hindsight).
+		1. What makes you say this was stupid
+			1. **I think ________ was ridiculous**
+			2. **I think we thought ________ was popular or cool**
+			3. **We thought ________ was cutting edge back then**
+	2. Imagine you are in the future (10 years, 20 years, 30 years, 50 years, ...)
+		1. **If you are in the future, what today you will be looking back at and cringing at?**
+			1. What seems really necessary
+			2. What seems really dumb
+	3. Many entrepreneurs have used the technique to come up with business ideas
+		1. PayPal - It was silly that we couldn't transfer money through the internet
+	4. **Think of what we use today is unnecessary**
+		1. Look in your house and find an item that is ridiculous to use
+			1. Example: Physical credit cards
+	5. We can imagine a lot of business opportunities that follow the trend. If I am ahead of the curve, I could build something that could be potentially large
+3. Search: 35 ridiculous things from the 90s
+4. Look at commercials in the 80s, 90s, etc. - to get inspiration
+4. **My ideas**
+	1. **I think junk food was ridiculous but was popular and cool, witch slowly degraded the health**
+	2. **I think people believing hear-say was ridiculous, which led to misunderstandings, conflicts and wars**
+	3. **I think people not knowing their health condition until a hell on earth breaks loose was unfortunate**
+	4. **I think spending an entire day in a hospital and going back and forth is ridiculous**
+
 ### The Fit generator ###
+1. Tried and true way to come up with business ideas
+	1. To to top 10 hobbies, passions, skills, and experiences
+		1. Get rid of the experiences, and passions
+		2. **Look at your hobbies and skills**
+			1. Put them side-by-side
+			2. See if we can construct something of value by matching two of them
+				1. Hobbies - things we do for fun, we are interested in working on
+				2. Skills - things we are capable of doing, things we are good at doing
+			3. **Combining the two heps you come up with ideas**
+				1. Making and doing and being good at something that you enjoy doing and other people enjoy doing, you can build a rudimentary framework for business ideas
+					1. **Action** is in skills
+					2. **Passion** or motivation to tacke the problem in hobbies
+					3. **Customer demand** or customer interest in the hobby (everyone else probably havs a similar hobby)
+		3. Example:
+			1. Hobby: Baking, Skill: Web-Development
+				1. **Blog** - It could advertises recipes, and we can sell advertising space on that small business
+				2. **eCommerce** - Other people could list recipes or baked goods, and other people could buy it
+				3. **Mobile App**/ Web application - That helps bakers save recipes, put timers, swipe through a list of recipes as they go through and tells them when to move on to the next one. They could also share how well the item came of. If it came of well, they could share it with friends.
+		4. We have to stick a business model on top of the idea
+			1. Next - Business Models - New ones that are disruptive
+				1. Can also be used for old stale industries
+		5. Finally have combinations of all the three
+			1. List them all out
+			2. **Pick the one you like the most**
+		6. Business models examples:
+			1. Web Development + Bakery + On-demand
+				1. On-demand mobile app 
+					1. To deliver freshly cooked baked goods
+			2. Web Development + Bakery + Shared Economy
+				1. App for selling leftover baked goods (extras)
+					1. Couier system that everybodywho bakes 100 things, they want to sell 20 to cover the cost of 100. The courier service picks them and sells to people who want to eat them.
+			3. Web Development + Bakery + Subscription
+				1. Customized recipes website - pay $10 / month
+					1. Every week we get customized recipes with video tutorials that are very specific and very helpful - not public content
+		7. Pick a skill and a hobby, and add a business model (multiple of them)
+			1. See which ones make sense
+				1. We can make some business out of the three
+					1. It is only that whether it makes immediate sense to me or not
+2. Why does it work?
+	1. If we have more skills in our business, we are more likely to succeed
+	2. If we have hobbies related to business, we are more likely to be passionate about it, and we are more likely to be motivated by it
+		1. If we are motivated to fix problems, motivated to spend the correct amount of time to figure out whether or not it's worth it, and do long hours
+	3. **Pick skill & hobby. See if we can make a story between the two see if we can make something that's value adding**
+		1. It doesn't have to be something that people will buy right now, but it must be value adding
+	4. **Stack on a business model on top**
+	5. **Read those out loud and have a couple that might be interesting**
+	6. **Evaluate it** (next)
+		1. If we don't like it after evaluating it, rinse and repeat
+			1. **Go back to the list, pick another combination and evaluate**
+
 ### Cater to power users ###
+1. Strategy for small businesses, mid-size businesses, potentially large businesses (only in an indirect way)
+	1. Catering to power users
+		1. Power users - Users that use the platform or service that is atypical of normal users (the ones who use the most get the most out of it)
+			1. Platforms - Marketplaces, subscription services, ... (anywhere where lots of people interact with it) (it is a big company)
+				1. When businesses construct marketplace startups, or platform-based startups, they have the obligation to cater all of their features and all of their services to the entirety of their user base
+					1. When ebay, or Amazon constructs admin tools, and services that help buyers and sellers facilitate trade, they will focus on X, Y, and Z that every single user has demand for
+						1. X, Y, and Z features appeal to person who buys 1 thing every year or 10 things a day
+						2. X, Y, and Z features appeal to seller who sells 1 thing or 5000 things a day
+			2. **Power users** - use the platform or service to the extreme
+				1. Generally top 10% of the user base
+					1. Varies from platform to platform
+						1. Top 5% users may be buying or selling 60% of the items
+							1. Based on power law:
+								1. Power law: A small group of people disproportionately produce a large amount of the goods or services in any system
+									1. Deep well - Go for deep but thin well
+										1. Go for small group of people who really really want your stuff vs a large group of people who are not totally sure
+									2. Applying power law is a perfect way of starting a deep thin well strategy to grow your business
+				2. Examples:
+					1. ebay - Auction website
+						1. Power sellers probably sell more (10 or 100 times more) than a regular seller (1 or 10 things a month or year)
+							1. Power sellers have legitimate operations going on
+								1. They have need for legitimate large services to help them with large shipping, operational, and financial needs
+									1. Consignment store - it is a small business opened up to work with power users just to help them list their excess inventory 
+										1. List, maintain, answering questions, figuring out who bought it, packaging, selling it, ... is a lot of work when doing 100s or 1000s of items
+											1. Small businesses with small margins cannot justify having a team to run it
+										2. Power users drop off their items there and they take a cut and sell it
+										3. They also work with regular users because they take a large portion of the money
+						2. **What are the needs of the poser users?**
+							1. That ebay doesn't have or isn't supplying them because they can't justify it based on their entire user base?
+								1. Many
+						3. Power users don't want to write descriptions and make a list and make it look good
+							1. Ebay has a templating system
+								1. Simple
+								2. Takes time to edit than to construct a new one
+						4. Ebay doesn't have flash-sales
+					2. Amazon
+						1. Lots of power users of ebay are also in Amazon
+						2. Some users sell millions of items, but some sell a couple
+							1. 1000s of items - becomes hard to do basic tasks. Hard to use generic services that are not customized
+								1. Customer service - Item is returned, it must be fixed or refunded in a certain amount of time - potential opportunity
+						3. **Gold rush phenomenon**
+							1. People are all rushing onto the platform to write Kindle books
+								1. People are writing books, (ghostwritten), and selling them
+					3. Udemy
+						1. Power user business - many opportunities
+							1. Analytics
+								1. Who's looking at my page
+								2. How many bought my course or not
+								3. ...
+							2. Split testing
+								1. How do we know if we have witten good description vs bad description?
+							3. Course thumbnails designed
+							4. Course promotion packages
+								1. YouTube strategy
+								2. Facebook strategy
+								3. Immediate feedback
+								4. Early reviews
+							5. Design
+							6. Bumpers
+								1. Sprint kick in the beginning and end (demand)
+							7. How to reach them?
+								1. Get on to facebook group and message
+				2. See what the power users need that they're not getting and cater to them
+					1. Works on newer platforms
+						1. Udemy - 2 years behind
+					2. Find a community
+						1. Anywhere people are spending money, they're invested in getting exposure or sing a platform
+							1. Examples: Etsy, Airbnb, Getaround, ...
+						2. Zephyr - for Lyft and Uber
+							1. Helps Uber drivers understand when people are most likely going to be landing at the airport and gives suggestions on when to stake out at the airport to get rides
+				3. Pick a platform, and research it
+					1. See what the problems are
+					2. See what people are complaining about
+					3. Get some familiarity to understand it
+					4. You will find plenty of problems with wide opportunities to start making money
+					5. How to promote?
+						1. Hijack their platform
+							1. Use their platform to communicate with them or get their attention
+
 ### Reposition Good/Fast/Cheap ###
+1. It is the easiest one to do, and there are many opportunities
+	1. Great to get some ideas flowing. Great for market opportunities as well
+2. Good/Fast/Cheap - Marketing theory
+	1. Applies more to service businesses (providing a service instead of selling a product) & less to product businesses (can still be used)
+		1. Theory: Every business can be rated on three different dimensions: Good, fast, and cheap
+			1. Good & Fast: Firms that are really quality focussed & focussed on quick turnaround
+				1. They don't have cheap prices
+			2. Fast & Cheap: Low price and quick turnaround
+				1. Quality is not their focus
+			3. Good & Cheap
+	2. We can find businesses that are bad at all three and okay in two and bad at the third
+	3. **Any service business can only be 2 out of 3**
+		1. Good + Cheap - For quality, we need to be flexible on time
+		2. Cheap + Fast - Give up on quality
+		3. Good + Fast - Give up on prices
+			1. People who will deliver it will be expensive
+3. Take my-fit worksheet
+	1. Choose a skill or passion (hobby, passion, experience, or skill)
+		1. Focus on each item
+			1. Try to think of a business in any of the spaces we like what they are doing and we think they are on to something
+				1. We could think of a company that we love what they are doing but we thing it could be done better
+					1. **Improve their service by using a different combination of the 3 criteria** (good, fast, and cheap)
+	2. Example: Creative writing & help people with research essays
+		1. Figure out the two elements they are going for
+			1. Example: Good, fast - but expensive
+				1. Other options:
+					1. Fast & cheap - good for students that are procrastinators (turn around quickly & they want it cheap)
+					2. Good & Cheap - To focus on big essays that are not time sensitive but cant really compromise on quality (dessertation)
+	3. Example: Instacart - ondemand company. Private shoppers who pick the groceries for you and deliver them to you for a fee (convenience)
+		1. On-demand - fast
+			1. They are not cheap
+			2. Good: They get their orders wrong frequently
+				1. They cannot make decisions that we couldn't make while shopping ourselves
+		2. They are: Pimary fast, average good, but not very cheap
+		3. Other combinations:
+			1. Fast (on-demand) & Cheap
+				1. Focus on a model or logistics system that work with lower cost laborers
+				2. Focus on working with the closest crocery store
+				3. Focus on working on our own grocery store where everything is pre-packaged and easy to pick up
+		4. **Another approach: Instead of tackling their entire system, we can tackle the problem they are going after**
+			1. People don't want to grocery store, they think it is a hassle, and they are busy, and they are ready to pay a little bit more to get what they want
+		5. Good + cheap (not fast) - opposite of what Instacart does (not on demand)
+			1. Ship it (slow)
+				1. I can buy all the things in bulk
+					1. Target stuff that everybody buys and constantly needs to recycle
+						1. Example: Staples
+				2. I can buy in bulk and ship them from one place (it's cheap)
+				3. I can work with brands and ship you brands (it's good)
+4. **Take other two combinations and see which one matches the market better or fixes the problem better**
+	1. Example: Boxed
+		1. Good + Cheap (as opposed to Good + fast done by Instacart)
+
 ### Section 11 review material ###
 ### Quiz 9: Ways of coming up with ideas ###
 
 ## Section 12: Business models ##
 ### Saas: Software as a Service ###
+1. SaaS businesses
+	1. Business model
+	2. Whether it can be used for our business idea
+	3. Benefits, pros, and cons
+2. Most popular business model
+3. SaaS - it is just a business model
+	1. It is just how you charge for the value you are delivering
+		1. Any business delivers value
+			1. If it delivers value, we can pick a number of business models
+				1. Starting a SaaS business doesn't mean anything because it doesn't say anything about what we are building and the value we are delivering
+	2. SAAS - Software as a Service (not Software as a product)
+		1. SAAP - People buy it for X price and use it (OS - Windows) (you may pay for security updates separately)
+			1. Example: Video games - 1 price
+		2. Technology has advanced - We can do a lot more in the server and the browser.
+			1. Storage and bandwidth are becoming very cheap
+				1. People cn use things like Amazon EC2 - extremely cheap way of hosting applications
+		3. We can make a browser version of a desktop application
+			1. Charge them per month, per week, or per year basis automatically renewing
+			2. We store all the information
+			3. We do all the processing for them
+		4. Most popular tools we use online and pay monthly are all SaaS tools
+		5. We don't have to hire someone for every section of our business
+			1. We can use a SaaS tool
+				1. Virtual assistant: Zirtual.com
+				2. Payrol: ZenPayroll: pay per month
+				3. Taxes: Turbotax
+				4. Project Management: Trello, Asana, Basecamp
+		6. SaaS is usually a cloud-based system
+			1. Processing, storage, and everything going on, the value creation process for software is not going on on the computer but happening in data centers
+		7. The dynamics of a SaaS tool
+			1. Put software on the browser and make it available on any device or computer - great strategy
+				1. We can reach a lot more people
+				2. We can grow our business more easily
+					1. More people signing up
+					2. More people paying me
+					3. Purchase more data centers and more bandwidth
+			2. For physical products
+				1. We need to ramp-up manufacturing
+				2. We need to ramp-up marketing team & sales team
+			3. For Saas
+				1. All done in the cloud, and done automatically (we don't have to scale our effort)
+				2. SaaS businesses spend 20% - 40% on marketing and sales
+					1. Advantage
+						1. Most companies can be lower than that because they have higher overheads
+							1. SaaS frees up a lot of resources to spend on other places
+						2. We can advertise online
+							1. We can use prior established traction channels, and its relatively simple. Below are well established
+								1. **Banner ads**
+								2. **Pay-per-click**
+								3. **Pay for actions**
+								4. **Affiliates**
+				3. Example: SaaS tools
+					1. Xero.com: Bookkeeping and accounting process online
+						1. Gives analytics
+							1. Reduces cost of in-house bookkeeper
+					2. Spotify
+						1. Music service
+							1. We are not downloading
+							2. We can stream music
+							3. Subscription: $10 per month
+	2. SAAS tools:
+		1. Browser based OR
+		2. Downloadable but charged over and over
+3. **Things that really work well for SaaS tools**:
+	1. **offline to online**
+		1. **Service that immitates what people usually do in real life on papar, physically in person, and we are putting it online** - perfect
+			1. It is not convenient if they downloaded software and paid for it once
+	2. **Services that are used frequently**
+		1. **Because, most SaaS tools charge monthly, yearly basis etc.**
+			1. If they don't use it frequently, they will not renew
+				1. Then one-of payments is better
+					1. Much harder to scale your business
+	3. **Collecting user information**
+		1. Is it convenient to store that information?
+			1. Evernote - we can store all information
+				1. If it disappeared, we have lost all the information
+	4. **Selling a software** - browser/desktop
+		1. Good for locking customers into a re-occurring payment to use it
+			1. Helps us grow our potential market (VC Trick)
+				1. Example: Balsamiq
+					1. Desktop - Paid once
+					2. Online - They store info and recurring payment per month
+	5. **Avoiding copies and piracy**
+		1. Photoshop - Shifted to creative suite, Photoshop CC, ...
+4. **When SaaS tools don't work**
+	1. Software tool that requires a lot of RAM or requires specific info from the client that you would have to get in person someway
+		1. Example: Video games requires a lot of compute power and harder to play on the browser
+		2. For physical products, think of a hybrid
+			1. Example: Freshbooks - Invoicing tool online (SaaS)
+				1. They also have print and ship options
+				2. They charge per month but individual increments everytime we print and mail 
+	2. If we can do everything online, SaaS tool is best
+	3. Startup & Lifestyle businesses
+		1. Hard to do with side businesses
+			1. SaaS needs a minimum level of maintenance
+
 ### Subscriptions & Memberships ###
+1. Susbscription: A service that charges you monthly
+	1. Typically gives you unlimited access to their services or their goods
+		1. It could be called subscription or membership
+			1. Depends on what benefits we are getting from purchasing a membership
+				1. Membership: Access to purchasing something else (it is first paywall, then a second paywall)
+	2. With subscription, we give a per month cost and the customer can take whatever he wants within a timeframe
+	3. Example: Creative license companies, stock photo companies, Envato market (high resolution photgraphy)
+		1. They don't charge per item, but per month and e can consume a certain amount
+	4. Tier system
+		1. Monthly, quarterly, yearly, ...
+		2. Limited content unless we pay for higher tier
+		3. Example: Skillshare
+			1. Pay per month, we get to watch whatever we want
+				1. They think consumer will stick with them longer
+					1. Companies usually try other models and they have found that they have lower retention rates
+2. **When does it work?**
+	1. When we are selling something that has negligible incremental cost
+		1. Incremental cost: How much does it cost a supplier, or provider of a service for every new item or new service that your customer consumes
+			1. Example: Repair shop with subscription model
+				1. They might pay subscription and can overuse the service
+					1. We lose money every time they use it (subscription model incentivises people to use it as much as possible)
+	2. Good examples:
+		1. Digital good: Anytime they download something, it doesn't cost me much. We don't worry about how much they consume
+	3. If customers and consumers don't get much value if they buy only one thing
+		1. Example: Skillshare
+			1. The courses are significantly shorter than a Udemy course
+				1. $20 for 45min course - customer may not be thrilled with it
+					1. $10 / month for any number of 45min courses a month is a good deal
+	4. If we have planned to offer a large amount of content
+		1. Not good if we do only one thing
+	5. If we are selling something and we lose money on the sale of a product or sale of a service
+		1. Example: Zipcar - rent out and charge per hour basis
+			1. $100/year to be on their service and have an option to rent a car
+				1. They have to do background check on me, add me to insurance policy that cost them more
+					1. If I just sign up and not use any car, they have just lost money 
+				2. It's a membership to use their service (it's usually a flat fee to get access to their goods or services)
+	5. Consumable business ideas - to make a habit out of a product
+		1. Example: Food
+			1. Coffee
+				1. People will buy frequently and they build a habit of purchasing our product
+				2. Blue-model coffee - x amount of coffee per week or per month
+		2. Revenue comes from people who forget to cancel (unethical)
+	6. Your product needs to be used frequently as a pre-requisite
+		1. Example: Dollar shave-club sells razors
+			1. Deoderant stick lasts long so not good for subscription
+3. With membership model, is a **price innovation** play
+	1. Example: Constco (wholesale) - retailer that sells food, furniture, mattersses, home goods, etc.
+		1. Bulk - Lowest prices we can purchase anywhere
+		2. They charge per year
+			1. You can shop there and purchase the stuff
+		3. They make $0 profit for the goods they sell, but make 100% of the money from the memberships themselves
+			1. They give very low prices so that no one can compete
+4. When to use Subscriptions & Memberships
+	1. If we are doing something that is software-based
+	2. If we are doing something that sells multiple products
+	3. If we are selling something online digitally and doesn't cost you to give a service or give a product
+5. **See if we can use it as a key differentiator and see if it unlocks a unique setup that customers might find appealing**
+
 ### PWYW: Pay what you want ###
+1. Controvertial
+2. Companies are experiencing with
+3. Premise
+	1. You let customers decide how much they pay for it
+		1. It is like a donation box
+			1. They can pay what they think it's worth
+			2. They pay double because they like the fact that you offered them the option
+			3. They may not pay anything
+4. Certain parameters that will make it work and certain parameters you want to stay away from
+	1. When to use this model?
+		1. Whatever we are trying to sell has zero overhead
+			1. Very very minimal, and negligible overhead
+				1. Everytime people buy another one, it costs me nothing
+		2. Average price is lower but it makes up for in volume because more people purchase
+		3. If low overhead, you don't mind what people pay but you just want people to pay
+	2. When not to use this model?
+		1. A time when I wouldn't do this would be say, when your target market doesn't have a lot of disposable income
+			1. They might take advantage of it and not pay anything
+				1. It is better to sell them to upper middle-class to middle-class
+5. Example:
+	1. Luis C.K.
+		1. Comedy show tickets - recording online
+			1. It doesn't matter how many times it is downloaded. It didn't cost him anything
+		2. Shows that
+			1. He is unique
+			2. Increases distribution
+	2. Stacksocial
+		1. Sell online courses and do them in bundle
+			1. They focus on marketing section of innovation - they focus on selling them
+				1. When people buy it, it doesn't cost them anything
+	3. Lyft
+		1. Started with donation model
+			1. Suggested donation: Donate extra or nothing - they were trying to avoid taxation
+	4. Udemy
+		1. Pay what you want and take these courses
+			1. Offer at something to get something - because otherwise students will wait for free coupons anyway
+	5. Priceline
+		1. Name your own price model
+			1. I only pay $100 - They just put you anyway possible as long as you get to the destination (can have many layovers)
+			2. Price for hotel - as long as it is in a general area, they will give it to you
+		2. They put constraints
+			1. It's not pay what you want model
+				1. It is a reverse auction
+					1. If you want to pay $100, if a hotel pitched that price, then you would get the hotel
+						1. There is a minimum floor price - There will not be anyone who would accept it
+6. It works only when you have a low overhead or you are selling inventory that otherwise would go unused completely
+7. Use it with price controls and be smart about it
+8. **Good strategy if we are just starting of, if you want to get a marketing bump or a PR bump**
+	1. It gets you a lot of attention
+9. **A lot of companies can use this model, not because it is the best way of making money, but because they make a lot of money off getting your email address and selling you things later**
+	1. It's okay to pay a dollar and get your email address
+	2. They will make it up later my marketing to you
+
 ### The sharing economy ###
+1. Very new
+2. Sharing economy:
+	1. A company or a business idea that plans to allow individual people to monetize assets they aren't used to selling
+	2. They are all marketplace startups
+		3. They are connecting people in ways that are non-traditional
+			1. Traditional marketing: match buyers and sellers, and trade ownership
+			2. Sharing economy: We can do it in-person and we are sharing it, renting it, or loaning it
+				1. Example: Uber, Lyft (ride sharing) - we can drive our own car and pick up people riding in the city
+					1. They are turning you and your car into a monetizable asset (we are an unlicensed cab)
+				2. Example: Airbnb - to rent out our space in our apartment to people who are traveling through town (we can undercut hotels, charge less, and get paid for extra space)
+					1. B&B with what we already own without putting extra time
+				3. Example: Getaround, RelayRides
+					1. They allow us to rent out a car we own to people on a per/hour basis
+				4. Udemy:
+					1. They match people who have ideas or expertise and match them to people who want to use them
+				5. Vayable:
+					1. They work in big cities
+					2. They let people come up with walking tour guides and they run their own group tours
+			3. **They leverage individual creativity and entrepreneurship of indivdual people and allow them to make money as a side-business or as a contractor**
+	3. Name: It is a system or a company that allows you to make money of something you otherwise would have shared
+		1. We share things with friends
+		2. If we share it with strangers, we could potentially charge for that privilege
+		3. In some situations, it is a big win
+			1. When people travel to a city, they can stay at someone else's place with a price significantly lower than a hotel's price.
+			2. If people want to make money of of a living room they are not using much, they can make a significant amount of money
+	4. **Think of something that you underutilize and could monetize by sharing it**
+		1. We can share it for a small amount of money
+		2. We can share it with a wider network for a little bit of money
+		3. Examples:
+			1. Class notes
+			2. Textbooks
+	5. Business ideas work well based on generational lines
+		1. Technology is making it easier to have shared economy businesses (smart phones, ...) 
+		2. Millenials (20s) are more trusting of one another
+		3. Older generations are less trust worthy
+			1. This business model doesn't work for older demographics
+	6. You have a supply and demand issue
+		1. If we are trying to make a system or marketplace where you share an item that everybody has, you have to pick a market/type of asset that is owned by medium amount of people (If too many people hold an asset, then no one is going to need it. If too few people own the asset, then price for sharing it will be too high, and they will negotiate the reason why they are sharing it in the first place)
+			1. Example: Sharing toothbrushes doesn't make sense - cheap to buy them, everyone has them, no-one needs them
+			2. Example: Sharing welding equipment - very few people have it. The price of sharing it will be pretty mutch close to the cost of getting someone professionally weld for you 
+	7. Pitfalls
+		1. Sharing budinesses go around the rules (already established regulation)
+			1. It could be illegal in many cases
+				1. Example: Haystack - Selling parking spaces to people who needed it
+					1. App is used
+	8. We are helping people share something and it's an asset not used to sharing
+	9. How to come up with ideas?
+		1. Imagine Government doesn't exist
+		2. See what you can do without laws
+		3. See how you can make it work with laws
+#### My ideas ####
+1. **What can be shared (not used by me very much)?**
+	1. Room
+	2. Car
+	3. Byke
+	4. Tools
+		1. Big ones but portable
+			1. Drill machine
+			2. Vacuum cleaners
+			3. Laptop (extra)
+			4. Shoes
+	5. TV
+	6. Online subscriptions
+	7. Farm tools
+		1. Tractors
+		2. Attachments
+	8. Extra cooked food
+	9. Excess vegetables and fruits
+	10. Baby items
+		1. Cribs
+		2. Swings
+		3. Battery vehicles
+		4. Bikes
+		5. Play-area toys (not very portable)
+		6. Baby seats
+	11. Printer
+	12. Books
+
 ### Marketplaces ###
+1. Marketplace business model
+	1. Any business that relies on connecting buyers and sellers
+		1. They don't actually build the services they are selling
+			1. They get really good at filling the needs of both the buyer and the seller, and playing a match-making role
+				1. Many opportunities
+				2. Very popular
+	2. In microcausm
+	3. In forums
+		1. A separate sub-threads are created as a buy and sell exchange - simple way of setting up a marketplace business
+			1. Examples: eBay, Etsy, Udemy
+				1. eBay: Allows anyone to sell anything in an auctioned format
+					1. Other services offered:
+						1. They help buyers find customers and customers find items
+						2. They help you make your item look better, price it effectively
+						3. They also give buyer protection insurance
+				2. Udemy:
+					1. Software + bandwidth + customer service
+				3. Etsy: Small crafts
+	4. What do they do?
+		1. **Faciliate the exchange** - so that people can buy and sell with ease
+			1. Convenience innovation - They are trying to make it easier for both sides
+	5. Amazon: They are rerouting it to a different company (not buying directly from Amazon)
+		1. Matched seller with buyer
+			1. **It is only a match making service and not an actual service business**
+				1. **Notice something that people want to buy, but you don't want to make it yourself**
+					1. Potential marketplace play
+						1. Look for an unmet demand and who can offer it (comparable community)
+							1. Why aren't they already connected?
+								1. People who sell want to focus on hat they do best - run their service, or build their product
+									1. But they are not good at marketing themselves or finding people to sell to
+									2. Big expense to take on
+										1. If they don't know where to find potential buyers
+											1. If I make something for $7 and sell it for $10, I have only $2 for spending on finding potential customers
+								2. Significant overhead costs
+									1. Examples:
+										1. Getaround - match people who can rent out cars with people who want to rent cars.
+											1. Where to find people to rent it from?
+											2. How would you pay for overhead costs like unsurance?
+												1. They have on blanket insurance policy - they buy insurance for 1000s of cars
+												2. They have economies of scale and saves them a lot of money
+											3. How would you find a system to handle logistics?
+												1. With mobile application
+													1. They have tracking system
+													2. Customer support network
+													3. Any damages to the car are handled
+2. Marketplace business opportunities
+	1. If we know people that want to make side-money
+	2. If there are people who want to sell some service but struggle with two things
+		1. Finding people to buy it themselves, or not worth it for them to do it
+		2. Significant overhead costs that don't want personally to cover
+	3. If there is an existing company, by making a marketplace that offers the same product or solves a similar problem we can actually lower the price
+		1. Example: Getaround
+			1. Zipcar - owns and maintains all of the cars
+			2. Getaround - found people who wanted to rent out cars. The prices are significantly lower
+3. Downsides:
+	1. The marketplace conundrum - We are building a two sided community and each side will not join without the other (chicken-and-egg)
+		1. They can't get any buyers to come on because they don't have any sellers yet
+		2. They can't get any sellers to come on because they don't have any buyers yet
+			1. It takes significant amount of money and time to tackle it
+		3. They are little bit larger and take longer to run
+		4. Questions to ask:
+			1. Would the buyers come to the market if the sellers were not there?
+			2. Would the sellers come to the market if the buyers are not there?
+			3. How many buyers need to be there for sellers to come?
+			4. Do you have a situation where one of the participants in the marketplace is much harder to get and much more valuable?
+			5. Is it possible that you manually fake seed one side?
+				1. Build some items ourselves to populate it with something - it gives some traction
+					1. It gives little bit to offer to the buyers so they come and that starts the cycle
+				2. If both buyers and sellers have the same importance, that's much harder
+					1. It is easier to run a marketplace when one side is important and the other side is not
+					2. **We can entice one side to join the platform because they have nothing to lose or they're in a weaker position and then we can use it as a bargaining chip for the more important side**
+
 ### On Demand ###
+1. On-Demand Company
+	1. Any company that takes an ordinary service or ordinary business and tries to improve it by adding an extreme level of convenience and speed
+		1. Done using smart-phone technology
+		2. Done by targeting people with more disposable income
+		3. Done with fancy branding
+	2. Examples:
+		1. Uber
+		2. Lyft
+		3. ...
+		4. Washio
+	3. Example services:
+		1. On-demand massages
+	4. Look at basic service that happens all the time and thinking I can make it a lot faster and a lot more convenient
+		1. End-customer will pay a premium or extra for that convenience 
+	5. Everything is done from your phone - typically a mobile-only strategy
+		1. There are some web-components
+	6. Convenience innovation
+		1. We can hail someone to
+			1. Clean your apartment
+			2. Wash your clothes
+			3. ...
+		2. As opposed to traditional business model where we need to call, book an appointment ahead
+		3. It removes intermediary steps
+	7. Speed innovation
+		1. When you do order one of the services, they typically get it done within a shorter timeframe than what's usual
+2. Consideration
+	1. **Do the people need this product/service right now?**
+	2. **If yes, would they pay extra for it?**
+		1. Sometimes people want the service now but don't want to pay extra for it
+	3. **To make it work we have to cater to the people with extra disposable income**
+		1. Doesn't work for people who do not want to pay the extra convenience fee
+			1. Not profitable
+	4. **We can usually take any business and make it on-demand**
+		1. How long will it work for?
+			1. Successful businesses also make other innovations (not just on-demand)
+				1. Uber:
+					1. Don't have to use cash
+					2. People can become a taxi and make money in between jobs or when not working in their other job
+					3. They have significantly lowered the price
+						1. Opposite of on-demand plays
+3. On-Demand businesses ideas
+	1. Think of what you hate acquiring (something that you acquire regularly)
+		1. It is worth trying with something not found
+		2. Add it with a local modifier strategy
+
 ### Curated Boxes ###
+1. Newer business model
+2. Curated Box
+	1. When a company starts to sell a lot of small things into a monthly box, and they curate what goes into the box each month
+		1. Usually sold in a subscription model but it is different
+			1. They choose what you buy
+	2. Works if we are curating a lot of different goods and selling them to a very specific type of consumer
+	3. You yourself don't produce anything
+		1. We are essentially a shopper but shopping for 10s of 1000s of people
+		2. You can take advantage of millions of sellers and retailers out there (boutique sellers)
+			1. We can find almost endless combination of items, put together and sell them as a package
+	4. They work in bulk
+		1. They say we have 10k customers and we need to fill ther box this month with four goods
+		2. They can go to each supplier and negoiate a lower price for each item
+		3. In some situations they get subsidised or get paid to include other people's items
+			1. Since we include new things each month, it can be used as an advertisement
+				1. Sample items can be liked and bigger version can be purchased from the actual company
+	5. Examples:
+		1. Burchbox
+			1. They sell samples for things women would like (fragrances, or makeup)
+			2. **They found that women like sampling perfumes and makeup, but they purchase one or two, and put a lot of thought into it**
+				1. We can get samples delivered to your home and we can do it at home for a small amount of money
+					1. They can later on buy the full price item - it is quite expensive
+		2. Nature box
+			1. Healthy snacks
+		3. Bar box
+			1. Toys for dogs
+		4. Bespoke post
+			1. Lifestyle items - for lumberjacks, or hipster
+		5. Beef jerky, dipping sauces, ...
+	6. Examples of non-physical items
+		1. Curate high quality photography 
+			1. Sending by mail
+3. How to come up with ideas:
+	1. Consider whether you are not an expert in some space
+	2. Whether or not you want to sell something that has lifestyle or self-experssive benefit to it
+4. Is this the right model for you?
+	1. **If we can find one group of people and what they like, and if we can find unlimited products to serve that need, we have an opportunity to use this model**
+5. Go for products that have a high replacement rate
+	1. Foods are the best
+		1. If people eat snacks and they might want more of the snacks, so they wait for the next snack to come
+	2. Bad example:
+		1. Dog toy box - we don't need toys every month
+			1. They just pile-up
+	3. Shoot for things that get replaced quite often & try to stay away from things that can meet the need almost immediately
+
 ### DTC: Direct to Consumer ###
+1. DTC business model
+	1. Not new
+		1. More popular now due to internet & shipping innovation
+	2. Only to physical products
+		1. Skip any sections to sell the product and go direct to the consumer
+			1. Example: Don't send a dishwasher to retail outlet but send it directly to consumer
+		2. Advantages:
+			1. Ship it only once from company to consumer (not re-routing)
+				1. Lower per-unit cost
+			2. Skipping retailers - we Don't have to cooperate with a retailer
+				1. Saves cost
+				2. Retailers take a lot of time managing them
+				3. Retailers take up a lot of your profit (20% to 80%)
+		3. We can do price innovation play due to cost savings
+			1. Example: Dell computers
+				1. DTC only usually
+					1. Much more competitive price (significantly cheaper)
+			2. Example: Luxury goods
+				1. Designer clothing - ship it directly to consumers at a massive discount
+		4. Problems:
+			1. We have a branding issue 
+				1. Selling high-end items at a discounted price is not obvious win
+					1. People might assume it is lower quality - they may not understand immediately why it is so much cheaper
+		5. Exciting now because:
+			1. With the internet, we can sell almost anything
+			2. Shipping is getting cheaper and cheaper - global gas prices are quite low
+				1. Helps us lower the price considerably
+2. How to use it?
+	1. What are you trying to sell (physical product)
+	2. Do you need retailer to sell it?
+3. Advantages:
+	1. Website - overhead for running a website is very low
+		1. Helps us spend money on other things like marketing and lowering the price
+4. Getting it right is tricky
+	1. The item size has to be proportional with the price
+		1. Why? 
+			1. Large items cost a lot of money to ship
+				1. We could spend more on shipping than what it would cost of the item
+					1. Shipping an encyclopedia can be enormous
+	2. **Ship small things that are more expensive**
+		1. Shipping cost is negligible and we can make plenty of money on the actual product
+5. Examples:
+	1. Warby Parker
+		1. They have trendy glasses that have subscriptions built into them
+		2. They have built an entire model skipping optometrist and skipping eyeglass stores
+		3. Virtualization online
+			1. Try on the glasses
+			2. Purchase through them
+		4. Shipping is cheap
+			1. They ship three times for free
+				1. Third time, they make a lot of money (the glasses are expensive)
+6. Pitfalls
+	1. Low-price items are loss leaders
+		1. They lose money but somehow by establishing customer contact, the company makes money later
+			1. A curated box model is better for low-price items
+				1. Plan for demand and inventory are not required
+				2. Make a box
+				3. Know how much to buy
+				4. Get it in bulk pricing
+				5. Ship it all at once
+
 ### Crowdsourced catelogs & inventory ###
+1. Newer business model
+	1. Tricky to conceptualize
+	2. Tricky to use
+2. Crowdsourcing inventory
+	1. A twist on e-commerce
+		1. E-commerce - They sell a variety of different things
+			1. How do they choose what goes into their product catelog?
+		2. How does it work?
+			1. Example: Teespring or Gusto (Jeans company)
+				1. They allow other people (individual people) to determine what their inventory is
+				2. Based on the demand from the buyer side, they pick what's the most popular, what's going to sell the best
+		3. Letting people decide what they want to buy
+		4. Example: Gusto
+			1. They come up with denim jean ideas. They will say they are going to use this material, they are going to take user submitted suggestions and then they see if enough people are interested in it and will buy into it, if they do they will do small batch production and ship it to everyone
+		5. Example: TeeSpring
+			1. Manufacture only if certain amount of pledged shirts or pledged dollar amounts is reached
+				1. Only produce T-Shirts that are profitable
+3. Benefits
+	1. Building a community - around what we are doing
+		1. We get people energised about how you sell and then what your model is
+	2. We also limit risk when it comes to selling an item that won't work or wasting a lot of time marketing and conceptualizing what people want to buy
+4. Problems
+	1. It backfires if you want to protect your brand
+		1. Crowd can pick things that are contrary to how the company want to brand or present themselves
+5. **Works if people are incentivised in some way if they produce content for us**
+	1. Example: Teespring - you get paid for what sells
+6. It can work but we are working with two active communities
+	1. People who want to buy what you are selling
+	2. People who wnat to make what you are selling
+7. It works with people who are aficianados within the space
+	1. Good lifestyle businesses
+	2. Startups - depends on the market
+	3. Side-businesses - Not
+		1. We need to build and run the platform and needs promotion (decent investment)
+
 ### Section 12 review material ###
 ### Quiz 10: Business models ###
 
 ## Section 13: Evaluate & test ##
 ### Intro to Section 13 ###
+1. We're going to evaluate your ideas
+2. We usually come up with a lot of ideas
+	1. We will not immediately know which ones are worth pursuing nd worth putting off to later
+3. This section:
+	1. We will set priorities
+	2. We will set basic criteria to drill down on each idea to see which one has the most potential and is worth putting our time into first
+4. Evaluation:
+	1. We are only looking at the idea (not validation)
+	2. We are not doing outside reasearch
+	3. We are only making subjective judgements on quality of it based on certain dimensions
+5. Validation:
+	1. We took the idea, built the product, built the website, did MVP and tried to sell it
+
 ### Matching Fit ###
+1. Take pieces of the quadrant and see if your idea fits them
+	1. Hobbies & Experience - ideas based on both
+	2. Experience - idea based on it
+		1. If we have experience in one industry, that could play of in another industry and give a leg up on different ones
+	3. Skills - Look at an idea, and see if you could use any of your skills in the process
+		1. Web developer - web app
+	4. Passions - Larger and broader
+		1. Check if at any point of your business, you will be touching passion points
+2. If you have lots of things that match the criteria, it is a good indication, and if you have nothing or only a few, it is a bad indication
+3. **Questions to ask yourself**:
+	1. **Could I do this every single day without losing interest?** (10 hours every day, 7 days a week)
+		1. If have to work an extra month without burning out, can you handle it?
+			1. It is easier if it has something to do with your hobby or passion, but a little bit harder with only experience
+		2. **Experience and skills matter more than passion**
+			1. If we are only matching skills or experience, we can still be motivated and get a lot of value and enjoyment out of our business
+				1. Why? We are good at it
+	2. **If this idea failed, will I still gain valuable lessons and learn valuable skills?**
+		1. Yes - positive indication 
+			1. If we can come out with something, it is a lot easier to stay motivated at it and waking up everyday knowing we are going to work towards it
+		2. No - Riskier proposition
+			1. A little bit harder to get motivated
+	3. **Do I have a step-by-step plan for my idea?**
+		1. Do you have some general idea of how you are going to go about validating it, building it if it is a product, and finding customers?
+		2. If we think of an idea and we don't know where to even start, it is a bad thing
+			1. It means we do not have enough experience and it's actually going to be a detriment to you
+				1. You are going to spend way too long picking up basic stuff that you would've known if you had a little bit more experience
+				2. You need to atleast have a vague idea of
+					1. Who I should talk to first
+					2. Where I should do research
+					3. Whose opinion I should follow
+				3. Think critically
+4. Re-evaluate your enthusiasm
+5. Ability
+	1. Different from skills
+		1. It is your ability to execute on this idea
+			1. Could be specific ideas to this business
+			2. Could be more generic
+6. A business opportunity that you can't pursue is not an opportunity
+	1. A wide open market trend that you need billions of dollars and a huge team to tackle but it would be lucrative is not a business opportunity for you
+		1. It is for large companies, billionaires, or who just sold their last startup
+			1. Example: Apple tree
+				1. What apples are available to you is a function of how tall are you
+					1. Whether you have resources to get to the apples (like ladder)
+					2. Whether we are ready to sit 24/7 for apples to fall
+						1. We don't have time resource to sit all day
+			2. Does your idea have a window?
+				1. Some ideas have expiration dates (not a bad thing)
+					1. It's going to be an opportunity for a short period of time or a definite period of time
+						1. Entering a business and make money only for next two years
+							1. Do we have the ability to get in and out within the window?
+								1. If you have lower abilities, don't focus on ideas that have definite windows or if skeptical about how long the opportunity will be available
+7. Do you have the ability?
+	1. **Try to evaluate your ability objectively**
+		1. If you have no startup or business experience
+			1. **Break it down into smaller pieces**
+				1. Take the idea, break it down, and look at individual pieces
+					1. See if you can do every single piece
+						1. Example: Web application
+							1. Conceptualize
+							2. Prototype
+							3. Build
+							4. Sell
+							5. Manage employees
+							6. Make business development contacts
+						2. Check how many you can do on your own
+				2. Once you identify what you can and cannot do, and you have passion to pursue it:
+					1. **Pick one piece and build a business around it**
+						1. Example: Managing Airbnb properties
+							1. Breakup
+								1. Sales & Marketing
+								2. Optimizing people's listing descriptions
+								3. Managing cleanings
+								4. Managing checkins
+								5. Managing expectations with guest
+								6. Relaying communication between host and guest
+								7. Setting up system where you can respond to enquiries
+								8. Try to make sales and bookings
+								9. ...
+							2. If you don't have experience with some of the pieces, pick one that you have experience with and build a business around it
+								1. Cleaning or Airbnbs 
+								2. Helping people optimize their listings
+								3. Become a host
+							3. Make money with one piece, enter into the market
+							4. Get familiarity and start building your name in that space
+						2. Big businesses started of small going after a niche market and trying to dominate it
+							1. Once they succeeded, they went into larger market - that's how you know them now 
+						3. Start off with small markets, then expand as you get more experience
+						4. **Leverage your experience, contact, and your newfound ability to work in this space to expand horizontally**
+8. If you feel strongly about your idea after going through the evaluation, then go ahead, but otherwise, note that you don't feel great about how it fits you as a person
+
 ### Sustainability ###
+1. Sustainability: Longevity of your business
+	1. Once the business grows and scales, is it still sustainable?
+		1. Lifestyle/side-business don't need longevity
+			1. **How long do you want to spend on this business?**
+			2. **Check if your idea matches that**
+	2. Startup: Look for as much longevity as possible
+	3. Who knows how long market is going to last?
+		1. We can get a decent sense
+2. Questions to ask yourself:
+	1. **What's going to happen to your market when you become successful?**
+		1. Once you are successful, you are going to change the dynamics of how players are going to work in your market, you change potentially the pricing dynamics, you potentially knock people out of the market and give opportunities for other people to come into the market
+			1. How is it going to change?
+				1. We could say, it doesn't change much
+		2. Example: Fixed
+			1. Mobile app that scans parking ticket and contest in the city for price. If they win, they get 50% of it, if they lose, you pay nothing.
+				1. They hire one person to go to courts all day with a bunch of tickets
+					1. Cities lost revenue and they banned the app. They also blocked the company from accessing parking tickets
+		3. Example: Haystack
+			1. To auction off public parking spaces
+				1. It became politically unpopular with cities
+					1. **They didn't realize how will different players react**
+		4. **You may end up crushing yourself under your own success**
+	2. **Are you dependent on another platform?**
+		1. Are you building it on top of another platform or are very dependent on another platform?
+			1. Example: Udemy
+				1. What happens if the platform disappears?
+				2. What happens if ebay, etsy, ... disappear?
+		2. What if there is a dot com crash and a lot of businesses go out of money and outta business?
+		3. Example: BranchOut - LinkedIn on Facebook
+			1. Facebook made a change to their platform and BranchOut crashed
+				1. Facebook had certain rules and BranchOut was using those rules to get users, but Facebook changed the rules and closed the window, and BranchOut went out of business
+	3. **How will your competitors react to you coming into the market?**
+		1. You usually come up with a product slightly better than other competing product. The competitor looks at your product, and since they have much larger resources, much larger market, so they do it and they always win the market because they have more customers. more resources, and they nullified any advantage you had
+		2. Example: Pebble watch - e-reader
+			1. Apple, Motorola, ... came out with similar watches, so pebble is not interesting anymore
+		3. Example: Apple is becoming a problem for streaming services like spotify
+			1. Apple has overwhelming dominance of the market and they have a large reach and they have already negotiated licensing price with the music players which makes it really hard to compete with them
+		4. If you think large companies will react negatively, ask the following question:
+			1. **Do you have something specific that others can't imitate?**
+				1. A startup is nimble, fast, flexible, and there are a lot of things we can do vs large companies (VCs call them aircraft carriers because they cannot turn quickly) who cannot respond very quickly or really at all.
+		5. We might enter a market in which doing something would be unpopular if larger company did it
+			1. Example: Uber
+				1. They don't buy cars, but they are Transport Network Carrier 
+			2. Example: Breeze
+				1. Buys cars or makes deals with lease companies to get people to use their cars and drive on Uber
+				2. **They are operating in a way that they know Uber will never do it**
+					1. Because Uber doesn't want to own cars (violates TNC - may lead to fines, fees, ... legal battle)
+3. Sniff the ideas and evaluate based on the above criteria
+	1. Make note if they go through or remove the idea if they don't
+	2. Lifestyle & Small business: Sinsitivity to competition is lower
+		1. Larger player doing something doesn't really matter
+
 ### Path to validation ###
+1. What is path to validation?
+	1. How well do you visualize the path you'd have to take to get to validation?
+		1. How easy or simple is it going to be?
+		2. Validation: It is getting our business or idea to the point where we have essentially established that there is for a fact demand for your product
+			1. It is not just establishing that vaguely people wanna buy your category of product - it is usually very specific
+				1. We know for a fact that specific product will sell to your customers
+					1. **How well can you visualize that?**
+						1. They are not steps to success, steps to growth, or steps to profit
+							1. **They are steps to validation**
+2. What is required to validate your idea? (To understand this is where I need to get to, and this is where I need to stop, and assess whether it is easy to get to that point)
+	1. The difficulty of the validation process
+		1. Some ideas are easier to get to validation and some are not
+			1. They are functions of markets they are going into, or business models they are trying to work with
+			2. It has got to do with your idea itself
+				1. Example: Making proteing bars
+					1. Easy to validate
+						1. Protein bars for people on diets (atkins, southbeach, Paleo, zone diet ...)
+							1. Lot of packaging
+							2. Lot of preservatives
+							3. Lot of sugar
+								1. It conflicts with people who are on a diet
+						2. How would you validate that people will buy it?
+							1. Specifically the customer group that will buy the product from you (not generically)
+								1. Estabish: **We are going after a certain diet, and people in that diet recognize that they want your product and pay you in some way**
+									1. How? A landing page
+										1. It could have a photo of what it would possibly look like
+										2. People buy products online even without seeing the product
+										3. No need for
+											1. Research
+											2. Build
+											3. Production batch
+											4. Fancy website
+										4. The result is the validation
+				2. Example: Hard to validate. Credit card technology that solve lots of problems
+					1. Maybe make a system that's (potential problems it solves or offers certain benefits)
+						1. More secure
+						2. Faster
+						3. Saves people money
+					2. Needs a lot of leg-work
+						1. Prove that
+							1. Customers use the product
+							2. Customers are okay with using the product
+							3. Merchants agree to accomodate the new system
+							4. Online processors like Visa, Mastercard, American Express to agree to process through your new card type
+						2. Problem?
+							1. They are all interconnected
+								1. People who use the card are not going to buy the system if they can't use it at their favorite stores.
+								2. Their favorite store is not going to buy a system to accommodate the card if no one's using it.
+								3. Credit card companies are not going to use it unless they have a very strong reason to switch a large part of their system to your new technology
+						3. To figure out it is going to work, we have to validate three different sections that are co-dependent, and could probably take a very large budget, or a very strong reputation behind you in order to be taken seriously by all three parties
+						4. **How do we decide at what point in time they are validated?**
+							1. **Proving your core assumptions**
+								1. Prove whether our core assumptions were right or wrong
+									1. Core assumptions: **When I have a business idea, I think it will be successfull because of this reason**
+										1. **What assumptions have I made that have to be true for this product to be successful?**
+											1. Example: Protein bars assumptions
+												1. People on diets have problems with protein bars and they have some sort of a need around that
+												2. People are willing to buy something online that they have never seen in person
+												3. Whether we can make a protein bar that fits the diet is not validation because that doesn't have anything to do with whether the idea is going to sell.
+													1. It is only figuring out that we are not capable of pulling it of
+											2. Example: Credit cards assumptions
+												1. People are having trouble with their credit cards
+												2. All parties have issues with the current system that's set up
+												3. People care about things like upgraded security
+													1. Assumption that they have problem with the security they have now
+												4. People are willing to try a new technology
+													1. Usually not the case
+														1. A lot of industries are resistent to new technologies and new change
+															1. They usually follow other people
+										2. **Get to a point where we can answer all the questions**
+											1. If we say yes to all the core assumptions, we have validated the idea
+											2. If we say yes to only some of the core ideas, we have probably not validated the idea and we might need to change it
+3. If an idea has a long path of assumptions, it doesn't mean it is bad
+	1. **It only means that feasibly, you are going to take more risk pursuing it**
+	2. If you have two ideas with easy path to validation, and one with hard path, it would have probably taken the same time validating the easy two ideas as the hard one
+4. **Think about how soon can you validate your idea?**
+	1. Product: Typically easy
+	2. Something farfetched: Depends on individual circumstance
+5. Summary:
+	1. Think about the idea
+	2. Think about how we framed validation
+	3. Some ideas are very hard to validate, and some are pretty simple
+	4. When do we need to validate?
+		1. Identify core assumptions
+			1. **What am I exactly assuming to be true for my business to be successful**
+
 ### Section 13 review material ###
 ### Quiz 11: Evaluate & test ###
 
 ## Section 14: Bonus Section ##
 ### Bonus Lecture ###
+1. [Other Courses at Discounted Price - For Students](https://www.udemy.com/course/intro-to-entrepreneurship-get-started-as-an-entrepreneur/learn/lecture/11422634#content)
+	1. Become a Product Manager | Learn the Skills & Get the Job
+	2. Advanced Product Management: Leadership & Communication
+	3. Advanced Product Management Vision, Strategy & Metrics
+	4. Pre-Programming: Everything you need to knw before you code - x
+	5. Instagram Marketing 2025: Hashtags, Live, Stories, Ads & more
+	6. TikTok Marketing 2025: Grow Your Account & Master TikTok Ads
+	7. Become a Growth Marketer: Learn Growth Marketing & Get a Job
+	8. 1 day MVP 2.0 | Go from Idea to MVP in just 1 day
+	9. Outsource your idea | Launch your buisness for 1/4 the price
+	10. Idea Valdiation: From Idea to Paying Customer in 1 Day
+	11. Project Management Fundamentals: Run projects effectively
+	12. Leading Effective 1-on-1 Meetings: Win loyalty and retention
+	13. Achieve Better Work-Life Balance
+	14. How to Build your Professional Network
+	15. Building Your Team: HOw to put together the perfect team
+	16. Building a Team from Scratch: Recruit, Hire, Onboard, & more
+	17. Mastering Collaboration: Work together for the best results
+	18. How to Master Hiring: Pick the right candidate every time
+	19. Lean Management: Reduce waste and boost efficiency
+	20. Leading Effective Meatings
+	21. How to Hire & Manage Virtual Teams
+	22. Motivating Your Team: How to keep morale high
+	23. Onboarding New Employees: Increase retention & performance
+	24. Recruiting Talent: How to find & attract the best candidates
+2. Use "Buy Now" instead of "Add to cart"

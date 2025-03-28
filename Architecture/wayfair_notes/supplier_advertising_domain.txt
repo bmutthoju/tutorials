@@ -1,0 +1,112 @@
+Business
+How supplier ads imp?
+What's our role?
+
+WSP - suppy side
+
+Wayfair - e-commerce platform - no manufacture
+US, Canada, Germany, UK
+
+Supply chain we own, 3rd party supply chain
+e-commerce platform
+	supplier bring products to be sold
+
+ecosystem - $800M - ad campaigns
+	
+We don't own inventory - Unlike Amazon
+	When bad times hit - we have an edge over them (we don't hold inventory)
+		NO own capital - only platform
+		Supplier do discounts
+		We do marketing
+	
+Supplier chain problem reflects - it can impact the company
+
+We are not competing with amazon
+	1. Amazon - <= $100
+	2. Wayfair >= $100 (sofa, mattress, ...) - preferred for online shopping
+		1. Flexible return policy
+		
+Wayfair catalog - $22 Million (Rugs, wall art (1M), mattress, ...)
+	70% white labeled - name of the brand and supplier are not visible - Our brand
+		Our brands - 6 brands show our own brand - name of the supplier and brand are not visible on the website (70% - we don't know the supplier) - Most money is made with these products
+	30% - big brands - GE, matteress brands, ...
+	
+Flywheel
+	Suppliers - come to platform for online sales
+		They use wayfair recipe
+	If shoppers have better experience, they make more money
+	
+	Invest in ads
+		We get ad dollars
+		We hire people
+		We makes sure shopper experience
+		
+		We get money even if shoppers are browsing
+		
+Promotional calendar
+	Supplier gives discount
+	
+Catalogue is rich - it is made sure - options, price, ...
+
+WSP, WSS - Clicks are charged (not charged for impressions)
+
+Funnel:
+	Awareness - Brands want creation of awareness (they want customers to think of their brand)
+		Homepage ad
+		Banner ad
+		
+	Consideration - WSS
+		An alternative to top brands
+	Conversion
+		Sponsored products - When customer is about the select the product, you want to advertise your product
+		
+Before customer interacts - suppliers logs in, campaigns (group of products for advertising)
+	- product
+	- targeting
+	- how much they are willing to pay
+	
+	Realtime and batch jobs (45 minutes - brings all data from campaigns, eriches catalog with more product data, inventory, dsplay skus, price conversions, ... and stores them in Elasticsearch or Aerospike)
+	As the customer hits the website, the data is ready (search or browse)
+		Search - partners in S&R (different org)
+			Call goes to them for grid, - give products
+			their engine calls orch engine - kruse
+			kruse uses Vulcan
+			
+			192 candidates - ranking, optimization, selection, inventory check, -> 48 products and where we want
+				we make ad generation, bid decisioning, inventory check, ...
+				dynamicity - area rugs 12 ads, ...
+				
+			Auction runs - who will go to what spots
+				If clicked how much do they pay
+				
+			When we build the grid, a bunch of events are sent
+				Auction events
+				Candidate generation events
+				...
+				
+				over scribe (built on Kafka) - event management platform
+				
+				Data is stored in BigQuery
+				
+				When customer clicks or sees the ad - we fire click, or impressions events
+						data goes to
+							RT system
+							GBQ
+							
+				Budget set for campaigns
+					Click - decrements amount
+					
+					when spend becomes 0 - API removes ads from caches
+				
+				Many batch jobs & data flow jobs - calcualtes performance of campaign
+					Clicks
+					spend
+					money spend
+					orders generated
+					...
+					
+				Feedback to suppliers
+				
+				Charges
+					second price auction - 
+						Quality score - (multiplied with willing to spend) - final charge
