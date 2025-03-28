@@ -51,17 +51,47 @@
 4. New Folder: `RNDesignExercise`
 	1. `test` project
 		1. Blank project
+		
+		```bash
+		npm install --global eas-cli && npx create-expo-app test && cd test && eas init --id 0b731452-e53b-4aa9-a7d4-44945fe179e4
+		```
+		
 5. Android studio
 	1. Get expo app in adroid phone
-	2. Install Vysor app
+	2. Install Vysor app (not required now)
 		1. Open and scan
+	3. Start an AVD (Android Virtual Device) - latest one
+6. Sign in to expo on the expo website
+7. Android tools: cd /Users/studio/Library/Android/sdk/tools/
+	1. `./android avd`
+		1. We can launch an AVD
 
 ### File structure of expo project ###
+1. File structure and directories
+	1. assets - default assets of expo
+	2. node_modules - node dependencies
+		1. Tricks - later
+	3. App.js - single entry point for RN app
+	4. package.json - updated from cli
+2. Plugins
+
 ### Exercise files ###
 ### Configure Atom - Important ###
+1. Plugins
+	1. emmet
+	2. atom-react-native-autocomplete
+	3. atom-react-native-style - CSS
+	4. nuclide - overkill
+2. snippets
+	1. rncCourse.txt
+		1. Replace
 
 ## Project 1 - Getting the basics right ##
 ### Basics of React Native and styling ###
+1. New expo project
+2. `projonenative`
+3. 
+
 ### Creating a separate component ###
 ### Flexbox basics and free resource to learn flexbox ###
 
