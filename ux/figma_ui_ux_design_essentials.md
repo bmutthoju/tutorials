@@ -296,11 +296,55 @@
 			1. Light blue - default in wireframe
 			2. Transparent: 72%
 	2. Wireframes: Black, greys, white
+	3. Fill
+		1. Color picker
+		2. Hue slide
+			1. Adjust saturation
+	4. Transparency
+	5. Eye-dropper
+		1. i - shortcut
+	6. Document colors
+		1. Colors used before
+	7. Option + drag
+		1. Changes on both sides
 
 ### Strokes Plus Updating Color Defaults in Figma ###
+1. Stroke
+	1. +
+		1. Width: 2
+	2. Saving as default
+		1. Figma
+			1. Edit > Set default properties
+		2. Draw
+2. Edit > Copy properties
+	1. Select a different shape
+	2. Paste properties
+3. Shift + drag
+	1. Line will be straight
+4. Ctrl + drag
+	1. Copies
+5. Ctrl + d
+	1. Repeats (after ctrl + drag)
+6. Select + drag - scales
+7. Endpoint
+	1. Round
+8. Cross for images
+9. Bringing an image
+	1. Rectangle tool
+		1. Place image
+
 ### Object Editing and How to Escape in Figma ###
+1. Object editing mode
+	1. Click on corner and drag - destroys the rectangle
+	2. Double clicking also enters and double clicking outside exits 
+
 ### Scale vs Selecting Tool in Figma ###
+1. Scale tool
+	1. Corner is also scaled
+
 ### Frames vs Groups in Figma ###
+1. 
+
 ### Class Project 02 - Wireframe ###
 ### Assignment 2: Class Project 02 - Wireframe ###
 ### Where to Get Free Icons for Figma ###

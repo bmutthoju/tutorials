@@ -4037,12 +4037,136 @@ SELECT * FROM todos;
 ```
 
 #### Using PostgreSQL DELETE to delete one row from the table ####
+1. `DELETE` one row with the id 1 from `todos` table:
+
+```
+DELETE FROM todos
+WHERE id = 1;
+```
+
+```
+DELETE 1
+```
+
+2. If a row with `ìd` 100, which does not exist, is tried to be `DELETE`d, 
+
 #### Using PostgreSQL DELETE to delete a row and return the deleted row ####
+1. Statement to `DELETE` the row with `id` 2, and return the deleted row:
+
+```
+DELETE FROM todos
+WHERE id = 2
+RETURNING *;
+```
+
 #### Using PostgreSQL DELETE to delete multiple rows from the table ####
+1. `DELETE` all rows from the `todos` table with the value `true` in the completed column and return the rows:
+
+```
+DELETE FROM todos
+WHERE completed = true
+RETURNING *;
+```
+
 #### Using PostgreSQL DELETE to delete all rows from the table ####
+1. `DELETE` all rows in the table:
+
+```
+DELETE FROM todos;
+```
+
 ### Summary ###
 
 ## PostgreSQL DELETE JOIN ##
+1. `DELETE` statement for delete join operations
+
+### Introduction to PostgreSQL DELETE statement with USING clause ###
+1. PostgreSQL doesn't support [DELETE JOIN statement like in MySQL](https://www.mysqltutorial.org/mysql-basics/mysql-delete-join/).
+2. It offers `USING` clause in `DELETE` statement, which is similar to `DELETE JOIN`
+3. Syntax:
+
+```
+DELETE FROM table1
+USING table2
+WHERE condition
+RETURNING returning_columns;
+```
+
+	1. `table1` - Name of the table you want to delete from
+	2. `table2` - Name of the table to join with the main table after `USING` keyword
+	3. `condition` - used to join the tables
+	
+4. Example:
+
+```
+DELETE from t1
+USING t2
+WHERE t1.id = t2.id
+```
+
+### PostgreSQL DELETE JOIN examples ###
+#### Setting up sample tables ####
+1. `member` and `denylist` tables:
+
+```
+CREATE TABLE member (
+    id SERIAL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	phone VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE denylist (
+    phone VARCHAR(15) PRIMARY KEY
+);
+
+INSERT INTO member (first_name, last_name, phone)
+VALUES ('John', 'Doe', '(408)-523-9874'),
+       ('Jane','Doe','(408)-511-9876'),
+	   ('Lily','Bush','(408)-124-9221');
+	   
+INSERT INTO denylist (phone)
+VALUES ('(408)-523-9874'),
+	   ('(408)-511-9876');
+	   
+SELECT * FROM member;
+
+SELECT * FROM denylist;
+```
+
+#### Basic PostgreSQL delete join example ####
+1. `DELETE` rows in `member`s table if the phone number exists in `denylist` table:
+
+```
+DELETE FROM member
+USING denylist
+WHERE member.phone = denylist.phone
+RETURNING *;
+
+SELECT * FROM member;
+```
+
+#### Delete join using a subquery example ####
+1. `USING` is not part of SQL standard.
+	1. It may not be available in other DB systems
+		1. Alternative: Subquery
+2. Above example using subquery:
+
+```
+DELETE FROM member
+WHERE phone IN (
+    SELECT 
+	    phone
+	FROM 
+	    denylist
+)
+RETURNING *;
+
+SELECT * FROM member;
+```
+
+### Summary ###
+
 ## PostgreSQL UPSERT using INSERT ON CONFLICT Statement ##
 ## PostgreSQL MERGE Statement ##
 
@@ -4185,6 +4309,7 @@ SELECT * FROM todos;
 ## PostgreSQL Full Text Search ##
 ## PostgreSQL JSON Index ##
 
+---
 
 ## PostgreSQL Administraion - (10 days) ##
 ## PostgreSQL CREATE DATABASE ##
