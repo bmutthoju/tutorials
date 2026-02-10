@@ -2529,9 +2529,190 @@
 					}
 				}
 			}
+			
+#### Part 2 ####
+1. What we learn in this lecture:
+	1. `ReentrantLock.tryLock()` use case in a Real Time application, using JavaFX
+	2. Example: Financial Assets Dashboard
+		1. Stocks
+		2. Crypto
+		3. ...
+	3. Threads:
+		1. UI thread - animations
+			1. Responds to mouse events
+			2. Display prices
+		2. Background thread - network calls to service to get upto date prices periodically
+	4. Shared resource 
+		1. Worker threads can update the prices
+		2. UI thread can get prices and display them to the user
+	5. UI:
+		1. All UI events, animations, and rendering are happening on a single UI thread
+			1. UI must never block
+2. Summary:
+	1. Learned how to utilize the ReentrantLock's advanced features
+	2. Using `tryLock()`
+		1. We avoid blocking the real time thread
+		2. Keep applicaiton responsive
+		3. Performed operations atomically
+
+#### What's the difference between `ReentrantLock`'s `tryLock()` and regular lock? ####
+Great question! The difference between `ReentrantLock`'s `tryLock()` and the regular `lock()` method lies in **behavior under contention** (when multiple threads try to acquire the lock).
+
+---
+
+### 🔒 `lock()`
+
+```java
+lock.lock();
+```
+
+* **Blocking**: If the lock is already held by another thread, `lock()` will block **indefinitely** until the lock becomes available.
+* **Guaranteed acquisition**: Once the lock is free, your thread will acquire it.
+* **Used when**: You want to wait no matter how long it takes.
+
+---
+
+### ⏳ `tryLock()`
+
+```java
+if (lock.tryLock()) {
+    try {
+        // critical section
+    } finally {
+        lock.unlock();
+    }
+}
+```
+
+* **Non-blocking**: It will **immediately return** `true` if the lock is available, or `false` if not.
+* **No waiting**: The thread doesn’t block or wait.
+* **Used when**: You want to **avoid getting stuck** (e.g., in deadlock-prone scenarios), or implement **custom retry logic**.
+
+---
+
+### 🕒 `tryLock(timeout, unit)`
+
+```java
+if (lock.tryLock(1, TimeUnit.SECONDS)) {
+    try {
+        // critical section
+    } finally {
+        lock.unlock();
+    }
+}
+```
+
+* Waits up to the specified time.
+* Returns `true` if lock is acquired within the time; otherwise `false`.
+
+---
+
+### ⚖️ Summary Table
+
+| Method             | Blocking | Timeout Support | Return Type | Use Case                  |
+| ------------------ | -------- | --------------- | ----------- | ------------------------- |
+| `lock()`           | Yes      | ❌               | void        | Always waits for the lock |
+| `tryLock()`        | No       | ❌               | `boolean`   | Try-and-fail-fast logic   |
+| `tryLock(timeout)` | Yes      | ✅               | `boolean`   | Wait up to a certain time |
+
+---
+
+### ✅ Example Scenario
+
+```java
+if (lock.tryLock()) {
+    try {
+        // safe access
+    } finally {
+        lock.unlock();
+    }
+} else {
+    // couldn't acquire lock, do something else
+}
+```
+
+This pattern is useful in real-time systems, UI apps, or deadlock-avoidance logic.
+
+---
+
+Let me know if you want a code demo or comparison with `synchronized`.
 
 ### Quiz 10 - ReentrantLock ###
 ### Reentrant Read Write Lock & Database Implementation ###
+1. What we learn in this lecture
+	1. ReentrantReadWriteLock (Read Lock and Write Lock) (two locks in one)
+		1. Motivation
+		2. How to increase performance
+	2. Practical Use case
+2. ReentrantReadWriteLock - Why?
+	1. Race Conditions require
+		1. Multiple threads sharing a resource
+		2. At least one thread modifying the resource
+	2. Solution: Complete mutual exclusion
+		1. Regardless of operation (read/write/both)
+		2. Lock and allow only one thread to critical section
+	3. What about workload that mostly needs reading and very little modifying?
+		1. Read operations are very frequent
+		2. Write operations are very less frequent (updates cache very less)
+	4. Protection between readers?
+		1. Multiple threads can read a resource concurrently as long as they are not modifying its state in any way
+	5. Synchronized and ReentrantLock do not allow multiple readers to access a shared resource concurrently
+	6. Not a big problem in the general case
+		1. If we keep the critical sections short, the chances of a contention over a lock are minimal 
+	7. Other cases:
+		1. When read operations are predominant
+		2. Or when the read operations are not as fast
+			1. Read from many variables
+			2. Read from a complex data structure
+		3. Mutual exclusion of reading threads negatively impacts the performance
+	8. Solution: ReentrantReadWriteLock
+		1. How to use?
+		
+		```
+		ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+		Lock readLock = rwLock.readLock();
+		Lock writeLock = rwLock.writeLock();
+		
+		writeLock.lock();
+		try {
+			modifySharedResources();
+		} finally {
+			writeLock.unlock();
+		}
+		
+		readLock.lock();
+		try {
+			readFromSharedResources();
+		} finally {
+			readLock.unlock();
+		}
+		```
+		
+		2. Multiple threads can acquire the readLock
+			1. Many threads can get into the critical section to read
+		3. Only a single thread is allowed to lock a writeLock
+			1. The threads trying to acquire a write lock that is already acquired, they will get blocked
+		4. There is mutual exclusion between readers and writers
+			1. If a write lock is acquired, no thread can acquire a read lock (until the write lock is released)
+			2. If at least one thread holds a read lock, no thread can acquire a write lock (until the last reader unlocks the read lock)
+3. Use Case - Inventory Database
+	1. DB backed by a binary search tree
+		1. Keys are prices of items
+		2. Values are number of items at that price
+	2. `TreeMap` - implemented using Red-Black tree
+	3. We finish 3 times faster just by using `ReentrantReadWriteLock` instead of `ReentrantLock` if reads are very fast (more frequent) as compared to writes
+4. Summary:
+	1. Using regular binary locks with read intensive workloads, prevents concurrent read from shared resource
+	2. `ReentrantReadWriteLock`
+		1. `ReadLock`
+		2. `WriteLock`
+		3. Allows multiple readers, read shared resource concurrently
+	3. Read intensive use-case where we increased the performance and finished 3x faster
+5. Key-Takeaway
+	1. `ReentrantReadWriteLock` is not always better than a conventional lock (it can perform worse)
+	2. Use the right tool for the job
+	3. Measure and validate assumptions
+
 ### Quiz 11 - Read-Write Locks ###
 ### Coding Exercise 4: Product Reviews Service ###
 ### Product Reviews Service - Solution ###
@@ -3006,10 +3187,79 @@
 						public float[][] matrix2;
 					}
 				}
+				
+#### Part 2: Objects as Condition Variables - wait(), notify(), and notifyAll() ####
+1. What we learn in this lecture
+	1. wait(), notify(), notifyAll() for inter-thread communication and signalling
+	2. Backpressure practical example between a producer and consumer
+2. wait(), notify(), and notifyAll()
+	1. The Object class contains the following methods:
+		1. `public final void wait() throws InterruptedException`
+		2. `public final void notify()`
+		3. `public final void notifyAll()`
+	2. Every Java Class inherits form the Object class
+	3. We can use any object as a condition variable and a lock (using the `synchronized` keyword)
+	4. `wait()` - Causes the current thread to wait until another thread wakes it up
+		1. It the wait state, the thread is not consuming any CPU
+	5. Two ways to wake up the waiting thread:
+		1. `notify()` - Wakes up a single thread waiting on that object
+		2. `notifyAll()` - Wakes up all the threads waiting on that object
+	6 To call `wait()`, `notify()`, and `notifyAll()` we need to acquire the monitor of that object (use `synchronized` on that object)
+	7. Example:
+	
+	```java
+	public class MySharedClass {
+		private boolean isComplete = false;
+		
+		public void waitUntilComplete() {
+			synchronized(this) {
+				while (isComplete == false) {
+					this.wait();
+				}
+			}
+		}
+	}
+	```
+	
+	8. Example:
+	
+	```java
+	public void complete() {
+		synchronized(this) {
+			isComplete = true;
+			this.notify();
+		}
+	}
+	```
+	
+	9. If the object is `this`, we can clean the code by moving `synchronized` to method declaration
+		1. We can remove `this` from `wait()` (implicit)
+3. Backpressure practical example between a producer and consumer
+	1. Example: Matrix Multiplication
+		1. Applications: Neural networks (AI, deep-learning)
+			1. Image processing
+	2. Pipeline
+		1. Matrices Reader (producer)
+			1. Reads a pair of matrices from a file
+		2. Matrices Multiplier (consumer)
+			1. Multiplies pairs of matrices and saves the result into another file
+		3. Thread-safe queue - backpressure using `wait()` and `notify()` methods
+4. Applying backpressure using `wait()` and `notify()`
+	1. Producer calls `wait()` if max capacity is reached
+	2. Consumer calls `notify()` if < max capacity
+5. Summary:
+	1. Learned another way to communicate between threads, using the `wait()`, `notify()`, and `notifyAll()` methods that each class has
+	2. We learned how to apply it in practice, by implementing a Thread Safe Queue between Consumer and Producer threads
+	3. Learned how to implement back pressure to guard against `OutOfMemoryException`
+	4. Whenever using a queue to decouple multithreaded components, apply back-pressure and limit the size of the queue
 
 ### Quiz 13: Condition Variables ###
 ### Coding Exercise 5: Simple CountDownLatch ###
 ### Simple CountDownLatch - Solution ###
+1. [CountDownLatch](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html)
+2. [CyclicBarrier](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html)
+3. [Phaser](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Phaser.html)
+4. [Exchanger](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Exchanger.html)
 
 ## Lock-Free Algorithms, Data-Structures & Techniques ##
 ### Introduction to Non-Blocking, Lock Free Operations ###
@@ -4034,6 +4284,250 @@
 		1. They are just like any other Java objects allocated on the heap
 		2. Mounting / Unmounting allows scheduling of many virtual threads on a limited number of carrier threads
 8. Next:
+	1. Why do we need virtual threads?
+	2. How they can help us with Performance?
+	
+### Introduction to Virtual Threads ###
+1. What we learn in this lecture
+	1. Quick Review of Java Thread and OS threads
+	2. Introduction to Virtual Threads
+	3. Demo of Virtual Threads
+2. Quick Review of Java Thread and OS threads
+	1. Thread Object (contains code in `run()` and has `start()` method)
+		1. `start()` - tells VM to instantiate and start a new OS thread belonging to application process
+			1. Asks JVM to allocate a fixed size stack space to store the threads' local variables
+				1. **The OS is responsibe for scheduling and running the thread on the CPU**
+		2. The `Thread` object in JVM is only a thin layer/wrapper around an OS thread
+	2. It is called platform thread
+		1. It is expensive and heavy
+			1. Each platform thread maps 1-1 to OS thread (limited resource)
+		2. It is tied to a static stack-space within JVM
+3. Introduction to Virtual Threads
+	1. Newer type of thread, introduced in JDK 21
+	2. To use it, please upgrade to the latest version
+	3. Virtual thread - has `run()` and `start()` methods
+		1. It is fully belongs and managed by the JVM
+		2. It doesn't come with a fixed size stack
+		3. OS takes no role in creation and management
+			1. It is not even aware of it
+		4. It is just a java object stored on the heap
+			1. JVM GCs it when it is no longer needed
+		5. They are very cheap and fast to instantiate at large quantities (just like any Java object)
+		6. When at-least one VT is created, JVM internally instantiates a small pool of platform threads
+		7. When JVM wants to run a VT, it mounts it on one of the platform threads within its pool
+			1. The platform thread is called a carrier thread
+		8. When VT finishes its execution, the JVM unmounts the thread from its carrier and makes platform thread available for other VTs
+		9. Once the VT is unmounted, it becomes available for GC
+		10. If VT is unfinished, but cannot make any progress at a particular time, the JVM unmounts the VT and saves it's current state on the heap
+			1. State:
+				1. Instruction Pointer
+				2. Snapshot of carrier thread stack
+			2. Another VT is mounted
+			3. If previous VT wants to continue
+				1. If another platform thread is available, and does not carry any VT, it is mounted on PT
+			4. If no PT is available, VT has to wait
+			5. If second VT is unable to continue, JVM unmounts it and mounts previous VT
+				1. It copies state from heap back to carrier thread's stack memory
+4. Developers have very little control over carrier threads, and scheduling of VTs on them
+	1. JVM manages them undert the hood
+5. Demo of Virtual Threads
+	1. Code:
+	
+	```java
+	public class VirtualThreadsDemo {
+		public static void main(String[] args) throws InterruptedException {
+			Runnable runnable = () -> System.out.println("Inside thread: " + Thread.currentThread());
+			
+			Thread platformThread = Thread.ofPlatform().unstarted(runnable);
+			
+			platformThread.start();
+			platformThread.join();
+		}
+	}
+	```
+	
+6. Virtual Thread:
+
+	```
+	public class VirtualThreadsDemo {
+		public static void main(String[] args) throws InterruptedException {
+			Runnable runnable = () -> System.out.println("Inside thread: " + Thread.currentThread());
+			
+			Thread platformThread = Thread.ofVirtual().unstarted(runnable);
+			
+			platformThread.start();
+			platformThread.join();
+		}
+	}	
+	```
+	
+	1. `VirtualThread[#21]/runnable@ForkJoinPool-1-worker-1`
+	2. JVM instantiated an internal platform thread pool called `ForkJoinPool-1`
+		1. A worker thread in the thread pool is called `worker-1`
+	3. Example:
+	
+	```java
+	import java.util.List;
+	import java.util.ArrayList;
+
+	public class VirtualThreadsDemo {
+
+	  private static final int NUMBER_OF_VIRTUAL_THREADS = 2;
+
+	  public static void main(String[] args) throws InterruptedException {
+		Runnable task = () -> {
+		  System.out.println("Running in: " + Thread.currentThread());
+		};
+
+		List<Thread> virtualThreads = new ArrayList<>();
+
+		for (int i = 0; i < NUMBER_OF_VIRTUAL_THREADS; i++) {
+		  Thread vThread = Thread.ofVirtual().unstarted(task);
+		  virtualThreads.add(vThread);
+		}
+
+		for (Thread vThread : virtualThreads) {
+		  vThread.start();
+		  System.out.println("Started virtual thread: " + vThread);
+		}
+
+		for (Thread vThread : virtualThreads) {
+		  vThread.join();
+		  System.out.println("Joined virtual thread: " + vThread);
+		}
+	  }
+	}
+	```
+	
+	1. Output:
+	
+	```
+	Started virtual thread: VirtualThread[#27]/runnable
+	Running in: VirtualThread[#27]/runnable@ForkJoinPool-1-worker-1
+	Started virtual thread: VirtualThread[#28]/runnable
+	Running in: VirtualThread[#28]/runnable@ForkJoinPool-1-worker-2
+	Joined virtual thread: VirtualThread[#27]/terminated
+	Joined virtual thread: VirtualThread[#28]/terminated
+	```
+	
+	2. Increase the number of virtual threads to 20
+	
+	```
+	Started virtual thread: VirtualThread[#27]/runnable
+	Running in: VirtualThread[#27]/runnable@ForkJoinPool-1-worker-1
+	...
+	Running in: VirtualThread[#28]/runnable@ForkJoinPool-1-worker-2
+	Running in: VirtualThread[#29]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#30]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#31]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#32]/runnable@ForkJoinPool-1-worker-2
+	...
+	Running in: VirtualThread[#34]/runnable@ForkJoinPool-1-worker-3
+	Running in: VirtualThread[#33]/runnable@ForkJoinPool-1-worker-1
+	...
+	Running in: VirtualThread[#35]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#36]/runnable@ForkJoinPool-1-worker-3
+	Running in: VirtualThread[#37]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#38]/runnable@ForkJoinPool-1-worker-2
+	Running in: VirtualThread[#39]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#40]/runnable@ForkJoinPool-1-worker-2
+	Running in: VirtualThread[#41]/runnable@ForkJoinPool-1-worker-1
+	...
+	Running in: VirtualThread[#42]/runnable@ForkJoinPool-1-worker-2
+	Running in: VirtualThread[#43]/runnable@ForkJoinPool-1-worker-2
+	...
+	Running in: VirtualThread[#44]/runnable@ForkJoinPool-1-worker-1
+	Running in: VirtualThread[#45]/runnable@ForkJoinPool-1-worker-2
+	Running in: VirtualThread[#46]/runnable@ForkJoinPool-1-worker-1
+	...
+	```
+	
+		1. Only 4 platform threads are created as the carriers of virtual threads
+		
+	3. Increase VTs to 100 threads
+		1. Carrier threads: 5
+	4. Increase VTs to 1000 threads
+		1. Carrier threads: 7 (approx)
+	8. The maximum number of platform threads is equal to the number of cores
+		1. Only those many threads can run in parallel
+	9. Blocking operation:
+	
+	```java
+	import java.util.List;
+	import java.util.ArrayList;
+
+	public class VirtualThreadsDemo {
+
+	  private static final int NUMBER_OF_VIRTUAL_THREADS = 2;
+
+	  public static void main(String[] args) throws InterruptedException {
+		Runnable task = new BlockingTask();
+
+		List<Thread> virtualThreads = new ArrayList<>();
+
+		for (int i = 0; i < NUMBER_OF_VIRTUAL_THREADS; i++) {
+		  Thread vThread = Thread.ofVirtual().unstarted(task);
+		  virtualThreads.add(vThread);
+		}
+
+		for (Thread vThread : virtualThreads) {
+		  vThread.start();
+		  System.out.println("Started virtual thread: " + vThread);
+		}
+
+		for (Thread vThread : virtualThreads) {
+		  vThread.join();
+		  System.out.println("Joined virtual thread: " + vThread);
+		}
+	  }
+
+	  static class BlockingTask implements Runnable {
+		@Override
+		public void run() {
+		  System.out.println("Inside thread: " + Thread.currentThread() + " before blocking call");
+		  // Simulate a blocking operation
+		  try {
+			// Simulate some blocking operation
+			Thread.sleep(1000);
+		  } catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		  }
+		  System.out.println("Inside thread: " + Thread.currentThread() + " after blocking call");
+		  // Simulate some work after the blocking operation
+		}
+	  }
+	}
+	```
+	
+	1. Output:
+	
+	```
+	Started virtual thread: VirtualThread[#27]/runnable
+	Started virtual thread: VirtualThread[#28]/runnable
+	Inside thread: VirtualThread[#27]/runnable@ForkJoinPool-1-worker-1 before blocking call  
+	Inside thread: VirtualThread[#28]/runnable@ForkJoinPool-1-worker-2 before blocking call  
+	Inside thread: VirtualThread[#28]/runnable@ForkJoinPool-1-worker-1 after blocking call
+	Inside thread: VirtualThread[#27]/runnable@ForkJoinPool-1-worker-2 after blocking call
+	Joined virtual thread: VirtualThread[#27]/terminated
+	Joined virtual thread: VirtualThread[#28]/terminated
+	```
+	
+	1. VT #27 was mounted on `worker-1` platform thread initially, but is mounted on `worker-2` platform thread after the blocking operation
+		1. Order of execution can be different in every execution of the program
+			1. Scheduling of platform threads is out of our control and is managed by OS
+	2. Change to 100 VTs
+		1. As soon as a VT goes to sleep, JVM unmounts it from the platform thread and makes the platform thread available for other VTs
+7. Summary:
+	1. Introduction to Virtual Threads
+	2. Reviewed the "Platform Threads"
+		1. Are expensive
+		2. Have fixed size stack memory
+		3. Map 1-to-1 to OS threads
+	3. Virtual threads
+		1. Just like any other Java object on the heap
+		2. Mounting / Unmounting allows scheduling of many virtual threads on a limited number of carrier threads
+			1. Allows JVM to run a large number of VTs on a very small number of PTs
+8. Open Questions:
 	1. Why do we need virtual threads?
 	2. How they can help us with Performance?
 

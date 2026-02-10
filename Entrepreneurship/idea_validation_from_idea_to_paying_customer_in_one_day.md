@@ -839,25 +839,411 @@
 					1. We can embed it into paypal page - more advanced
 			6. Download button image from PayPal and use it
 				1. Update the Conversion Goal
+3. **If people are ready to pay you, then you are in a fantastic situation**
 
 ### Extra: Using a payment button in email ###
+1. Selling people through email
+	1. Works if you have a strong enough product and you are targetting your network
+		1. To test:
+			1. Will they purchase the item?
+			2. Will they purchase a similar item?
+			3. Will they sign-up?
+			4. Will they subscribe?
+			5. Will they donate?
+	2. Examples: AppSumo - sent to friends, and people he knew
+	3. Go to PayPal
+		1. Email section
+			1. Copy the email
+	4. Open EMail browser
+		1. To: my friends, or people who responded to happy hour list
+		2. Subject: Hey are you interested in my idea / Thanks for showing your interest, you can buy it here.
+		3. Paste the link in the email body
+		4. Drag and drop image of a button
+		5. Turn it into a link
+		6. Edit link: Enter the URL
+
 ### Extra: Using templates for extra wow ###
+1. Templates to install on websites
+	1. Little time to edit
+	2. Buy a template
+		1. Share it with Developer
+		2. Developer makes changes and develops the backend
+			1. The other way around is challenging
+		3. themeforest.net
+			1. Cheap templates
+			2. PSD - photoshop image
+			3. eCommerce
+				1 Shopify
+			4. WordPress
+			5. Marketing
+				1. Landing page
+			6. Template with sub-pages
+				1. Regular license - $13
+				2. They give multiple versions
+					1. Browser heavy vs browser light
+					2. Flat design
+			7. Popups
+			8. Advertising team
+			9. Templates with Admin panel - for Software as a service
+				1. Bar charts
+				2. Share buttons
+				3. SUbpages
+			10. 80% good design for a fraction of the price
+		4. Templatemonster.com
+			1. Search by theme
+				1. Example: Charity app
+				2. The templates are responsive
+				3. Don't go for upselling - it is expensive
+					1. Option: Template tuning - we can send a list of changes and they make it (installation option)
+		5. 99designs.com/tasks
+			1. Pay $19 and a graphic designer will do a basic design
+				1. Make changes and return
+				2. 1-2 hours
+		6. Free templates: Google search
+			1. app.imcreator.com
+				1. Not very nice but free
+				2. Spend $19 in 99 designs to modify it
+
 ### Extra: Getting a logo for free ###
+1. Logo helps page convert more
+	1. People are more trustful when they see a custom designed logo
+	2. People assume that you are more established
+	3. People assume that you have spent money on the website, hence they are more likely to spend money themselves
+		1. Text logo may not be good
+	4. Free logo is only for pitching which helps a little bit
+2. withoomph.com
+	1. Enter company name
+	2. Keywords: 2-3
+		1. Example: Food
+	3. Select color - match with the website
+	4. Typography - use sans-serif (no tails)
+	5. Don't spend money for a test that lasts for a day or two
+
+### Extra: Getting a better logo for $5 ###
+1. fiverr.com
+	1. Get something for $5
+		1. Services done for $5
+			1. Video promotion
+			2. Virtual assistant
+			3. Graphic design
+			4. Voice overs
+			5. Advertising
+			6. Social media optimization
+			7. ...
+	2. Good for small tasks
+	3. Logos:
+		1. Select
+			1. Can do two - to compare and select
+		2. They ask your business idea, colors, typography, ... with a template
+		3. You can pay extra for quicker delivery and other features
+		4. They can build a logo based off of what's selected
+			1. Spend $10 with couple logos
+
 ### Extra: Getting domain names ###
+1. Domain names importance
+	1. Own domain name looks more legitimate
+		1. Helps in sales
+		2. We want to collect money as part of validation
+			1. It becomes hard to do it if we don't have a legitimate domain name
+				1. Cheap - $3 - referral service
+		3. Tools to lower the price
+			1. Bustaname.com
+				1. Domain search tool
+					1. We can know if the domain is available or not
+					2. If words are known, it is a high value domain
+		4. Years ahead is even cheaper
+	2. domainr.com
+		1. delicio.us, grammar.ly (getting around .com and .co non availability problem)
+			1. Good for seeling to tech-savvy but not good for non-tech savvy
+2. stuckdomains.com
+	1. People buy domains and don't use them after an year
+	2. It shows domains that have just expired or about to expire
+		1. Search the domain
+			1. WHOIS
+				1. It tells when the renewal is coming up
+				2. If it is expiring, we could put it in calendar and search for it in searchdomains
+					1. If it has expired, we can 
+
 ### Bad landing page analyis (Worksheet) ###
 ### Section 5 Review Material ###
 
 ## Section 6: Testing your idea in the wild ##
 ### Google ###
+1. Google advantages:
+	1. Facebook - for social component
+		1. More casual
+		2. Not selling immediately
+			1. They want to chat, share photos, ...
+			2. They are unlikely to click on sale of products right away
+	2. Google - We can narrow down to who we want to show the ads to (we can look for specific things)
+		1. Google clicks can be cheap or expensive
+			1. Unpopular words - cheaper
+			2. Most popular - $45 / click
+		2. Google ad words
+			1. Ads that show on the side of Google searches
+		3. Search: and ads are shown on top on the side
+			1. People click if it matches their search
+				1. AI Healthcare
+			2. Other sites that show ads: Blogs, Tumblr, ...
+		4. adwords.google.com
+			1. Start now
+				1. Adwords account
+				2. Set up website - URL
+				3. Next step
+					1. Choose where to target your customers
+						1. Locations: Example: San Francisco
+						2. Products and Services
+							1. Not very helpful
+							2. Example: Happy Hour Invitation
+							3. Helps you save time
+						3. Ad text
+							1. Headline
+								1. Find Happy Hours now
+							2. Ad text
+								1. Find the cheapest happy hours now
+								2. on your mobile phone.
+							3. Preview
+						4. Save
+					2. Budget
+						1. Maximum - $20 / day
+					3. Save and continue
+						1. Budget must not be higher than the searches
+					4. Billing
+					5. Adwords - full version
+						1. If we don't pick a group
+						2. Choose location
+						3. Networks
+							1. Search Network
+							2. Display Network
+						4. Keywords - auto-populated
+							1. We can exit out of keywords
+							2. More like this
+							3. We can pick keywords that are specific
+							4. We can add our own keywords
+								1. Example: Happy hour mobile app - not very popular
+								2. Example: Happy hour iPhone
+						5. Bids
+							1. Automatically set my bids to get the most clicks within my budget
+								1. Google determines the bid-price
+									1. They optimize for cheapest clicks
+									2. They get the ads shown within the time-period we are happy with
+								2. Don't set it manually
+						6. Write ad
+							1. Same as above
+	3. Sometimes Google Ads is successful and sometimes Facebook ads are
+		1. If either one is successful, your idea is still viable
+		2. If both are lukewarm, you may not have a great idea
+			1. You need to think about it a little bit more
+2. There are other courses that go in depth into Google adwords
+
 ### Facebook ###
+1. Make facebook ads
+2. Testing whether people are interested in the idea and give a positive or negative response.
+3. The more we spend, the more information we get
+	1. We don't have to spend much to get the general idea
+4. There are other courses for Facebook ads - to get cheapest ads, etc.
+5. facebook.com/advertising
+	1. Creat an ad
+		1. Objective - Forwarded to different sections
+			1. Boost your posts - shows to people who are not immediately in your network
+			2. Promote your Page - A summary shown to your group and someone liked that
+			3. Send people to your website
+				1. Copy URL of the website
+				2. Campaign name - populated
+				3. Who do you want your ads to reach?
+					1. 
+			4. ...
+		2. Parameters - who should see the ad
+			1. We don't want it to be broad (we don't know who is clicking on it)
+			2. We don't want it to be too specific (we want enough people to see it - takes too long to expire the budget)
+				1. $20 - 15 clicks to 60 clicks
+			3. Params:
+				1. Location: Country, Specific state or Zip Code (San Francisco, 94109)
+					1. Look at other similar apps or websites and who might be using it to get an idea
+					2. You can experiment
+						1. Add to one group and another group etc.
+				2. Age: Example: 21 - 31
+				3. Gender: Example - All (we might be specific)
+				4. Language: English (All)
+					1. Don't give multiple - Spanish people must not click on English pages
+				5. Interests
+					1. People looking for pages in this category are probably going to be interested in this ad (broad or narrow)
+						1. Example: Restaurants - shows potential reach
+							1. We can enter and search
+				6. Behaviors
+					1. Can backfire - needs a lot more research
+						1. We need exact consumer profile
+				7. Connections - All
+				8. Budget
+					1. $20 - $1 / day is recommended
+						1. Only 2-3 clicks per day for 20 days
+						2. We can reduce it to 2 days
+					2. We want to keep it longer only if we make changes
+				9. Images
+					1. People see this
+					2. Multiple images
+						1. Cycles through so that if one image is good but the other is bad, good image will get better response
+							1. Facebook automatically decides which one does better and uses it
+						2. **People respond very positively to stock photos of groups of people** - statistically
+				10. Can connect to a facebook page - automatic
+				11. We can show it on desktop or only on mobile phones
+					1. Desktop users spend more time on the page - they're sitting down
+					2. Mobile clicks are cheaper - but not many impressions or clicks
+						1. Advantages - Mobile apps ads can be clicked to download app on the phone directly
+				12. Right column
+					1. Ads that show up on the right hand side - They do not convert very well anymore
+						1. Remove
+				13. Partner mobile apps
+					1. Remove
+						1. We don't know where they are going to show up
+							1. It might show in a website in Phillipines that has nothing to do with what we are building
+				12. Headline
+					1. Explain very quickly - say flat out what it is
+						1. Example: Find cheap mocktails, NOW
+				13. Text
+					1. Keep it simple and direct
+					2. Explain the process to get to that point
+						1. Example: Download the app. Open it. Find cheap mocktails around you. It's that simple.
+				14. Choose Button
+					1. Learn more - not required
+					2. Download - They want to know it's actual application
+				15. Place Order
+					1. Admin panel is shown
+						1. Shows how people and clicking and where they are clicking from etc.
+					2. Launchrock - shows insights
+						1. Are they staying on the page?
+						2. Are you getting email addresses.
+6. See if people we are looking for are on Google or on Facebook and choose.
+
 ### RESOURCES: Further reading Facebook ads and "interest targeting" ###
+1. Facebook interest targeting & affinity targetting
+	1. Facebook can send our traffic to people who act in a certain way - many opportunities
+		1. [https://www.facebook.com/business/help/188888021162119](https://www.facebook.com/business/help/188888021162119)
+		2. [http://www.iprospect.com/en/ca/blog/new-interests-targeting-options-in-facebook-ads/](http://www.iprospect.com/en/ca/blog/new-interests-targeting-options-in-facebook-ads/)
+		3. [https://blog.kissmetrics.com/deep-dive-facebook-advertising/](https://blog.kissmetrics.com/deep-dive-facebook-advertising/)
+
 ### Getting free coupons for Google, Facebook, Bing ###
+1. Free Google ad credits, free bing ad credits, free facebook credits, free Amazon product credits
+	1. The companies want to incentivise people for signing up and use their platforms
+		1. You need to be a new advertiser for any of them to work
+			1. Change account and name might make you look new
+2. www.google.com/ads/adwords-coupon.html
+	1. Get $75 in free ad credit when you spend $25
+		1. Once you hit $100, they just charge you $25
+			1. Set it up for $100 and pay only $25
+3. advertise.bingads.microsoft.com
+	1. Request you coupon - give your email
+		1. $50 credit
+			1. After $50 is spent, they will charge you. You need to give your credit card details
+	2. Includes Bing and Yahoo - They have only ~ 20% share in the market
+		1. They are more generous
+		2. But worth using
+4. www.facebook.com/marketingAPAC?brand_redir=1
+	1. Facebook for business - Can google
+	2. They send out coupons about every two weeks
+	3. If they don't send, just message them saying you are a new advertiser and started on Facebook platform, do you have any coupons?
+		1. 80-90% of the time they give coupons
+5. www.fiverr.com
+	1. Some work and some don't 
+	2. Some people sell coupons for $5
+	3. Look for "Give you a method for coupons"
+6. www.fatcow.com - hosting platform - they have deal from other companies
+	1. Signup
+	2. $100 credit with Google, $50 Facebook, $50 Yahoo and Bing
+	3. Free domain
+	4. $1.5 a month subscription for a year
+	5. Not required with other options
+7. services.amazon.com/content/product-ads-on-amazon.htm
+	1. Make a page and try to sell it online
+	2. Use their free ad credits
+	3. Search will show ads
+	4. Advertise on Amazon
+		1. Sign up for Product Ads and get $75 in FREE clicks
+		2. $100 dollar with $25 - similar to Google Ads
+8. If we combine them, it is a good deal - $200 to $275 free credits
+
 ### RESOURCES: "Conversion scent" and how it can ruin your experiement ###
+1. Psychology behind landing pages
+	1. "Conversion Scent"
+		1. When an acquired user hits the page, he must not get confused, so ensure that the language and feel of your ads match your page
+			1. Otherwise, you lose conversion scent
+			2. The experience from clicking an ad to seeing your landing page should feel as seemless as possible
+	2. How to maximize conversion scent:
+		1. [http://unbounce.com/conversion-glossary/definition/message-match/](http://unbounce.com/conversion-glossary/definition/message-match/)
+		2. [http://unbounce.com/conversion-glossary/definition/conversion-scent/](http://unbounce.com/conversion-glossary/definition/conversion-scent/)
+
 ### Section 6 Review Material ###
 
 ## Section 7: Evaluating results ##
 ### Looking over the results ###
+1. Facebook $20 test
+	1. facebook.com/ads/manage
+		1. After 2 days, 13 clicks
+		2. People going out to eat might be expensive
+			1. Could result in inflated click costs
+	2. Launchrock page
+		1. Insights
+			1. 17 page views
+				1. 4 sign-ups for 16 page views
+					1. $20 to get 4 emails ($5 per email id)
+						1. Next: Email all of them and connect with them and see how engaged they are and how they like your idea
+							1. If people respond, we can get critical feedback
+								1. **A small very enthusiastic group of people is a positive indicator**
+					2. If we trying to sell something expensive, it is okay, but if we are selling cheap or offering it for free, then it's expensive
+						1. **Shoot for $2 per email address for pre-launch campaign**
+						2. **$1 per signup is very very good**
+							1. But $1 per click needs to be considered
+						3. **$5 - People are interested but it is expensive**
+							1. There's some life to the idea.
+								1. Work on making it more attractive
+								2. Make it easier to stand
+								3. Iterate over it in different stages (wireframing, designing, ...)
+									1. Mould it to consumers as you go
+			2. User management
+				1. When they signed up
+				2. Direct or not
+
 ### To repeat or not ###
+1. Do we need to repeat?
+	1. **Expensive interest is still interest**
+		1. Solution:
+			1. Budget more money OR
+			2. Refine the experiment
+				1. If people signed up, it means:
+					1. I need to work on the design of the application
+					2. I need to do some A/B testing to get better conversions
+					3. Work on ads
+					4. Find a better channel for ads
+						1. Facebook is flaky of the quality of the clicks we get
+							1. People bounce a lot more - people see the page and leave
+						2. Try other platforms - LinkedIn (corporate crowd), Google Ad words, Yahoo/Bing
+							1. Use free coupons, and **can do all of them at once**
+	2. **Did you get conversions?**
+		1. Tier it
+			1. How many gave emails?
+			2. How many just clicked?
+			3. ...
+		2. Guage the momentum behind the conversions
+		3. Guage how interested they are
+	3. **How substantial are the conversions?**
+	4. **Did you meet your minimum criteria for success?**
+		1. **75% people need to click through**
+			1. See if it lines up with the expected popularity
+				1. If we expect moderate conversion for a niche business, and the expectation 
+		2. Compare results with previous expectations
+		3. If you did not get a lot of conversions:
+			1. Go back and restart the experment with a different variant
+	5. **Re-running the experiment**
+		1. Make a different assumption
+			1. From the results, you can tell from people what was wrong and what was right
+				1. Reddit, Hackernews, email friends, message friends, ...
+			2. Use the information and re-run the experiment
+	6. **Identifying the potential pivot**
+		1. Example: Dating channel was not the first option
+		2. Second experiment might take 1/2 the amount of time
+	7. **Repeat until success**
+		1. It can all be done in 2 hours
+
 ### Section 7 Review Material ###
 
 ## Section 8: Bonus Section ##
