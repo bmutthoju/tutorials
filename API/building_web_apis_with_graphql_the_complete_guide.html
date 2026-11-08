@@ -1,0 +1,3875 @@
+<h1>Building Web APIs with GraphQL - The Complete Guide</h1>
+<h2>Section 1: Welcome</h2>
+<h3>Course Introduction</h3>
+<ol>
+<li>It is becoming popular</li>
+<li>Why GraphQL?<ol>
+<li>Solves real problems with REST API<ol>
+<li>REST is easy to use</li>
+<li>REST is platform agnostic</li>
+<li>REST enjoys great support for various development tools</li>
+<li>REST has problems too<ol>
+<li>GraphQL deals with those problems</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Becomes super popular<ol>
+<li>More systems are using it</li>
+</ol>
+</li>
+<li>Extremely Flexible<ol>
+<li>It has the capability to define what data exactly we want to retrieve is not offered by other Web APIs</li>
+</ol>
+</li>
+<li>Backed by Facebook<ol>
+<li>It will stay</li>
+</ol>
+</li>
+<li>Leading companies are using GraphQL<ol>
+<li>Facebook</li>
+<li>X</li>
+<li>Instagram</li>
+<li>Shopify</li>
+<li>The New York Times</li>
+<li>GitHub</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Using GraphQL is not easy<ol>
+<li>We need to take quite a few steps to use GraphQL effectively and effectively</li>
+<li>It is complex to implement and has a complex syntax (when compared to REST API)<ol>
+<li>We need to be familiar with the intricacies of queries, variables, arguments, ...</li>
+</ol>
+</li>
+<li>It requires its own libraries and dedicated code<ol>
+<li>We need to use existing GraphQL API compatible with our platform</li>
+</ol>
+</li>
+<li>There are many moving parts (we need to be familiar with them)<ol>
+<li>Server implementations</li>
+<li>Syntax</li>
+<li>Resolvers</li>
+<li>...</li>
+</ol>
+</li>
+<li>Proprietary Error Handling<ol>
+<li>It does not build on the error codes of the HTTP protocol as it is with the REST API</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>By the end of the course<ol>
+<li>We'll know what is GraphQL</li>
+<li>We'll understand its advantages over REST API</li>
+<li>We'll be familiar with the GraphQL Syntax</li>
+<li>We'll know how to implement it in various platforms</li>
+<li>We'll be familiar with advanced techniques known to a few</li>
+</ol>
+</li>
+<li>And<ol>
+<li>The course is extremely practical</li>
+<li>We're going to design and build a real-world library system</li>
+<li>GraphQL concepts will be explained and then used in the system<ol>
+<li>At the end of the course, we will have a full-blown, fully functional GraphQL based system</li>
+</ol>
+</li>
+<li>Using .NET and NodeJS<ol>
+<li>We don't need to be familiar with the platforms</li>
+<li>We don't have to be a developer to take the course</li>
+</ol>
+</li>
+<li>We can use it as a template for our own systems<ol>
+<li>Take inspiration from it in our future GraphQL projects</li>
+</ol>
+</li>
+<li>We'll be guided through each step and explain what it does and how to implement it</li>
+</ol>
+</li>
+</ol>
+<h3>Join the Software Architects Community</h3>
+<h3>Get the Course Slides</h3>
+<ol>
+<li>PDF file attached to every section's last lecture</li>
+</ol>
+<h3>Who is This Course For?</h3>
+<ol>
+<li>Target audience<ol>
+<li>Developers<ol>
+<li>Preferably back-end developers, but not mandatory</li>
+</ol>
+</li>
+<li>Architects<ol>
+<li>Can integrate the new web-api into their software architecture</li>
+</ol>
+</li>
+<li>Anyone who is interested in web API and software architecture</li>
+</ol>
+</li>
+</ol>
+<h3>Our First GraphQL Query</h3>
+<ol>
+<li>Open browser:<ol>
+<li><a href="graphql.org/swapi-graphql">graphql.org/swapi-graphql</a><ol>
+<li>We can query<ol>
+<li><p>Delete all the content</p>
+</li>
+<li><p>Type:</p>
+<pre><code> allFilms {
+     films {
+         title
+         director
+         releaseDate
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Run</p>
+<ol>
+<li>It only returns only the data asked for</li>
+</ol>
+</li>
+<li><p>Update query:</p>
+<pre><code> allFilms {
+     films {
+         title
+         director
+         releaseDate
+         directory
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Agenda</h3>
+<ol>
+<li>Topics:<ol>
+<li>Agenda</li>
+<li>API Basics<ol>
+<li>What an API is</li>
+<li>What are it's goals</li>
+</ol>
+</li>
+<li>Web APIs<ol>
+<li>A sub-set of APIs<ol>
+<li>GraphQL is a Web API</li>
+</ol>
+</li>
+<li>What is a web API?</li>
+</ol>
+</li>
+<li>Introduction to GraphQL<ol>
+<li>Why is it here?</li>
+<li>What problems does it solve?</li>
+</ol>
+</li>
+<li>Preparing the Environment<ol>
+<li>Installations</li>
+<li>Setups</li>
+</ol>
+</li>
+<li>GraphQL Schema<ol>
+<li>Most important component<ol>
+<li>There is no GraphQL without it</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Querying Data<ol>
+<li>Special syntax</li>
+</ol>
+</li>
+<li>Mutations<ol>
+<li>How we can change data in GraphQL</li>
+</ol>
+</li>
+<li>Subscriptions<ol>
+<li>Allows us to get notifications when data is changed on the server</li>
+</ol>
+</li>
+<li>Developing GraphQL Server<ol>
+<li>.NET</li>
+<li>NodeJS</li>
+</ol>
+</li>
+<li>Developing GraphQL Client<ol>
+<li>Which calls the server</li>
+</ol>
+</li>
+<li>Advanced Topics<ol>
+<li>We can improve our system by using some advanced techniques such as<ol>
+<li>Error handling</li>
+<li>Authorization</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Conclusion</li>
+</ol>
+</li>
+</ol>
+<h2>Section 2: API Basics</h2>
+<h3>Read This Before Going Trough This Section</h3>
+<ol>
+<li>The section explains the basic idea of API and its goals</li>
+</ol>
+<h3>What is an API?</h3>
+<ol>
+<li>API: Application Programming Interface<ol>
+<li><p>It is a set of clearly defined methods of communication among various components (software)</p>
+</li>
+<li><p>Interfaces:</p>
+<ol>
+<li>User Interface<ol>
+<li>What we the user sees when we look at something<ol>
+<li>Websites: Homepage</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It is the part exposed to the user, when we try to use something<ol>
+<li>User Interface - A visual representation of content we are looking at</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Application Interface:</p>
+<ol>
+<li><p>Interface that is exposed to the part of an application (not to an end user)</p>
+</li>
+<li><p>We as human don't see this API</p>
+<ol>
+<li>Un-comprehensible to humans</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> GET /account HTTP/1.1
+ Content-Type: application/json
+ Host: apigateway.us-east-1.amazonaws.com
+ X-Amz-Date: 20160531T184618Z
+ Authorization: AWS4-HMAC-SHA256 Credential={access_key_ID}/us-east-1/apigateway/aws4_request, SignedHeaders=content-type;host;x-amz-date,Signature={sig4_hash}
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>How It Works?</p>
+<pre><code> Users Management
+ Software
+     |
+     Get user's orders
+     |
+     v
+     [API]
+ Orders Management
+     Software
+</code></pre>
+<ol>
+<li>What are the orders made by a specific user</li>
+<li>Orders Management Software publishes an API<ol>
+<li>API is the thing the Users Management Software can see and access to access to the internal data stored in the Orders Management Software<ol>
+<li>This is called exposing the API<ol>
+<li>Once it becomes public, other softwares can use it</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>API Types</h3>
+<ol>
+<li>API Types<ol>
+<li>4 main types of API<ol>
+<li>Operating System API</li>
+<li>Library API</li>
+<li>Remote API</li>
+<li>Web API</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Operating System API</h4>
+<ol>
+<li>We write some application (any platform - .NET, Java, ...)</li>
+<li>The application runs inside an OS (Linux, Windows, ...)<ol>
+<li>The application needs services to the OS<ol>
+<li>File System - If application needs to access files, it asks the OS to give it access to the files</li>
+<li>Network Devices - If application needs to access network devices connected to the OS<ol>
+<li>OS should allow it</li>
+</ol>
+</li>
+<li>User Interface Elements - If application wants to display a button on the screen, it asks the OS a visual representation of the button</li>
+</ol>
+</li>
+<li>How does application ask the OS?<ol>
+<li><strong>Using OS API</strong><ol>
+<li>All OS's exposes some kind of API<ol>
+<li>The applications running on the OS can access and use the API</li>
+</ol>
+</li>
+<li>Examples:<ol>
+<li><strong>Win32 API</strong> - used by all the applications running on Windows<ol>
+<li>It provides a huge number of OS services</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Library API</h4>
+<pre><code>    My App
+        
+        Users Library
+            |
+            v
+        [Logging API]
+        Logging Library
+
+1. When we develop an application, we use some kind of libraries
+    1. The concept of libraries is very common in all the dev platforms today
+2. Users library - our library
+3. Logging library - Users library uses this
+    1. Logging Library exposes the Logging API
+        1. It allows the users library to access logging library and allows access to library methods
+            1. Write to a log file
+            2. Change the severity of logging
+    2. Without the logging API, users library won't be able to access the logging library
+4. Both users library and logging library are executed in the same process
+    1. They are not communicating through network
+5. Class Library
+    1. .NET
+    2. Java
+    3. Python
+    4. Node.js
+    5. PHP
+    6. ...
+</code></pre>
+<h4>Remote API</h4>
+<pre><code>    Users Component
+    [Orders Proxy]
+        |
+        Network
+        |
+    Orders Component
+
+1. The two components are distributed over the network
+    1. They are not in the same process
+    2. They are not on the same same machine or PC
+2. To communicate, they need to go over the network
+    1. How?
+        1. Orders Proxy
+            1. Users Component builds and Orders Proxy
+                1. The proxy is used to communicate with the Orders Component
+                2. The proxy contains all the internal working of accessing the Orders Component
+                    1. The proxy knows everything there is to know about accessing the component
+                        1. Network protocol
+                        2. Network address
+                        3. Method signatures
+                        4. Authentication
+                        5. Authorization
+                        6. (everything important to access the component)
+            2. Using he proxy, the Users Component can access the Orders Component using a proprietary protocol
+                1. Accesses methods and other functionality exposed by Orders Component
+            3. **It mandates that both components will be based on the same development platform**
+                1. It is not possible that Users Component is based on .NET and Orders Component is based on Python
+            4. Example:
+                1. DCOM
+                2. .NET Remoting
+                3. Java RMI
+                4. ...
+            5. Remote API is using its popularity and almost no-one is using it nowadays
+</code></pre>
+<h4>Web API</h4>
+<pre><code>            The Internet
+
+    Web App
+        |
+        Standard Protocol
+        |
+        v
+    [Web API]
+    Weather Web App
+
+1. With Web API, web apps and web APIs can communicate with each other over the network
+2. How does it work?
+    1. Suppose we have a Web App that we developed and published over the internet
+    2. The web app wants to use another web app
+        1. Weather Web App
+            1. It provides weather forecasts of destinations we are interested in
+    3. How can web app communicate with the weather web app
+        1. Steps:
+            1. Weather Web App should expose a Web API
+            2. Web App can access Web API
+                1. Reason: Web API uses standard protocol
+                    1. Using the protocol, the web api can access the weather web app for weather forecast
+3. **Web API can be used across any platform or OS or Language**
+    1. It doesn't matter how the web apps are implemented on both sides
+        1. Web App can be developed using .NET
+        2. Weather Web App can be developed using Java
+    2. Hence the reason for it's success
+</code></pre>
+<h3>Importance of API</h3>
+<ol>
+<li>Why do we need an API?<ol>
+<li>It is very important<ol>
+<li>Why?<ol>
+<li>The API developed for the backend will be used:<ol>
+<li>By our UI</li>
+<li>To extend our app's reach</li>
+<li>To allow monetization</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>API For the UI</h4>
+<ol>
+<li>Modern apps are built for web and mobile</li>
+<li>Mobile apps MUST have an API on the server in order to communicate with it<ol>
+<li>There is no other way for the mobile app to access data<ol>
+<li>Mobile app is a separate application that runs on a separate machine on a separate process</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Web clients built using SPA also MUST have an API on the server<ol>
+<li>SPA:<ol>
+<li>The frontend is developed using a sophisticated framework such as React or Angular or View<ol>
+<li>They run completely independent from the server<ol>
+<li>The applications are using API<ol>
+<li>HTML is rendered directly on the client (not like Web-forms or JSP)</li>
+<li>If client needs some data from the server, it must access some kind of API</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It allows our application to extend your reach<ol>
+<li>By exposing API, other apps can use our data<ol>
+<li>Outlook accesses the API exposed by forca.com and displays the data it gets back from it</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Monetize</h4>
+<ol>
+<li>We can charge users for access our data<ol>
+<li>Example:<ol>
+<li>Twitter developer's website<ol>
+<li>API is one of the most popular<ol>
+<li>Standard<ol>
+<li>Certain level of API access</li>
+</ol>
+</li>
+<li>Premium<ol>
+<li>Used to access more features or more usage for the API</li>
+</ol>
+</li>
+<li>Enterprise<ol>
+<li>Used to access more features or more usage for the API</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Why Do You Need a Well-Designed API?</h3>
+<ol>
+<li>What is use of having best practices?<ol>
+<li>Our developers are actually customers<ol>
+<li>Whether they pay for the API or use the API freely, they are customers<ol>
+<li>They have alternatives<ol>
+<li>There could be other companies offering this kind of data and services</li>
+</ol>
+</li>
+<li>Your API should be easy to use and consistent<ol>
+<li>If developers have a hard time understanding what is going on in the API and how to use it</li>
+<li>Why does the API look like this for specific services and for other services, the API looks like that<ol>
+<li>They might move to other customers</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Satisfied Customers =&gt; Less Support Calls<ol>
+<li>We don't want to spend all our time and money on support centers answering questions from angry developers who don't understand what is going on and why simple things suddenly stopped working</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>To get satisfied customers and a lot of customers and to win the hearts and money of devs and customers, we need to have a well designed and easy to use API</li>
+</ol>
+</li>
+</ol>
+<h2>Section 3: Web APIs</h2>
+<h3>Web APIs</h3>
+<ol>
+<li>It is the most popular and most used type of API</li>
+<li>What is it?<ol>
+<li>It is an API exposed by a web component, allowing other components to interact with it</li>
+</ol>
+</li>
+</ol>
+<h4>Common Characteristics of Web API</h4>
+<ol>
+<li><p>Platform Agnostic</p>
+<pre><code> .NET --------&gt; [Web API] Python
+</code></pre>
+<ol>
+<li>.NET component can easily communicate with Python component using Web API</li>
+</ol>
+</li>
+<li><p>Use standard protocols (usually over HTTP)</p>
+</li>
+<li><p>Use request/response</p>
+<pre><code> .NET -HTTP Request---&gt; [Web API] Python
+      &lt;-HTTP Response-- 
+</code></pre>
+<ol>
+<li>.NET component sends an HTTP based request to a Python component</li>
+<li>.NET component will receive an HTTP based response</li>
+</ol>
+</li>
+</ol>
+<h4>Web API Types</h4>
+<ol>
+<li>Differentiated mainly by:<ol>
+<li>Request Format<ol>
+<li>JSON</li>
+<li>XML</li>
+<li>...</li>
+</ol>
+</li>
+<li>Request Contents<ol>
+<li>What is the difference in contents sent over the wire</li>
+</ol>
+</li>
+<li>Response Format<ol>
+<li>JSON</li>
+<li>XML</li>
+<li>...</li>
+</ol>
+</li>
+<li>Response Contents<ol>
+<li>What is the content of response sent by server</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Types:<ol>
+<li>SOAP</li>
+<li>REST</li>
+<li>GraphQL</li>
+<li>gRPC</li>
+</ol>
+</li>
+</ol>
+<h3>SOAP</h3>
+<ol>
+<li><p>Stands for: Simple Object Access Protocol</p>
+<ol>
+<li>Designed in 1998 for Microsoft</li>
+<li>XML-Based</li>
+<li>RPC style request response<ol>
+<li>When a client calls a server, it calls a specific method (procedure)<ol>
+<li>Remote Procedure Call</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It is extensible<ol>
+<li>There is a base protocol that can be used to call a method and get a response</li>
+<li>It could be extended for various attributes<ol>
+<li>Authentication</li>
+<li>Routing</li>
+<li>Transaction</li>
+<li>Federation</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> &lt;?xml verion="1.0"?&gt;
+ &lt;soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding"&gt;
+     &lt;soap:Body xmlns:m="http://www.stock.org/stock"&gt;
+         &lt;m:GetStockPrice&gt;
+             &lt;m:StockName&gt;IBM&lt;/m:StockName&gt;
+         &lt;/m:GetStockPrice&gt;
+     &lt;/soap:Body&gt;
+ &lt;/soap:Envelope&gt;
+</code></pre>
+<ol>
+<li>Method: <code>GetStockPrice</code></li>
+<li>Parameter: <code>StockName</code><ol>
+<li>Value: <code>IBM</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>It is quite outdated</p>
+</li>
+<li><p>We should generally not use it, unless we really have to</p>
+<ol>
+<li>Example: If we need to work with legacy systems that expose only SOAP API</li>
+</ol>
+</li>
+</ol>
+<h3>REST</h3>
+<ol>
+<li>REST - Representational State Transfer<ol>
+<li>The API is built around entities, not operations<ol>
+<li>We don't call specific functions or methods<ol>
+<li>We are going to define operations around entities<ol>
+<li>Creation</li>
+<li>Deletion</li>
+<li>Updation</li>
+<li>Reading</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Designed in 2000 by Roy Fielding</li>
+<li>Built on the HTTP standard<ol>
+<li>It doesn't invent new standard<ol>
+<li>No new response codes</li>
+<li>No new errors</li>
+</ol>
+</li>
+<li>It re-uses HTTP standard used by all browsers</li>
+</ol>
+</li>
+<li>It is a message-style API<ol>
+<li>It doesn't call specific methods<ol>
+<li>It sends messages to the server and trusts the server to take care of the messages</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It is extremely simple to implement</li>
+<li>It enjoys wide support from all dev platforms<ol>
+<li>It has become the most popular Web API</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It uses URL for entity identification:<ol>
+<li><p><code>/api/v1/order/17/items</code></p>
+<ol>
+<li>It identifies items of item number 17</li>
+<li>We send the URL to server</li>
+</ol>
+</li>
+<li><p>Usually returns JSON:</p>
+<pre><code> HTTP/1.1 200
+ status: 200
+ Date: Fri, 02 Aug 2019 09:06:13 GMT
+ Content-Type: text/plain
+ Transfer-Encoding: chunked
+ Connection: keep-alive
+ access-control-allow-origin: *
+ vary: Accept-Encoding
+
+ { "orderId" : "17", "orderDate" : "12.12.2018", "items" : [ "id" : "6", "id" : "56" ] }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Structure of REST API Response</h4>
+<ol>
+<li>Status: Indicates whether the request succeeded or not<ol>
+<li>200 - success</li>
+</ol>
+</li>
+<li>Headers: Contains meta-data about the response</li>
+<li>Body: JSON with actual data sent back to the client</li>
+</ol>
+<h3>GraphQL</h3>
+<ol>
+<li>From the next section...</li>
+</ol>
+<h3>gRPC</h3>
+<ol>
+<li><p>It was developed by Google in 2015</p>
+<ol>
+<li>It is based on HTTP/2<ol>
+<li>It allows two-way streaming<ol>
+<li>Duplex messaging<ol>
+<li>Server can send messages to the client</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It uses Protobuf<ol>
+<li>Transport mechanism</li>
+<li>It is a serialization protocol and it allows .NET or Java to communicate between them using code-generators that read the protobuf protocol message and generate classes compliant with the data</li>
+</ol>
+</li>
+<li>Since gRPC is based on HTTP/2, it supports bi-directional &amp; streaming messaging<ol>
+<li>Neither REST nor GraphQL supports</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> service HelloService {
+     rpc SayHello (HelloRequest) returns (HelloResponse);
+ }
+
+ message HelloRequest {
+     string greeting = 1;
+ }
+
+ message HelloResponse {
+     string reply = 1;
+ }
+</code></pre>
+<ol>
+<li>Simple object</li>
+</ol>
+</li>
+<li><p>gRPC takes care of serialization and deserialization</p>
+</li>
+<li><p>Advantages:</p>
+<ol>
+<li>Quite performant - as compared to GraphQL<ol>
+<li>Since it is based on HTTP/2 (very performant protocol)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Drawbacks:</p>
+<ol>
+<li>It is not widely used yet<ol>
+<li>Since HTTP/2 is still not very popular</li>
+</ol>
+</li>
+<li>Requires specilized libraries at both ends because of protobuf<ol>
+<li>We need code generators at both the ends to serialized and deserialize in the platforms we are using</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 4: Introduction to GraphQL</h2>
+<h3>Problems with REST</h3>
+<ol>
+<li>Problems:<ol>
+<li>During the years it was that there are some major problems with REST:<ol>
+<li><strong>Fixed entity structure</strong></li>
+<li><strong>Request-response only</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Fixed Entity Structure</h4>
+<ol>
+<li>With REST, the client cannot specify the entity parts it wants to retrieve</li>
+<li>The entity returned is set by the backend developer and cannot be modified on a per-query basis</li>
+<li>Example:<ol>
+<li><p>Employ entity:</p>
+<pre><code> {
+     "emp_id": 4545,
+     "full_name": "David Jones",
+     "primary_phone": "938034343",
+     "secondary_phone": "053403343",
+     "sreet_address": "Fifth Ave. 42",
+     "city": "NYC",
+     "country": "USA",
+     "email": "david.j@ourcamp.com",
+     "birth_date": "23/01/1984",
+     "base_salary": "93843"
+ }
+</code></pre>
+<ol>
+<li>The employee is displayed in two places in the app:<ol>
+<li>List of employees page<ol>
+<li>We want emp_id, fullname, and email_address<ol>
+<li>3 fields</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Employee page<ol>
+<li>We want to see more details<ol>
+<li>Primary phone</li>
+<li>City</li>
+<li>Country</li>
+</ol>
+</li>
+<li>6 fields</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>With REST there's no way to retrieve only the fields we need</li>
+<li>Increases load time and network latency</li>
+<li>Sometimes forces developer to construct specialized entity types just for specific queries<ol>
+<li>Employee</li>
+<li>EmployeeShort (only subset of the fields)<ol>
+<li>Bad for maintainenance and data model (duplicate data)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Request-Response Only</h4>
+<ol>
+<li>REST supports only the Request-Response pattern<ol>
+<li>If a client sends a request to REST API, the service sends a response</li>
+</ol>
+</li>
+<li>Modern web apps require more types of client-server communication<ol>
+<li>Notifications<ol>
+<li>Push notifications are becoming extremely useful and popular<ol>
+<li><p>We cannot use the request, response pattern</p>
+<ol>
+<li><p>We want service to push data to the client (not request/response)</p>
+<pre><code> Notification:
+ {"push_date":"2002-07-10",...}
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>How to implement push notification?</p>
+<ol>
+<li>Can be implemented using:<ol>
+<li>Polling: from time-to-time, we send request to service and check for new notifications</li>
+<li>Web Sockets<ol>
+<li>It is not part of the protocol</li>
+<li>Quite complex to implement</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Solution to the Two Problems</h4>
+<ol>
+<li>New API type: GraphQL</li>
+</ol>
+<h3>History of GraphQL</h3>
+<ol>
+<li>Facebook developed GraphQL as a replacement of REST API for internal use<ol>
+<li>Due to problems</li>
+</ol>
+</li>
+<li>First used in 2012</li>
+<li>Specification was open sourced in 2015</li>
+<li>Currently managed by the GraphQL Foundation<ol>
+<li>It is an independent body, managing all the aspects of the GraphQL specification</li>
+</ol>
+</li>
+</ol>
+<h3>GraphQL Basics</h3>
+<ol>
+<li>What is GraphQL:<ol>
+<li>It is a <strong>specification</strong><ol>
+<li>Not implementation</li>
+</ol>
+</li>
+<li>It defines <strong>structure of data returned</strong></li>
+<li>It is <strong>JSON-based</strong></li>
+<li>It has <strong>3 types of operations</strong></li>
+<li>It is <strong>Schema-based</strong></li>
+<li>It is <strong>Cross-platform</strong></li>
+</ol>
+</li>
+</ol>
+<h4>A Specification</h4>
+<ol>
+<li>GraphQL defines the semantics and components of a GraphQL API</li>
+<li>It does not provide concrete implementations</li>
+<li>Other parties develop implementations in many languages</li>
+<li>Full specs can be found here:<ol>
+<li><a href="https://github.com/graphql/graphql-spec">https://github.com/graphql/graphql-spec</a></li>
+</ol>
+</li>
+</ol>
+<h4>Defines Structure of Data Returned</h4>
+<ol>
+<li>Perhaps the most important feature of GraphQL</li>
+<li>Advantages:<ol>
+<li>We can specify the part(s) of entity to return (as part of the query)</li>
+<li>We can specify related entities to be returned</li>
+<li>We can specify filtering in the query</li>
+</ol>
+</li>
+<li>It solves the fixed entity structure problem</li>
+<li>With GraphQL, we can specify which fields of the employee entity we can retrieve<ol>
+<li>We can retrieve different fields for the:<ol>
+<li>List of employees page</li>
+<li>Employee details page</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>JSON Based</h4>
+<ol>
+<li>GraphQL uses JSON extensively<ol>
+<li>Query sent to server in JSON</li>
+<li>Data is returned in JSON</li>
+</ol>
+</li>
+<li>Technically, GraphQL can be used with other protocols<ol>
+<li>However, nobody does that</li>
+</ol>
+</li>
+</ol>
+<h4>3 Types of Operations</h4>
+<ol>
+<li>With GraphQL we can:<ol>
+<li>Retrieve Data<ol>
+<li>The most common use (by far)</li>
+<li>This is what GraphQL is used for</li>
+</ol>
+</li>
+<li>Write / Change Data</li>
+<li>Subscribe to Changes in Data</li>
+</ol>
+</li>
+</ol>
+<h4>Schema-Based</h4>
+<ol>
+<li>GraphQL works with schema<ol>
+<li>Schema defines entities, fields, and attributes that we are going to use<ol>
+<li>Comprises of model that is part of the system</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Operations are built on the schema<ol>
+<li><p>Example:</p>
+<pre><code> type Character {
+     name: String!
+     appearsIn: [Episode!]!
+ }
+</code></pre>
+<ol>
+<li>We can query for the type and add or change characters in the Database</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Cross-Platform</h4>
+<ol>
+<li>The client and server can be based on different platforms</li>
+<li>There are many implementations in many platforms<ol>
+<li>Language support of GraphQL<ol>
+<li>JavaScript</li>
+<li>Go</li>
+<li>PHP</li>
+<li>Java / Kotlin</li>
+<li>C# / .NET</li>
+<li>Python</li>
+<li>Swift / Objective-C</li>
+<li>Rust</li>
+<li>Ruby</li>
+<li>Elixir</li>
+<li>Scala</li>
+<li>Flutter</li>
+<li>Clojure</li>
+<li>Haskell</li>
+<li>C / C++</li>
+<li>Elm</li>
+<li>OCaml / Reason</li>
+<li>Erlang</li>
+<li>Julia</li>
+<li>R</li>
+<li>Groovy</li>
+<li>Perl</li>
+<li>D</li>
+</ol>
+</li>
+<li>Up-to-date language support list: <a href="https://graphql.org/code/#language-support">https://graphql.org/code/#language-support</a></li>
+</ol>
+</li>
+</ol>
+<h3>Working with GraphQL</h3>
+<ol>
+<li>There are four main steps:<ol>
+<li>Defining Schema<ol>
+<li>Entities &amp; fields<ol>
+<li>Together define components and models of the system</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Defining Queries<ol>
+<li>What we can query from the schema</li>
+</ol>
+</li>
+<li>Defining Mutations and Subscriptions (optional)</li>
+<li>Implementing the Logic<ol>
+<li>Of queries, mutation, and subscriptions</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 5: Preparing the Environment</h2>
+<h3>Introduction</h3>
+<ol>
+<li>In order to build the app, we need to install some software on our computer</li>
+<li>We'll Install:<ol>
+<li>.NET SDK</li>
+<li>NodeJS</li>
+<li>VS Code with some extensions<ol>
+<li>Which we will use as a development tool for our app</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Note:<ol>
+<li>We don't have to be a developer in order to build the app<ol>
+<li>We'll go through all the steps</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Install .NET SDK</h3>
+<ol>
+<li>Search: Download .NET SDK<ol>
+<li>.NET SDK x64</li>
+<li>.NET 6.0 LTS</li>
+</ol>
+</li>
+<li>Open command-prompt<ol>
+<li><code>dotnet --version</code></li>
+</ol>
+</li>
+</ol>
+<h3>Install NodeJS</h3>
+<ol>
+<li>URL: nodejs.org/en/download<ol>
+<li>Install</li>
+</ol>
+</li>
+<li>CMD:<ol>
+<li><code>node --version</code></li>
+</ol>
+</li>
+</ol>
+<h3>Install VS Code</h3>
+<ol>
+<li>Search: Download VS Code<ol>
+<li>Select OS: Windows<ol>
+<li>System installer</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Install</li>
+<li>Pin to taskbar</li>
+<li>Extension<ol>
+<li>C#<ol>
+<li>C# by Microsoft</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Download and Run the Demo App</h3>
+<ol>
+<li>Download file from resources section<ol>
+<li>Extract in <code>graphql_demo</code><ol>
+<li>Right click</li>
+<li>Open with Code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Run the project<ol>
+<li>F5<ol>
+<li><p>GraphQL playground</p>
+<ol>
+<li>Hot Chocolate - for .NET<ol>
+<li>There is a playground for each platform</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Click Create Document</p>
+<ol>
+<li>Schema endpoint: Points to the GraphQL endpoint (created by default by our GraphQL implementation)<ol>
+<li>Every GraphQL implementation has its own endpoint<ol>
+<li>Usually named: <code>graphql</code></li>
+</ol>
+</li>
+<li>Apply</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Type:</p>
+<pre><code> {
+     books {
+         name
+         pages
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Gives results</p>
+</li>
+<li><p>Modification:</p>
+<pre><code> {
+     books {
+         bookId
+         name
+         pages
+     }
+ }
+</code></pre>
+<ol>
+<li>Works</li>
+</ol>
+</li>
+<li><p>books.json</p>
+<ol>
+<li><p>Database</p>
+</li>
+<li><p>Add the following:</p>
+<pre><code> {
+     "bookId": 91,
+     "name": "It ends with us",
+     "pages": 384
+ }
+</code></pre>
+<ol>
+<li>Run the query</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 6: GraphQL Schema</h2>
+<h3>Introduction</h3>
+<ol>
+<li>GraphQL Schema:<ol>
+<li>The first step when working with GraphQL is to define the schema</li>
+<li>GraphQL cannot work without schema</li>
+</ol>
+</li>
+</ol>
+<h3>Role of Schema</h3>
+<ol>
+<li>With GraphQL we can query specific fields from specific objects:<ol>
+<li>Solution: GraphQL needs to know there is such an object and such fields:<ol>
+<li>The book object</li>
+<li>name and pages fields</li>
+</ol>
+</li>
+<li>The Schema is used to:<ol>
+<li>Define the shape of data</li>
+<li>Define queries that we can run against the data</li>
+<li>Define mutations</li>
+<li>Define subscriptions</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>GraphQL uses the schema to:<ol>
+<li><strong>Validate queries</strong><ol>
+<li>When a query is run against GraphQL, GraphQL can use schema to ensure the fields included in the query are actually fields that exist in the object</li>
+</ol>
+</li>
+<li><strong>Validate other operations</strong><ol>
+<li>Not just queries</li>
+</ol>
+</li>
+<li><strong>Provide auto-complete in playground</strong></li>
+</ol>
+</li>
+</ol>
+<h4>Schema Type System</h4>
+<ol>
+<li>The schema uses type system to define:<ol>
+<li><strong>Field name</strong></li>
+<li><strong>Field type</strong></li>
+<li><strong>Nullability</strong><ol>
+<li>Whether the field can contain null values</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Schema Language<ol>
+<li>The schema uses a specialized language called<ol>
+<li><strong>Schema Definition Language</strong> (SDL)<ol>
+<li>The language is used to define:<ol>
+<li>Objects</li>
+<li>Fields</li>
+<li>Type system</li>
+<li>Queries</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>How do we generate the scheme?<ol>
+<li>The schema is sometimes auto-generated by the GraphQL implementation<ol>
+<li>It is based on the concrete language-specific objects<ol>
+<li>.NET - Schema is created automatically by the GraphQL implementation</li>
+<li>Node.JS - We need to manually define the schema</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The schema can be viewed in the playground</li>
+</ol>
+</li>
+<li>Playground:<ol>
+<li>Schema Reference<ol>
+<li>Easier way to view and navigate<ol>
+<li>Objects<ol>
+<li>Two objects<ol>
+<li>Book<ol>
+<li>Fields<ol>
+<li>bookId</li>
+<li>name</li>
+<li>pages</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Query<ol>
+<li>It is an object with field<ol>
+<li>Books<ol>
+<li>Three fields</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Schema Definition<ol>
+<li><p>Full definition of the schema in JSON format</p>
+<pre><code> type Query {
+     books: [Book!]!
+ }
+
+ type Book {
+     bookId: Int!
+     name: String!
+     pages: Int!
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Object Type and Fields</h3>
+<ol>
+<li><p>They are the basic building blocks of schema</p>
+<ol>
+<li>They describe entities (=&gt;Objects) and their properties (=&gt;fields) in the system</li>
+<li>They allow GraphQL to be familiar with the system's objects and to provide validation to these entities (objects)</li>
+</ol>
+</li>
+<li><p>Schema of our app:</p>
+<pre><code> type Book {
+     bookId: Int!
+     name: String!
+     pages: Int!
+ }
+</code></pre>
+<ol>
+<li>Object type: Book</li>
+<li>Fields:<ol>
+<li>bookId</li>
+<li>name</li>
+<li>pages</li>
+</ol>
+</li>
+<li>Each field has a data type (indicates the type of data it can store)<ol>
+<li>GraphQL specification contains built-in scalar types<ol>
+<li>Scalar types: primitive types that hold a single scalar value</li>
+</ol>
+</li>
+<li>Complex types can also be defined<ol>
+<li>They are not part of the spec</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Scalar Types</h4>
+<ol>
+<li>Built in scalar types:<ol>
+<li>Data Type<ol>
+<li><code>Int</code>: <strong>(M)</strong> A signed 32-bit integer (64, 5890, -17 etc)</li>
+<li><code>Float</code>: <strong>(M)</strong> A signed double precision floating-point value (18.99 etc)</li>
+<li><code>String</code>: <strong>(M)</strong> A string of characters UTF-8 encoded ("Hello world" etc)</li>
+<li><code>Boolean</code>: <strong>(M)</strong> <code>true</code> or <code>false</code></li>
+<li><code>ID</code>: <strong>(M)</strong> A unique identifier, identical to String<ol>
+<li>It is used to indicate to the user that this field is a unique identifier</li>
+<li>Internal value of ID is String</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Most implementations add customer scalar types:<ol>
+<li>Examples:<ol>
+<li><code>date</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Objects and fields in action:<ol>
+<li><p>Models &gt; Book.cs - defines the schema and format of the book object</p>
+<ol>
+<li>Schema is built based on this file</li>
+</ol>
+</li>
+<li><p>Add the following field:</p>
+<pre><code> public double Price {get; set;}
+
+ public DateTime PublishDate {get; set;}
+</code></pre>
+<ol>
+<li><p>Restart the app</p>
+</li>
+<li><p>Go to schema definition</p>
+<pre><code> price: Float!
+ publishDate: DateTime!
+
+ scalar DateTime
+</code></pre>
+<ol>
+<li><code>DateTime</code> - it was added by this specific implementation<ol>
+<li>It is not part of the GraphQL scalar types</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Object Type</h3>
+<ol>
+<li>New object type:<ol>
+<li>Step 1: Define new object in code<ol>
+<li>Code we are familiar with</li>
+</ol>
+</li>
+<li>Step 2: Include it in GraphQL Model</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li><p>Explorer:</p>
+<ol>
+<li><p>Models &gt; Author.cs</p>
+<pre><code> public class Author {
+     public int AuthorId {get; set;}
+     public string Name {get; set;}
+ }
+</code></pre>
+<ol>
+<li><p>Books.cs</p>
+<pre><code> ...
+ public Author? Author {get; set;}
+</code></pre>
+<ol>
+<li><code>?</code> - This field is optional</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Books.json</p>
+<pre><code> {
+     ...
+     "author": {
+         "authorId": 108,
+         "name": "Abdul Kalam"
+     }
+ }
+</code></pre>
+</li>
+<li><p>Restart the app</p>
+</li>
+</ol>
+</li>
+<li><p>Query:</p>
+<pre><code> {
+     books {
+         bookId
+         name
+         pages
+         author {
+             name
+         }
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Nullable Fields</h3>
+<ol>
+<li><p>There's an exclamation mark near the type of fields in the schema</p>
+<pre><code> type Book {
+     bookId: Int!
+     name: String!
+     pages: Int!
+     price: Float!
+     publishDate: DateTime!
+ }
+</code></pre>
+<ol>
+<li><code>!</code> - Indicates that the field is non-nullable - it can't be null<ol>
+<li>If we'll try to construct a new Book object using GraphQL and don't put values in all the fields - you'll get an error<ol>
+<li>Can be changed using the object definition in the code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>VS Code</p>
+<ol>
+<li><p>Book.cs</p>
+<pre><code> public DateTime? PublishDate {get; set;}
+</code></pre>
+<ol>
+<li>Restart the app<ol>
+<li><p>Schema definition</p>
+<pre><code> publishDate: DateTime
+</code></pre>
+<ol>
+<li>No <code>!</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Enumeration Type</h3>
+<ol>
+<li><p>A special type of scalar</p>
+<ol>
+<li>It limits the values a field can have to a predefined list<ol>
+<li>Great for making sure only valid values are selected</li>
+<li>Invalid values will be marked as error in GraphQL</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Book.cs</p>
+<pre><code> public class Book {
+     ...
+     public DateTime? PublishDate {get; set;}
+     public BookGenre Genre {get; set;}
+     ...
+ }
+
+ public enum BookGenre {
+     Horror,
+     Fantasy,
+     Drama,
+     Thriller,
+     NonFiction
+ }
+</code></pre>
+<ol>
+<li><p>Schema Definitions</p>
+<pre><code> type Book {
+     ...
+     genre: BookGenre!
+     ...
+ }
+
+ enum BookGenre {
+     HORROR
+     FANTASY
+     DRAMA
+     THRILLER
+     NON_FICTION
+ }
+</code></pre>
+</li>
+<li><p>books.json</p>
+<pre><code> {
+     ...
+     "genre": "Fantasy"
+     ...
+ }
+</code></pre>
+</li>
+<li><p>Playground:</p>
+<pre><code> {
+     ...
+     genre
+     ...
+ }
+</code></pre>
+<ol>
+<li>Default value is used which is the first value</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Lists</h3>
+<ol>
+<li>Objects can hold lists of other objects</li>
+<li>Can be declared in the schema</li>
+<li>Example: Reviews per book<ol>
+<li>VS Code<ol>
+<li><p>Models &gt; Review.cs</p>
+<pre><code> public class BookReview {
+     public int ReviewId {get; set;}
+     public int Rating {get; set;}
+     public string Description {get; set;}
+     public DateTime ReviewDate {get; set;}
+     public string User {get; set;}
+ }
+</code></pre>
+</li>
+<li><p>Models &gt; Book.cs</p>
+<pre><code> ...
+ public BookReview[] Reviews {get; set;}
+</code></pre>
+</li>
+<li><p>Restart the app</p>
+<ol>
+<li><p>Schema definition</p>
+<pre><code> reviews: [BookReview!]!
+</code></pre>
+<ol>
+<li>Two <code>!</code><ol>
+<li><code>BookReview!</code> - The list cannot contain null items<ol>
+<li>Everything in the list must be a non-null value<ol>
+<li>We cannot push <code>null</code> into the list</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>[..]!</code> - There has to be a list (even an empty one). The <code>reviews</code> field cannot be null</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Modify the query:</p>
+<pre><code> {
+     books {
+         ...
+         reviews {
+             rating
+             description
+         }
+     }
+ }
+</code></pre>
+<ol>
+<li>Null cannot be returned</li>
+</ol>
+</li>
+<li><p>Book.cs</p>
+<pre><code> public BookReview[]? Reviews {get; set;}
+</code></pre>
+</li>
+<li><p><code>null</code> is returned</p>
+</li>
+</ol>
+</li>
+<li><p>Books.json</p>
+<pre><code> {
+     ...
+     "reviews": [
+         {
+             "reviewId": 54,
+             "rating": 5,
+             "description": "A real page turner",
+             "user": "Meal"
+         }
+     ]
+ }
+</code></pre>
+</li>
+<li><p>Run the query</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Interfaces</h3>
+<ol>
+<li>Similar to modern development languages, GraphQL allows defining interfaces<ol>
+<li>Interface: An abstract type with a set of fields</li>
+</ol>
+</li>
+<li>In order to implement interface, a type must include this set of fields<ol>
+<li>Allows working with multiple types using a single interface</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li><p>Models &gt; IReadingMaterials.cs</p>
+<pre><code> public interface IReading Materials {
+     string Name {get; set;}
+     BookGenre Genre {get; set;}
+ }
+</code></pre>
+</li>
+<li><p>Models &gt; Book.cs</p>
+<pre><code> public class Book : IReadingMaterials {
+     ...
+</code></pre>
+</li>
+<li><p>Models &gt; Program.cs</p>
+<pre><code> builder.Services.AddGraphQLServer()
+     .AddQueryType&lt;Query&gt;()
+     .AddInterfaceType&lt;IReadingMaterials&gt;();
+</code></pre>
+</li>
+<li><p>Run the app</p>
+<ol>
+<li><p>Schema Definition</p>
+<pre><code> interface IReadingMaterials {
+     name: String!
+     genre: BookGenre!
+ }
+
+ type Book implements IReadingMaterials {
+     bookId: Int!
+     name: String!
+     pages: Int!
+     price: Float!
+     publishDate: DateTime
+     genre: BookGenre!
+     author: Author
+     reviews: [BookReviews!]
+ }
+</code></pre>
+<ol>
+<li>When querying for IReadingMaterials, we can return Books<ol>
+<li>To use it, we must define another object type implementing the interface<ol>
+<li><p>Models &gt; Magazine.cs (when retrieving reading materials, we will get Magazines and Books</p>
+<pre><code> public class Magazine : IReadingMaterials {
+     public string Name {get; set;}
+     public BookGenre Genre {get; set;}
+     public int InssueNo {get; set;}
+ }
+</code></pre>
+</li>
+<li><p>Database &gt; magazines.json</p>
+<pre><code> [
+     {
+         "magId": 117,
+         "name": "Car and Driver",
+         "genre": "NonFiction",
+         "IssueNo": 18
+     }
+ ]
+</code></pre>
+</li>
+<li><p>Query.cs</p>
+<pre><code> ...
+ public List&lt;Magazine&gt; Magazines =&gt; ReadMagazines(); // exposes the list of objects to query object
+ ...
+ prvate List&lt;Magazine&gt; ReadMagazines() {
+     string fileName = "Database/magazines.json";
+     string jsonString = File.ReadAllText(fileName);
+     return JsonSerializer.Deserialize&lt;List&lt;Magazine&gt;&gt;(jsonString, new JsonSerializeOptions { PropertyNameCaseInsensitive }
+ }
+</code></pre>
+</li>
+<li><p>Restart the app</p>
+<ol>
+<li><p>Schema definition</p>
+<pre><code> type Query {
+     books: [Book!]!
+     magazines: [Magazine!]!
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Operations:</p>
+<pre><code> {
+     magazines {
+         name
+     }
+ }
+</code></pre>
+</li>
+<li><p>Query.cs</p>
+<pre><code> public List&lt;IReadingMaterials&gt; ReadingMaterials =&gt; GetReadingMaterials();
+ ...
+ private List&lt;IReadingMaterials&gt; GetReadingMaterials() {
+     var materials = ReadBooks().Cast&lt;IReadingMaterials&gt;().ToList();
+     materials.AddRange(ReadMagazines().Cast&lt;IReadingMaterials&gt;().ToList();
+     return materials;
+ }
+</code></pre>
+<ol>
+<li><p>Helps in querying IReadingMaterials which returns both Books and Magazines</p>
+</li>
+<li><p>Restart the app</p>
+</li>
+<li><p>Query:</p>
+<pre><code> {
+     readingMaterials {
+         name
+         genre
+     }
+ }
+</code></pre>
+<ol>
+<li>Returns both books and magazines</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Unions</h3>
+<ol>
+<li>They are similar to interfaces<ol>
+<li>They allow querying multiple object types in a single query</li>
+<li>In contrast to interface, object types do not have to have common fields</li>
+<li>Query can specify which field to retrieve from each object type</li>
+</ol>
+</li>
+<li>Unions in action:<ol>
+<li><p>Step 1: Define interface without any members</p>
+<ol>
+<li>Marker interface<ol>
+<li>It indicates that all implementing members will be part of the union</li>
+</ol>
+</li>
+<li>Example:<ol>
+<li><p>Models &gt; IThings.cs</p>
+<pre><code> [UnionType("Things")]
+ public interface IThings {}
+</code></pre>
+<ol>
+<li><code>[UnionType("Things")]</code> - the interface is of type union and it is named as <code>Things</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Step 2: Define the classes as implementations of the interface</p>
+<ol>
+<li>Example:<ol>
+<li><p>Book.cs</p>
+<pre><code> public class Book: IReadingMaterials, IThings
+</code></pre>
+</li>
+<li><p>Magazine.cs</p>
+<pre><code> public class Magezine: IReadingMaterials, IThings
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Step 3: Add a method to return List of IThings</p>
+<ol>
+<li>Example:<ol>
+<li><p>Query.cs</p>
+<pre><code> ...
+ public List&lt;IThings&gt; Things =&gt; GetThings();
+ ...
+ private List&lt;IThings&gt; GetThings() {
+     var things = ReadBooks().Cast&lt;IThings&gt;.ToList();
+     things.AddRange(ReadMagazines().Cast&lt;IThings&gt;().ToList());
+     return things;
+ }
+</code></pre>
+</li>
+<li><p>Schema definition:</p>
+<pre><code> type Query {
+     ...
+     things: [Things!]!
+ }
+
+ union Things = Magazine | Book
+</code></pre>
+</li>
+<li><p>Operations:</p>
+<pre><code> {
+     things {
+         __typename
+         ... on Book {
+             name
+             publishDate
+             reviews {
+                 rating
+             }
+         }
+         ... on Magazine {
+             name
+             genre
+         }
+     }
+ }
+</code></pre>
+<ol>
+<li><code>__typename</code> - Used to specify which fields we want to retrieve per type<ol>
+<li>Reason: There aren't any common fields defined by the interface (unlike <code>interface</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 7: Queries</h2>
+<h3>Introduction</h3>
+<ol>
+<li>GraphQL Queries</li>
+<li>The second step in working with GraphQL is running the query<ol>
+<li>Setting up the schema is usually a one-time step (with some modification later)<ol>
+<li>The whole purpose of it is to run queries against it<ol>
+<li>The most important part of GraphQL</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Query Basics</h3>
+<ol>
+<li>We already played with queries when defining schema</li>
+<li>We saw we can use it to query:<ol>
+<li>Object types</li>
+<li>Fields</li>
+<li>Related objects</li>
+</ol>
+</li>
+<li>Quick refresher<ol>
+<li>Run the app</li>
+<li>Open the playground<ol>
+<li><p>Operations</p>
+<pre><code> {
+     books 
+ }
+</code></pre>
+<ol>
+<li><p>Error</p>
+<ol>
+<li>We need to specify the actual fields to retrieve</li>
+</ol>
+</li>
+<li><p>Hit space to get a list of fields</p>
+<pre><code> {
+     books {
+         bookId
+         name
+         genre
+         pages
+     }
+ }
+</code></pre>
+</li>
+<li><p>Selecting related entities</p>
+<pre><code> {
+     books {
+         bookId
+         name
+         genre
+         pages
+         author {
+             authorId
+             name
+         }
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Operation Type and Name</h3>
+<ol>
+<li>We didn't specify that we actually query the data<ol>
+<li>We just typed in what we want to fetch and let GraphQL do its thing<ol>
+<li>GraphQL inferred that what we want to do is to query data and not, for instance, construct an entity</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It's a good practice to specify the <strong>Operation Type</strong> when calling GraphQL<ol>
+<li><p>Reason: It makes it clear what we want to do</p>
+</li>
+<li><p>Plaground:</p>
+<pre><code> query {
+     books {
+         ...
+     }
+ }
+</code></pre>
+<ol>
+<li>We specified that we want to query the data<ol>
+<li>If we don't specify the operation type, it just assumes that we want to query the data</li>
+</ol>
+</li>
+<li>It is a best practice to specify the operation type</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Operation Name</h4>
+<ol>
+<li>When calling GraphQL with multiple queries, it's a good practice to name the query<ol>
+<li>Reasons: It helps when debugging and logging the query on the server side</li>
+</ol>
+</li>
+<li>Simple to implement<ol>
+<li><p><strong>Add the name after the query keyword</strong></p>
+<pre><code> query GetMyBooks {
+     ...
+ }
+</code></pre>
+<ol>
+<li>Result:<ol>
+<li>Bottom part:<ol>
+<li>List of queries: Shows the name of the query run</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Arguments</h3>
+<ol>
+<li>So far, when querying, we asked to return all the records<ol>
+<li>Nice for learning purposes but not practical<ol>
+<li>We usually want to retrieve some of the data, and be able to specify how we want to filter it<ol>
+<li>Solution: <strong>Query arguments</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code:<ol>
+<li><p>Query.cs - to query using parameters/arguments</p>
+<pre><code> // public List&lt;Books&gt; ...
+ 
+ public List&lt;Book&gt; Books(string nameContains = "") { // we go straight to the method and not through variable we defined above to specify arguments, default value is empty string (all books by default)
+     string fileName = "Database/books.json";
+     string jsonString = File.ReadAllText(fileName);
+     var books = JsonSerializer.Deserializer&lt;List&lt;Book&gt;&gt;(...);
+     return books.Where(b =&gt; b.Name.IndexOf(nameContains) &gt;= 0).ToList();
+ }
+</code></pre>
+<ol>
+<li>Restart the app<ol>
+<li><p>Schema Definition</p>
+<pre><code> type Query {
+     books(nameContains: String) = ""): [Book!]!
+     ...
+ }
+</code></pre>
+</li>
+<li><p>Query:</p>
+<pre><code> query GetByBooks {
+     books (nameContains: "M") {
+         ...
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Variables</h3>
+<ol>
+<li><p>In the arguments we defined, we included the value of the argument in the query</p>
+<ol>
+<li>Usually we want to specify the value separately from the query string<ol>
+<li>Solution: We can use variables<ol>
+<li>We do not require any code changes for this</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> query GetMyBooks ($bookName: String) {
+     books (nameContains: $bookName) {
+         ...
+     }
+ } 
+</code></pre>
+<ol>
+<li><p>We can go to <strong>Variables</strong> section in playground</p>
+<pre><code> {
+     "bookName": "H"
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Aliases</h3>
+<ol>
+<li>We can include queries in a single query call</li>
+<li>We can also query the same object type multiple times in the same query call<ol>
+<li>This can cause a conflict in the result, as the result is named after the object type queried</li>
+</ol>
+</li>
+<li>Example:<ol>
+<li><p>Query:</p>
+<pre><code> query GetMyBooks {
+     books (nameContains: "H") {
+         bookId
+         name
+         genre
+     }
+ }
+</code></pre>
+<ol>
+<li>Name of the result: "Books"</li>
+</ol>
+</li>
+<li><p>Another query:</p>
+<pre><code> query GetMyBooks {
+     books (nameContains: "H") {
+         bookId
+         name
+         genre
+     }
+     books (nameContains: "M") {
+         bookId
+         name
+         genre
+     }
+ }
+</code></pre>
+<ol>
+<li>Error: We have a set of fields with same object type that cannot be merged<ol>
+<li>We ran duplicate queries for same object type which caused a conflict<ol>
+<li>The conflict can be solved using aliases</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Aliases</h4>
+<ol>
+<li><p>With aliases, we give a unique name to each query in the request</p>
+<ol>
+<li>The result is named after the alias (not after the object type)<ol>
+<li>We can avoid conflicts</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> query GetMyBooks {
+     booksWithH : books (nameContains: "H") {
+         ...
+     }
+     booksWithM : books (nameContains: "M") {
+         ...
+     }
+ }
+</code></pre>
+<ol>
+<li>Query names in result will be aliases</li>
+</ol>
+</li>
+</ol>
+<h3>Fragments</h3>
+<ol>
+<li><p>In the previous example, we say two queries</p>
+<ol>
+<li>The only difference between them is the argument</li>
+<li>They both queried for the same fields<ol>
+<li>This can be repetitive and error prone<ol>
+<li>Solution: Fragments allow us to define the set of fields to retrieve and use it in queries</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Query</p>
+<pre><code> query GetMyBooks {
+     booksWithH: books (nameContains: "H") {
+         ...bookFields
+     }
+     booksWithM: books (nameContains: "M") {
+         ...bookFields
+     }
+ }
+ 
+ fragment bookFields on Book {
+     bookId
+     name
+     genre
+ }
+</code></pre>
+<ol>
+<li><code>on</code> - assigns the gragmet to an object type</li>
+<li>Fragments are used to specify the fields to retrieve</li>
+</ol>
+</li>
+<li><p>Specifying unique fields for each query in addition to the fragment</p>
+<pre><code> booksWithH: books (...) {
+     ...bookFields
+     author {
+         name
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Directives</h3>
+<ol>
+<li>So far a query always returned the same set of fields</li>
+<li>We want query to return different set of fields based on a specific scenario<ol>
+<li>Example: For a list of entities, we would need less fields than a detailed view of the entity<ol>
+<li>This can be achieved through directives</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Directives</h4>
+<ol>
+<li>With directives, we can dynamically change the structure and shape of the query based on variables passed to the query</li>
+<li>Each directive checks whether a given argument is <code>true</code> and then executes its instructions</li>
+<li>Currently two directives are part of GraphQL specification:<ol>
+<li><code>@include (if: Boolean)</code> <strong>(M)</strong> - Include the field if argument is <code>true</code></li>
+<li><code>@skip (if: Boolean)</code> <strong>(M)</strong> - Skip a field if argument is <code>true</code></li>
+</ol>
+</li>
+<li>Example:<ol>
+<li><p>Playground</p>
+<pre><code> query GetMyBooks ($withAuthor: Boolean!) {
+     ...
+     author @include(if: $withAuthor) {
+         ...
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Variables</p>
+<pre><code> {
+     "bookName": "L",
+     "withAuthor": true
+ }
+</code></pre>
+</li>
+<li><p>Variables</p>
+<pre><code> {
+     ...
+     "withAuthor": false
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Variables in Fragments</h4>
+<ol>
+<li><p>Example:</p>
+<pre><code> query GetMyBooks ($withAuthor: Boolean!, $noGenre: Boolean!) {
+     ...
+     
+ }
+
+ fragment bookFields on Book {
+     ...
+     genre @skip (if: $noGenre)
+ }
+</code></pre>
+<ol>
+<li><p>Variables:</p>
+<pre><code> {
+     ...
+     "noGenre": false
+
+ }
+
+ {
+     ...
+     "noGenre": true
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Inline Fragments</h3>
+<ol>
+<li>We can use interfaces to retrieve multiple object types in a single query</li>
+<li>What if we want to retrieve specific type fields even when querying interfaces<ol>
+<li>Solution: Inline fragments</li>
+</ol>
+</li>
+</ol>
+<h4>Inline Fragments</h4>
+<ol>
+<li>We define which fields whould be retrieved in addition to the fields included in the interface<ol>
+<li>Use the ...type syntax<ol>
+<li>Similar to regular fragments</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Example:<ol>
+<li><p>New tab in the playground</p>
+<pre><code> {
+     readingMaterials {
+         name
+         ...on Book {
+             pages
+         }
+         ...on Magazine {
+             issueNo
+         }
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Meta Fields</h3>
+<ol>
+<li>In the previous example, we saw how we can retrieve multiple object types in a single result<ol>
+<li>It can useful if the query will exactly tell us what is the object type of each item in the results<ol>
+<li>Solution: Meta Fields</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Meta Fields</h4>
+<ol>
+<li>Meta fields provide data about the types returned<ol>
+<li>They are part of <strong>Introspection</strong> mechanism</li>
+</ol>
+</li>
+<li>We will learn about introspection next</li>
+<li>The most useful meta field is <code>__typename</code> field<ol>
+<li>It indicates the name of the object type returned<ol>
+<li><p>Example:</p>
+<pre><code> {
+     readingMaterials {
+         __typename
+         name
+         ... on Book {
+             pages
+         }
+         ... on Magazine {
+             issueNo
+         }			
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Result contains:</p>
+<pre><code> "__typename": "Book"
+</code></pre>
+<ol>
+<li>The object type is returned</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Introspection</h3>
+<ol>
+<li><p>When we start working with a schema of a GraphQL server, we don't always know what are the objects in the schema and what fields do they contain</p>
+<ol>
+<li>Solution: <strong>Introspection</strong><ol>
+<li>It allows us to explore the schema and learn about its objects and fields</li>
+<li>It is used as a query with GraphQL keywords</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<ol>
+<li>New tab in playground<ol>
+<li><p>Operations:</p>
+<pre><code> {
+     __schema {
+         types {
+             name
+             kind
+             description
+             fields {
+                 name
+                 type {
+                     name
+                     kind
+                     ofType {
+                         name
+                     }
+                 }
+             }
+         }
+     }
+ }
+</code></pre>
+<ol>
+<li>Returns all types including built-in types</li>
+<li><code>kind</code> - OBJECT, UNION, ...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>This is a way to learn quickly about the GraphQL server if we don't have the documentation</p>
+</li>
+<li><p>To see schema of a specific type (instead of all the types)</p>
+<pre><code> {
+     __type (name: "Book") {
+         name
+         kind
+         description
+         fields {
+             name
+             type {
+                 name
+                 kind
+                 ofType {
+                     name
+                 }
+             }
+         }
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h2>Section 8: Mutations</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Most uses of GraphQL are around queries<ol>
+<li>GraphQL can also be used to change data<ol>
+<li>Called <strong>Mutation</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Mutation Syntax</h3>
+<ol>
+<li>There are three main parts in the mutation request:<ol>
+<li><p><strong>Mutation Object Type</strong></p>
+</li>
+<li><p><strong>Mutation Parameters</strong></p>
+</li>
+<li><p><strong>Returned Data</strong></p>
+</li>
+<li><p>Example:</p>
+<pre><code> mutation ($book: BookInput!) {
+     addBook (input: $book) {
+         bookId
+     }
+ }
+</code></pre>
+<ol>
+<li><code>mutation</code> - object type<ol>
+<li>Defines that we're running a mutation and not a query</li>
+</ol>
+</li>
+<li><code>($book: BookInput)</code> - Arguments that we want to be created/modified (can be multiple)<ol>
+<li><code>BookInput</code> - Special input type</li>
+</ol>
+</li>
+<li><code>bookId</code> - Returned data<ol>
+<li>Reflects the new object that was added<ol>
+<li>In query: Field name is the field that we want to query</li>
+<li>With mutation: Fields we want to get back after inserting or mutating an object</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Mutations receive a special input named <strong>Input Type</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Input Types</h3>
+<ol>
+<li>When using queries, we usually use scalar argument:<ol>
+<li>BookId =&gt; Int</li>
+<li>BookName =&gt; String</li>
+<li>...</li>
+</ol>
+</li>
+<li>With mutations, we usually want to pass complex argument containing <strong>properties of the entity we want to construct</strong><ol>
+<li>This type of argument is called <strong>Input Type</strong><ol>
+<li>It can be used in mutations, but also in queries</li>
+<li>It <strong>needs to be defined in code and then be used in the mutation</strong></li>
+</ol>
+</li>
+<li><strong>Every complex type can be used as input type</strong></li>
+</ol>
+</li>
+<li>VS Code:<ol>
+<li>Models &gt; BookInput.cs<ol>
+<li><p>It contains input type that will be used to add a new Book</p>
+<pre><code> public class BookInput {
+     public string Name {get; set;}
+     public int Pages {get; set;}
+     public double Price {get; set;}
+     public DateTime? PublishDate {get; set;}
+     public BookGenre Genre {get; set;}
+ }
+</code></pre>
+<ol>
+<li>Restart the app<ol>
+<li>Schema Reference<ol>
+<li>Input Objects are not shown<ol>
+<li>We didn't use it in query or mutation</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Mutation to the Schema</h3>
+<ol>
+<li>Download mutation.zip file and open it<ol>
+<li>Mutation.cs<ol>
+<li>Copy it in <code>GraphQL</code> folder</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li><p>Method: <code>AddBook</code></p>
+</li>
+<li><p>Parameter: <code>BookInput</code> object</p>
+</li>
+<li><p>It retrieves a list of books</p>
+</li>
+<li><p>It then generates a new <code>Book</code> object based on params received in input type</p>
+</li>
+<li><p>We then add book to books list</p>
+</li>
+<li><p>We then write the list back to the file</p>
+<ol>
+<li>We can use database instead</li>
+</ol>
+</li>
+<li><p>We return a the new book</p>
+</li>
+<li><p>Program.cs</p>
+<pre><code> builder.Services.AddGraphQLServer().
+     AddQueryType&lt;Query&gt;().
+     AddInterfaceType&lt;IReadingMaterials&gt;().
+     AddMutationType&lt;Mutation&gt;();
+</code></pre>
+<ol>
+<li>Run the app or restart it</li>
+<li>Playground<ol>
+<li>Schema Reference<ol>
+<li>Mutation type<ol>
+<li>AddBook method<ol>
+<li>It receives BookInput</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Input Object<ol>
+<li>BookInput<ol>
+<li>It has fields</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Mutation</h3>
+<ol>
+<li><p>Playground &gt; New tab</p>
+<pre><code> mutation ($book: BookInput!) {
+     addBook (input: $book) {
+         bookId
+         name
+         pages	
+     }
+ }
+</code></pre>
+<ol>
+<li><p><code>addBook</code> method</p>
+<ol>
+<li><code>$book</code> - variable of type <code>BookInput</code></li>
+</ol>
+</li>
+<li><p><code>bookId</code>, <code>name</code>, <code>pages</code> are returned after the mutation</p>
+</li>
+<li><p>Variables</p>
+<pre><code> {
+     "book": {
+         "name": "Rich Dad Poor Dad",
+         "pages": 274,
+         "genre": "NON_FICTION",
+         "price": $4.99
+     }
+ }
+</code></pre>
+</li>
+<li><p>Run</p>
+<ol>
+<li>Returns the details of the new book</li>
+</ol>
+</li>
+<li><p>New tab:</p>
+<pre><code> {
+     books {
+         bookId
+         name
+         genre
+         price
+     }
+ }
+</code></pre>
+<ol>
+<li>New book appears in the result</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 9: Subscriptions</h2>
+<h3>Introduction</h3>
+<ol>
+<li>It allows us to subscribe to events in the GraphQL server</li>
+<li>When an event is triggered, the subscription gets a notification<ol>
+<li>It is usually used in conjunction with Mutations<ol>
+<li>When an entity is changed or added, other clients can get notifications and can act upon it</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Subscriptions are rarely used in GraphQL</li>
+</ol>
+<h3>Subscriptions Syntax</h3>
+<ol>
+<li><p>There are three main parts in the subscription request:</p>
+<ol>
+<li><strong>Subscription Object Type</strong></li>
+<li><strong>Subscription Name</strong></li>
+<li><strong>Returned Data</strong></li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> subscription {
+     bookAdded {
+         bookId
+         name
+     }
+ }
+</code></pre>
+<ol>
+<li><code>subscription</code> - object type<ol>
+<li>Defines that we're running a subscription and not a query</li>
+</ol>
+</li>
+<li><code>bookAdded</code> - Subscription name<ol>
+<li>The name of the subscription we want to subscribe to</li>
+</ol>
+</li>
+<li><code>bookId</code>, <code>name</code> - Returned data<ol>
+<li>Reflects the new object that was added or modified</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Steps:</p>
+<ol>
+<li>First step is to define and configure the subscription in code</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Subscriptions to the Schema</h3>
+<ol>
+<li><p>VS Code</p>
+<ol>
+<li><p>GraphQL &gt; Subscription.cs</p>
+<pre><code> public class Subscription {
+     [Subscribe]
+     public Book BookAdded([EventMessage]Book newBook) =&gt; newBook;
+ }
+</code></pre>
+<ol>
+<li><code>BookAdded</code> - subscription that clients can subscribe to</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Program.cs</p>
+<pre><code>     AddQueryType...
+         .AddSubscriptionType&lt;Subscription&gt;();
+
+ 1. Tells GraphQL that there is a subscription type called `Subscription` and clients can subscribe to it
+</code></pre>
+</li>
+<li><p>We need to specify where the subscription data is going to be managed</p>
+<ol>
+<li>When a subscription is triggered, the data is stored somewhere until clients can pull it<ol>
+<li>Solution: <strong>Default memory provider</strong><ol>
+<li><strong>There are other providers</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Program.cs</p>
+<pre><code> builder.Services.AddInMemorySubscriptions(); // use default in-memory provider
+</code></pre>
+</li>
+<li><p>Communication method between the client and server</p>
+<ol>
+<li>Subscriptions are usually implemented using web-socket protocol<ol>
+<li><p>Program.cs</p>
+<pre><code> app.MapGraphQL();
+ app.UseWebSockets();
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Run the app (F5)</p>
+<ol>
+<li>Playground:<ol>
+<li>Schema Reference<ol>
+<li>Subscription<ol>
+<li>BookAdded<ol>
+<li>Sends Book object</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Subscriptions</h3>
+<ol>
+<li>We want to send notifications to subscribers when a new book is added</li>
+<li>VS Code<ol>
+<li>Mutation.cs<ol>
+<li><p><code>AddBook</code> method will receive a sender object</p>
+</li>
+<li><p>The sender object will send message to subscribers</p>
+<pre><code> using HotChocolate.Subscriptions;
+
+ AddBook(BookInput input, [Service])ITopicEventSender sender) {
+     ...
+     // Send subscription notification about the new book
+     sender.SendAsync("BookAdded", book);
+     
+     // Return the newly created book
+     return book;
+</code></pre>
+<ol>
+<li><code>[Service]</code> - The parameter is a service that .NET platform is going to initialize for us</li>
+</ol>
+</li>
+<li><p>Restart the app</p>
+<ol>
+<li>Playground<ol>
+<li><p>New Tab:</p>
+<pre><code> subscription {
+     bookAdded {
+         bookId
+         name
+     }
+ }
+</code></pre>
+<ol>
+<li>Run<ol>
+<li>It is continously running<ol>
+<li>It waits for data from GraphQL server</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Go back to mutation tab</p>
+<ol>
+<li>Click run<ol>
+<li>New book would be created</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Go back to subscription tab</p>
+<ol>
+<li>We see a new book<ol>
+<li>It continues to wait</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Go back to mutation tab</p>
+<ol>
+<li>Run</li>
+</ol>
+</li>
+<li><p>Go back to subscription tab</p>
+<ol>
+<li>It shows new book</li>
+</ol>
+</li>
+<li><p>Bottom right:</p>
+<ol>
+<li>Shows events we got</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 10: Developing GraphQL Server</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Developing GraphQL Server<ol>
+<li>We learned quite a lot about GraphQL specifications and syntax</li>
+<li>We can develop a GraphQL based system</li>
+</ol>
+</li>
+<li>Two components in GraphQL - based system:<ol>
+<li>GraphQL Server (.NET Project in VS Code)<ol>
+<li>Exposes the GraphQL endpoint</li>
+<li>Receives the operations</li>
+<li>Returns results</li>
+</ol>
+</li>
+<li>GraphQL Client (Playground)<ol>
+<li>Sends operations to the GraphQL Server</li>
+<li>Handles the results</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>GraphQL Server Roles</h3>
+<ol>
+<li>GraphQL Server has the following roles:<ol>
+<li><strong>Define GraphQL Schema</strong></li>
+<li><strong>Expose GraphQL Endpoint</strong></li>
+<li><strong>Validate GraphQL Operations</strong></li>
+<li><strong>Route GraphQL Operations to Code</strong><ol>
+<li>Convert to code entities</li>
+</ol>
+</li>
+<li><strong>Return GraphQL Results</strong></li>
+</ol>
+</li>
+<li>Every GraphQL server must follow GraphQL specification</li>
+</ol>
+<h4>Define GraphQL Schema</h4>
+<ol>
+<li>The GraphQL Server defines the schema using code elements in the server or <strong>explicitly using the Schema Definition Language</strong> (NodeJS Demo)<ol>
+<li>It is usually based on classes / modules</li>
+<li>Each server has its own schema definition mechanism<ol>
+<li><p>Example: .NET</p>
+<pre><code> builder.Services.AddGraphQLServer()
+     .AddQueryType&lt;Query&gt;()
+     .AddInterfaceType&lt;IReadingMaterial&gt;()
+     .AddMutationType&lt;Mutation&gt;()
+     .AddSubscriptionType&lt;Subscription&gt;();
+</code></pre>
+<ol>
+<li>We have explicitly specified what our Query type, Interface Type, Mutation Type, and Subscription type are going to be<ol>
+<li>It is different in Node.js</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Expose GraphQL Endpoint</h4>
+<ol>
+<li>All GraphQL operations are sent to specific, single endpoint<ol>
+<li><p>Opposed to REST API which exposes an endpoint for each operation:</p>
+<pre><code> GET /api/v1/books/{id}
+ POST /api/v1/employee
+</code></pre>
+</li>
+<li><p>In GraphQL we have a single endpoint</p>
+<ol>
+<li>The endpoint is usually named <code>graphql</code></li>
+<li>The endpoint is accessed using <code>POST</code> verb</li>
+</ol>
+</li>
+<li><p>The server expects to receive JSON payload in the endpoint</p>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Validate GraphQL Operations</h4>
+<ol>
+<li>The server receives a JSON payload and validates it against the schema<ol>
+<li>If a mismatch is found - the server returns a standard error message</li>
+</ol>
+</li>
+<li>No coding is required for the validation</li>
+</ol>
+<h4>Route GraphQL Operations to Code</h4>
+<ol>
+<li>The server converts JSON payload to objects and triggers methods to process the operations and return the data</li>
+<li>The methods are called <code>Resolvers</code> (important)<ol>
+<li><p>The server traverses through the query and runs a resolver <strong>for every field</strong></p>
+<ol>
+<li><strong>We have a resolver for every field</strong> (even though in code we have a single resolver per object type)</li>
+</ol>
+</li>
+<li><p>If the field returns a scalar value, that is what's returned</p>
+</li>
+<li><p>If the field returns an object value, the server runs resolvers for each field in the object</p>
+<ol>
+<li>... until scaler is returned</li>
+</ol>
+</li>
+<li><p>Resolvers in the same hierarchy run in parallel</p>
+<ol>
+<li>Implies that one can run before the other<ol>
+<li><strong>NEVER use data from another resolver in our resolver</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> {
+     books {
+         name
+         pages
+         author {
+             name
+         }
+     }
+ }
+</code></pre>
+<ol>
+<li>First resolver: Resolver of the root element (for <code>books</code> object)<ol>
+<li>It returns <code>Book</code> object</li>
+<li>Since <code>Book</code> is an object, additional resolvers are executed on its fields</li>
+</ol>
+</li>
+<li>Next resolvers: Resolvers are executed for the fields <code>name</code>, and <code>pages</code><ol>
+<li>The resolver return scalar values<ol>
+<li>Returned directly</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Next resolver: Resolver for the <code>author</code> element (which is run in parallel to the previous resolvers)<ol>
+<li>Returns an <code>Author</code> object</li>
+<li>Since <code>Author</code> is an object, additional resolvers are executed on its fields</li>
+</ol>
+</li>
+<li>Next resolver: Resolver of the <code>name</code> field<ol>
+<li>Returns scalar value</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Most implementations automatically construct resolvers for fields<ol>
+<li>As in our case<ol>
+<li>HotChocolate implementation automatically generates resolvers for each field<ol>
+<li><strong>Custom resolvers can be specified</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>Resolvers can accept arguments with context data about the query</strong></li>
+</ol>
+<h4>Return GraphQL Results</h4>
+<ol>
+<li>After running the resolvers and merging the results, the server converts the object to JSON and returns it to the client</li>
+</ol>
+<h3>Configuring GraphQL Server in .NET</h3>
+<ol>
+<li>We'll develop GraphQL in two platforms:<ol>
+<li>.NET</li>
+<li>NodeJS</li>
+</ol>
+</li>
+<li>We need to always use existing libraries for doing that<ol>
+<li>Never develop our own implementation</li>
+</ol>
+</li>
+</ol>
+<h4>Developing GraphQL Server in .NET</h4>
+<ol>
+<li>There are various libraries for GraphQL in .NET<ol>
+<li>We will use one of the most popular one <strong>HotChocolate</strong></li>
+</ol>
+</li>
+<li>Steps:<ol>
+<li>We will construct an empty .NET web-app first and convert it into a GraphQL server<ol>
+<li>GraphQLCourse &gt; MyGraphQLNet<ol>
+<li>Open cmd</li>
+<li>Empty web-app: <code>dotnet new web</code></li>
+<li>Add Hot Chocolate GraphQL library: <code>dotnet add package HotChocolate.AspNetCore</code><ol>
+<li>Downloaded required packages for GraphQL</li>
+</ol>
+</li>
+<li><code>code .</code><ol>
+<li>Required assets to build and debug:<ol>
+<li>Click <code>Yes</code><ol>
+<li>Adds some config files for allowing VS Code to debug and run .NET programs</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>Program.cs</code> - main and initial file of .NET<ol>
+<li><p>Configure it to use GraphQL libraries of HotChocolate</p>
+</li>
+<li><p>Add the following:</p>
+<pre><code> builder.Services.AddGraphQLServer();
+ ...
+ app.MapGraphQL();
+</code></pre>
+<ol>
+<li>The project is fully configured to run GraphQL</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>F5<ol>
+<li>Open playground: <strong><a href="http://localhost:7293/graphql">http://localhost:7293/graphql</a></strong><ol>
+<li>Schema Reference - Schema is unavailable</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Developing the Schema in .NET</h3>
+<ol>
+<li>It is straightforward<ol>
+<li>It built on regular classes</li>
+</ol>
+</li>
+<li>VS Code:<ol>
+<li><p>New folder: Models</p>
+<ol>
+<li><p>New file: Book.cs</p>
+<pre><code> public class Book {
+     public int BookId {get; set;}
+     public string Name {get; set;}
+     public int Pages {get; set;}
+     public DateTime publishDate {get; set;}
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Query object:</p>
+<ol>
+<li><p>New folder: GraphQL</p>
+<ol>
+<li><p>New file: Query.cs</p>
+<pre><code> public class Query {
+     
+ }
+</code></pre>
+<ol>
+<li>It is empty</li>
+<li>It has no resolvers<ol>
+<li>We need to tell GraphQL that we need to use this class that will be used for resolving queries</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Program.cs</p>
+<pre><code> builder.Services.AddGraphQLServer()
+     .AddQueryType&lt;Query&gt;();
+</code></pre>
+<ol>
+<li>Indicates to GraphQL that the <code>Query</code> class has the resolvers for queries</li>
+</ol>
+</li>
+<li><p>Query.cs</p>
+<pre><code> public List&lt;Book&gt; Books(string nameContains="") {
+     string fileName = "Database/books.json";
+     string jsonString = File.ReadAllText(fileName);
+     var books = JsonSerilizer.Deserialize&lt;List&lt;Book&gt;&gt;(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, Converters = {new JsonStringEnumConverter()} })!;
+     return books.Where(b =&gt; b.Name.IndexOf(nameContains).ToList());
+ }
+</code></pre>
+<ol>
+<li>The resolver is used to resolve <code>Book</code> object<ol>
+<li>The fields are automatically resolved to the actual fields of the Book object</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Database:</p>
+<ol>
+<li>New folder: <code>Database</code><ol>
+<li>Copy paste <code>books.json</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Configuring VS Code to automatically open GraphQL page when running</p>
+<ol>
+<li><p>.vscode &gt; launch.json</p>
+<pre><code> "serverReadyAction": {
+     ...
+     "uriFormat": "%s/graphql"
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Restart the app</p>
+</li>
+<li><p>ctrl+. to fix imports</p>
+</li>
+<li><p>Run the app</p>
+<ol>
+<li><p>Schema Reference</p>
+<ol>
+<li>We have a schema</li>
+</ol>
+</li>
+<li><p>Operations:</p>
+<pre><code> {
+     books {
+         name
+         publishDate
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Run</p>
+</li>
+<li><p>Arguments</p>
+<pre><code> query ($name: String) {
+     books (nameContains: $name) {
+         name
+         publishDate
+     }
+ }
+</code></pre>
+<ol>
+<li><p>Variables:</p>
+<pre><code> {
+     "name": "H"
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Publish date is displayed in standard format</p>
+<ol>
+<li><p>We want to define a resolver that will return a human readable date</p>
+<ol>
+<li>Need a special resolver class<ol>
+<li><p>GraphQL &gt; Resolvers.cs</p>
+<pre><code> class Resolvers {
+     public string GetFormattedDate([Parent]Book e) {
+         return e.PublishDate.ToShortDateString();
+     }
+ }
+</code></pre>
+<ol>
+<li><code>[Parent]Book</code> - <code>Book</code> object is the parent of the field of which we want to change the value</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Where to use it?</p>
+<ol>
+<li><p>Query.cs</p>
+<pre><code> ...
+ public class BookType : ObjectType&lt;Book&gt; {
+     protected override void Configure(IObjectTypeDescriptor&lt;Book&gt; descriptor) {
+         descriptor.Field("publishDate").ResolveWith&lt;Resolvers&gt;(r =&gt; r.GetFormattedDate(default!));
+     }
+ }
+</code></pre>
+<ol>
+<li>The code defines an object type (GraphQL type for <code>Book</code> class we defined)<ol>
+<li>This enables customization of GraphQL<ol>
+<li>Customization:<ol>
+<li>Configure a resolver for the <code>publishDate</code> field and resolve it with resolver in <code>Resolvers</code> class using the method <code>GetFormattedDate</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The code ties the resolver to an actual field in an actual object type<ol>
+<li><code>publishDate</code> field in <code>Book</code> object type</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Inform GraphQL server that it needs to use <code>BookType</code> definition</p>
+<ol>
+<li><p>Program.cs</p>
+<pre><code> builder.Services....
+     .AddType&lt;BookType&gt;();
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Debug using breakpoing</p>
+<ol>
+<li>Resolvers.cs<ol>
+<li>Put a breakpoint</li>
+</ol>
+</li>
+<li>Restart app<ol>
+<li>Run<ol>
+<li>F5 to resume the code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Developing GraphQL Server in NodeJS</h3>
+<ol>
+<li>GraphQL Server in Node.js<ol>
+<li>Popular GraphQL implementation server is Apollo</li>
+</ol>
+</li>
+<li>GraphQLCourse<ol>
+<li>New folder: MyGraphQLNodeJS<ol>
+<li>Open cmd<ol>
+<li>New nodejs app: <code>npm init -yes</code><ol>
+<li><code>package.json</code> file was created</li>
+</ol>
+</li>
+<li>Install packages required for implementing GraphQL using Apollo: <code>npm install @apollo/server graphql</code></li>
+<li><code>code .</code><ol>
+<li><p>package.json</p>
+<pre><code> "type": "module",
+ "scripts": {
+     "start": "node index.js"
+ }
+</code></pre>
+<ol>
+<li><code>module</code> - sets the way JS uses external packages</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Download GraphQLNodeFiles.zip<ol>
+<li>Copy and paste the following files in the folder<ol>
+<li>index.js</li>
+<li>books.json</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>index.js<ol>
+<li><p>Schema</p>
+</li>
+<li><p>Parsing json</p>
+<pre><code> var books = JSON.parse(fs.readFileSync("books.json"));
+ console.log(`Books: ${books}`);
+</code></pre>
+</li>
+<li><p>Resolvers - defines what resolvers we have in the app</p>
+<pre><code> const resolvers = {
+     Query: {
+         books: (parent, args, contextValue, info) =&gt; {
+             return books;
+         }
+     },
+ };
+</code></pre>
+<ol>
+<li><code>books</code> - resolver</li>
+<li>It defines what happens if we retrieve <code>books</code> field in the <code>Query</code> object</li>
+</ol>
+</li>
+<li><p>Initialization of Apollo server and starting it</p>
+<pre><code> const server = new ApolloServer({
+     typeDefs,
+     resolvers,
+ });
+
+ const { url } = await startStandaloneServer(server, { listen: { port: 4000 } });
+
+ console.log(`Server listening at: ${url}`);
+</code></pre>
+</li>
+<li><p>Run:	<code>npm start</code></p>
+<ol>
+<li><p>Copy the address: <a href="http://localhost:4000">http://localhost:4000</a></p>
+<ol>
+<li>Playground is a little different</li>
+</ol>
+</li>
+<li><p>Query:</p>
+<pre><code> {
+     books {
+         bookId
+         name
+     }
+ }
+</code></pre>
+<ol>
+<li><code>books</code> resolver is used to retrieve the data<ol>
+<li>Arguments:<ol>
+<li>Uncomment: <code>console.log(info)</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Restart the app</li>
+<li>Run the query again<ol>
+<li>VS Code<ol>
+<li>info in terminal<ol>
+<li>Good for analysis</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Defining Field Resolvers in NodeJS</h3>
+<ol>
+<li><p>Adding a new resolver</p>
+<pre><code> Query: {
+     ...
+     Book: {
+         name: (parent, args, contextValue, info) =&gt; {
+             var name = parent.name; // the book object type
+             return `[${name}]`;
+         }
+     }
+ }
+</code></pre>
+<ol>
+<li>Terminal: Restart the app</li>
+<li>Playground:<ol>
+<li>Run the query<ol>
+<li>It displays with square brackets</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 11: Developing GraphQL Client</h2>
+<h3>Introduction</h3>
+<ol>
+<li>How to develop a graphql client and how to use it<ol>
+<li>It is extremely simple<ol>
+<li>We can use plain old JavaScript<ol>
+<li>No special libraries are required<ol>
+<li>There are some clients that can be used for advanced capabilities but in most cases, there's no need</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Developing GraphQL Client</h3>
+<ol>
+<li><p>For .NET server (which is same for Node.JS server)</p>
+</li>
+<li><p>VS Code</p>
+<ol>
+<li><p>New folder: wwwroot</p>
+</li>
+<li><p>Program.cs</p>
+<pre><code> app.UseStaticFiles(); // by default static files are served from `wwwroot` folder
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Download: client.html</p>
+<ol>
+<li>Copy it to <code>wwwroot</code> folder<ol>
+<li>client.html<ol>
+<li><code>runQuery()</code><ol>
+<li>uses <code>fetch</code> api (standard JS method)<ol>
+<li><code>JSON.stringify</code> is used to send the body</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Hit F5</p>
+</li>
+<li><p>Run: <a href="http://localhost:7293/client.html">http://localhost:7293/client.html</a></p>
+<ol>
+<li>Hit the button</li>
+</ol>
+</li>
+<li><p>Modify the file:</p>
+<pre><code> function runQuery() {
+     var name = document.getElementById("filter").value;
+     var query = `query GetBooks($name: String) {
+         books (nameContains: $name) {
+             name
+             pages
+         }
+     }`;
+ }
+
+ &lt;body&gt;
+     &lt;input id="filter" placeholder="Filter..."/&gt;
+</code></pre>
+</li>
+<li><p>Adding name variable to GraphQL (GraphQL server can use it)</p>
+<pre><code> fetch(...) {
+     ...
+     body: JSON.stringify({
+         query,
+         variables: {name}
+     })
+</code></pre>
+</li>
+<li><p>Open URL:</p>
+<ol>
+<li>Filter: H</li>
+<li>Run</li>
+</ol>
+</li>
+</ol>
+<h2>Section 12: Advanced Topics</h2>
+<h3>Introduction</h3>
+<ol>
+<li>So far, we have covered the most commonly-used features of GraphQL<ol>
+<li>Might be enough to design and build a full-blown GraphQL-based API<ol>
+<li>There are still some advanced topics that will help us make GraphQL even better</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Topics:<ol>
+<li>Error Handling</li>
+<li>Authorization</li>
+</ol>
+</li>
+</ol>
+<h3>Error Handling</h3>
+<ol>
+<li>Newsflash:<ol>
+<li>There will be errors in code and app</li>
+</ol>
+</li>
+<li>Errors in GraphQL are returned as JSON<ol>
+<li>Code should plan for that and catch the errors<ol>
+<li>Errors can be:<ol>
+<li>Thrown automatically by the server when it cannot parse or validate the message</li>
+<li>Thrown by our own code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Either case - we should plan for it and act accordingly<ol>
+<li>Usually - log the error and show generic message to the user<ol>
+<li>How do the errors look like?<ol>
+<li>VS Code<ol>
+<li>Change <code>name</code> to <code>nameh</code> (it does not exist in the schema)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Refresh browser tab<ol>
+<li>Filter: H</li>
+<li>Run<ol>
+<li>Error: JSON</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We change the code to handle the error<ol>
+<li><p>client.html</p>
+<pre><code> fetch...
+     .then(data =&gt; { 
+         if (date.errors) {
+             console.error(data);
+             document.getElementById("results").value = "An error has occured, and please try again later.";
+         } else {
+             document.getElementById("results").value = JSON.stringify(data, undefined, 4);
+         }
+     });
+</code></pre>
+<ol>
+<li><code>errors</code> collection is returned if there are errors</li>
+</ol>
+</li>
+<li><p>Refresh the page</p>
+<ol>
+<li>Run<ol>
+<li>Open Console<ol>
+<li>Error is logged</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Own Errors</h4>
+<ol>
+<li><p>client.html</p>
+<ol>
+<li>Fix the query</li>
+</ol>
+</li>
+<li><p>Query.cs</p>
+<pre><code> public class Query {
+     public List&lt;Book&gt; Books&lt;string nameContains = "") {
+         ...
+         throw new Exception("Error retrieving data");
+         return ...
+     }
+     ...
+ }
+</code></pre>
+<ol>
+<li>Server is going to throw exception when we try to read the books<ol>
+<li>Restart server</li>
+</ol>
+</li>
+<li>Refresh browser tab<ol>
+<li>Run<ol>
+<li>Console:<ol>
+<li>Detailed explanation<ol>
+<li>Stack trace is shown<ol>
+<li>We don't want this - a potential security hole<ol>
+<li>Solution: Many GraphQL servers have their own way to indicate not to return stack trace (no security risks)<ol>
+<li>.NET - run app without debugging<ol>
+<li>HotChocolate GraphQL server will remove stacktrace and other problematic information</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li>Run without debug (F5 executes with Debug capabilities)<ol>
+<li>Ctrl + F5 (on click menu item)</li>
+</ol>
+</li>
+<li>Refresh client<ol>
+<li>Run<ol>
+<li>Console: Expand error<ol>
+<li>No extension containing stacktrace</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Authorization</h3>
+<ol>
+<li>When running an API, the server needs to know who the user is, and what he's allowed to do<ol>
+<li>This is called:<ol>
+<li>Authentication (Who is the user)</li>
+<li>Authorization (What he is allowed to do)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>GraphQL offers no special treatment to authentication and authorization</strong><ol>
+<li>It can be configured to pass the user to the resolvers<ol>
+<li><strong>A resolver will decide what to do with this information</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>GraphQL does not care how the authentication is actually executed</strong></li>
+</ol>
+<h4>How to get user details in the resolver</h4>
+<ol>
+<li><p>We need to configure out app to work with Authentication</p>
+<ol>
+<li><p>Program.cs</p>
+<pre><code> builder...
+ builder.Services.AddAuthentication(); // indicates to app that it is going to use authentication
+ ...
+ app.UseAuthentication(); // indicates to use the authentication
+</code></pre>
+<ol>
+<li>We didn't indicate which authentication to use<ol>
+<li>AD</li>
+<li>Okta</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>We need to add a package to support passing user details to the resolver:</p>
+<ol>
+<li>Terminal<ol>
+<li><code>dotnet add package HotChocolate.AspNetCore.Authorization</code><ol>
+<li>Contains modules for passing user data to resolvers</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Query.cs</p>
+<pre><code> using System.Security.Claims;
+ ...
+
+ public List&lt;Book&gt; Books(ClaimsPrincipal claims, ...) {
+     
+ }
+</code></pre>
+<ol>
+<li><code>claims</code> - collection of attributes containing the user details<ol>
+<li>When a user is authentication we can see in claims<ol>
+<li>name</li>
+<li>email</li>
+<li>What he is allowed to do</li>
+<li>...</li>
+</ol>
+</li>
+<li>When a user is not authenticed, the claims collection will indicate that as well</li>
+</ol>
+</li>
+<li>Place a breakpoint after method name</li>
+<li>Restart the app<ol>
+<li>F5<ol>
+<li>Playground:<ol>
+<li>Run<ol>
+<li>Breakpoint will be hit<ol>
+<li>claims<ol>
+<li>Identities<ol>
+<li>IsAuthenticated: false<ol>
+<li>Solution: We can add any authentication mechanism such as AD, Okta, own user management etc.<ol>
+<li>Claims will return the user identity</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 13: Conclusion</h2>
+<h3>Conclusion</h3>
+<ol>
+<li>What we learned?<ol>
+<li>GraphQL is an extremely flexible API<ol>
+<li>It allows specifying the exact data we want to retrieve</li>
+<li>It is multi-platform<ol>
+<li>.NET</li>
+<li>Node.JS</li>
+</ol>
+</li>
+<li>It works with JSON</li>
+<li>It has sophisticated error handling information</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We began from the very start<ol>
+<li>Basics of API</li>
+<li>Web APIs</li>
+<li>GraphQL</li>
+</ol>
+</li>
+<li>We went all the way to the most advanced topics of GraphQL</li>
+<li>We had a lot of hands-on</li>
+<li>We had a lot of fun</li>
+</ol>
+<h4>Agenda</h4>
+<ol>
+<li>Welcome</li>
+<li>API Basics</li>
+<li>Web APIs<ol>
+<li>GraphQL is part of</li>
+</ol>
+</li>
+<li>Introduction to GraphQL<ol>
+<li>History</li>
+<li>Motivation</li>
+</ol>
+</li>
+<li>Preparing the Environment</li>
+<li>GraphQL Schema<ol>
+<li>Role</li>
+<li>Syntax</li>
+</ol>
+</li>
+<li>Queries<ol>
+<li>Most common usage</li>
+</ol>
+</li>
+<li>Mutations</li>
+<li>Subscriptions</li>
+<li>Developing GraphQL Server<ol>
+<li>.NET</li>
+<li>Node.JS</li>
+</ol>
+</li>
+<li>Developing GraphQL Client<ol>
+<li>Using plaing JavaScript in browser</li>
+</ol>
+</li>
+<li>Advanced Topics</li>
+<li>Conclusion</li>
+</ol>
+<h3>Bonus: Next Steps</h3>
+<ol>
+<li><a href="https://www.facebook.com/groups/127639125043271">Software Architects Discussions</a></li>
+<li><a href="https://memilavi.com/newsletters/">Software Architecture Newsletter</a></li>
+<li>Discounted Courses:<ol>
+<li><a href="http://tiny.cc/cloudstudies">Microsoft Azure: Cloud Architecture Case Studies</a></li>
+<li><a href="http://tiny.cc/azseccoupon">Azure Security Best Practices</a></li>
+<li><a href="http://tiny.cc/azureopenai">Azure ChatGPT and OpenAI Service</a></li>
+<li><a href="http://tiny.cc/az220coupon">Azure IoT - The Complete Guide</a></li>
+<li><a href="http://tiny.cc/microseccoupon">Microservices Security - The Complete Guide</a></li>
+<li><a href="http://tiny.cc/grpccoupon">Building WebAPIs with gRPC - The Complete Guide</a></li>
+<li><a href="http://tiny.cc/archquest">Software Architecture Interview Questions</a></li>
+</ol>
+</li>
+<li><a href="https://memilavi.com/">https://memilavi.com/</a></li>
+</ol>

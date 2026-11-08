@@ -1,0 +1,5738 @@
+<h1>Understanding TypeScript</h1>
+<h2>Section 1: Getting Started</h2>
+<h3>Welcome to the Course!</h3>
+<ol>
+<li>Superset to JS<ol>
+<li>Builds on JS</li>
+</ol>
+</li>
+<li>Less error-prone, better, cleaner code</li>
+<li>New features in JS</li>
+<li>Learn TS from scratch<ol>
+<li>Basics</li>
+<li>How it works</li>
+<li>Where to use it</li>
+<li>Different advantages it offers</li>
+<li>Core types it provides</li>
+<li>Advanced typescript features</li>
+</ol>
+</li>
+<li>Theory + real projects<ol>
+<li>With React</li>
+<li>With Node.js &amp; Express</li>
+</ol>
+</li>
+<li>Why &amp; How</li>
+<li>With or without framework</li>
+</ol>
+<h3>What is TypeScript &amp; Why Should You Use It?</h3>
+<ol>
+<li><p>What is TypeScript?</p>
+<ol>
+<li>A JavaScript superset<ol>
+<li>A language building up on JavaScript<ol>
+<li>Takes JS &amp; adds new features + advantages<ol>
+<li>Makes it easier &amp; powerful</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Disadvantages<ol>
+<li>Cannot be executed directly on browser or Node.js</li>
+</ol>
+</li>
+<li>Role:<ol>
+<li>It is a tool<ol>
+<li>Powerful compiler compiles typescript code into JS (result)<ol>
+<li>We get normal JS at the end</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>How does new features of TS produce JS?<ol>
+<li>Features are compiled to JS "workarounds", possible errors are thrown<ol>
+<li>Nicer syntax &amp; easier to write will be compiled to more complex JS snippet (would have been written by hand otherwise)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It adds types<ol>
+<li>Feature to JS which will give us an opportunity to identify errors in the code before it runs and errors occur at runtime<ol>
+<li>Extra error checking to catch and fix errors during development</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Why TypeScript?</p>
+<ol>
+<li><p>Example:</p>
+<pre><code class="language-typescript">function add(num1, num2) {
+  return num1 + num2;
+}
+
+console.log(add("2", "3"));
+</code></pre>
+<ol>
+<li>JS will concatenate instead of adding numbers<ol>
+<li>No runtime error but logical mistake<ol>
+<li>Huge problems</li>
+</ol>
+</li>
+<li>Mitigation strategies<ol>
+<li>Add if check to add function</li>
+<li>Validate &amp; sanitize user input at runtime<ol>
+<li>Instead if we can catch errors like this during development<ol>
+<li>TypeScript - Developers can write better code and avoid such errors</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Join Our Learning Community</h3>
+<ol>
+<li><a href="https://academind.com/community/">https://academind.com/community/</a></li>
+</ol>
+<h3>Installing &amp; Using TypeScript</h3>
+<ol>
+<li><p>JS function</p>
+<pre><code>function add(num1, num2) {
+  if (typeof num1 === "number" &amp;&amp; typeof num2 === "number") {
+    return num1 + num2;
+  } else {
+    return +num1 + +num2;
+  }
+}
+</code></pre>
+<ol>
+<li>We don't want the extra code to check but we want to avoid passing non numbers</li>
+</ol>
+</li>
+<li><p>Typescript</p>
+<ol>
+<li><p>typescriptlang.org</p>
+<pre><code>npm install -g typescript # **(M)**
+
+tsc &lt;file&gt;.ts
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Code: using-ts.ts</p>
+<pre><code>const button = document.querySelector("button")!;
+const input1 = document.getElementById("num1")! as HTMLInputElement; // never yields null
+const input2 = document.getElementById("num2")! as HTMLInputElement; // never yields null
+
+function add(num1: number, num2: number) {
+  return num1 + num2;
+}
+
+button.addEventListener("click", function () {
+  console.log(add(+input1.value, +input2.value));
+});
+</code></pre>
+<ol>
+<li><p>JS:</p>
+<pre><code>var button = document.querySelector("button");
+var input1 = document.getElementById("num1"); // never yields null
+var input2 = document.getElementById("num2"); // never yields null
+function add(num1, num2) {
+    return num1 + num2;
+}
+button.addEventListener("click", function () {
+    console.log(add(+input1.value, +input2.value));
+});
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>TypeScript Advantages - Overview</h3>
+<ol>
+<li>It makes writing clean code easier</li>
+<li>It adds types<ol>
+<li>To avoid unexpected and unnecessary errors by using types</li>
+<li>IDEs have support for TS<ol>
+<li>Errors</li>
+<li>Autocomplete</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Next-gen JS features (compiled down for older browsers)<ol>
+<li>They get compiled to JS workarounds that even work in older browsers<ol>
+<li>It is like Babel<ol>
+<li>Already built into TSC</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Non-JavaScript features like interfaces or generics<ol>
+<li>Only TS understands them<ol>
+<li>They help us give clearer errors</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Meta-programming features like decorators<ol>
+<li>More later</li>
+</ol>
+</li>
+<li>Rich configuration Options<ol>
+<li>More later<ol>
+<li>Compiler and how to configure it<ol>
+<li>We can make it stricter or loser</li>
+<li>To make it behave like the way we want it to behave</li>
+<li>Tools like VS code has support for JS with TS under the hood (without explicitly using TS)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Course Outline</h3>
+<ol>
+<li>Getting Started</li>
+<li>TypeScript Basics<ol>
+<li>Core types</li>
+<li>How it generally works</li>
+<li>Some new features</li>
+<li>All needed for good understanding of TS</li>
+</ol>
+</li>
+<li>Compiler &amp; Configuration Deep Dive<ol>
+<li>What can be configured</li>
+<li>What the settings do</li>
+</ol>
+</li>
+<li>Working with Next-gen JS Code<ol>
+<li>How do they work</li>
+<li>How to use them in TS</li>
+</ol>
+</li>
+<li>Classes &amp; Interfaces<ol>
+<li>In vanilla JS (classes)</li>
+<li>What they are</li>
+<li>What they do</li>
+<li>Why use them</li>
+</ol>
+</li>
+<li>Advanced Types &amp; TypeScript Features<ol>
+<li>Build on the basics</li>
+</ol>
+</li>
+<li>Generics<ol>
+<li>What is it</li>
+<li>Why is it helpful</li>
+</ol>
+</li>
+<li>Decorators<ol>
+<li>Cool feature</li>
+<li>Build useful decorators</li>
+</ol>
+</li>
+<li>Time to practice - full project<ol>
+<li>With TS from scratch<ol>
+<li>We see features in action</li>
+<li>How they work together</li>
+<li>How they simplify the pros</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Working with Namespaces &amp; Modules<ol>
+<li>Makes code more readable and manageable</li>
+</ol>
+</li>
+<li>Webpack &amp; TypeScript<ol>
+<li>Buildtool in modern front-end web-development<ol>
+<li>We can us with TS to get project better setup and make things easier<ol>
+<li>Great dev experience</li>
+<li>Code that works well for end-users</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Third-party libraries &amp; TypeScript<ol>
+<li>Some libraries embraced TS but others did not<ol>
+<li>How to work with both types of libraries</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>React + TypeScript &amp; NodeJS + TypeScript</li>
+</ol>
+<h3>How to Get the Most Our of the Course</h3>
+<ol>
+<li>Watch the Videos!<ol>
+<li>Go through step-by-step</li>
+<li>All modules and lectures build up on each other</li>
+<li>Skip certain modules if you already know</li>
+<li>At your speed!</li>
+</ol>
+</li>
+<li>Code Along<ol>
+<li>We learn better if we write code on our own and find and fix mistakes<ol>
+<li>Pause &amp; Rewind</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Practice<ol>
+<li>Real projects</li>
+<li>Small demos</li>
+<li>Pause and do next steps</li>
+<li>Advance on your own (partly)</li>
+</ol>
+</li>
+<li>Debug &amp; Search<ol>
+<li>Use attached Code, Google, Udemy Search</li>
+</ol>
+</li>
+<li>Ask &amp; Answer<ol>
+<li>Ask in Q&amp;A section, but also help others!</li>
+</ol>
+</li>
+</ol>
+<h3>Setting up a Code Editor / IDE</h3>
+<ol>
+<li>Code editor<ol>
+<li>VS Code - good TS support (built in)<ol>
+<li>Extensions<ol>
+<li>ESLint - code quality checks</li>
+<li>Material Icon Theme</li>
+<li>Path Intellisense - better support for imports</li>
+<li>Prettier</li>
+<li>TSLint - merged with ESLint</li>
+</ol>
+</li>
+<li>Settings<ol>
+<li>Fine tune</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Course Setup</h3>
+<ol>
+<li>Alternatives:<ol>
+<li><a href="https://www.jetbrains.com/ides/#choose-your-ide">IDEs offered by Jetbrains</a><ol>
+<li><a href="https://www.jetbrains.com/webstorm/">Webstorm</a></li>
+<li>Get a Jetbrains IDE for free from 6 months<ol>
+<li>Enter coupon code: MAX_JETBRAINS<ol>
+<li>Usage: <a href="https://sales.jetbrains.com/hc/en-gb/articles/206544449-I-received-a-coupon-code-for-a-JetBrains-license-how-can-I-use-it">https://sales.jetbrains.com/hc/en-gb/articles/206544449-I-received-a-coupon-code-for-a-JetBrains-license-how-can-I-use-it</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>The Course Project Setup</h3>
+<ol>
+<li><p>Starter project:</p>
+<pre><code>npm init
+npm i --save-dev lite-server
+
+// package.json
+
+"start": "lite-server"
+
+npm start
+</code></pre>
+</li>
+</ol>
+<h2>Section 2: TypeScript Basics &amp; Basic Types</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Types offered and supported<ol>
+<li>How to assign types</li>
+<li>How to reap the benefits of using types</li>
+</ol>
+</li>
+</ol>
+<h3>Using Types</h3>
+<ol>
+<li><p>Types in TS</p>
+<ol>
+<li>TS adds many more types than what JS has</li>
+<li>TS enables us to write our own types</li>
+</ol>
+</li>
+<li><p>Core Types</p>
+<ol>
+<li><code>number</code> - common number type (no ints, floats, ...)<ol>
+<li>1, 5.3, -10</li>
+<li>All are numbers and no differentiation between integers or floats</li>
+</ol>
+</li>
+<li><code>string</code> - Text<ol>
+<li>'Hi', "Hi", <code>Hi</code> (JS and TS) - template literals for dynamic injection of data</li>
+<li>All text values</li>
+</ol>
+</li>
+<li><code>boolean</code> - true, false<ol>
+<li>Just these two, no "truthy" or "falsy" values (as in JS)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Typescript's type system only helps you during development (i.e. before the code gets compiled) - It doesn't change how JS works</p>
+<ol>
+<li>Adds extra sanity checks<ol>
+<li>It helps during development but does not change runtime code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: app.ts</p>
+<pre><code>function add(n1: number, n2: number) {
+  return n1 + n2;
+}
+
+const number1 = 5;
+const number2 = 2.8;
+
+const result = add(number1, number2);
+console.log(result);
+</code></pre>
+<ol>
+<li>TypeScript support is available only during development and not during runtime</li>
+</ol>
+</li>
+</ol>
+<h3>TypeScript Types vs JavaScript Types</h3>
+<ol>
+<li>Code: app.ts</li>
+</ol>
+<pre><code class="language-typescript">function add(n1: number, n2: number) {
+  // console.log(typeof number1);
+  if (typeof n1 !== "number" || typeof n2 !== "number") {
+    // We are checking something which could have been avoided during development.
+    // We could have prevented it using TS
+    // If we use TS to call the function, we can throw an error during development
+    // Helps fix bugs earlier
+    throw new Error("Incorrect input!");
+  }
+  return n1 + n2;
+}
+
+const number1 = 5; // same as 5.0
+const number2 = 2.8;
+
+const result = add(number1, number2);
+console.log(result);
+</code></pre>
+<h3>Important: Type Casing</h3>
+<ol>
+<li>Core primitive types in TS are lowercase: <code>string</code>, <code>number</code> etc.</li>
+</ol>
+<h3>Working with Numbers, Strings &amp; Booleans</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>function add(
+  n1: number,
+  n2: number,
+  showResult: boolean,
+  resultPhrase: string
+) {
+  const result = n1 + n2;
+  if (showResult) {
+    console.log(resultPhrase + result);
+  } else {
+    return result;
+  }
+}
+
+const number1 = 5; // same as 5.0
+const number2 = 2.8;
+const printResult = true;
+const resultPhrase = "Result is: ";
+
+add(number1, number2, printResult, resultPhrase);
+</code></pre>
+</li>
+</ol>
+<h3>Type Assignment &amp; Type Inference</h3>
+<ol>
+<li><p>TS does its best to understand which type we have in a variable or constant</p>
+</li>
+<li><p>Code:</p>
+<pre><code>let number1 = 5; // same as let number1: number = 5; // not a good practice
+</code></pre>
+<ol>
+<li><p>If we are not initializing, then it is good to give the type</p>
+<pre><code>let number1: number; // otherwise TS allows any type
+</code></pre>
+</li>
+<li><p>Throws error if the following is done:</p>
+<pre><code>let resultPhrase = "Result is: ";
+resultPhrase = 5;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 1: Understanding Types</h3>
+<h3>Object Types</h3>
+<ol>
+<li><p><code>object</code> type</p>
+<pre><code>{
+    age: 30
+}
+</code></pre>
+<ol>
+<li><p>Any JS object + more specific types (type of object) are possible (there are more specific versions of objects in TS - object that have properties, constructor function etc.)</p>
+</li>
+<li><p>Code:</p>
+<pre><code>console.log(person.nickname); // throws error
+
+// Object type infererred by typescript
+const person: {
+    name: string;
+    age: number;
+}
+</code></pre>
+<ol>
+<li><p><code>object</code> - generic object type</p>
+<pre><code>person: object = {
+    // ...
+};
+
+person.name; // fails
+</code></pre>
+</li>
+<li><p>Explicit declaration</p>
+<pre><code>const person: {
+  name: string;
+  age: number;
+} = {
+  name: "Maximilian",
+  age: 30,
+};
+
+console.log(person);
+console.log(person.age);
+</code></pre>
+<ol>
+<li>It is only a TS representation and does not produce any additional JS code</li>
+</ol>
+</li>
+<li><p>Object type for nested objects:</p>
+<pre><code>const product = {
+    id: 'abc1',
+    price: 12.99,
+    tags: ['great-offer', 'hot-and-new'],
+    details: {
+        title: 'Red Carpet',
+        description: 'A great carpet - almost brand-new!'
+    }
+};
+
+// Type
+const prouct: {
+    id: string;
+    price: number;
+    tags: string[];
+    details: {
+        title: string;
+        description: string;
+    }
+}
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Nested Objects &amp; Types</h3>
+<h3>Arrays Types</h3>
+<ol>
+<li><p>[1, 2, 3]</p>
+<ol>
+<li>Any JavaScript array, type can be flexible or strict (regarding the element types)</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>const person = {
+  name: "Maximilian",
+  age: 30,
+  hobbies: ["Sports", "Cooking"],
+};
+
+// let favoriteActivities: string[];
+// favoriteActivities = ["Sports", 1];
+
+let favoriteActivities: any[]; // any datatype - not recommended
+favoriteActivities = ["Sports", 1];
+
+console.log(person);
+console.log(person.age);
+
+for (const hobby of person.hobbies) {
+  console.log(hobby.toUpperCase()); // works because hobby is identified as string
+  // console.log(hobby.map()); // error because hobby is not an array
+}
+</code></pre>
+</li>
+</ol>
+<h3>Working with Tuples</h3>
+<ol>
+<li><p>Tuple - JS doesn't have it</p>
+<ol>
+<li><p>[1, 2] - Added by TypeScript: Fixed-length array (and fixed types)</p>
+<ol>
+<li><p>Array example:</p>
+<pre><code>const person = {
+  name: "Maximilian",
+  age: 30,
+  hobbies: ["Sports", "Cooking"],
+  role: [2, "author"],
+};
+
+person.role.push("admin"); // works
+person.role[1] = 10; // works
+
+person.role.push('admin'); // allowed because TS unfortunately cannot catch this error
+
+person.role = [0, 'admin']; // allowed
+</code></pre>
+<ol>
+<li>Tuples help us maintain even more strictness</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>const person: {
+  name: string;
+  age: number;
+  hobbies: string[];
+  role: [number, string]; // tuple. fixed types, fixed size
+} = {
+  name: "Maximilian",
+  age: 30,
+  hobbies: ["Sports", "Cooking"],
+  role: [2, "author"],
+};
+
+// person.role.push("admin"); // works
+// person.role[1] = 10; // works
+
+// let favoriteActivities: string[];
+// favoriteActivities = ["Sports", 1];
+
+let favoriteActivities: any[]; // any datatype - not recommended
+favoriteActivities = ["Sports", 1];
+
+console.log(person);
+console.log(person.age);
+
+for (const hobby of person.hobbies) {
+  console.log(hobby.toUpperCase()); // works because hobby is identified as string
+  // console.log(hobby.map()); // error because hobby is not an array
+}
+</code></pre>
+</li>
+</ol>
+<h3>Working with Enums</h3>
+<ol>
+<li><p>Enum - JS doesn't know it</p>
+<ol>
+<li><code>enum { NEW, OLD }</code><ol>
+<li>Added by TS: Automatically enumerated global constant identifiers</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>enum Role { // we can assign number, text, ...
+  ADMIN = 5,
+  READ_ONLY,
+  AUTHOR,
+}
+
+const person = {
+  name: "Maximilian",
+  age: 30,
+  hobbies: ["Sports", "Cooking"],
+  role: Role.AUTHOR,
+};
+
+let favoriteActivities: any[]; // any datatype - not recommended
+favoriteActivities = ["Sports", 1];
+
+console.log(person);
+console.log(person.age);
+
+for (const hobby of person.hobbies) {
+  console.log(hobby.toUpperCase()); // works because hobby is identified as string
+  // console.log(hobby.map()); // error because hobby is not an array
+}
+
+if (person.role === Role.AUTHOR) {
+  console.log("is author");
+}
+</code></pre>
+</li>
+</ol>
+<h3>The "any" Type</h3>
+<ol>
+<li>Any - *<ol>
+<li>Any kind of value, no specific type assignment<ol>
+<li>TS allows any type</li>
+</ol>
+</li>
+<li>We want to avoid it<ol>
+<li>It takes away the advantages given by TS<ol>
+<li>It ensures TS doesn't check anything<ol>
+<li>It can be used as fallback</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>If we know the type, etter to be specific</li>
+</ol>
+</li>
+</ol>
+<h3>Union Types</h3>
+<ol>
+<li><p>Code: We might need a runtime type check</p>
+<pre><code>function combine(input1: number | string, input2: number | string) {
+  let result;
+  if (typeof input1 === "number" &amp;&amp; typeof input2 === "number") {
+    result = input1 + input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+  return result;
+}
+
+const combinedAges = combine(30, 26);
+console.log(combinedAges);
+
+const combinedNames = combine("Max", "Anna");
+console.log(combinedNames);
+</code></pre>
+</li>
+</ol>
+<h3>Literal Types</h3>
+<ol>
+<li><p>Example:</p>
+<pre><code>const number2 = 2.8; // infers number as the type because it is const
+</code></pre>
+</li>
+<li><p>Code:</p>
+<pre><code>function combine(
+  input1: number | string,
+  input2: number | string,
+  resultConversion: "as-number" | "as-text"
+) {
+  let result;
+  if (typeof input1 === "number" &amp;&amp; typeof input2 === "number") {
+    result = input1 + input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+
+  if (resultConversion === "as-number") {
+    return +result;
+  } else {
+    return result.toString();
+  }
+}
+
+const combinedAges = combine(30, 26, "as-number");
+console.log(combinedAges);
+
+const combinedStringAges = combine("30", "26", "as-number");
+console.log(combinedStringAges);
+
+const combinedNames = combine("Max", "Anna", "as-text");
+console.log(combinedNames);
+</code></pre>
+</li>
+</ol>
+<h3>Type Aliases / Custom Types</h3>
+<ol>
+<li><p>New type that stores union type</p>
+<ol>
+<li>Solution: Alias</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>type Combinable = number | string; // Any name not built into JS or TS
+type ConversionDescriptor = "as-number" | "as-text";
+
+function combine(
+  input1: Combinable,
+  input2: Combinable,
+  resultConversion: ConversionDescriptor
+) {
+  let result;
+  if (typeof input1 === "number" &amp;&amp; typeof input2 === "number") {
+    result = input1 + input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+
+  if (resultConversion === "as-number") {
+    return +result;
+  } else {
+    return result.toString();
+  }
+}
+
+const combinedAges = combine(30, 26, "as-number");
+console.log(combinedAges);
+
+const combinedStringAges = combine("30", "26", "as-number");
+console.log(combinedStringAges);
+
+const combinedNames = combine("Max", "Anna", "as-text");
+console.log(combinedNames);
+</code></pre>
+</li>
+</ol>
+<h3>Type Aliases &amp; Object Types</h3>
+<ol>
+<li><p>We can use aliases for complex types too</p>
+<pre><code>type User = { name: string; age: number };
+const u1: User = { name: 'Max', age: 30 }; // this works!
+</code></pre>
+<ol>
+<li><p>Example: Simplification</p>
+<pre><code>function gree(user: { name: string; age: number }) {
+    console.log('Hi, I am ' + user.name);
+}
+
+function isOlder(user: { name: string; age: number },checkAge: number) {
+    return checkAge &gt; user.age;
+}
+
+// Simplified code
+type User = { name: string; age: number };
+
+function greet(user: User) {
+    console.log('Hi, I am ' + user.name);
+}
+
+function isOlder(user: User, checkAge: number) {
+    return checkAge &gt; user.age;
+}
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 2: Core Types &amp; Concepts</h3>
+<h3>Function Return Types &amp; "void"</h3>
+<ol start="2">
+<li><p>Code: app.ts</p>
+<pre><code>function printResult(num: number): void {
+  // function cannot return `undefined`
+  console.log("Result: " + num);
+} // TS can infer the return type. JS doesn't understand it
+
+// ...
+
+function printResult(num: number): undefined {
+  // function can return `undefined` if `return` is the last statement
+  console.log("Result: " + num);
+  return;
+} // TS can infer the return type. JS doesn't understand it
+</code></pre>
+<ol>
+<li>function returning <code>undefined</code> is rare</li>
+</ol>
+</li>
+</ol>
+<h3>Functions as Types</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>let combineValues: (a: number, b: number) =&gt; number; // parameters can be anything
+
+// combineValues = printResult; // throws error
+combineValues = add;
+
+console.log(combineValues(8, 8));
+
+// combineValues = 5; // error
+</code></pre>
+</li>
+</ol>
+<h3>Function Types &amp; Callbacks</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>function addAndHandle(n1: number, n2: number, cb: (num: number) =&gt; void) {
+  // void says we will ignore anything returned by callback
+  const result = n1 + n2;
+  cb(result);
+}
+
+addAndHandle(10, 20, (result) =&gt; {
+  // type is inferred
+  console.log(result);
+});
+</code></pre>
+</li>
+</ol>
+<h3>Quiz 3: Functions &amp; Types</h3>
+<h3>The "unknown" Type</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>let userInput: unknown; // we don't know yet.
+let userName: string;
+
+userInput = 5; // allowed
+userInput = "Max"; // allowed
+// userName = userInput; // error - unknown cannot assigned to a string. If `any` is used, it works. Unknown is more restrictive
+</code></pre>
+</li>
+</ol>
+<h3>The "never" Type</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>function generateError(message: string, code: number): never {
+  // the function never returns. The flow is interrupted at the throw. It crashes the script
+  throw { message: message, errorCode: code };
+}
+
+generateError("An error occurred!", 500);
+
+// Another example:
+function generateLoop(): never {
+  while (true);
+}
+</code></pre>
+</li>
+</ol>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html">https://www.typescriptlang.org/docs/handbook/2/everyday-types.html</a></li>
+<li><a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16888118#content">Resources</a></li>
+</ol>
+<h2>Section 3: The TypeScript Compiler (and its Configuration)</h2>
+<h3>Module Introduction</h3>
+<h3>Using "Watch Mode"</h3>
+<ol>
+<li><p>Watch mode:</p>
+<pre><code>tsc app.ts --watch
+tsc app.ts -w
+</code></pre>
+</li>
+</ol>
+<h3>Compiling the Entire Project / Multiple Files</h3>
+<ol>
+<li><p>Multiple ts files</p>
+<ol>
+<li><p>Tell TSC that the directory is a project</p>
+<pre><code>tsc --init
+</code></pre>
+<ol>
+<li><code>tsconfig.json</code><ol>
+<li>Folder and subfolders will be managed by TS</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Compiling all TS files in the project</p>
+<pre><code>tsc
+
+tsc -w # for all files
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Including &amp; Excluding Files</h3>
+<ol>
+<li><p>Importing using modules</p>
+</li>
+<li><p>tsconfig.json</p>
+<pre><code>  "exclude": ["analytics.ts", "*.dev.ts", "**/*.test.ts", "node_modules"], // `node_modules` would be the default
+  "include": ["app.ts", "analytics.ts"], // compiles only the files listed here. Compilation: include - exclude
+  "files": ["app.ts"] // only individual files
+</code></pre>
+</li>
+</ol>
+<h3>Setting a Compilation Target</h3>
+<ol>
+<li><p>tsconfig.json</p>
+<pre><code>"target": "es2016"
+</code></pre>
+<ol>
+<li>More modern version we pick, the more concise the generated code is</li>
+<li>TS has to compile less code</li>
+<li>TS has to workaround non-existing features in lesser situations</li>
+</ol>
+</li>
+</ol>
+<h3>Understanding TypeScript Core Libs</h3>
+<ol>
+<li><p><code>// "lib": []</code> - assumes defaults</p>
+<ol>
+<li><p>Which default objects and features TS knows</p>
+<ol>
+<li>Working with the DOM, say (TS will know DOM objects and features)</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code>const button = document.querySelector("button")!;
+
+button?.addEventListener("click", () =&gt; {
+  console.log("Clicked!");
+});
+</code></pre>
+<ol>
+<li>Default depends on JS target<ol>
+<li>ES6 - Includes all features globally available for ES6</li>
+<li>All DOM APIs are available</li>
+</ol>
+</li>
+<li><code>"lib": []</code><ol>
+<li>No defaults are assumed</li>
+</ol>
+</li>
+<li><code>"lib": ["DOM"]</code></li>
+</ol>
+</li>
+<li><p>Default:</p>
+<pre><code> "lib": [
+      "DOM",
+      "ES2015",
+      "DOM.Iterable",
+      "ScriptHost"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p><code>"allowJs": true</code></p>
+<ol>
+<li>Allows JS files to be included in the compilation</li>
+<li>Compiles JS files</li>
+</ol>
+</li>
+<li><p><code>"checkJs": true</code></p>
+<ol>
+<li>Only checks for syntax issues and reports</li>
+<li>Usecase: We want to check vanella JS files in the project</li>
+</ol>
+</li>
+</ol>
+<h3>More Configuration &amp; Compilation Options</h3>
+<ol>
+<li><code>"jsx": "preserve"</code></li>
+<li><code>"declaration": true</code><ol>
+<li><code>.d.ts</code> - for libraries<ol>
+<li>For manifest files which describes all the types in the project</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>"declarationMap": true</code></li>
+</ol>
+<h3>Working with Source Maps</h3>
+<ol>
+<li>Dev tools<ol>
+<li>If we have more complex TS code<ol>
+<li>It would be nice to have TS files in Dev tools for debugging<ol>
+<li>Solution: <code>"sourceMap": true</code><ol>
+<li><code>app.js.map</code> generated<ol>
+<li>They act as bridge understood by browsers to connect JS files to input files<ol>
+<li>Browser shows TS files along with JS files<ol>
+<li>We can place breakpoints and browser pauses at the breakpoints</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>rootDir and outDir</h3>
+<ol>
+<li><code>"outDir": "./"</code><ol>
+<li>To specify the folder which has output<ol>
+<li><code>"./dist"</code></li>
+<li><code>&lt;script src="dist/app.js" defer&gt;&lt;/script&gt;</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>"rootDir": "./"</code><ol>
+<li><code>"./src"</code><ol>
+<li>Maintains the same project structure in the <code>dist</code> folder as in the <code>src</code> folder</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>"removeComments": true</code> - removes all comments in JS<ol>
+<li>Makes output files smaller</li>
+</ol>
+</li>
+<li><code>"noEmit": true</code> - doesn't generate JS files, but used to check if input files are correct without generating the output files<ol>
+<li>For errors</li>
+</ol>
+</li>
+<li><code>"downlevelIteration": true</code> - Outputs exact compilation. Works in niche cases. It will output more verbose code<ol>
+<li>Turn it on if there are loops and if generated code behaves differently than it should.</li>
+</ol>
+</li>
+</ol>
+<h3>Stop Emitting Files on Compilation Errors</h3>
+<ol>
+<li><code>"noEmitOnError": true</code><ol>
+<li>Nothing is generated if any file has errors</li>
+</ol>
+</li>
+</ol>
+<h3>Strict Compilation</h3>
+<ol>
+<li><p><code>"strict": true</code></p>
+<ol>
+<li><p>Strict type-checking</p>
+<ol>
+<li><p>The same as setting the following options:</p>
+<pre><code>"noImplicitAny": true,				/* Enable error reporting for expressions and declarations with an implied 'any' type. */
+"strictNullChecks": true,			/* When type checking, take into account 'null' and 'undefined'. */
+"strictFunctionTypes": true,		/* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+"strictBindCallApply": true,		/* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+"strictPropertyInitialization": true,	/* Check for class properties that are declared but not set in the constructor. */
+"strictBuiltinIteratorReturn": true,	/* Built-in iterators are instantiated with a 'TReturn' type of 'undefined' instead of 'any'. */
+"noImplicitThis": true,				/* Enable error reporting when 'this' is given the type 'any'. */
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Code Quality Options</h3>
+<ol>
+<li><p><code>"noImplicitAny": true</code></p>
+<ol>
+<li><p>Example:</p>
+<pre><code>function sendAnalytics(data) {
+  console.log(data);
+}
+
+sendAnalytics("The data");
+</code></pre>
+<ol>
+<li>Compiler complains that <code>data</code> implicitly has <code>any</code> type<ol>
+<li>If <code>false</code>, the error goes away</li>
+</ol>
+</li>
+<li>It ensures that we are clear about our parameters and values we are working with in our code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>TS can infer types:</p>
+<pre><code>console.log("Sending...");
+let logged;
+
+function sendAnalytics(data: string) { // here the function is defined before we call it, so TS doesn't know what type of value is going to be passed
+  console.log(data);
+  logged = true;
+  console.log(logged); // TS interprets it as `boolean`
+}
+
+sendAnalytics("The data");
+</code></pre>
+</li>
+<li><p><code>strictNullCheck</code></p>
+<ol>
+<li><p>Example:</p>
+<pre><code>const button = document.querySelector("button")!;
+
+button.addEventListener("click", () =&gt; {
+  console.log("Clicked!");
+});
+</code></pre>
+<ol>
+<li><p>A cleaner solution:</p>
+<pre><code>const button = document.querySelector("button");
+
+button?.addEventListener("click", () =&gt; {
+  console.log("Clicked!");
+});
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>"strictFunctionTypes": true</code></p>
+<ol>
+<li>For catching niche bugs (we may not have them in many situations)</li>
+<li>Related to function types - if we define how a function should look like regarding params and return values, then we can introduce bugs if we work with classes and inheritance</li>
+</ol>
+</li>
+<li><p><code>"strictBindCallApply": true</code></p>
+<ol>
+<li><p>Example:</p>
+<pre><code>const button = document.querySelector("button"); //
+
+function clickHandler(message: string) {
+  console.log("Clicked " + message);
+}
+
+button?.addEventListener("click", clickHandler.bind(null, "You're welcome!")); // checks if what we are binding makes sense
+</code></pre>
+<ol>
+<li>Ensures that <code>bind</code> or <code>apply</code> is defined in a way that doesn't work in the code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>"noImplicitThis": true</code></p>
+<ol>
+<li>Warns if we use <code>this</code> keyword in a place that makes it unclear what <code>this</code> refers to</li>
+</ol>
+</li>
+<li><p><code>"alwaysStrict": true</code></p>
+<ol>
+<li>Ensures that JS files always have <code>"use strict";</code></li>
+</ol>
+</li>
+</ol>
+<h3>Code Quality Options</h3>
+<ol>
+<li><p>Options:</p>
+<pre><code>"noUnusedLocals": true,
+"noUnusedParameters": true,
+"noImplicitReturns": true,
+"noFallthroughCasesInSwitch": true,
+</code></pre>
+<ol>
+<li><code>"noImplicitReturns": true</code> - If some of the branches return but some do not have return statement<ol>
+<li>We either return in all cases or don't return anything</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>/* Source Map Options */</code></p>
+<ol>
+<li>Used to tweak source maps<ol>
+<li>Default settings are fine</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>experimentalDecorators</code> - allows us to use some experimental features. They are not sure if it will end up in JS sometime in the future</p>
+</li>
+</ol>
+<h3>Debugging with Visual Studio Code</h3>
+<ol>
+<li><p>How to debug and have a great development flow</p>
+<ol>
+<li><p>ESLint - to improve code quality</p>
+</li>
+<li><p>Prettier - automatically format code</p>
+</li>
+<li><p>Debugger for chrome</p>
+<ol>
+<li><p>To debug files even from inside VS Code</p>
+</li>
+<li><p>JavaScript Debugger - now</p>
+<ol>
+<li>Needs enabling <code>sourceMap</code></li>
+<li>Go to Debug<ol>
+<li>Start debugging (in VS Code)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>launch.json</p>
+<pre><code>"url": "http://localhost:3000",
+</code></pre>
+</li>
+<li><p>Debugging view</p>
+<ol>
+<li>Inspect variables</li>
+<li>Watch</li>
+<li>Call stack</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html">tsconfig</a></li>
+<li><a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">compiler config docs</a></li>
+<li><a href="https://code.visualstudio.com/docs/typescript/typescript-debugging">VS Code TS Debugging</a></li>
+</ol>
+<h2>Section 4: Next-generation JavaScript &amp; TypeScript</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Modern features that may not run on older browsers</li>
+</ol>
+<h3>"let" and "const"</h3>
+<ol start="2">
+<li><p>Code:</p>
+<pre><code>const userName = "Max";
+// userName = ""; // now allowed
+let age = 20;
+
+age = 30;
+
+// var a = 10;
+// let - scope in which a variable is available
+// var - global and function scopes. Variables defined inside a function are available in the function.
+
+var result;
+
+function add(a: number, b: number) {
+  var result;
+  result = a + b;
+  return result;
+}
+
+console.log(result);
+
+// difference. var has only global and function scope. a variable defined inside `if` will get promoted to global scope
+// let - available inside a block-scope (or lower block) only or global scope
+</code></pre>
+</li>
+</ol>
+<h3>Arrow Functions</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>const add = (a: number, b: number) =&gt; a + b;
+
+console.log(add(2, 5));
+
+const printOutput: (a: number | string) =&gt; void = (output) =&gt;
+  console.log(output);
+
+const button = document.querySelector("button");
+
+button?.addEventListener("click", (event) =&gt; console.log(event)); // concise syntax is allowed in this case, because we are not defining the function.
+</code></pre>
+</li>
+</ol>
+<h3>Default Function Parameters</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>const add = (a: number, b: number = 1) =&gt; a + b;
+
+console.log(add(2, 5));
+console.log(add(1));
+</code></pre>
+</li>
+</ol>
+<h3>The Spread Operator (...)</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>const hobbies = ["Sports", "Cooking"];
+const activeHobbies = ["Hiking", ...hobbies];
+
+// activeHobbies.push(hobbies[0], hobbies[1]);
+// activeHobbies.push(...hobbies);
+
+const person = {
+  name: "Max",
+  age: 30,
+};
+
+// const copiedPerson = person;
+const copiedPerson = { ...person };
+</code></pre>
+</li>
+</ol>
+<h3>Rest Parameters</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>const add = (...numbers: number[]) =&gt;
+  numbers.reduce((sum, item) =&gt; sum + item, 0);
+
+const addedNumbers = add(5, 10, 2, 3.7);
+console.log(addedNumbers);
+</code></pre>
+</li>
+</ol>
+<h3>Array &amp; Object Destructuring</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>const [hobby1, hobby2, ...remainingHobbies] = hobbies;
+const { firstName: userName, age } = person; // order is not important. By keys
+console.log(userName, age);
+</code></pre>
+</li>
+</ol>
+<h3>How Code Gets Compiled &amp; Wrap Up</h3>
+<ol>
+<li><code>"target": "es5"</code><ol>
+<li>Compiles TS code to ES5 code</li>
+</ol>
+</li>
+</ol>
+<h3>Useful Resources &amp; Links</h3>
+<h2>Section 5: Classes &amp; Interfaces</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Classes &amp; Interfaces<ol>
+<li>Modern vanella JS has classes</li>
+</ol>
+</li>
+<li>Module content<ol>
+<li>What &amp; Why?</li>
+<li>Classes &amp; Inheritance</li>
+<li>Interfaces<ol>
+<li>How are they compiled to JS</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>What are Classes?</h3>
+<ol>
+<li>What's Object-Oriented Programming (OOP)?<ol>
+<li>Work with (real-life) entities in your code<ol>
+<li>Objects that resemble real-life objects<ol>
+<li>Makes it easy for developers to work<ol>
+<li>ProductList<ol>
+<li>Renders a list of roducts which were fetched from a server (database)</li>
+<li>Object holds rendering + fetching logic</li>
+</ol>
+</li>
+<li>Product<ol>
+<li>Renders details about a product and allows addition to cart</li>
+<li>Object holds rendering + cart-adding logic</li>
+</ol>
+</li>
+<li>ShoppingCart<ol>
+<li>Renders cart products and total and allows user to order them</li>
+<li>Object holds rendering + ordering (server communication) logic</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Classes &amp; Interfaces<ol>
+<li>We can split our application into parts managed by objects<ol>
+<li>Classes</li>
+</ol>
+</li>
+<li>Objects<ol>
+<li>The things we work with in code<ol>
+<li>Data structures to store data and methods to execute on the data structures</li>
+</ol>
+</li>
+<li>Instances of classes (= based on classes)</li>
+<li>Class-based creation is an alternative to using object literals!</li>
+</ol>
+</li>
+<li>Classes<ol>
+<li>Blueprints for objects (theoretical definition)<ol>
+<li>How objects should look like<ol>
+<li>What data &amp; methods they should have</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Define how objects look like, which properties and methods they have</li>
+<li>Classes make creation of multiple, similar objects much easier</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Constructing a First Class</h3>
+<ol>
+<li><p>Company internal tool</p>
+<ol>
+<li>Departments</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>class Department {
+  firstName: string;
+
+  constructor(n: string) {
+    this.firstName = n;
+  }
+}
+
+const accounting = new Department("Accounting");
+console.log(accounting);
+</code></pre>
+</li>
+</ol>
+<h3>Compiling to JavaScript</h3>
+<h3>Constructor Functions &amp; The "this" Keyword</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class Department {
+  departmentName: string;
+
+  constructor(n: string) {
+    this.departmentName = n;
+  }
+
+  describe() {
+    console.log("Department: " + this.departmentName);
+  }
+}
+
+const accounting = new Department("Accounting");
+console.log(accounting);
+
+accounting.describe();
+
+const accountingCopy = { describe: accounting.describe };
+accountingCopy.describe(); // pointer to `describe` method but `undefined`. `this` refers to the calling object
+</code></pre>
+</li>
+<li><p>Code:</p>
+<pre><code>class Department {
+  departmentName: string;
+
+  constructor(n: string) {
+    this.departmentName = n;
+  }
+
+  describe(this: Department) {
+    // used to avoid undefined
+    // an instance of Department class
+    console.log("Department: " + this.departmentName);
+  }
+}
+
+const accounting = new Department("Accounting");
+console.log(accounting);
+
+accounting.describe();
+
+const accountingCopy = { describe: accounting.describe };
+// accountingCopy.describe(); // doesn't refer to object of type Department
+</code></pre>
+</li>
+</ol>
+<h3>"private" and "public" Access Modifiers</h3>
+<ol>
+<li><p>Vanilla JS private field syntax doesn't use <code>private</code> and <code>public</code> keywords</p>
+</li>
+<li><p>Code:</p>
+<pre><code>class Department {
+  private departmentName: string;
+  private employees: string[] = []; // `public` is default. JS now knows.
+
+  constructor(n: string) {
+    this.departmentName = n;
+  }
+
+  describe(this: Department) {
+    // used to avoid undefined
+    // an instance of Department class
+    console.log("Department: " + this.departmentName);
+  }
+
+  addEmployee(employee: string) {
+    // validation
+    this.employees.push(employee);
+  }
+
+  printEmployeeInformation() {
+    console.log(this.employees.length);
+    console.log(this.employees);
+  }
+}
+
+const accounting = new Department("Accounting");
+console.log(accounting);
+
+accounting.describe();
+
+const accountingCopy = { describe: accounting.describe };
+// accountingCopy.describe(); // doesn't refer to object of type Department
+
+accounting.addEmployee("Max");
+accounting.addEmployee("Manu");
+accounting.printEmployeeInformation();
+</code></pre>
+</li>
+</ol>
+<h3>Shorthand Initialization</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class Department {
+  constructor(
+    private departmentName: string,
+    private employees: string[] = []
+  ) {}
+
+  describe(this: Department) {
+    // used to avoid undefined
+    // an instance of Department class
+    console.log("Department: " + this.departmentName);
+  }
+
+  addEmployee(employee: string) {
+    // validation
+    this.employees.push(employee);
+  }
+
+  printEmployeeInformation() {
+    console.log(this.employees.length);
+    console.log(this.employees);
+  }
+}
+</code></pre>
+</li>
+</ol>
+<h3>"readonly" Properties</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class Department {
+  constructor(
+    private readonly id: string,
+    private departmentName: string,
+    private employees: string[] = []
+  ) {}
+</code></pre>
+<ol>
+<li>We cannot reassign a value to the field later.</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 4: Class Basics</h3>
+<h3>Inheritance</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class ITDepartment extends Department {
+  // We can inherit only from one class
+  constructor(id: string, public admins: string[]) {
+    super(id, "IT"); // calls the constructor of the base class. Called first before doing anything with `this` keyword
+  }
+}
+
+class AccountingDepartment extends Department {
+  constructor(id: string, private reports: string[]) {
+    super(id, "Accounting");
+  }
+
+  addReport(text: string) {
+    this.reports.push(text);
+  }
+
+  printReports() {
+    console.log(this.reports);
+  }
+}
+
+const it = new ITDepartment("345dfd", ["Max", "Duke"]);
+console.log(it);
+
+const accountingDep = new AccountingDepartment("d3", []);
+accountingDep.addReport("Something went wrong...");
+accountingDep.printReports();
+</code></pre>
+</li>
+</ol>
+<h3>Overriding Properties &amp; The "protected" Modifier</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class Department {
+  constructor(
+    // ...
+    protected employees: string[] = [] /* It is available in this class and all classes that inherit this class */
+  ) {}
+  // ...
+}
+
+class AccountingDepartment extends Department {
+  // ...
+
+  addEmployee(name: string) {
+    if (name === "Max") {
+      return;
+    }
+    this.employees.push(name); // if it is private. They are only accessible in which they are defined.
+  }
+
+  // ...
+}
+</code></pre>
+</li>
+</ol>
+<h3>Getters &amp; Setters</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>class AccountingDepartment extends Department {
+  private lastReport: string;
+
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
+    }
+    throw new Error("No report found.");
+  }
+
+  set mostRecentReport(value: string) {
+    if (!value) {
+      throw new Error("Please pass in a valid value");
+    }
+    this.addReport(value);
+  }
+  // ...
+}
+
+console.log(accountingDep.mostRecentReport); // no parans are required
+// accountingDep.mostRecentReport = ""; // throws an error
+accountingDep.mostRecentReport = "Year-end report";
+</code></pre>
+</li>
+</ol>
+<h3>Static Methods &amp; Properties</h3>
+<ol>
+<li><p>Properties and methods added to classes (not instance of the class)</p>
+<ol>
+<li>Utility functions</li>
+<li>Global constants</li>
+</ol>
+</li>
+<li><p>We cannot access static member using <code>this</code> inside the class.</p>
+</li>
+<li><p>Code:</p>
+<pre><code>class Department {
+  static fiscalYear = 2020;
+
+  constructor(
+    private readonly id: string,
+    private departmentName: string,
+    protected employees: string[] = [] /* It is available in this class and all classes that inherit this class */
+  ) {}
+
+  static defineEmployee(name: string) {
+    return { name: name };
+  }
+  // ...
+}
+
+console.log(Math.PI);
+console.log(Math.pow(2, 10));
+
+const employee1 = Department.defineEmployee("Max");
+console.log(employee1);
+console.log(Department.fiscalYear);
+</code></pre>
+</li>
+</ol>
+<h3>Abstract Classes</h3>
+<ol>
+<li><p>Abstract methods:</p>
+<ol>
+<li>Use-cases:<ol>
+<li>To ensure a method is available in all subclasses</li>
+<li>When we cannot provide a generic implementation but the implementation depends on the subclasses</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>We cannot instantiate an abstract class</p>
+</li>
+<li><p>Code:</p>
+<pre><code>abstract class Department {
+
+  // ...
+
+  abstract describe(): void;
+
+  // ...
+}
+
+class ITDepartment extends Department {
+
+  // ...
+
+  describe(): void {
+    console.log("IT Department - ID: " + this.id);
+  }
+}
+</code></pre>
+</li>
+</ol>
+<h3>Singletons &amp; Private Constructors</h3>
+<ol>
+<li><p>Singleton</p>
+<ol>
+<li>Ensures that we have only one instance of the class<ol>
+<li>We don't want multiple objects</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>class Singleton {
+  private static instance: Singleton;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      // `this` refers to the class here
+      return this.instance;
+    }
+    this.instance = new Singleton();
+    return this.instance;
+  }
+}
+
+const singleton1 = Singleton.getInstance();
+const singleton2 = Singleton.getInstance();
+</code></pre>
+</li>
+</ol>
+<h3>Classes - A Summary</h3>
+<h3>Quiz 5: Classes</h3>
+<h3>A First Interface</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>interface Person {
+  name: string;
+  age: number;
+
+  greet(phrase: string): void;
+}
+
+let user1: Person; // interface as a type. It is used to typecheck
+
+user1 = {
+  name: "Max",
+  age: 30,
+  greet(phrase: string): void {
+    console.log(phrase + " " + this.name);
+  },
+};
+
+user1.greet("Hi there - I am");
+</code></pre>
+</li>
+</ol>
+<h3>Using Interfaces with Classes</h3>
+<ol>
+<li><p><code>type</code> and <code>interface</code></p>
+<ol>
+<li>Interfaces can be used to define structured of objects<ol>
+<li>It is clearer that it will define object</li>
+<li>It can be implemented by a class<ol>
+<li>As a contract</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Types for objects other types like union, etc.</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code>interface Greetable {
+  name: string;
+
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  constructor(public name: string) {}
+
+  greet(phrase: string): void {
+    console.log(phrase + " " + this.name);
+  }
+}
+
+let user1: Greetable; // interface as a type. It is used to typecheck
+
+user1 = new Person("Max");
+user1.greet("Hi there - I am");
+</code></pre>
+</li>
+</ol>
+<h3>Why Interfaces?</h3>
+<ol>
+<li>We want to ensure that a class has the methods and properties<ol>
+<li>Each class adds its own implementation<ol>
+<li>Useful if we have other parts of code which relies on the structure<ol>
+<li>The other code can use the class that implements the interface</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Readonly Interface Properties</h3>
+<ol>
+<li><p><code>readonly</code> modifier</p>
+<ol>
+<li>The value can be set only once</li>
+</ol>
+</li>
+<li><p><code>public</code>, <code>private</code>, <code>protected</code> cannot be added</p>
+</li>
+<li><p>Code:</p>
+<pre><code>interface Greetable {
+  readonly name: string;
+
+  // ...
+}
+</code></pre>
+</li>
+</ol>
+<h3>Extending Interfaces</h3>
+<ol>
+<li>Why split interfaces<ol>
+<li>In some cases we can use some of them and not all</li>
+<li>We can <code>extends</code> multiple interfaces</li>
+</ol>
+</li>
+</ol>
+<h3>Interfaces as Function Types</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>type AddFn = (a: number, b: number) =&gt; number;
+
+let add: AddFn;
+
+add = (n1: number, n2: number) =&gt; {
+  return n1 + n2;
+};
+
+// Using interfaces for functions
+interface AddFn2 {
+  (a: number, b: number): number;
+}
+
+let add2: AddFn2;
+
+add2 = (n1: number, n2: number) =&gt; {
+  return n1 + n2;
+};
+console.log(add2(324, 433));
+</code></pre>
+</li>
+</ol>
+<h3>Optional Parameters &amp; Properties</h3>
+<ol>
+<li><p>Optional using <code>?</code></p>
+<ol>
+<li>Properties</li>
+<li>Methods</li>
+<li>Parameters</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code>interface Named {
+  readonly name?: string;
+  outputName?: string; // property might exist
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  constructor(public name?: string) {}
+
+  greet(phrase: string): void {
+    console.log(phrase + " " + this.name);
+  }
+}
+</code></pre>
+</li>
+</ol>
+<h3>Compiling Interfaces to JavaScript</h3>
+<ol>
+<li>No translations for interfaces (JS doesn't know)<ol>
+<li>Only for development and compilation</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 6: Interfaces</h3>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">JS Classes</a></li>
+<li><a href="https://www.typescriptlang.org/docs/handbook/2/objects.html">TS Interfaces</a></li>
+</ol>
+<h2>Section 6: Advanced Types</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Advanced concepts<ol>
+<li>Intersection types</li>
+<li>Type guards</li>
+<li>Discriminated unions</li>
+<li>Type casting (if TS cannot find out the type)</li>
+<li>Function overloads<ol>
+<li>Flexible functions</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Intersection Types</h3>
+<ol>
+<li><p>Code</p>
+<pre><code>type Admin = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee = {
+  name: string;
+  startDate: Date;
+};
+
+type ElevatedEmployee = Admin &amp; Employee;
+
+const e1: ElevatedEmployee = {
+  name: "Max",
+  privileges: ["start-server"],
+  startDate: new Date(),
+};
+
+type Combinable = string | number;
+type Numeric = number | boolean;
+type Universal = Combinable &amp; Numeric; // Intersection type: `number`
+type Universal2 = Combinable | Numeric; // Union type: `string | number | boolean`
+</code></pre>
+</li>
+</ol>
+<h3>More on Type Guards</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>function add(a: Combinable, b: Combinable) {
+  if (typeof a === "string" || typeof b === "string") {
+    // typeguard. Ensures code runs properly at runtime
+    return a.toString() + b.toString();
+  }
+  return a + b;
+}
+
+type UnknownEmployee = Employee | Admin;
+
+function printEmployeeInformation(emp: UnknownEmployee) {
+  console.log("Name: " + emp.name);
+  if ("privileges" in emp) {
+    console.log("Privileges: " + emp.privileges);
+  }
+}
+printEmployeeInformation(e1);
+printEmployeeInformation({ name: "Manu", startDate: new Date() });
+
+class Car {
+  drive() {
+    console.log("Driving...");
+  }
+}
+
+class Truck {
+  drive() {
+    console.log("Driving a truck...");
+  }
+
+  loadCargo(amount: number) {
+    console.log("Loading cargo ..." + amount);
+  }
+}
+
+type Vehicle = Car | Truck;
+
+const v1 = new Car();
+const v2 = new Truck();
+
+function useVehicle(vehicle: Vehicle) {
+  vehicle.drive();
+  // if ("loadCargo" in vehicle) vehicle.loadCargo(1000);
+  if (vehicle instanceof Truck) vehicle.loadCargo(1000); // Vanella JS. Cannot be used with interfaces because JS doesn't know interfaces. The code is executed at runtime
+}
+
+useVehicle(v1);
+useVehicle(v2);
+</code></pre>
+</li>
+</ol>
+<h3>Discriminated Unions</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code>interface Bird {
+    type: "bird"; // literal type
+    flyingSpeed: number;
+}
+
+interface Horse {
+    type: "horse";
+    runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+    // if ("flyingSpeed" in animal)
+    // console.log("Moving with speed: " + animal.flyingSpeed);
+
+    let speed: number;
+    switch (animal.type) {
+        case "bird":
+            speed = animal.flyingSpeed;
+            break;
+        case "horse":
+            speed = animal.runningSpeed;
+    }
+    console.log("Moving at speed: " + speed);
+}
+
+moveAnimal({ type: "bird", flyingSpeed: 10 });
+</code></pre>
+</li>
+</ol>
+<h3>Type Casting</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">const userInputElement = &lt;HTMLInputElement&gt;(
+  document.getElementById("user-output")
+); // HTMLElement (generic type)
+
+const userInputElement = document.getElementById(
+  "user-output"
+) as HTMLInputElement; // HTMLElement (generic type)
+
+if (userInputElement) {
+  (userInputElement as HTMLInputElement).value = "Hi there";
+}
+</code></pre>
+<h3>Index Properties</h3>
+<ol>
+<li>Objects that are flexible regarding the properties they might hold</li>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">interface ErrorContainer {
+  // Which property names will be used and how many is not known in advance
+  // { email: 'Not a valid email', username: 'Must start with a character!' }
+  id: string; // is of the same type as below. We cannot have `number` type
+  [prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+  id: "123adb",
+  email: "Not a valid email",
+  username: "Must start with a capital character!",
+  1: "Not a valid number", // allowed because number can be interpreted as a key-type
+};
+</code></pre>
+<h3>Function Overloads</h3>
+<p>Code:</p>
+<pre><code class="language-typescript">type Combinable = string | number;
+
+// function add(n: number): number
+function add(a: number, b: number): number;
+function add(a: string, b: number): string;
+function add(a: number, b: string): string;
+function add(a: string, b: string): string;
+function add(a: Combinable, b: Combinable) {
+  if (typeof a === "string" || typeof b === "string") {
+    return a.toString() + b.toString();
+  }
+  return a + b;
+}
+
+// const result = add(1, 5) as number;
+// const result = add('Max', ' Schwarz') as string;
+
+const result = add(1, "5"); // return: string
+result.split("");
+</code></pre>
+<h3>Optional Chaining</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// Optional Chaining
+const fetchedUserData = {
+  id: "u1",
+  name: "Max",
+  job: { title: "CEO", description: "My own company" },
+};
+
+console.log(fetchedUserData?.job?.title);
+</code></pre>
+<h3>Nullish Coalescing</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// const userInput = null;
+const userInput = "";
+
+// const storedData = userInput || 'DEFAULT'; // if falsy. '' is also falsy
+const storedData = userInput ?? "DEFAULT"; // `null` or `undefined` only
+</code></pre>
+<h3>Quiz 7: Advanced Types</h3>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://www.typescriptlang.org/docs/handbook/2/types-from-types.html">More on advanced types</a></li>
+</ol>
+<h2>Section 7: Generics</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Exists in TS<ol>
+<li>C#</li>
+<li>Java</li>
+</ol>
+</li>
+<li>Topics:<ol>
+<li>What?</li>
+<li>Generic Functions &amp; Classes</li>
+<li>Constraints</li>
+<li>Special TypeScript Types</li>
+</ol>
+</li>
+</ol>
+<h3>Build-in Generics &amp; What are Generics?</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// const names = ['Max', 'Manuel']; // string[]
+// const names = []; // any[]
+const names: Array&lt;string&gt; = []; // same as string[]
+const names2: Array&lt;string | number&gt; = []; // same as (string | number)[];
+
+names[0]?.split(" "); // allowed
+
+const promise: Promise&lt;string&gt; = new Promise((resolve) =&gt; {
+  setTimeout(() =&gt; {
+    resolve("This is done!");
+  }, 2000);
+}); // Promise&lt;unknown&gt; otherwise
+
+promise.then((data) =&gt; {
+  data.split(" "); // allowed because data is defined to be `string`
+});
+</code></pre>
+<h3>Constructing a Generic Function</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function merge&lt;T extends Object, U extends Object&gt;(objA: T, objB: U) {
+  // returns intersection of types
+  // return Object.assign(objA, objB);
+  return Object.assign(objA, objB);
+}
+
+const mergeObj = merge({ name: "Max" }, { age: 20 });
+console.log(mergeObj);
+// mergeObj.name; // cannot be accessed. TS doesn't know it
+// console.log((mergeObj as { name: string; age: number }).name);
+console.log(mergeObj.name);
+console.log(mergeObj.age);
+
+const mergedObj2 = merge({ name: "Max", hobbies: ["Sports"] }, { age: 30 });
+console.log(mergedObj2);
+
+const mergedObj3 = merge&lt;{ name: string }, { age: number }&gt;(
+  { name: "Max" },
+  { age: 30 }
+); // not required because TS infers types
+console.log(mergedObj3);
+
+const mergedObj4 = merge&lt;string, number&gt;("Max", 30);
+console.log(mergedObj4);
+</code></pre>
+<h3>Working with Constraints</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function merge&lt;T extends object, U extends object&gt;(objA: T, objB: U) {
+  // returns intersection of types
+  // return Object.assign(objA, objB);
+  return Object.assign(objA, objB);
+}
+
+const mergeObj = merge({ name: "Max" }, { age: 20 });
+console.log(mergeObj);
+// mergeObj.name; // cannot be accessed. TS doesn't know it
+// console.log((mergeObj as { name: string; age: number }).name);
+console.log(mergeObj.name);
+console.log(mergeObj.age);
+
+const mergedObj2 = merge({ name: "Max", hobbies: ["Sports"] }, { age: 30 });
+console.log(mergedObj2);
+
+const mergedObj3 = merge&lt;{ name: string }, { age: number }&gt;(
+  { name: "Max" },
+  { age: 30 }
+); // not required because TS infers types
+console.log(mergedObj3);
+
+// const mergedObj4 = merge&lt;string, number&gt;("Max", 30); // fails silently otherwise because 'Max' and 30 are not objects and don't get merged
+// console.log(mergedObj4);
+</code></pre>
+<h3>Another Generic Function</h3>
+<ol>
+<li>Code: Elements that have <code>length</code> property</li>
+</ol>
+<pre><code class="language-typescript">interface Lengthy {
+  length: number;
+}
+
+function countAndDescribe&lt;T extends Lengthy&gt;(element: T): [T, string] {
+  let descriptionText = "Got no value.";
+  if (element.length &gt; 0) {
+    descriptionText = "Got " + element.length + " elements.";
+  }
+  d;
+  return [element, descriptionText];
+}
+
+console.log(countAndDescribe("Hi there!"));
+console.log(countAndDescribe(["Cookie", "Chocolate"]));
+</code></pre>
+<h3>The "keyof" Constraint</h3>
+<ol>
+<li>Code: <code>keyof</code> ensures that the argument is a valid key</li>
+</ol>
+<pre><code class="language-typescript">function extractAndConvert&lt;T extends object, U extends keyof T&gt;(
+  obj: T,
+  key: U
+) {
+  return "Value: " + obj[key];
+}
+
+extractAndConvert({ name: "Max" }, "name");
+extractAndConvert({ name: "Max", age: 30 }, "age");
+</code></pre>
+<h3>Generic Classes</h3>
+<ol>
+<li>Code: Generic code</li>
+</ol>
+<pre><code class="language-typescript">// Generic classes
+class DataStorage&lt;T&gt; {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage&lt;string&gt;();
+textStorage.addItem("Max");
+textStorage.addItem("Manu");
+textStorage.removeItem("Max");
+console.log(textStorage.getItems());
+
+const numberStorage = new DataStorage&lt;number&gt;();
+
+const objStorage = new DataStorage&lt;object&gt;();
+objStorage.addItem({ name: "Max" });
+objStorage.addItem({ name: "Manu" });
+// ...
+objStorage.removeItem({ name: "Manu" }); // keeps `Max` but it is a new object and not a reference to existing object
+objStorage.removeItem({ name: "Max" }); // keeps `Max` but it is a new object and not a reference to existing object. It removes last element always.
+console.log(objStorage.getItems());
+
+const bobObj = { name: "Bob" };
+objStorage.addItem(bobObj);
+console.log(objStorage.getItems());
+objStorage.removeItem(bobObj);
+console.log(objStorage.getItems());
+</code></pre>
+<ol start="2">
+<li>Code: Restricted to only primitive types</li>
+</ol>
+<pre><code class="language-typescript">class DataStorage&lt;T extends string | number | boolean&gt; {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  // removeItem&lt;U&gt;(item: T) // allowed
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage&lt;string&gt;();
+textStorage.addItem("Max");
+textStorage.addItem("Manu");
+textStorage.removeItem("Max");
+console.log(textStorage.getItems());
+
+const numberStorage = new DataStorage&lt;number&gt;();
+</code></pre>
+<h3>A First Summary</h3>
+<ol>
+<li>They give flexibility combined with type-safety</li>
+</ol>
+<h3>Generic Utility Types</h3>
+<ol>
+<li>Types exist in TS only - for extra type safety during compilation</li>
+<li>Utilities take something and do something around it.<ol>
+<li>Lock them down</li>
+<li>Make fields optional</li>
+<li>...</li>
+</ol>
+</li>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function constructCourseGoal(title: string, description: string, date: Date) {
+  // let courseGoal: CourseGoal = {}; // error
+  let courseGoal: Partial&lt;CourseGoal&gt; = {}; // turns into a type (object type) and make all fields optional
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal; // At this time it is complete CourseGoal
+}
+
+const names: Readonly&lt;string[]&gt; = ["Max", "Anna"];
+// names.push('Manu'); // throws an error because we cannot modify the array. Allowed for objects too
+</code></pre>
+<h3>Generic Types vs Union Types</h3>
+<ol>
+<li>Union can cause mixing of types</li>
+</ol>
+<pre><code class="language-typescript">class DataStorage {
+  private data: (string | number | boolean)[];
+}
+</code></pre>
+<ol start="2">
+<li>With generics, we can use data of a particular type only wherever the generic type is used<ol>
+<li>They lock in a type</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 8: Generics</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://www.typescriptlang.org/docs/handbook/generics.html">More on generics</a></li>
+</ol>
+<h2>Section 8: Decorators</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Useful for meta-programming<ol>
+<li>Well suited for writing code that makes it useful for other developers (not users of the code)<ol>
+<li>Example:<ol>
+<li>To ensure a class is used correctly</li>
+<li>To ensure a method in a class is used correctly</li>
+<li>Hidden transformations</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Topics:<ol>
+<li>What?</li>
+<li>Decorator usage</li>
+<li>Examples!</li>
+</ol>
+</li>
+</ol>
+<h3>A First Class Decorator</h3>
+<ol>
+<li><p>tsconfig.json</p>
+<pre><code>"experimentalDecorators": true
+</code></pre>
+</li>
+<li><p>Decorator: It is a function</p>
+<ol>
+<li>It is applied to something (class say) in a certain way</li>
+</ol>
+</li>
+<li><p>Code</p>
+</li>
+</ol>
+<pre><code class="language-typescript">function Logger(constructor: Function) {
+  console.log("Logging...");
+  console.log(constructor); //
+}
+
+@Logger // returns definition of the class because class is a syntactical sugar over constructor functions. Decorators execute when the class is defined (not when it is instantiated)
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Constructing person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+</code></pre>
+<h3>Working with Decorator Factories</h3>
+<ol>
+<li>Factor returns a decorator function, but we can configure it when we use it as a decorator to something.</li>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function Logger(logString: string) {
+  return function (constructor: Function) {
+    console.log(logString);
+    console.log(constructor); //
+  };
+}
+
+@Logger("LOGGING - PERSON") // It is executed
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Constructing person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+</code></pre>
+<h3>Building More Useful Decorators</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function Logger(logString: string) {
+  return function (constructor: Function) {
+    console.log(logString);
+    console.log(constructor); //
+  };
+}
+
+function WithTemplate(template: string, hookId: string) {
+  return function (constructor: any) {
+    const hookEl = document.getElementById(hookId);
+    const p = new constructor();
+    if (hookEl) {
+      hookEl.innerHTML = template;
+      hookEl.querySelector("h1")!.textContent = p.name;
+    }
+  };
+}
+
+// @Logger("LOGGING - PERSON") // It is executed
+@WithTemplate("&lt;h1&gt;My Person Object&lt;/h1&gt;", "app") // Can be exposed as part of a library
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Constructing person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+</code></pre>
+<ol start="2">
+<li>Code: Angular example</li>
+</ol>
+<pre><code class="language-typescript">@Component({
+  selector: "app-root",
+  template: `
+    &lt;h1&gt;{{ title }}&lt;/h1&gt;
+    &lt;h2&gt;My favorite hero is: {{ myHero }}&lt;/h2&gt;
+  `,
+})
+export class AppComponent {
+  title = "Tour of Heroes";
+  myHero = "Windstorm";
+}
+</code></pre>
+<ol start="3">
+<li>Decorators are utilities that other developers can use.</li>
+</ol>
+<h3>Adding Multiple Decorators</h3>
+<ol>
+<li>The decorator functions execute bottom up</li>
+<li>The decorator factories run top down (like regular TS functions) (<code>@WithTemplate</code> and <code>@Logger</code>)</li>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">function Logger(logString: string) {
+  return function (constructor: Function) {
+    console.log(logString);
+    console.log(constructor); //
+  };
+}
+
+function WithTemplate(template: string, hookId: string) {
+  return function (constructor: any) {
+    console.log("Rendering template");
+    const hookEl = document.getElementById(hookId);
+    const p = new constructor();
+    if (hookEl) {
+      hookEl.innerHTML = template;
+      hookEl.querySelector("h1")!.textContent = p.name;
+    }
+  };
+}
+
+@Logger("LOGGING - PERSON") // It is executed
+@WithTemplate("&lt;h1&gt;My Person Object&lt;/h1&gt;", "app") // Can be exposed as part of a library
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Constructing person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+</code></pre>
+<h3>Diving into Property Decorators</h3>
+<ol>
+<li>Where else can we add decorators?</li>
+<li>Decorators on properties</li>
+</ol>
+<pre><code class="language-typescript">class Product {
+  @Log // It executes when class definition is registered by JS. When property is defined
+  title: string;
+  private _price: number;
+
+  set price(value: number) {
+    if (value &gt; 0) {
+      this._price = value;
+    } else {
+      throw new Error("Invalid price - should be positive");
+    }
+  }
+
+  constructor(title: string, price: number) {
+    this.title = title;
+    this._price = price;
+  }
+
+  getPriceWithTax(tax: number) {
+    return this._price * (1 + tax);
+  }
+}
+</code></pre>
+<h3>Accessor &amp; Parameter Decorators</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// ---
+function Log(target: any, propertyName: string | Symbol) {
+  // For instance property - target = prototype
+  // For static property - target = constructor function (?)
+  console.log("Property decorator!");
+  console.log(target, propertyName);
+}
+
+function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log("Accessor decorator!");
+  console.log(target); // prototype
+  console.log(name); // `set` name
+  console.log(descriptor); // setter function is defined, and getter not defined. It is configurable
+}
+
+function Log3(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
+) {
+  console.log("Method decorator!");
+  console.log(target); // prototype
+  console.log(name); // `set` name
+  console.log(descriptor); // setter function is defined, and getter not defined. It is writable
+}
+
+function Log4(target: any, name: string | Symbol, position: number) {
+  /*
+  target - prototype
+  name - name of the method in which we use the parameter
+  position - of the argument (1st, ...)
+  */
+  console.log("Parameter decorator!");
+  console.log(target); // prototype
+  console.log(name); // `set` name
+  console.log(position); // setter function is defined, and getter not defined. It is writable
+}
+
+class Product {
+  @Log // It executes when class definition is registered by JS. When property is defined
+  title: string;
+  private _price: number;
+
+  @Log2
+  set price(value: number) {
+    if (value &gt; 0) {
+      this._price = value;
+    } else {
+      throw new Error("Invalid price - should be positive");
+    }
+  }
+
+  constructor(title: string, price: number) {
+    this.title = title;
+    this._price = price;
+  }
+
+  @Log3
+  getPriceWithTax(@Log4 tax: number) {
+    return this._price * (1 + tax);
+  }
+}
+</code></pre>
+<h3>When Do Decorators Execute?</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">const p1 = new Product("Book", 19); // Decorators do not run when instance is created
+const p2 = new Product("Book 2", 29); // Decorators do not run when instance is created
+</code></pre>
+<h3>Returning (and changing) a Class in a Class Decorator</h3>
+<ol>
+<li>What a decorator returns depends on the type of decorator we are working with</li>
+<li><code>&lt;T extends { new }&gt;</code> - function that can be newed to generate a new object</li>
+<li>Code: To extend and replace the old class</li>
+</ol>
+<pre><code class="language-typescript">function WithTemplate(template: string, hookId: string) {
+  return function &lt;T extends { new (...args: any[]): { name: string } }&gt;(
+    originalConstructor: T
+  ) {
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        // ensures template is rendered only when the class is instantiated
+        super(); // calls originalConstructor
+        console.log("Rendering template");
+        const hookEl = document.getElementById(hookId);
+        if (hookEl) {
+          hookEl.innerHTML = template;
+          hookEl.querySelector("h1")!.textContent = this.name;
+        }
+      }
+    }; // new constructor function replaces original class/constructor function
+  };
+}
+
+@Logger("LOGGING - PERSON") // It is executed
+@WithTemplate("&lt;h1&gt;My Person Object&lt;/h1&gt;", "app") // Can be exposed as part of a library
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Constructing person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+</code></pre>
+<h3>Other Decorator Return Types</h3>
+<ol>
+<li><p>We can return but not in all decorators</p>
+</li>
+<li><p>Other decorators which can return:</p>
+<ol>
+<li>Method decorators</li>
+<li>Accessor decorators (<code>get</code>, <code>set</code>)</li>
+</ol>
+</li>
+<li><p>TS will ignore return from decorators of properties and parameters</p>
+</li>
+<li><p><code>PropertyDescriptor</code></p>
+<ol>
+<li><p><code>Object.defineProperty()</code></p>
+<ol>
+<li><p>Defines a new property directly on an object, or modifies an existing property on an object, and returns the object</p>
+<ol>
+<li>Exmaple:</li>
+</ol>
+<pre><code class="language-javascript">const object1 = {};
+
+Object.defineProperty(object1, "property1", {
+  value: 42,
+  writable: false,
+});
+
+object1.property1 = 77;
+// Throws an error in strict mode
+
+console.log(object1.property1);
+// Expected output: 42
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Properties</p>
+<ol>
+<li><code>configurable: true</code><ol>
+<li>If we can change the config (delete property say)</li>
+</ol>
+</li>
+<li><code>enumerable: false</code><ol>
+<li>If it shows up when we loop through the object<ol>
+<li>For method say</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>writable: true</code><ol>
+<li>Can we change the value after we initialize it</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>One use-case:</p>
+<ol>
+<li>We can define new <code>set</code> and <code>get</code> methods</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Example: Constructing an "Autobind" Decorator</h3>
+<ol>
+<li>Code: Vanilla JS example:</li>
+</ol>
+<pre><code class="language-typescript">class Printer {
+  message = "This works!";
+
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector("button")!;
+// button?.addEventListener("click", p.showMessage); // `this` refers to the target of the event. `addEventListener` binds `this` to the target of the event.
+button?.addEventListener("click", p.showMessage.bind(p));
+</code></pre>
+<ol start="3">
+<li>Code: <code>@Autobind</code></li>
+</ol>
+<pre><code class="language-typescript">function Autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      // This method is executed when user tries to access this property. It is like `value` but with extra logic
+      const boundFn = originalMethod.bind(this); // refers to the obj triggering the `get` method. It is the object on which we defined the getter.
+      return boundFn;
+    },
+  };
+  return adjDescriptor;
+}
+
+class Printer {
+  message = "This works!";
+
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector("button")!;
+// button?.addEventListener("click", p.showMessage); // `this` refers to the target of the event. `addEventListener` binds `this` to the target of the event.
+button?.addEventListener("click", p.showMessage);
+</code></pre>
+<h3>Validation with Decorators - First Steps</h3>
+<ol>
+<li>Code: Skeleton</li>
+</ol>
+<pre><code class="language-typescript">function Required() {}
+
+function PositiveNumber() {}
+
+function validate(obj: object) {}
+
+class Course {
+  @Required
+  title: string;
+
+  @PositiveNumber
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const courseForm = document.querySelector("form")!;
+courseForm.addEventListener("submit", (event) =&gt; {
+  event.preventDefault();
+  const titleEl = document.getElementById("title") as HTMLInputElement;
+  const priceEl = document.getElementById("price") as HTMLInputElement;
+
+  const title = titleEl.value;
+  const price = +priceEl.value;
+
+  if (!validate(createdCourse)) {
+    alert("Invalid input, please try again!");
+  }
+
+  const createdCourse = new Course(title, price);
+  console.log(createdCourse);
+});
+</code></pre>
+<h3>Validation with Decorators - Finished</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">interface ValidatorConfig {
+  [property: string]: {
+    [validatableProp: string]: string[]; // ['required', 'positive', ...]
+  };
+}
+
+const registeredValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: ["required"],
+  }; // exists in JS
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: ["positive"],
+  }; // exists in JS
+}
+
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name];
+  if (!objValidatorConfig) {
+    return true;
+  }
+  let isValid = true;
+  for (const prop in objValidatorConfig) {
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case "required":
+          isValid = isValid &amp;&amp; !!obj[prop];
+          break;
+        case "positive":
+          isValid = isValid &amp;&amp; obj[prop] &gt; 0;
+          break;
+      }
+    }
+  }
+  return isValid;
+}
+
+class Course {
+  @Required
+  title: string;
+
+  @PositiveNumber
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const courseForm = document.querySelector("form")!;
+courseForm.addEventListener("submit", (event) =&gt; {
+  event.preventDefault();
+  const titleEl = document.getElementById("title") as HTMLInputElement;
+  const priceEl = document.getElementById("price") as HTMLInputElement;
+
+  const title = titleEl.value;
+  const price = +priceEl.value;
+
+  const createdCourse = new Course(title, price);
+
+  if (!validate(createdCourse)) {
+    alert("Invalid input, please try again!");
+  } else {
+    console.log(createdCourse);
+  }
+});
+</code></pre>
+<h3>Fixing a Validator Bug</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">const registeredValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: [
+      ...(registeredValidators[target.constructor.name]?.[propName] ?? []),
+      "required",
+    ],
+  };
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: [
+      ...(registeredValidators[target.constructor.name]?.[propName] ?? []),
+      "positive",
+    ],
+  };
+}
+</code></pre>
+<ol start="2">
+<li><a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16935744#questions/8835948">More refactoring</a></li>
+<li><code>??</code> - Returns its right-hand side operand when its left-hand side operand is <code>null</code> or <code>undefined</code></li>
+</ol>
+<h3>Wrap Up</h3>
+<ol>
+<li>Search: TS Class Validator<ol>
+<li>More elaborate implementation</li>
+<li>Can be imported to any project</li>
+</ol>
+</li>
+<li>Angular<ol>
+<li><code>@Component</code><ol>
+<li>To attach dynamic HTML code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>NestJS<ol>
+<li>Serverside JS framework for Node.js</li>
+<li>Heavily utilizes TS<ol>
+<li>Embraces decorators<ol>
+<li><code>@Controller</code></li>
+<li><code>@Get()</code></li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://www.typescriptlang.org/docs/handbook/decorators.html">More on Decorators</a></li>
+</ol>
+<h2>Section 9: Practice Time! Let's Build a Drag &amp; Drop Project</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Good to try next steps on my own</li>
+</ol>
+<h3>Getting Started</h3>
+<ol start="2">
+<li>Download resources and copy paste the contents of <code>index.html</code> and <code>app.css</code></li>
+</ol>
+<h3>DOM Element Selection &amp; OOP Rendering</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.attach();
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+</code></pre>
+<h3>Interacting with DOM Elements</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler.bind(this));
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+</code></pre>
+<h3>Constructing &amp; Using an "Autobind" Decorator</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// ProjectInput class
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+</code></pre>
+<h3>Fetching User Input</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean; // boolean | undefined
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid &amp;&amp; validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    // `!= null` includes null and undefined
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &gt;= validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &lt;= validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &gt;= validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &lt;= validatableInput.max;
+  }
+  return isValid;
+}
+
+// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// ProjectInput class
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
+    if (
+      validate(titleValidatable) &amp;&amp;
+      validate(descriptionValidatable) &amp;&amp;
+      validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again.");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      console.log(title, description, people);
+      this.clearInputs();
+    }
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+</code></pre>
+<h3>Constructing a Re-Usable Validation Functionality</h3>
+<h3>Rendering Project Lists</h3>
+<pre><code class="language-typescript">// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean; // boolean | undefined
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid &amp;&amp; validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    // `!= null` includes null and undefined
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &gt;= validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &lt;= validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &gt;= validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &lt;= validatableInput.max;
+  }
+  return isValid;
+}
+
+// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// ProjectList Class
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+
+  constructor(private type: "active" | "finished") {
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLElement;
+    this.element.id = `${this.type}-projects`;
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+
+// ProjectInput class
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
+    if (
+      validate(titleValidatable) &amp;&amp;
+      validate(descriptionValidatable) &amp;&amp;
+      validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again.");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      console.log(title, description, people);
+      this.clearInputs();
+    }
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+</code></pre>
+<h3>Managing Application State with Singletons</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// Project State Management
+class ProjectState {
+  private listeners: Function[] = [];
+  private projects: any[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addListener(listenerFn: Function) {
+    this.listeners.push(listenerFn);
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = {
+      id: Math.random().toString(),
+      title,
+      description,
+      people: numOfPeople,
+    };
+    this.projects.push(newProject);
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());
+    }
+  }
+}
+
+const projectState = ProjectState.getInstance();
+
+// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean; // boolean | undefined
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid &amp;&amp; validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    // `!= null` includes null and undefined
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &gt;= validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &lt;= validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &gt;= validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &lt;= validatableInput.max;
+  }
+  return isValid;
+}
+
+// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// ProjectList Class
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+  assignedProjects: any[];
+
+  constructor(private type: "active" | "finished") {
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+    this.assignedProjects = [];
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLElement;
+    this.element.id = `${this.type}-projects`;
+
+    projectState.addListener((projects: any[]) =&gt; {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    });
+
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    for (const prjItem of this.assignedProjects) {
+      const listItem = document.createElement("li");
+      listItem.textContent = prjItem.title;
+      listEl?.appendChild(listItem);
+    }
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+
+// ProjectInput class
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
+    if (
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again.");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      // console.log(title, description, people);
+      projectState.addProject(title, description, people);
+      this.clearInputs();
+    }
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+</code></pre>
+<h3>More Classes &amp; Custom Types</h3>
+<ol>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">// Project Type
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+// Project State Management
+type Listener = (items: Project[]) =&gt; void;
+
+class ProjectState {
+  private listeners: Listener[] = [];
+  private projects: Project[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addListener(listenerFn: Listener) {
+    this.listeners.push(listenerFn);
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active
+    );
+    this.projects.push(newProject);
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());
+    }
+  }
+}
+
+const projectState = ProjectState.getInstance();
+
+// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean; // boolean | undefined
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid &amp;&amp; validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    // `!= null` includes null and undefined
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &gt;= validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &lt;= validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &gt;= validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &lt;= validatableInput.max;
+  }
+  return isValid;
+}
+
+// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// ProjectList Class
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+  assignedProjects: Project[];
+
+  constructor(private type: "active" | "finished") {
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+    this.assignedProjects = [];
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLElement;
+    this.element.id = `${this.type}-projects`;
+
+    projectState.addListener((projects: Project[]) =&gt; {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    });
+
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    for (const prjItem of this.assignedProjects) {
+      const listItem = document.createElement("li");
+      listItem.textContent = prjItem.title;
+      listEl?.appendChild(listItem);
+    }
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+
+// ProjectInput class
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.attach();
+  }
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
+    if (
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again.");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      // console.log(title, description, people);
+      projectState.addProject(title, description, people);
+      this.clearInputs();
+    }
+  }
+
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+</code></pre>
+<h3>Filtering Projects with Enums</h3>
+<h3>Adding Inheritance &amp; Generics</h3>
+<h3>Rendering Project Items with a Class</h3>
+<h3>Using a Getter</h3>
+<h3>Utilizing Interfaces to Implement Drag &amp; Drop</h3>
+<h3>Drag Events &amp; Reflecting the Current State in the UI</h3>
+<h3>Adding a Droppable Area</h3>
+<h3>Finishing Drag &amp; Drop</h3>
+<h3>Wrap Up</h3>
+<ol>
+<li>Code: Full code</li>
+</ol>
+<pre><code class="language-typescript">// Drag &amp; Drop Interfaces
+interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragEndHandler(event: DragEvent): void;
+}
+
+interface DragTarget {
+  dragOverHandler(event: DragEvent): void;
+  dropHandler(event: DragEvent): void;
+  dragLeaveHandler(event: DragEvent): void;
+}
+
+// Project Type
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+// Project State Management
+type Listener&lt;T&gt; = (items: T[]) =&gt; void;
+
+class State&lt;T&gt; {
+  protected listeners: Listener&lt;T&gt;[] = [];
+
+  addListener(listenerFn: Listener&lt;T&gt;) {
+    this.listeners.push(listenerFn);
+  }
+}
+
+class ProjectState extends State&lt;Project&gt; {
+  private projects: Project[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active
+    );
+    this.projects.push(newProject);
+    this.updateListeners();
+  }
+
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find((prj) =&gt; prj.id === projectId);
+    if (project &amp;&amp; project.status !== newStatus) {
+      project.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  private updateListeners() {
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());
+    }
+  }
+}
+
+const projectState = ProjectState.getInstance();
+
+// Validation
+interface Validatable {
+  value: string | number;
+  required?: boolean; // boolean | undefined
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid &amp;&amp; validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    // `!= null` includes null and undefined
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &gt;= validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &amp;&amp;
+    typeof validatableInput.value === "string"
+  ) {
+    isValid =
+      isValid &amp;&amp;
+      validatableInput.value.trim().length &lt;= validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &gt;= validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &amp;&amp;
+    typeof validatableInput.value === "number"
+  ) {
+    isValid = isValid &amp;&amp; validatableInput.value &lt;= validatableInput.max;
+  }
+  return isValid;
+}
+
+// autobind decorator
+function autobind(_1: any, _2: string, descriptor: PropertyDescriptor) {
+  return {
+    configurable: true,
+    enumerable: false,
+    get() {
+      return descriptor.value.bind(this);
+    },
+  };
+}
+
+// Component Base Class
+abstract class Component&lt;T extends HTMLElement, U extends HTMLElement&gt; {
+  templateElement: HTMLTemplateElement;
+  hostElement: T;
+  element: U;
+
+  constructor(
+    templateId: string,
+    hostElementId: string,
+    insertAtStart: boolean,
+    newElementId?: string
+  ) {
+    this.templateElement = document.getElementById(
+      templateId
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById(hostElementId)! as T;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    ); // `DocumentFragment`
+    this.element = importedNode.firstElementChild as U;
+
+    if (newElementId) {
+      this.element.id = newElementId;
+    }
+
+    this.attach(insertAtStart);
+  }
+
+  private attach(insertABeginning: boolean) {
+    this.hostElement.insertAdjacentElement(
+      insertABeginning ? "afterbegin" : "beforeend",
+      this.element
+    );
+  }
+
+  abstract configure?(): void;
+
+  abstract renderContent(): void;
+}
+
+// ProjectItem Class
+class ProjectItem
+  extends Component&lt;HTMLUListElement, HTMLLIElement&gt;
+  implements Draggable
+{
+  private project: Project;
+
+  get persons() {
+    if (this.project.people === 1) {
+      return "1 person";
+    } else {
+      return `${this.project.people} persons`;
+    }
+  }
+
+  constructor(hostId: string, project: Project) {
+    super("single-project", hostId, false, project.id);
+    this.project = project;
+    this.configure();
+    this.renderContent();
+  }
+
+  @autobind
+  dragStartHandler(event: DragEvent): void {
+    event.dataTransfer!.setData("text/plain", this.project.id);
+    event.dataTransfer!.effectAllowed = "move";
+  }
+
+  @autobind
+  dragEndHandler(_: DragEvent): void {
+    console.log("DragEnd");
+  }
+
+  configure(): void {
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler);
+  }
+
+  renderContent(): void {
+    this.element.querySelector("h2")!.textContent = this.project.title;
+    this.element.querySelector("h3")!.textContent = this.persons + " assigned";
+    this.element.querySelector("p")!.textContent = this.project.description;
+  }
+}
+
+// ProjectList Class
+class ProjectList
+  extends Component&lt;HTMLDivElement, HTMLElement&gt;
+  implements DragTarget
+{
+  assignedProjects: Project[];
+
+  constructor(private type: "active" | "finished") {
+    super("project-list", "app", false, `${type}-projects`);
+    this.assignedProjects = [];
+    this.configure(); // called here because inherited class constructor might set some values that this method might depend on.
+    this.renderContent();
+  }
+
+  @autobind
+  dragOverHandler(event: DragEvent): void {
+    if (event.dataTransfer &amp;&amp; event.dataTransfer.types[0] == "text/plain") {
+      event.preventDefault(); // otherwise, drop is allowed on an element, if in drag over handler `preventDefault()` (since default behavior is do not allow dropping)
+      const listEl = this.element.querySelector("ul")!;
+      listEl.classList.add("droppable");
+    }
+  }
+
+  @autobind
+  dropHandler(event: DragEvent): void {
+    const prjId = event.dataTransfer!.getData("text/plain");
+    projectState.moveProject(
+      prjId,
+      this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+    );
+  }
+
+  @autobind
+  dragLeaveHandler(_: DragEvent): void {
+    const listEl = this.element.querySelector("ul")!;
+    listEl.classList.remove("droppable");
+  }
+
+  configure(): void {
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
+
+    projectState.addListener((projects: Project[]) =&gt; {
+      const relevantProjects = projects.filter((prj) =&gt; {
+        if (this.type === "active") {
+          return prj.status === ProjectStatus.Active;
+        }
+        return prj.status === ProjectStatus.Finished;
+      });
+      this.assignedProjects = relevantProjects;
+      this.renderProjects();
+    });
+  }
+
+  renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    listEl.innerHTML = "";
+    for (const prjItem of this.assignedProjects) {
+      new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
+    }
+  }
+}
+
+// ProjectInput class
+class ProjectInput extends Component&lt;HTMLDivElement, HTMLFormElement&gt; {
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    super("project-input", "app", true, "user-input");
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+  }
+
+  configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  renderContent(): void {}
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
+    if (
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again.");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  @autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      // console.log(title, description, people);
+      projectState.addProject(title, description, people);
+      this.clearInputs();
+    }
+  }
+}
+
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+</code></pre>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">More on Drag &amp; Drop</a></li>
+</ol>
+<h2>Section 10: Modules &amp; Namespaces</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Topics:<ol>
+<li>Modular code<ol>
+<li>Split code into multiple files and each file stays manageable and extendable</li>
+<li>We can export from and to.</li>
+<li>Connected by<ol>
+<li>Browser</li>
+<li>TypeScript</li>
+<li>Third party build tool</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Module content<ol>
+<li>Two Options to Organize Code in Multiple Files</li>
+</ol>
+</li>
+</ol>
+<h3>Writing Module Code - Your Options</h3>
+<ol>
+<li>Splitting code into multiple files<ol>
+<li>Namespaces &amp; File Building<ol>
+<li>Namespaces: Use "namespace" code syntax to group code<ol>
+<li>We can import namespaces into other files</li>
+</ol>
+</li>
+<li>Pre-file or bundled compilaions is possible (less imports to manage)<ol>
+<li>TS bundles files into one file</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ES6 Imports/Exports (ES6 modules)<ol>
+<li>Modern JS has solution to the problem (OOTB)<ol>
+<li>Import and export statements - Modern browsers understand it<ol>
+<li>TS also supports import/export syntax</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Per-file compilation but single <code>&lt;script&gt;</code> import<ol>
+<li>Modern browsers how to fetch the dependencies<ol>
+<li>We can bundle files together and ship single file for production (Webpack can be used for it)</li>
+</ol>
+</li>
+<li>Bundling via third-party tools (e.g. Webpack) is possible!</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Working with Namespaces</h3>
+<ol>
+<li>TS is told where to find the other files. However, the files are compiled to standalone JS files (the connection is destroyed).</li>
+<li>Code:</li>
+</ol>
+<pre><code class="language-typescript">/// &lt;reference path="drag-drop-interfaces.ts" /&gt;
+/// &lt;reference path="project-model.ts" /&gt;
+
+namespace App {
+  export ...
+}
+</code></pre>
+<h3>Organizing Files &amp; Folders</h3>
+<h3>A Problem with Namespace Imports</h3>
+<h3>Important: Use Chrome or Firefox</h3>
+<ol>
+<li>Next lecture we would use features that work only in modern browsers.<ol>
+<li>Firefox and Chrome</li>
+</ol>
+</li>
+<li>Subsequently, making it work in older browsers</li>
+</ol>
+<h3>Using ES Modules</h3>
+<ol>
+<li>Browser supports ES6 modules + TS supports and gives type support</li>
+<li>tsconfig.json</li>
+</ol>
+<pre><code class="language-json">{
+  "target": "es6", // or higher
+  "module": "es2015"
+}
+</code></pre>
+<h4>Fix for <code>exports is not defined</code> issue <a href="https://www.youtube.com/watch?v=KRLszVu7mXY">https://www.youtube.com/watch?v=KRLszVu7mXY</a></h4>
+<ol>
+<li>Code: tsconfig.json</li>
+</ol>
+<pre><code class="language-json">{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ESNext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
+    "module": "ESNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "lib": [
+      "dom",
+      "ESNext",
+      "dom.iterable",
+      "scripthost"
+    ] /* Specify library files to be included in the compilation. */,
+    // "allowJs": true,                       /* Allow javascript files to be compiled. */
+    // "checkJs": true,                       /* Report errors in .js files. */
+    // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
+    // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
+    "sourceMap": true /* Generates corresponding '.map' file. */,
+    // "outFile": "./dist/bundle.js" /* Concatenate and emit output to single file. */,
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+    // "composite": true,                     /* Enable project compilation */
+    "removeComments": true /* Do not emit comments to output. */,
+    // "noEmit": true,                        /* Do not emit outputs. */
+    // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
+    // "downlevelIteration": true,            /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
+    // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+    "noEmitOnError": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    // "noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+    // "strictNullChecks": true,              /* Enable strict null checks. */
+    // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
+    // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+    // "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
+    // "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
+    // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
+
+    /* Additional Checks */
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
+
+    /* Module Resolution Options */
+    "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
+    // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
+    // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+    // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
+    // "typeRoots": [],                       /* List of folders to include type definitions from. */
+    // "types": [],                           /* Type declaration files to be included in compilation. */
+    // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
+
+    /* Source Map Options */
+    // "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
+    // "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
+    // "inlineSourceMap": true,               /* Emit a single file with source maps instead of having a separate file. */
+    // "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+
+    /* Experimental Options */
+    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */
+    // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
+  },
+  "exclude": [
+    "node_modules" // would be the default
+  ]
+}
+</code></pre>
+<ol start="2">
+<li>Code: index.html</li>
+</ol>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="ie=edge" /&gt;
+    &lt;title&gt;ProjectManager&lt;/title&gt;
+    &lt;link rel="stylesheet" href="app.css" /&gt;
+    &lt;script type="module" src="dist/app.js" defer&gt;&lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;template id="project-input"&gt;
+      &lt;!-- Not rendered immediately. Reached via TS or JS and then render it control via JS and TS --&gt;
+      &lt;form&gt;
+        &lt;div class="form-control"&gt;
+          &lt;label for="title"&gt;Title&lt;/label&gt;
+          &lt;input type="text" id="title" /&gt;
+        &lt;/div&gt;
+        &lt;div class="form-control"&gt;
+          &lt;label for="description"&gt;Description&lt;/label&gt;
+          &lt;textarea id="description" rows="3"&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+        &lt;div class="form-control"&gt;
+          &lt;label for="people"&gt;People&lt;/label&gt;
+          &lt;input type="number" id="people" step="1" min="0" max="10" /&gt;
+        &lt;/div&gt;
+        &lt;button type="submit"&gt;ADD PROJECT&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/template&gt;
+    &lt;template id="single-project"&gt;
+      &lt;li draggable="true"&gt;
+        &lt;h2&gt;&lt;/h2&gt;
+        &lt;h3&gt;&lt;/h3&gt;
+        &lt;p&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/template&gt;
+    &lt;template id="project-list"&gt;
+      &lt;section class="projects"&gt;
+        &lt;header&gt;
+          &lt;h2&gt;&lt;/h2&gt;
+        &lt;/header&gt;
+        &lt;ul&gt;&lt;/ul&gt;
+      &lt;/section&gt;
+    &lt;/template&gt;
+    &lt;div id="app"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<ol start="3">
+<li>Code: app.ts</li>
+</ol>
+<pre><code class="language-typescript">import { ProjectInput } from "./components/project-input.js";
+import { ProjectList } from "./components/project-list.js";
+
+const prjInput = new ProjectInput();
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+
+console.log(prjInput, activePrjList, finishedPrjList);
+</code></pre>
+<h3>Understanding various Import &amp; Export Syntaxes</h3>
+<ol>
+<li><p>Bundling imports</p>
+<ol>
+<li>Multiple imports can be grouped</li>
+</ol>
+<pre><code class="language-typescript">import Component from "./base-component.js"; // default export. Any name can be used
+import * as Validation from "../util/validation.js";
+import { autobind as Autobind } from "../decorators/autobind.js";
+
+// ...
+
+if (
+  !Validation.validate(titleValidatable) ||
+  !Validation.validate(descriptionValidatable) ||
+  !Validation.validate(peopleValidatable)
+) {
+  alert("Invalid input, please try again.");
+  return;
+} else {
+  return [enteredTitle, enteredDescription, +enteredPeople];
+}
+
+//...
+
+@Autobind
+private submitHandler(event: Event) {
+ // ...
+}
+</code></pre>
+</li>
+<li><p>Named exports:</p>
+<ol>
+<li>They can be used to enforce naming convension</li>
+</ol>
+</li>
+</ol>
+<h3>How Does Code in Modules Execute?</h3>
+<ol>
+<li>An exported file gets executed when it is imported by the first file. If another file imports it, it doesn't run</li>
+</ol>
+<h3>Wrap Up</h3>
+<ol>
+<li>ES Modules<ol>
+<li>Extra type safety</li>
+<li>Ensures that every file can clearly specify what it wants<ol>
+<li>With namespaces, if one file imports something, the other files can use it<ol>
+<li>Problem: If the file changes, the other files may not work.<ol>
+<li>Recommended for smaller projects</li>
+<li>If cannot use ES modules or a bundler</li>
+<li>If cannot use modern browser</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Problems:<ol>
+<li>No support in older browsers<ol>
+<li>Solution: Using a bundler<ol>
+<li>Only one file is generated<ol>
+<li>For multiple HTTP requests, there is additional work</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://medium.com/computed-comparisons/commonjs-vs-amd-vs-requirejs-vs-es6-modules-2e814b114a0b">JavaScript Modules</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">More on ES Modules</a></li>
+</ol>
+<h2>Section 11: Using Webpack with TypeScript</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Another disadvantages and solutions</li>
+<li>Module content<ol>
+<li>What is Webpack?</li>
+<li>Example Setup<ol>
+<li>Best of all worlds<ol>
+<li>No disadvantage</li>
+<li>Splitting into multiple modules</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>What is Webpack &amp; Why do we need it?</h3>
+<ol>
+<li><a href="webpack.js.org">webpack.js.org</a><ol>
+<li>Documentation is good</li>
+</ol>
+</li>
+<li>What is Webpack?<ol>
+<li>Webpack is a Bundling &amp; "Build Orchestration" Tool<ol>
+<li>Reduces HTTP requests by bundling code together</li>
+<li>Optimizes code &amp; allows more build steps (example: CSS modules etc.)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Normal setup:<ol>
+<li>Multiple .ts files &amp; imports (http requests) - not great</li>
+<li>Unoptimized code (not as small as possible)<ol>
+<li>To shorten variable and function names (tools can do this automatically)<ol>
+<li>Less download, less startup time</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>"External" development server needed<ol>
+<li>Tools can spinup server and reload with changes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>With Webpack<ol>
+<li>Code bundles, less imports required</li>
+<li>Optimized (minified) code, less code to download</li>
+<li>More build steps can be added easily (Webpack docs)</li>
+</ol>
+</li>
+</ol>
+<h3>Installing Webpack &amp; Important Dependencies</h3>
+<ol>
+<li>Installation:</li>
+</ol>
+<pre><code class="language-bash">npm i --save-dev webpack webpack-cli webpack-dev-server typescript ts-loader
+</code></pre>
+<pre><code>1. `webpack` - heart of setup
+    1. Allows to plugin certain functionalities to bundle the code &amp; transform the code (transform &amp; bundle)
+2. `webpack-cli` - to run webpack commands in the project
+3. `webpack-dev-server` - starts webpack under the hood and automatically monitors for changes and triggers recompile and servers the page
+4. `typescript` - goot practice to install a copy per project
+    1. Maintains a specific typescript version
+        1. Global typescript dependency is eliminated
+5. `ts-loader` - works with Webpack
+    1. Tells how to convert TS code to JS code (Webpack can do compile with the help of ts-loader - it use tsc under the hood)
+    2. Webpack then bundles emitted JS files into one bundle file
+</code></pre>
+<h3>Adding Entry &amp; Output Configuration</h3>
+<ol>
+<li>tsconfig.json<ol>
+<li><code>target</code> - <code>es6</code> or <code>es5</code></li>
+<li><code>module</code> - <code>es2015</code> or <code>es6</code></li>
+<li><code>outDir</code> - <code>./dist</code></li>
+<li><code>rootDir</code> - not required<ol>
+<li>Webpack determines where the files are</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>webpack.config.js - tells how to work with the project<ol>
+<li>Uses JS and Node.js features</li>
+<li>It exports a JS object</li>
+<li>We need to specify a sharting file (transitive dependencies are automatically resolved)</li>
+<li>We need to remove <code>.js</code> extension from imports or Webpack to work properly<ol>
+<li>Webpack looks for <code>.js</code> extension</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Config:</li>
+</ol>
+<pre><code class="language-javascript">const path = require("path"); // core Node.js module
+
+module.exports = {
+  entry: "./src/app.ts",
+  output: {
+    // filename: "bundle.[contenthash].js", // every build generates a unique hash. It helps with caching in browser
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"), // It should match tsconfig.json to avoid errors. It builds absolute path
+  },
+};
+</code></pre>
+<h3>Adding TypeScript Support with the ts-loader Package</h3>
+<ol>
+<li>webpack.config.js</li>
+</ol>
+<pre><code class="language-javascript">const path = require("path"); // core Node.js module
+
+module.exports = {
+  entry: "./src/app.ts",
+  output: {
+    // filename: "bundle.[contenthash].js", // every build generates a unique hash. It helps with caching in browser
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"), // It should match tsconfig.json to avoid errors. It builds absolute path
+  },
+  devtool: "inline-source-map", // tells Webpack that there will be source-maps already. It should extract and wire up correctly to the bundle it generates. For great development experience
+  module: {
+    // just a file. Multiple rules can be added for different tyes of files
+    rules: [
+      {
+        test: /\.ts$/, // Webpack runs a test to check if the rule applies to the file or not. It is regexp. Ends with .ts
+        use: "ts-loader", // what to do with the files. ts-loader uses tsconfig.json.
+        exclude: /node_modules/, // Webpack will not look into this folder
+      },
+    ],
+  },
+  resolve: {
+    // tells which extension it should to the files in the imports it finds
+    extensions: [".ts", ".js"], // `.js` is default
+  },
+};
+</code></pre>
+<ol start="2">
+<li>package.json</li>
+</ol>
+<pre><code class="language-json">{
+  "name": "understanding-typescript",
+  "version": "1.0.0",
+  "description": "Understanding TypeScript Course Setup",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",
+    "start": "lite-server",
+    "build": "webpack"
+  },
+  "keywords": ["typescript", "course"],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.5.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.25.9",
+    "common-js": "^0.3.8",
+    "understanding-typescript": "file:"
+  }
+}
+</code></pre>
+<ol start="3">
+<li>index.html</li>
+</ol>
+<pre><code class="language-html">&lt;head&gt;
+  &lt;script type="module" src="dist/bundle.js" defer&gt;&lt;/script&gt;
+&lt;/head&gt;
+</code></pre>
+<ol start="4">
+<li>In Dev tools, we can debug original TS files directly (sourcemaps are used)</li>
+</ol>
+<h3>Adjust Webpack Config</h3>
+<ol>
+<li><p>For latest webpack version, edit the file as follows:</p>
+<ol>
+<li>Add <code>devServer</code> option</li>
+</ol>
+<pre><code class="language-javascript">devServer: {
+  static: [
+    {
+      directory: path.join(__dirname),
+    },
+  ];
+}
+</code></pre>
+<ol start="2">
+<li>Set <code>output.publicPath</code> to <code>'/dist/'</code></li>
+</ol>
+<pre><code class="language-javascript">output: {
+  filename: 'bundle.js',
+  path: path.resolve(__dirname, 'dist'),
+  publicPath: '/dist/'
+}
+</code></pre>
+<ol start="3">
+<li>Finished webpack.config.js</li>
+</ol>
+<pre><code class="language-javascript">const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./src/app.ts",
+  devServer: {
+    static: [
+      {
+        directory: path.join(__dirname),
+      },
+    ],
+  },
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/dist/",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
+};
+</code></pre>
+</li>
+</ol>
+<h3>Finishing the Setup &amp; Adding webpack-dev-server</h3>
+<ol>
+<li>webpack.config.js</li>
+</ol>
+<pre><code class="language-javascript">const path = require("path"); // core Node.js module
+
+module.exports = {
+  mode: "development", // tells webpack that this will be for development. Fewer optimizations. Meaningful error messages
+  entry: "./src/app.ts",
+  devServer: {
+    static: [
+      {
+        directory: path.join(__dirname),
+      },
+    ],
+  },
+  output: {
+    // filename: "bundle.[contenthash].js", // every build generates a unique hash. It helps with caching in browser
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"), // It should match tsconfig.json to avoid errors. It builds absolute path
+    publicPath: "/dist/", // For webpack to understand where output is written (by default it expects in this folder where we run this script)
+  },
+  devtool: "inline-source-map", // tells Webpack that there will be source-maps already. It should extract and wire up correctly to the bundle it generates. For great development experience
+  module: {
+    // just a file. Multiple rules can be added for different tyes of files
+    rules: [
+      {
+        test: /\.ts$/, // Webpack runs a test to check if the rule applies to the file or not. It is regexp. Ends with .ts
+        use: "ts-loader", // what to do with the files. ts-loader uses tsconfig.json.
+        exclude: /node_modules/, // Webpack will not look into this folder
+      },
+    ],
+  },
+  resolve: {
+    // tells which extension it should to the files in the imports it finds
+    extensions: [".ts", ".js"], // `.js` is default
+  },
+};
+</code></pre>
+<h3>Adding a Production Workflow</h3>
+<ol>
+<li>Plugin:</li>
+</ol>
+<pre><code class="language-bash">npm i --save-dev clean-webpack-plugin # to clean up `dist` folder whenever we rebuild our project
+</code></pre>
+<ol start="2">
+<li>webpack.config.prod.js</li>
+</ol>
+<pre><code class="language-javascript">const path = require("path"); // core Node.js module
+const { CleanPlugin } = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+module.exports = {
+  mode: "production", // tells webpack to do optimizations (minifies code, ...).
+  entry: "./src/app.ts",
+  devServer: {
+    static: [
+      {
+        directory: path.join(__dirname),
+      },
+    ],
+  },
+  output: {
+    // filename: "bundle.[contenthash].js", // every build generates a unique hash. It helps with caching in browser
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"), // It should match tsconfig.json to avoid errors. It builds absolute path
+  },
+  // devtool: "none", // source-maps are not required in production
+  module: {
+    // just a file. Multiple rules can be added for different tyes of files
+    rules: [
+      // applied to per file level
+      {
+        test: /\.ts$/, // Webpack runs a test to check if the rule applies to the file or not. It is regexp. Ends with .ts
+        use: "ts-loader", // what to do with the files. ts-loader uses tsconfig.json.
+        exclude: /node_modules/, // Webpack will not look into this folder
+      },
+    ],
+  },
+  resolve: {
+    // tells which extension it should to the files in the imports it finds
+    extensions: [".ts", ".js"], // `.js` is default
+  },
+  plugins: [new CleanWebpackPlugin()], // plugins apply to the entire project, to the general workflow. Before writing to output folder, we clean everything in it
+};
+</code></pre>
+<ol start="3">
+<li>package.json</li>
+</ol>
+<pre><code class="language-json">{
+  "name": "understanding-typescript",
+  "version": "1.0.0",
+  "description": "Understanding TypeScript Course Setup",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",
+    "start": "webpack-dev-server",
+    "build": "webpack --config webpack.config.prod.js"
+  },
+  "keywords": ["typescript", "course"],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "lite-server": "^2.5.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.25.9",
+    "common-js": "^0.3.8",
+    "understanding-typescript": "file:"
+  }
+}
+</code></pre>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://webpack.js.org/">Official Webpack Docs</a></li>
+</ol>
+<h2>Section 12: 3rd Party Libraries &amp; TypeScript</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>Third party libraries<ol>
+<li>How to add them to TS projects</li>
+</ol>
+</li>
+<li>Module content:<ol>
+<li>"Normal" libraries &amp; using them with TypeScript<ol>
+<li>Can be used in regular JS projects</li>
+<li>Use them to get the most out of the TS</li>
+</ol>
+</li>
+<li>TypeScript-specific libraries<ol>
+<li>The libraries utilize certain type of features to give a way of working with them.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using JavaScript (!) Libraries with TypeScript</h3>
+<ol>
+<li>Utility library: Lodash<ol>
+<li>Example of any JS library</li>
+<li>Installation: <code>npm i --save lodash</code></li>
+</ol>
+</li>
+<li>TS doesn't understand pure JS libraries. (however, we can generate final output with error and JS library works)<ol>
+<li>Solution: Translating to TS<ol>
+<li>Install <code>types</code> for third-party library<ol>
+<li><code>@types/lodash</code><ol>
+<li><code>npm i --save @types/lodash</code><ol>
+<li>Github repository: DefiniteyTyped - translations of 3rd party libraries. <code>.d.ts</code> (search for <code>jquery types</code>)<ol>
+<li>They contain instructions to TS (how something works and what's included) - they define types (we can write d.ts files)<ol>
+<li>Errors are gone.</li>
+<li>Autocomplete is enabled</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using "declare" as a "Last Resort"</h3>
+<ol>
+<li>What if we don't have <code>types</code> package?</li>
+<li>What if we have other JS code where we set global variable which needs to be re-used?</li>
+</ol>
+<pre><code class="language-html">&lt;script&gt;
+  const GLOBAL = "THIS IS SET";
+&lt;/script&gt;
+</code></pre>
+<pre><code class="language-typescript">import _ from "lodash"; // TS doesn't understand it because `lodash` is written in JS.
+
+console.log(_.shuffle([1, 2, 3]));
+
+declare var GLOBAL: string; // to declare features or variables. For the ones developer knows will be there
+
+console.log(GLOBAL);
+</code></pre>
+<h3>No Types Needed: class-transformer</h3>
+<ol>
+<li><code>class-transformer</code>, <code>class-validator</code></li>
+<li>Traditional method of transformation:</li>
+</ol>
+<pre><code class="language-typescript">const products = [
+  { title: "A Carpet", price: 29.99 },
+  { title: "A Book", price: 10.99 },
+]; // We get from server say.
+
+const loadedProducts = products.map(
+  (prod) =&gt; new Product(prod.title, prod.price)
+);
+
+for (const prod of loadedProducts) {
+  console.log(prod.getInformation());
+}
+</code></pre>
+<ol start="3">
+<li>Using <code>class-tranformer</code> - converts data into right models<ol>
+<li><code>npm i class-transformer --save</code></li>
+<li><code>npm i reflect-metadata --save</code> (dependency)</li>
+<li><code>import "reflect-metadata";</code> - in root entry file (<code>App.ts</code>)</li>
+<li>It is developed from TS but also works for JS (because JS has <code>class</code>)</li>
+</ol>
+</li>
+<li>Code: app.ts</li>
+</ol>
+<pre><code class="language-typescript">import _ from "lodash"; // TS doesn't understand it because `lodash` is written in JS.
+import { Product } from "./product.model";
+import "reflect-metadata";
+import { plainToInstance } from "class-transformer";
+
+console.log(_.shuffle([1, 2, 3]));
+
+declare var GLOBAL: string;
+
+console.log(GLOBAL);
+
+const p1 = new Product("A Book", 12.99);
+console.log(p1.getInformation());
+
+const products = [
+  { title: "A Carpet", price: 29.99 },
+  { title: "A Book", price: 10.99 },
+]; // We get from server say.
+
+// const loadedProducts = products.map(
+//   (prod) =&gt; new Product(prod.title, prod.price)
+// );
+
+const loadedProducts = plainToInstance(Product, products);
+
+for (const prod of loadedProducts) {
+  console.log(prod.getInformation());
+}
+</code></pre>
+<h3>TypeScript-embrading: class-validator</h3>
+<ol>
+<li><code>class-validator</code> - uses TS. Builds on decorators. Gives a new way to work with them.<ol>
+<li>We don't have to build decorators. They are provided.</li>
+<li>It helps us add validation with decorators in class</li>
+<li>Installation: <code>npm i class-validator --save</code></li>
+</ol>
+</li>
+<li>app.ts</li>
+</ol>
+<pre><code class="language-typescript">import _ from "lodash"; // TS doesn't understand it because `lodash` is written in JS.
+import { Product } from "./product.model";
+import "reflect-metadata";
+import { plainToInstance } from "class-transformer";
+import { validate } from "class-validator";
+
+console.log(_.shuffle([1, 2, 3]));
+
+declare var GLOBAL: string;
+
+console.log(GLOBAL);
+
+const p1 = new Product("A Book", 12.99);
+console.log(p1.getInformation());
+
+const products = [
+  { title: "A Carpet", price: 29.99 },
+  { title: "A Book", price: 10.99 },
+]; // We get from server say.
+
+// const loadedProducts = products.map(
+//   (prod) =&gt; new Product(prod.title, prod.price)
+// );
+
+const loadedProducts = plainToInstance(Product, products);
+
+for (const prod of loadedProducts) {
+  console.log(prod.getInformation());
+}
+
+const newProd = new Product("", -5.99);
+validate(newProd).then((errors) =&gt; {
+  if (errors.length &gt; 0) {
+    console.log("VALIDATION ERRORS!");
+    console.log(errors);
+  } else {
+    console.log(newProd);
+  }
+});
+</code></pre>
+<ol start="3">
+<li>produc.model.ts</li>
+</ol>
+<pre><code class="language-typescript">import { IsNotEmpty, IsNumber, IsPositive } from "class-validator";
+
+export class Product {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNumber()
+  @IsPositive()
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+
+  getInformation() {
+    return [this.title, `$${this.price}`];
+  }
+}
+</code></pre>
+<h3>Wrap Up</h3>
+<ol>
+<li>With TS, we can use JS packages with no issues (with workarounds like types)</li>
+<li><code>class-tranformer</code> - works with TS and JS</li>
+<li><code>class-validator</code> - works only for TS</li>
+</ol>
+<h3>Useful Resources &amp; Links</h3>
+<h2>Section 13: Time to Practice! Let's build a "Select &amp; Share a Place" App (incl. Google Maps)</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>App using 3rd-party libraries<ol>
+<li>Send HTTP request</li>
+<li>Render map using Google maps</li>
+</ol>
+</li>
+</ol>
+<h3>Project Setup</h3>
+<ol>
+<li>Extract from resources</li>
+<li>Enter address, convert to coordinates, render coordinates on a map rendered using Google maps</li>
+</ol>
+<h3>Getting User Input</h3>
+<h3>Setting Up a Google API Key</h3>
+<ol>
+<li>Google Maps Platform<ol>
+<li>Get started<ol>
+<li>Maps (google JS SDK)</li>
+<li>Places (geocoding API)<ol>
+<li>Project</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Search: Google Geocoding API</li>
+</ol>
+</li>
+</ol>
+<h3>Using Axios to Fetch Coordinates for an Entered Address</h3>
+<ol>
+<li><code>fetch</code> - built into browsers<ol>
+<li>Error handling can be a bit clunky</li>
+</ol>
+</li>
+<li><code>axios</code> - 3rd party package to send HTTP requests<ol>
+<li><code>npm i --save axios</code></li>
+</ol>
+</li>
+<li>Geocoding API URL: <code>https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&amp;key=YOUR_API_KEY</code></li>
+</ol>
+<h3>Rendering a Map with Google Maps (incl. Types!)</h3>
+<ol>
+<li>Code: index.html</li>
+</ol>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="ie=edge" /&gt;
+    &lt;title&gt;Understanding TypeScript&lt;/title&gt;
+    &lt;link rel="stylesheet" href="app.css" /&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div id="map"&gt;
+      &lt;p&gt;Please enter an address!&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;form&gt;
+      &lt;input type="text" id="address" /&gt;
+      &lt;button type="submit"&gt;SEARCH ADDRESS&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwQ1ESiilsONDYF0pp6ED8JTVAkw6a9gU&amp;libraries=maps,marker&amp;v=beta"
+      defer
+    &gt;&lt;/script&gt;
+    &lt;!-- prettier-ignore --&gt;
+    &lt;script&gt;(g =&gt; { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () =&gt; h || (h = new Promise(async (f, n) =&gt; { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t =&gt; "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () =&gt; h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) =&gt; r.add(f) &amp;&amp; u().then(() =&gt; d[l](f, ...n)) })
+      ({ key: "AIzaSyAwQ1ESiilsONDYF0pp6ED8JTVAkw6a9gU", v: "weekly" });&lt;/script&gt;
+    &lt;script src="dist/bundle.js" defer&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<pre><code class="language-typescript">import axios from "axios";
+
+const form = document.querySelector("form")!;
+const addressInput = document.getElementById("address")! as HTMLInputElement;
+
+const GOOGLE_API_KEY = "AIzaSyAwQ1ESiilsONDYF0pp6ED8JTVAkw6a9gU";
+
+declare var google: any;
+
+function searchAddressHandler(event: Event) {
+  event.preventDefault();
+  const enteredAddress = addressInput.value;
+
+  // send this to Google's API!
+  type GoogleGeocodingResponse = {
+    results: {
+      geometry: {
+        location: {
+          lat: number;
+          lng: number;
+        };
+      };
+    }[];
+    status: "OK" | "ZERO_RESULTS";
+  };
+  axios
+    .get&lt;GoogleGeocodingResponse&gt;(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(
+        enteredAddress
+      )}&amp;key=${GOOGLE_API_KEY}`
+    )
+    .then((response) =&gt; {
+      if (response.data.status !== "OK") {
+        throw new Error("Could not fetch location!");
+      }
+      const coordinates = response.data.results[0].geometry.location;
+      console.log(coordinates);
+
+      // Initialize and add the map
+      let map;
+      async function initMap(): Promise&lt;void&gt; {
+        // Request needed libraries.
+        //@ts-ignore
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary(
+          "marker"
+        );
+
+        // The map, centered at Uluru
+        map = new Map(document.getElementById("map") as HTMLElement, {
+          zoom: 16,
+          center: coordinates,
+          mapId: "DEMO_MAP_ID",
+        });
+
+        // The marker, positioned at Uluru
+        const marker = new AdvancedMarkerElement({
+          map: map,
+          position: coordinates,
+          title: "Uluru",
+        });
+
+        console.log(marker);
+      }
+
+      const promise: Promise&lt;void&gt; = initMap();
+
+      console.log(promise);
+    })
+    .catch((err) =&gt; console.log(err)); // Comes with TS translation package. Other libraries might need installing types
+}
+
+form?.addEventListener("submit", searchAddressHandler);
+</code></pre>
+<h3>Working with Maps without a Credit Card</h3>
+<ol>
+<li>Openlayers - alternative to Google Maps</li>
+</ol>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://cloud.google.com/maps-platform/pricing/sheet/">Google Maps Pricing</a></li>
+<li><a href="https://developers.google.com/maps/documentation/geocoding/start">Google Geocoding API</a></li>
+<li><a href="https://developers.google.com/maps/documentation/javascript/tutorial">Google Maps JS SDK</a></li>
+</ol>
+<h2>Section 14: React.js &amp; TypeScript</h2>
+<h3>Module Introduction</h3>
+<ol>
+<li>TS is not default for React</li>
+</ol>
+<h3>Setting Up a React + TypeScript Project</h3>
+<ol>
+<li><p>Setting up is difficult</p>
+<ol>
+<li><code>create-react-app</code> - supports TS out of the box<ol>
+<li>Documentation:<ol>
+<li>Adding TS to existing project</li>
+<li>New project with TS</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><a href="https://create-react-app.dev/docs/adding-typescript/">https://create-react-app.dev/docs/adding-typescript/</a></p>
+<ol>
+<li><code>npm create-react-app my-app --template typescript</code></li>
+</ol>
+</li>
+<li><p><code>tsx</code> - For TS and JSX code</p>
+</li>
+</ol>
+<h3>How Do React + TypeScript Work Together?</h3>
+<ol>
+<li><code>npm start</code><ol>
+<li>Watches for changes and recompiles, builds React app, and serves it on live server<ol>
+<li><code>React.FC</code> - Functional Component (Longer version also exists: <code>React.FunctionComponent</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Working with Props and Types for Props</h3>
+<h3>Getting User Input with "refs"</h3>
+<h3>Cross-Component Communication</h3>
+<h3>Working with State &amp; Types</h3>
+<h3>Managing State Better</h3>
+<h3>More Props &amp; State Work</h3>
+<h3>Adding Styling</h3>
+<h3>Types for other React Features (e.g. Redux or Routing)</h3>
+<ol>
+<li>Redux:<ol>
+<li>Documentation: <a href="https://redux.js.org/usage/usage-with-typescript">Usage with TS</a></li>
+</ol>
+</li>
+<li>React Router<ol>
+<li><code>npm i --save react-router-dom</code></li>
+<li><code>npm i --save-dev @types/react-router-dom</code></li>
+</ol>
+</li>
+<li>Code: components/NewTodo.css</li>
+</ol>
+<pre><code class="language-typescript">import React, { useRef } from "react";
+// import { Route } from "react-router-dom";
+
+import "./NewTodo.css";
+
+type NewTodoProps = {
+  onAddTodo: (todoText: string) =&gt; void;
+};
+
+const NewTodo: React.FC&lt;NewTodoProps&gt; = (props) =&gt; {
+  const textInputRef = useRef&lt;HTMLInputElement&gt;(null);
+
+  const todoSubmitHandler = (event: React.FormEvent) =&gt; {
+    event.preventDefault();
+    const enteredText = textInputRef!.current!.value; // This will never be null
+    // console.log(enteredText);
+    props.onAddTodo(enteredText);
+  };
+
+  return (
+    &lt;form onSubmit={todoSubmitHandler}&gt;
+      &lt;div className="form-control"&gt;
+        &lt;label htmlFor="todo-text"&gt;Todo Text&lt;/label&gt;
+        &lt;input type="text" id="todo-text" ref={textInputRef} /&gt;
+      &lt;/div&gt;
+      &lt;button type="submit"&gt;ADD TODO&lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default NewTodo;
+</code></pre>
+<ol start="3">
+<li>Code: TodoList.tsx</li>
+</ol>
+<pre><code class="language-typescript">import React from "react";
+
+import "./TodoList.css";
+
+interface TodoListProps {
+  items: { id: string; text: string }[];
+  onDeleteTodo: (id: string) =&gt; void;
+}
+
+const TodoList: React.FC&lt;TodoListProps&gt; = (props) =&gt; {
+  return (
+    &lt;ul&gt;
+      {props.items.map((todo) =&gt; (
+        &lt;li key={todo.id}&gt;
+          &lt;span&gt;{todo.text}&lt;/span&gt;
+          &lt;button onClick={props.onDeleteTodo.bind(null, todo.id)}&gt;
+            DELETE
+          &lt;/button&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+};
+
+export default TodoList;
+</code></pre>
+<ol start="4">
+<li>Code: App.tsx</li>
+</ol>
+<pre><code class="language-typescript">import React, { useState } from "react";
+import TodoList from "./components/TodoList";
+import NewTodo from "./components/NewTodo";
+import { Todo } from "./todo.model";
+
+const App: React.FC = () =&gt; {
+  const [todos, setTodos] = useState&lt;Todo[]&gt;([]);
+
+  const todoAddHandler = (text: string) =&gt; {
+    // console.log(text);
+    setTodos((prevTodos) =&gt; [
+      ...prevTodos,
+      { id: Math.random().toString(), text: text },
+    ]); // because ...todos may not return the latest updated todos
+  };
+
+  const todoDeleteHandler = (todoId: string) =&gt; {
+    setTodos((prevTodos) =&gt; {
+      return prevTodos.filter((todo) =&gt; todo.id !== todoId);
+    });
+  };
+
+  return (
+    &lt;div className="App"&gt;
+      &lt;NewTodo onAddTodo={todoAddHandler} /&gt;
+      &lt;TodoList items={todos} onDeleteTodo={todoDeleteHandler} /&gt; {/* items is fixed */}
+    &lt;/div&gt;
+  );
+};
+
+export default App;
+</code></pre>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<ol>
+<li><a href="https://reactjs.org/docs/getting-started.html">Official React Docs</a></li>
+<li><a href="https://academind.com/learn/react/">More React Resources</a></li>
+<li><a href="https://create-react-app.dev/docs/adding-typescript/">create-react-app + TypeScript Docs</a></li>
+</ol>
+<h2>Section 15: Node.js + Express &amp; TypeScript</h2>
+<h3>Module Introduction</h3>
+<h3>Executing TypeScript Code with Node.js</h3>
+<h3>Setting up a Project</h3>
+<h3>Finished Setup &amp; Working with Types (in Node + Express Apps)</h3>
+<h3>Adding Middleware &amp; Types</h3>
+<h3>Working with Controllers &amp; Parsing Request Bodies</h3>
+<h3>More CRUD Operations</h3>
+<h3>Wrap Up</h3>
+<h3>Useful Resources &amp; Links</h3>
+<h2>Section 16: Course Roundup</h2>
+<h3>Thanks for being part of the course!</h3>
+<ol>
+<li>Keep on learning</li>
+<li>To get good at something<ol>
+<li>Use it</li>
+<li>Apply</li>
+<li>Don't lose the knowledge without using the course material</li>
+</ol>
+</li>
+</ol>

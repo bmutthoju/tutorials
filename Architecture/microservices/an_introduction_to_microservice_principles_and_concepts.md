@@ -100,7 +100,7 @@
 
 ##### Replaceability of Microservices #####
 1. Reason 1: Replaceability of microservices
-	1. If microservice no longer is maintainable, it can be re-written
+	1. If microservice is no longer maintainable, it can be re-written
 		1. Less effort as compared to deployment monolith since microservices are much smaller
 	2. Cons: It is difficult to replace a microservice on which many other microservices depend on
 		1. Since changes might affect the other microservices
@@ -187,7 +187,7 @@
 		1. Deployment is feasible only when deployment processes are automated
 2. Independent deployment - the continous delivery pipelines have to be completely independent
 	1. Integration tests conflict with this independence
-		1. They introduce dependencies between continous delivery pipelines of individula microservices
+		1. They introduce dependencies between continous delivery pipelines of individual microservices
 		2. Solution: Integration tests must be reduced to minimum
 			1. Depending on the type of communication, there are different approaches to achieve this for synchronous and asynchronous communication
 
@@ -212,7 +212,7 @@
 2. Each microservice can be independently scaled
 	1. It is possible to start additional instances of a microservice and distribute load of microservice into the instances
 		1. This improves scalability of system significantly
-			1. Example: Only catalog needs to scaled up
+			1. Example: Only catalog needs to be scaled up
 		2. Requirements to be fulfilled
 			1. They must be stateless
 				1. Or else request of specific client cannot be transferred to another instance

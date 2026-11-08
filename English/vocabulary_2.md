@@ -1,0 +1,7 @@
+acquiesce
+feigns
+impunity
+endeavor
+insinuations
+council
+Perpetuating

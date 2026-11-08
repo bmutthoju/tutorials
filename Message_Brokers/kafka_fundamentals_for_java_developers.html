@@ -1,0 +1,3855 @@
+<h1>Kafka Fundamentals for Java Developers</h1>
+<h2>Section 1: Introduction</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Fundamentals:<ol>
+<li>What is kafka</li>
+<li>Why do we need it</li>
+<li>Use-cases where it is used</li>
+<li>Who is using it</li>
+</ol>
+</li>
+<li>Kafka architectural components<ol>
+<li>Records</li>
+<li>Topics</li>
+<li>Partitions</li>
+<li>Consumer groups</li>
+<li>...</li>
+</ol>
+</li>
+<li>Kafka broker</li>
+<li>Kafka cli<ol>
+<li>Creation of brokers</li>
+<li>Send and receive messages</li>
+</ol>
+</li>
+<li>Kafka client API<ol>
+<li>For producers and consumers</li>
+</ol>
+</li>
+<li>Simple and custom serializers and deserializers<ol>
+<li>Object type records or events</li>
+</ol>
+</li>
+<li>Avro: Framework to send and receive data in a language neutral fashion<ol>
+<li>Confluent schema registry</li>
+<li>Avro schema</li>
+<li>Generate stubs from schema (maven avro plugin)</li>
+</ol>
+</li>
+<li>Producers<ol>
+<li>Partitioner classes</li>
+<li>Advanced properties</li>
+</ol>
+</li>
+<li>Consumers<ol>
+<li>Consumer groups</li>
+<li>Rebalancing</li>
+<li>Offset commits</li>
+<li>Advanced properties</li>
+</ol>
+</li>
+<li>Stream processing<ol>
+<li>Kafka streaming API</li>
+<li>Applications</li>
+</ol>
+</li>
+<li>Spring and Spring Boot with Kafka</li>
+</ol>
+<h3>How to make the best of this course</h3>
+<ol>
+<li>Lectures</li>
+<li>Quiz</li>
+<li>Assignments</li>
+<li>Pre-requisites<ol>
+<li>Software Setup</li>
+<li>IntelliJ or STS</li>
+</ol>
+</li>
+<li>Kafka setup</li>
+<li>Kafka CLI</li>
+<li>Confluent Platform</li>
+</ol>
+<h3>Completed projects on GitHub</h3>
+<ol>
+<li>github.com/bharaththippireddy</li>
+</ol>
+<h3>Slides Used in the Course</h3>
+<h3>Download Assignment Solutions</h3>
+<h2>Section 2: The Fundamentals</h2>
+<h3>What is Kafka</h3>
+<ol>
+<li>Kafka is a distributed commit log<ol>
+<li>Microservice applications put events onto a log<ol>
+<li>Term for log is topic</li>
+</ol>
+</li>
+<li>Kafka stores events in orderly fashion and writes events to disk (replicated disks - ensure that events are not lost)</li>
+</ol>
+</li>
+<li>Microservices exchange messages through topics or streams in realtime<ol>
+<li>We can process data as soon as they are produced, we can have real-time analytics<ol>
+<li>We can give recommendations based on the analytics</li>
+</ol>
+</li>
+<li>Each service can define it's own computational logic<ol>
+<li>Solution: <strong>Streaming API</strong> (the following operations can be done)<ol>
+<li>Grouping</li>
+<li>Aggregating</li>
+<li>Filtering</li>
+<li>Joining</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Data in external services/data bases<ol>
+<li>Solution: Kafka connect<ol>
+<li>Open source and commercial Kafka connectors (to fetch data into Kafka or send data to other sources)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Why Kafka</h3>
+<ol>
+<li>Advantages<ol>
+<li>Multiple producers and consumers<ol>
+<li>Multiple producers can write to a <strong>single</strong> topic at the same time</li>
+<li>Multiple consumers can subscribe and consume messages from the same topic</li>
+<li>Kafka retains message and multiple consumers can read the message and process at any time</li>
+<li>Kafka supports consumer groups and partitions<ol>
+<li>We can have parallel consumers running which can be part of a consumer group</li>
+</ol>
+</li>
+<li>Topic is divided into multiple partitions<ol>
+<li>Messages from producers will go across the partitions to enable parallel processing</li>
+<li>Kafka ensures that within a consumer group, the message is <strong>consumed only once</strong><ol>
+<li>Only one consumer in the group will be able to consume a particular message<ol>
+<li>No duplication</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Enables multiple applications to process the same message but within an application, parallelism is allowed through consumer group</li>
+</ol>
+</li>
+<li>Disk Based Persistence<ol>
+<li>If a consumer is down due to restart or a crash, when it comes up, Kafka would have retained the message in a disk storage for configurable amount of time</li>
+</ol>
+</li>
+<li>Scalability<ol>
+<li>As the load on Kafka broker increases, the brokers can be easily scaled<ol>
+<li>We can have <strong>multiple brokers</strong> (in cluster mode)<ol>
+<li>If one broker goes down, another broker will take over (availability)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Performance<ol>
+<li>Through the above mechanism</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Usecases</h3>
+<ol>
+<li>Pub-Sub<ol>
+<li>Used to exchange messages across micro-services<ol>
+<li>One micro-service can send notification to a kafka topic and another micro-service will subscribe and consume the notification</li>
+</ol>
+</li>
+<li>Producer-Consumer pattern can be implemented<ol>
+<li>Order processing</li>
+<li>Shipment</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Activity Tracking<ol>
+<li>Used to track user activity and fed to a topic</li>
+<li>The events are read by an ML algorithm which can be used to give recommendations to the user</li>
+<li>Browser application can read the recommendations and push them to the user<ol>
+<li>Example: Amazon, Netflix, ...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Metrics and Log Aggregation<ol>
+<li>As applications produce metrics on a regular basis, all of them can be aggregated and stored in a <strong>permanent storage</strong> to do analysis<ol>
+<li>Real-time<ol>
+<li>Permanent storage:<ol>
+<li>Elasticsearch</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Analysis<ol>
+<li>Security threats</li>
+<li>Unwanted activities</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Commit Log<ol>
+<li>As and when DB changes happen, the changes can be streamed onto kafka topic<ol>
+<li>Used to replicate database if required</li>
+<li>Used to analyse what is going on with the DB<ol>
+<li>To check threads of unwanted activity</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Stream Processing (custom use cases are supported)<ol>
+<li><strong>Data Pipelines</strong><ol>
+<li>As data flows through different stages of the pipeline, we can have transformations and computational logic (at each step)<ol>
+<li>Big data tools like hadoop, storm, ... can be part of the stream processing</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Where is Kafka Being Used</h3>
+<ol>
+<li>Data platforms</li>
+<li>Micro-service applications</li>
+<li>Monitoring Trucks, Cars, ... (in realtime)</li>
+<li>Factories<ol>
+<li>To analyse IoT device data - to make decisions on the fly</li>
+</ol>
+</li>
+<li>Financial transactions<ol>
+<li>To process banking and stock exchange transactions</li>
+</ol>
+</li>
+<li>Hospitals<ol>
+<li>Patient info can be tracked and monitored (any changes in condition can also be tracked to treat him better)</li>
+</ol>
+</li>
+<li>Retail, Hotel, and Travel<ol>
+<li>Kafka can be used to gather and react to customer interactions and recommendations can be shown</li>
+</ol>
+</li>
+</ol>
+<h3>Who is Using Kafka</h3>
+<ol>
+<li>Twitter<ol>
+<li>Mobile app performance management and analytics<ol>
+<li>5 Billion sessions/day</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Uber<ol>
+<li><blockquote>
+<p>1 Trillion events per day</p>
+</blockquote>
+<ol>
+<li>Log aggregation</li>
+<li>DB change</li>
+<li>Log maintenance</li>
+<li>Other even streaming use-cases</li>
+</ol>
+</li>
+<li>uReplicator (contribution)<ol>
+<li>Cluster replication solution to the open-source world</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Netflix<ol>
+<li>Messaging backbone<ol>
+<li>4000 kafka brokers in cloud handling 7 Billion events per day</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Yahoo<ol>
+<li>Real-Time analytics<ol>
+<li>20 GB data/second</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Pinterest<ol>
+<li>Real Time Ads<ol>
+<li>2k brokers - handling 8B events per day</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Kafka Architectural Components</h3>
+<ol>
+<li>Kafka Architecture<ol>
+<li>Broker<ol>
+<li>Kafka <strong>cluster</strong> is a collection of <strong>Kafka brokers</strong> (aka <strong>Kafka servers</strong> or <strong>Kafka nodes</strong>)</li>
+<li><strong>It is used to exchange messages between producer and consumer</strong></li>
+<li>Broker ensures that<ol>
+<li>Producer and consumer are decoupled</li>
+<li>Messages are persisted and durable</li>
+</ol>
+</li>
+<li>Broker is a <strong>Java process</strong></li>
+<li>We can increase the brokers to provide scalability and durability of messages</li>
+<li><strong>One of the brokers will be elected as cluster leader or cluster controller</strong><ol>
+<li>Other brokers will follow the leader</li>
+<li><strong>Leader</strong><ol>
+<li>Responsible for managing<ol>
+<li>Partitions</li>
+<li>Replicas</li>
+<li>Other administrative operations</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ZooKeeper<ol>
+<li>Responsible for electing a <strong>cluster controller</strong> or <strong>leader</strong><ol>
+<li>All broker nodes will register with ZooKeeper component (when they come up)</li>
+<li>Zookeeper will elect one of the brokers as leader<ol>
+<li>If that leader goes down, it will pick up another broker as the leader</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Maintain state of the cluster (metadata of leader and followers)<ol>
+<li>States</li>
+<li>Quotas</li>
+<li>Access Control List</li>
+</ol>
+</li>
+<li>ZooKeeper is an Apache project of its own<ol>
+<li><strong>Kafka comes bundled with ZooKeeper</strong><ol>
+<li>Can get replaced with Kafka's own component in the future</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Producers<ol>
+<li>Produce data</li>
+<li>Communicate using TCP protocol</li>
+<li>They connect directly with the brokers and start sending messages to topics</li>
+<li><strong>Producer can send messages to multiple topics and a topic can receive messages from multiple producers</strong></li>
+</ol>
+</li>
+<li>Consumers<ol>
+<li>Consumes from one or more topics (data or records) and processes</li>
+<li><strong>They coordinate among themselves to balance the load</strong></li>
+<li><strong>They track each other's progress</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Kafka Records</h3>
+<ol>
+<li>Record<ol>
+<li>Producer constructs and exchanges data using <strong>record</strong></li>
+<li>7 attributes of record<ol>
+<li>Topic<ol>
+<li>Topic to which the record needs to be written to</li>
+</ol>
+</li>
+<li>Partition<ol>
+<li>0 based index to which the record should be written<ol>
+<li><strong>A record is associated only with one partition</strong></li>
+</ol>
+</li>
+<li>Number can be set by producer<ol>
+<li>If not set, the number is calculated based on <strong>Key</strong> the producer provides<ol>
+<li>Hash value is calculated and result is used to identify the partition</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Offset<ol>
+<li>64 bit signed integer</li>
+<li>Used to locate the record within a partition</li>
+</ol>
+</li>
+<li>Timestamp<ol>
+<li>Set by producer or if not set, producer api sets it internally to current time</li>
+</ol>
+</li>
+<li>Key<ol>
+<li>Optional non-unique value</li>
+<li>Array of bytes<ol>
+<li>It is used to calculate partition number</li>
+</ol>
+</li>
+<li>If this value is not set, Kafka will decide partition number in a round robin fashion (can change in the future)</li>
+<li><strong>If same key is set for multiple records, all those records will end up in the same partition</strong><ol>
+<li><strong>To uniquely identify a record, use the following as composite key:</strong><ol>
+<li><strong>partition number</strong></li>
+<li><strong>offset</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Headers<ol>
+<li>Optional key-value pair<ol>
+<li>Just like HTTP headers</li>
+</ol>
+</li>
+<li>Used to pass meta-data</li>
+</ol>
+</li>
+<li>Value<ol>
+<li>Payload</li>
+<li>Array of bytes<ol>
+<li>Contains business data</li>
+</ol>
+</li>
+<li>It is optional (but no value makes no sense)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Assignment:<ol>
+<li>Search for Kafka producer record<ol>
+<li><a href="https://kafka.apache.org/23/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html">https://kafka.apache.org/23/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Topics Partitions Offsets and Replication</h3>
+<ol>
+<li>Topic<ol>
+<li>Messages are sent to a topic</li>
+<li>Each topic can be divided into one or more partitions<ol>
+<li>Partition is a single log of records</li>
+</ol>
+</li>
+<li>Messages are appended to the end of a partition as they come in</li>
+<li>Each partition gets a unique number</li>
+<li>Each message inside a partition gets an offset value<ol>
+<li>It is like array index and starts from 0<ol>
+<li>Partition number + offset =&gt; uniquely identifies a record</li>
+</ol>
+</li>
+<li>Kafka stores partition &amp; offset values inside a record or message</li>
+</ol>
+</li>
+<li><strong>Messaging order across partitions is not guaranteed but order within a partition is maintained</strong></li>
+<li>If producer specifies partition number, Kafka puts that message into that partition with that partition number</li>
+<li>If producer does not specify partition number, Kafka will calculate a hash if key is specified, that is the partition number</li>
+<li>If producer does not specify a partition number or key, Kafka puts the message into one of the partitions as per round robin algorithm</li>
+<li>Partitions give the property of scalability &amp; availability<ol>
+<li>The partitions can be scaled across brokers<ol>
+<li><strong>Instead of putting all partitions in one broker, we can scale them across brokers</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Partitions support replication/duplication<ol>
+<li>Gives high availability</li>
+<li>Example:<ol>
+<li>Partition 0 - can be present in broker 0 and broker 1<ol>
+<li>If one broker goes down, another broker will take over<ol>
+<li>Which broker processes?<ol>
+<li>Leader &amp; follower decide<ol>
+<li>Each partition has a leader and a follower<ol>
+<li>Broker 0<ol>
+<li>Partition 0 (L)</li>
+<li>Partition 1 (L)</li>
+<li>Partition 3 (F)</li>
+</ol>
+</li>
+<li>Broker 1<ol>
+<li>Partition 2 (L)</li>
+<li>Partition 0 (F)</li>
+<li>Partition 1 (F)</li>
+</ol>
+</li>
+<li>Broker 2<ol>
+<li>Partition 3 (L)</li>
+<li>Partition 2 (F)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Only if <strong>leader goes down</strong>, <strong>follower will take over</strong></li>
+<li><strong>We can specify replication using the replication factor we want</strong><ol>
+<li>1 - no duplication</li>
+<li>2 - one L, one F</li>
+<li>3 - one L, two F</li>
+</ol>
+</li>
+<li>Replication factor configuration:<ol>
+<li>Can be specified when defining a topic</li>
+<li>Can be specified when constructing a cluster</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Consumer Groups</h3>
+<ol>
+<li>Consumer group<ol>
+<li>It is a set of consumers working together to consume a topic</li>
+<li>It ensures that <strong>each partition is consumed by only one consumer</strong><ol>
+<li>A consumer can consume from multiple partitions as well</li>
+</ol>
+</li>
+<li>Assigning a consumer to a partition is called the ownership of partition by consumer</li>
+<li><strong>Consumers can be horizontally scaled</strong><ol>
+<li>If load on a consumer is increasing, a consumer can be created which will take over a partition</li>
+</ol>
+</li>
+<li>If a consumer fails:<ol>
+<li>Remaining consumers can coordinate among themselves and take over the partitions that the failed consumer was working with</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Batching</h3>
+<ol>
+<li>KafkaProducer:<ol>
+<li>Does not send only one message to the broker<ol>
+<li><p>They batch them to the topic and partition that they have to go to</p>
+<pre><code> Topic 1
+ Partition 0
+ - Batch 0
+ - Batch 1
+ - Batch 2
+ 
+ Topic 2
+ Partition 1
+ - Batch 0
+ - Batch 1
+ - Batch 2
+ 
+</code></pre>
+</li>
+<li><p><strong>Batch</strong></p>
+<ol>
+<li>It is a collection of <strong>messages</strong> all of which must be written to the <strong>same topic</strong> and <strong>same partition</strong></li>
+<li>Reduces network round-trips (by avoiding sending each message across network to broker)<ol>
+<li>Larger the batch size, more messages can be processed in a given timeframe</li>
+</ol>
+</li>
+<li>Each batch is <strong>compressed</strong> providing more efficient data transfer and storage<ol>
+<li>Trade-off: processing time</li>
+</ol>
+</li>
+<li>Trade-off: <ol>
+<li>If batch size is too big, there might be more delay before sending the message</li>
+<li>If batch size is too small, there are more network round-trips</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 1: The Fundamentals</h3>
+<h2>Section 3: Kafka in Action</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Kafka up and running on local machine (Windows and Mac)</li>
+<li>Kafka cli to construct and manage kafka topics</li>
+<li>Kafka producers and consumers</li>
+</ol>
+<h3>Java Version</h3>
+<ol>
+<li>Kafka is happy usually happy with any Java version</li>
+<li>Second method:<ol>
+<li>Download Confluent Platform &amp; launch Kafka<ol>
+<li>Launches several other useful tools like <strong>Schema Registry</strong><ol>
+<li>Confluent needs Java 8 and Java 11 (not higher version)<ol>
+<li>Code can be written in a higher version of Java<ol>
+<li>Don't add higher version of Java to path for Confluence</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Install on Windows</h3>
+<ol>
+<li><p><code>java -version</code></p>
+</li>
+<li><p>Search for <strong>kafka download</strong></p>
+<ol>
+<li>Download binary latest version<ol>
+<li><code>.tgz</code> file (windows and linux)</li>
+</ol>
+</li>
+<li><code>bin</code><ol>
+<li>All binaries<ol>
+<li><code>.sh</code> - linux</li>
+<li><code>windows</code> - windows<ol>
+<li>zookeeper server start and stop</li>
+<li>kafka server start and stop</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Add <code>bin\windows</code> to PATH in Windows</li>
+</ol>
+</li>
+<li><code>config</code><ol>
+<li>Zookeeper properties</li>
+<li>Kafka properties</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Open new CMD</p>
+<ol>
+<li><p>Start zookeeper:</p>
+<pre><code> zookeeper-server-start C:\&lt;path&gt;\config\zookeeper.properties
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Open new CMD</p>
+<ol>
+<li><p>Start kafka broker:</p>
+<pre><code> kafka-server-start C:\&lt;path&gt;\config\server.properties
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Install on Mac</h3>
+<ol>
+<li><p>Using homebrew</p>
+<pre><code> brew install kafka
+ 
+</code></pre>
+<ol>
+<li><p>cmd + shift + g (from terminal)</p>
+<ol>
+<li>Copy <code>/usr/local/Cellar/kafka/2.8.0/</code><ol>
+<li>Has binaries</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>/usr/local/etc/kafka</code></p>
+<ol>
+<li>Has configuration files<ol>
+<li>Kafka assumes zookeeper is running on localhost:2181</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Start zookeeper</p>
+<pre><code> zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
+ 
+</code></pre>
+</li>
+<li><p>Start kafka</p>
+<pre><code> kafka-server-start /usr/local/etc/kafka/server.properties
+</code></pre>
+</li>
+</ol>
+<h3>Kafka Commandline</h3>
+<ol>
+<li><p>Using kafka commandline</p>
+</li>
+<li><p>Download txt from resources</p>
+</li>
+<li><p>Commands:</p>
+<pre><code> kafka-topics --list --bootstrap-server localhost:9092 # **(M)**
+ 
+ # shows default topic - __consumer_offsets (used to store offset details)
+ 
+ kafka-topics --create --replication-factor 1 --partitions 1 --topic first-topic --bootstrap-server localhost:9092
+ 
+ # Run the list command to see the new topic
+ 
+ kafka-topics --describe --topic first-topic --bootstrap-server localhost:9092
+ 
+ # Topic name, id, config info, replicas, replication factor, ...
+ 
+ kafka-console-consumer --bootstrap-server localhost:9092 --topic first-topic
+ 
+ # starts polling the topic
+ 
+ kafka-console-producer --broker-list localhost:9092 --topic first-topic
+ 
+ &gt; kafka is easy
+ 
+ # consumer displays the message
+ 
+ # ctrl + c to stop
+ 
+ kafka-topics --delete --bootstrap-server localhost:9092 --topic first-topic
+ 
+ # list the topics and you don't see the deleted topic
+ # If delete is not working set the following in server.properties
+ 
+ delete.topic.enable=true
+</code></pre>
+</li>
+</ol>
+<h3>Kafka APIs</h3>
+<ol>
+<li>Kafka gives 5 APIs (in Java and Scala)<ol>
+<li>Python also has support</li>
+</ol>
+</li>
+<li>APIs<ol>
+<li>Admin API<ol>
+<li>Used to manage<ol>
+<li>Topics</li>
+<li>Brokers</li>
+<li>Other objects</li>
+</ol>
+</li>
+<li>KafkaDrop: GUI based tool makes use of Admin API and give us browser based access to Kafka cluster</li>
+</ol>
+</li>
+<li>Producer API and Consumer API<ol>
+<li>Producer API: Used to publish stream of<ol>
+<li>Events</li>
+<li>Records</li>
+<li>Messages</li>
+</ol>
+</li>
+<li>Consumer API: Used to read the messages</li>
+<li>Producer API<ol>
+<li>They take care of:<ol>
+<li>Serialization</li>
+<li>Partition assignment</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Consumer API<ol>
+<li>They take care of:<ol>
+<li>DeSerialization</li>
+<li>Rebalancing</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Streams API<ol>
+<li>Allows us to implement stream processing applications<ol>
+<li>Allows to process event streams and apply transformations and maintain state...</li>
+</ol>
+</li>
+<li>We read from a topic, apply tranformation and write to another topic</li>
+</ol>
+</li>
+<li>Connect API<ol>
+<li>To build and run re-usable data import and export connectors</li>
+<li>They allow us to import and export data from other systems to integrate with Kafka<ol>
+<li>There are ready to use connectors<ol>
+<li>MySQL</li>
+<li>PostgreSQL</li>
+<li>Elasticsearch</li>
+<li>...</li>
+</ol>
+</li>
+<li>The connectors are used to fetch data from the sources or push data to the sources</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Documentation</h3>
+<ol>
+<li>To learn more:<ol>
+<li>Search for kafka documentation<ol>
+<li>Apache kafka website<ol>
+<li>Read the docs<ol>
+<li>Examples</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Confluent Documentation<ol>
+<li>Tutorials</li>
+<li>It is a cloud based implementation of Apache opensource Kafka<ol>
+<li>Comes with ecosystem of products (not just Kafka)<ol>
+<li>Confluent CLI</li>
+<li>KsqlDB</li>
+<li>Schema Registry</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Also gives platform to run locally or on a server</li>
+<li>Click on Clients<ol>
+<li>Producer and Consumer APIs</li>
+<li>More examples and wrappers</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Search for <strong>confluent kafka tutorial</strong></li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 2: Kafka in action</h3>
+<h2>Section 4: Construct Producers and Consumers</h2>
+<h3>Kafka Producer</h3>
+<ol>
+<li><p>Workflow:</p>
+<pre><code> ProducerRecord &lt;-------------|
+   | send()                   |
+   v                          |
+ Serializer                   |
+   |                          |
+   v                          |
+ Partitioner                  |
+  |         |                 |
+  v         v                 |
+ Topic 1    Topic 2           |
+ Partion 0  Partition 1       |
+  Batch 0    Batch 0         Throw Exception
+  Batch 1    Batch 1          |
+  Batch 2    Batch 2  &lt;----|  |
+  |          |             |  |    ^
+  v          v             |  |    |
+  Kafka Broker - Fail? -&gt; Retry?   |
+     |- Success? Return Metadata --|		 
+     
+</code></pre>
+<ol>
+<li>Record:<ol>
+<li>We can set topic &amp; value</li>
+</ol>
+</li>
+<li>Send() - Producer hands over record to a Serializer<ol>
+<li>Serializer converts Java type into byte array (using <strong>key</strong> and <strong>value</strong>)<ol>
+<li>Kafka has inbuilt serializers that can work with common types<ol>
+<li>Custom serializers can be written<ol>
+<li>Avro can be used as well</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Serializer hands the record over to a partitioner<ol>
+<li>Partitioner checks if the record has a partition number</li>
+<li>If partition number exists, it will use it, or else, it will use value of key and hashing algorithm to calculate partition number. If both don't exist, it will assign using round robin</li>
+<li>Partitioner knows to which partition the record must go to<ol>
+<li>It adds the record to a batch of a particular topic and partition</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>A separate thread picks up batch and sends to kafka broker</li>
+<li>If broker receives the message and writes it to Kafka, we get <strong>record metadata</strong> back</li>
+<li>If write fails, we get failure back<ol>
+<li>Producer can retry again to send back to that partition. If it fails after retry, it will throw an exception</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Producer API Walkthrough</h3>
+<ol>
+<li>Construct an instance of <code>KafkaProducer&lt;String, Integer&gt;</code> class (constructor takes properties)<ol>
+<li>Key</li>
+<li>Value</li>
+</ol>
+</li>
+<li><code>Properties</code><ol>
+<li><p>Mandatory properties</p>
+<pre><code> props.setProperty("bootstrap.servers", "localhost:9092"); // list of brokers, the producer should connect to
+ props.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer"); // Serializer is used to convert simple types to byte array (comes with kafka client library)
+ props.setProperty("value.serializer", "org.apache.kafka.common.serialization.IntegerSerializer"); // converts value into byte array
+ 
+ KafkaProducer&lt;String, Integer&gt; producer = new KafkaProducer&lt;String, Integer&gt;(props);
+ ProducerRecord&lt;String, Integer&gt; record = new ProducerRecord&lt;&gt;("OrderTopic", "Mac Book Pro", 10); // Topic, Key, Value
+ 
+ try {
+     producer.send(record, new OrderCallback()); // fire and forget manner - don't handle response
+ } catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+ 
+</code></pre>
+<ol>
+<li><p>Serializers implement <code>Serializer</code> interface from Kafka</p>
+</li>
+<li><p>To receive response:</p>
+<pre><code> Future&lt;RecordMetadata&gt; send = producer.send(record);
+ RecordMetadata recordMetadata = send.get(); // waits until response is obtained
+ 
+</code></pre>
+</li>
+<li><p>Asynchronous: Passing callback</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a Producer Project</h3>
+<ol>
+<li>Construct Maven project<ol>
+<li>Search for: <code>archetype-quickstart</code><ol>
+<li>Group ID: org.bharath.kafka</li>
+<li>Artifact: orderproducer</li>
+</ol>
+</li>
+<li>Remove the entire build section if it exists</li>
+<li>Specify Java version</li>
+</ol>
+</li>
+<li>Search for kafka clients maven dependency<ol>
+<li>Latest version<ol>
+<li><code>kafka-clients</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a Producer</h3>
+<ol>
+<li><p>OrderProducer class with main method</p>
+<pre><code> Properties props = new Properties();
+ props.setProperty("bootstrap.servers", "localhost:9092");
+ props.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer"); // ctrl+shift+t
+ props.setProperty("value.serializer", "org.apache.kafka.common.serialization.IntegerSerializer"); // ctrl+shift+t
+ 
+ KafkaProducer&lt;String, Integer&gt; producer = new KafkaProducer&lt;String, Integer&gt;(props);
+ ProducerRecord&lt;String, Integer&gt; record = ProducerRecord&lt;&gt;("OrderTopic", "Mac Book Pro", 10);
+ 
+ try {
+     producer.send(record);
+     System.out.println("Message Sent Successfully");
+ } catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Sync Send</h3>
+<ol>
+<li><p><code>Future&lt;RecordMetadata&gt; future = producer.send(record);</code></p>
+<pre><code> RecordMetadata recordMetadata = producer.send(record).get();
+ System.out.println(recordMetadata.partition());
+ System.out.println(recordMetadata.offset());
+</code></pre>
+</li>
+</ol>
+<h3>Async Send</h3>
+<ol>
+<li><p>Callback</p>
+<pre><code> producer.send(record, new OrderCallback());
+ 
+</code></pre>
+<ol>
+<li><p>Callback</p>
+<pre><code> import org.apache.kafka.clients.producer.Callback;
+ 
+ public class OrderCallback implements Callback {
+     @Override
+     public void onCompletion(RecordMetadata metadata, Exception exception) {
+         System.out.println(metadata.partition());
+         System.out.println(metadata.offset());
+         if (exception != null) {
+             exception.printStackTrace();
+         }
+     }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>API Walkthrough</h3>
+<ol>
+<li><p>OrderConsumer</p>
+<pre><code> Properties props = new Properties();
+ props.setProperty("bootstrap.servers", "localhost:9092");
+ props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+ props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
+ props.setProperty("group.id", "OrderGroup"); // consumer belongs to a group (not producer)
+ 
+ KafkaConsumer&lt;String, Integer&gt; consumer = new KafkaConsumer&lt;&gt;(props);
+ consumer.subscribe(Collections.singletonList("OrderTopic")); // consumer can subscribe to multiple topics - even using regex
+ 
+ ConsumerRecords&lt;String, Integer&gt; orders = consumer.poll(Duration.ofSeconds(20)); // Consumer polls for messages with timeout
+ for (ConsumerRecord&lt;String, Integer&gt; order : orders) {
+     System.out.println("Product Name " + order.key());
+     System.out.println("Quantity " + order.value());
+ }
+ consumer.close();
+ 
+</code></pre>
+<ol>
+<li><code>poll</code> - does many things behind the scenes<ol>
+<li>Partition re-balancing</li>
+<li>Checks heart beats</li>
+<li>Data fetching</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a Consumer Project</h3>
+<ol>
+<li><p>Spring Tool Suite &gt; File Menu &gt; Other &gt; Maven Project &gt; Next &gt; Next &gt; Search for "maven-archetype-quickstart"</p>
+</li>
+<li><p>Group id: com.bharath.kafka</p>
+</li>
+<li><p>Artifact id: order-consumer</p>
+</li>
+<li><p>Open pom.xml</p>
+<ol>
+<li><code>maven-compiler-source</code>: <code>14</code></li>
+<li><code>maven-compiler-target</code>: <code>14</code></li>
+</ol>
+</li>
+<li><p>Delete <code>build</code> section</p>
+</li>
+<li><p>Paste the following under <code>dependencies</code></p>
+<pre><code> &lt;dependency&gt;
+     &lt;groupId&gt;org.apache.kafka&lt;/groupId&gt;
+     &lt;artifactId&gt;kafka-clients&lt;/artifactId&gt;
+     &lt;version&gt;2.8.0&lt;/version&gt;
+ &lt;/dependency&gt;
+</code></pre>
+<ol>
+<li>Do <strong>Maven &gt; Update Project</strong></li>
+</ol>
+</li>
+</ol>
+<h3>Consume Messages</h3>
+<ol>
+<li><p>New class: <code>OrderConsumer</code> with a <code>main</code> method:</p>
+<pre><code> public static void main(String[] args) {
+     Properties props = new Properties();
+     props.setProperty("bootstrap.servers", "localhost:9092");
+     props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer);
+     props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
+     props.setProperty("group.id", "OrderGroup"); // group the consumer belongs to
+
+     KafkaConsumer&lt;String, Integer&gt; consumer = new KafkaConsumer&lt;&gt;(props);
+     consumer.subscribe(Collections.singletonList("OrderTopic"));
+
+     // consumer.poll(Duration.ZERO); // polls to see if the topic has any messages, or else returns
+     ConsumerRecords&lt;String, Integer&gt; orders = consumer.poll(Duration.ofSeconds(20)); // within 20 seconds checks if there is a message or else returns after 20 seconds
+
+     for (ConsumerRecord&lt;String, Integer&gt; order : orders) {
+         System.out.println("Product Name" + order.key());
+         System.out.println("Product Value" + order.value());
+     }
+     consumer.close();
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Quiz 3: Construct Producers and Consumers</h3>
+<h3>Assignment 1: Construct Consumers and Producers</h3>
+<ol>
+<li><p>Producer:</p>
+<pre><code> Properties props = new Properties();
+ props.setProperty("bootstrap.servers", "localhost:9092");
+ props.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer"); // ctrl+shift+t
+ props.setProperty("value.serializer", "org.apache.kafka.common.serialization.StringSerializer"); // ctrl+shift+t
+ 
+ KafkaProducer&lt;String, String&gt; producer = new KafkaProducer&lt;String, String&gt;(props);
+ ProducerRecord&lt;String, String&gt; record = ProducerRecord&lt;&gt;("TruckTrackerTopic", "IER242323", "22.5726 N, 88.3639 E");
+ 
+ try {
+     producer.send(record);
+     System.out.println("Message Sent Successfully");
+ } catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+</code></pre>
+</li>
+<li><p>Consumer:</p>
+<pre><code> Properties props = new Properties();
+ props.setProperty("bootstrap.servers", "localhost:9092");
+ props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer);
+ props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+ props.setProperty("group.id", "TruckTrackerGroup"); // group the consumer belongs to
+
+ KafkaConsumer&lt;String, String&gt; consumer = new KafkaConsumer&lt;&gt;(props);
+ consumer.subscribe(Collections.singletonList("TruckTrackerTopic"));
+
+ ConsumerRecords&lt;String, String&gt; truckTrackers = consumer.poll(Duration.ofSeconds(20)); // within 20 seconds checks if there is a message or else returns after 20 seconds
+
+ for (ConsumerRecord&lt;String, Integer&gt; truckTracker : truckTrackers) {
+     System.out.println("Truck Tracker Id" + truckTracker.key());
+     String[] latLong = truckTracker.split(",");
+     System.out.println("Latitude: " + latLong[0]);
+     System.out.println("Longitude: " + latLong[1]);
+ }
+ consumer.close();
+</code></pre>
+</li>
+</ol>
+<h2>Section 5: Use Custom Serializers and Deserializers</h2>
+<h3>Introduction</h3>
+<ol>
+<li>In-built Kafka serializers and deserializers can be used to convert Strings, Integers, Longs, ... into byte arrays.</li>
+<li>For custom object types, we need to define our own custom serializers and deserializers</li>
+<li>Steps:<ol>
+<li>Implement <code>Serializer&lt;T&gt;</code> from Kafka</li>
+<li>Provide implementation<ol>
+<li>Convert object into a byte array<ol>
+<li>An easy way: Jackon library (object mapper, convert to a string and then into bytes)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Implement <code>Deserializer&lt;T&gt;</code> from Kafka</li>
+<li>Provide implementation<ol>
+<li>Convert a byte array into an object<ol>
+<li>An easy way: Jackson library (object mapper' <code>readValue</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Use the serializer and deserializer<ol>
+<li><p>Provide serializer and deserializer as properties</p>
+<pre><code> props.setProperty("value.serializer", "&lt;package&gt;.OrderSerializer");
+ ...
+ props.setProperty("value.deserializer", "&lt;package&gt;.OrderDeserializer");
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a Serilizer</h3>
+<ol>
+<li><p>Order class:</p>
+<pre><code> public class Order {
+     private String customerName;
+     private String product;
+     private int quantity;
+
+     // Getter and setters
+ }
+</code></pre>
+</li>
+<li><p>OrderSerializer extends org.apache.kafka.common.serialization.Serializer</p>
+<pre><code> public class OrderSerializer extends Serializer&lt;Order&gt; {
+     @Override
+     public byte[] serialize(String topic, Order order) {
+         byte[] response;
+         ObjectMapper objectMapper = new ObjectMapper();
+         try {
+             response = objectMapper.writeValueAsString(order).getBytes();
+         } catch (JsonProcessingException e) {
+             e.printStackTrace();
+         }
+         return response;
+     }
+ }
+</code></pre>
+<ol>
+<li>Add <strong>com.fasterxml.jackson.core:jackson-databind:2.12.4</strong> to pom.xml</li>
+</ol>
+</li>
+<li><p>OrderProducer</p>
+<pre><code> ...
+ props.setProperty("value.serializer", "com.bharath.kafka.orderproducer.customserializers.OrderSerializer");
+
+ KafkaProducer&lt;String, Order&gt; producer = new KafkaProducer&lt;&gt;(props);
+ Order order = new Order();
+ order.setCustomerName("Bharath");
+ order.setProduct("IPhone");
+ order.setQuantity(1);
+ ProducerRecord&lt;String, Order&gt; record = new ProducerRecord&lt;&gt;("OrderCSTopic", order.getCustomerName(), order); // keep topics clean by keeping the message type same
+</code></pre>
+</li>
+</ol>
+<h3>Construct a Deserializer</h3>
+<ol>
+<li><p>Add Jackson dependency in consumer project (after <code>kafka-client</code> dependency)</p>
+</li>
+<li><p>New Package: <code>customerdeserializer</code></p>
+</li>
+<li><p>OrderDeserializer implements org.apache.kafka.common.serialization.Deerializer</p>
+<pre><code> @Override
+ public Order deserialize(String topic, byte[] data) {
+     ObjectMapper objectMapper = new ObjectMapper();
+     Order order = null;
+     try {
+         order = objectMapper.readValue(data, Order.class);
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+     return order;
+ }
+</code></pre>
+</li>
+<li><p>Open <code>OrderConsumer</code></p>
+<pre><code> props.setProperty("value.deserializer", OrderDeserializer.class.getName());
+ ...
+ KafkaConsumer&lt;String, Order&gt; consumer = new KafkaConsumer&lt;&gt;(props);
+ consumer.subscribe(Collections.singletonList("OrderCSTopic"));
+
+ ConsumerRecords&lt;String, Order&gt; records = consumer.poll(Duration.ofSeconds(20));
+ for (ConsumerRecord&lt;String, Order&gt; record : records) {
+     String customerName = record.key();
+     Order order = record.value();
+     System.out.println("Customer Name: " + customerName());
+     System.out.println("Product: " + order.getProduct());
+ }
+</code></pre>
+</li>
+<li><p>Run the applications as Java applications</p>
+</li>
+</ol>
+<h3>Quiz 4: Use Custom Serializers and Deserializers</h3>
+<h3>Assignment 2: Use Custom Serializers and Deserializers</h3>
+<ol>
+<li>TruckTracker</li>
+</ol>
+<h2>Section 6: Use Avro</h2>
+<h3>Introduction</h3>
+<ol>
+<li>We do not have to define customer serializers and deserializers</li>
+<li>Avro: Apache open-source project<ol>
+<li>Gives us a language neutral syntax<ol>
+<li>Schema file:<ol>
+<li>Consumer side: Language object (Order, Consumer, Logs, ...)</li>
+<li>Producer side: <code>KafkaAvroSerializer</code><ol>
+<li>It knows how to serialize a language object into a byte array by looking at the schema file</li>
+</ol>
+</li>
+<li>We then hand the byte array to Kafka broker</li>
+<li>Consumer side: <code>KafkaAvroDeserializer</code></li>
+<li>Producer and consumer exchange the schema file through a <strong>Schema Registry</strong><ol>
+<li><code>KafkaAvroSerializer</code> pushes schema to the <strong>Schema Registry</strong></li>
+</ol>
+</li>
+<li><code>KafkaAvroDeserializer</code> will look at Consumer configuration where Schema Registry URL is defined and pull the schema</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Schema:<ol>
+<li><p>JSON</p>
+<ol>
+<li>JSON String</li>
+<li>JSON Object (typically)</li>
+<li>JSON Array</li>
+</ol>
+</li>
+<li><p>Data types used:</p>
+<ol>
+<li>null</li>
+<li>int</li>
+<li>long</li>
+<li>float</li>
+<li>double</li>
+<li>bytes</li>
+<li>string</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> {
+     "namespace": "com.bharath.kafka.avro",
+     "type": "record",
+     "name": "Order",
+     "fields": [
+         {
+             "name": "customerName",
+             "type": "string"
+         },
+         {
+             "name": "product",
+             "type": "string"
+         },
+         {
+             "name": "quantity",
+             "type": "int"
+         }
+     ]
+ }
+</code></pre>
+<ol>
+<li><code>type</code>: default value is <code>record</code></li>
+</ol>
+</li>
+<li><p>We can generate java objects using the schema</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Schema Registry</h3>
+<ol>
+<li>Each record produced will comply to Avro schema<ol>
+<li>Whenever schema changes, consumer needs to know about the change<ol>
+<li>Hence the schema registry servers</li>
+</ol>
+</li>
+<li>Schema registry servers must maintain different versions of the schema</li>
+</ol>
+</li>
+</ol>
+<h3>The Behind the Scenes</h3>
+<ol>
+<li>Schema Registry:<ol>
+<li>Producers:<ol>
+<li>Avro Schema file</li>
+<li><code>AvroSerializer</code> class<ol>
+<li>Converts data into bytes</li>
+<li>Ensures that the data in compliant with the schema</li>
+<li>Pushes schema file to Schema registry</li>
+<li>Subject:<ol>
+<li>It is a scope in which a schema evolves over time</li>
+</ol>
+</li>
+<li>Stores unique <code>SchemaId</code> (assigned by Schema Registry) in Header section of record going out</li>
+<li>Puts data in record &amp; record will be sent to Kafka brokers</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Consumer<ol>
+<li><code>AvroDeserializer</code> class<ol>
+<li>Looks at <code>SchemaId</code> in the headers section of the record</li>
+<li>Connects to schema registry (using Schema Registry URL provided in the consumer)</li>
+<li>Fetches the schema</li>
+<li>Validates the data that came in against the schema</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Versioning<ol>
+<li>As new schemas are pushed, the versioning in maintained b the schema registry<ol>
+<li>Latest schema version id is maintained in the record that will be sent to the consumer</li>
+<li>Consumer validates the data as per the id that came in</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Schema registry stores the schemas behind the scenes in Kafka in <code>_schemas</code> topic</li>
+</ol>
+</li>
+</ol>
+<h3>Launch Confluent Schema Registry</h3>
+<ol>
+<li>Two ways to get Schema Registry<ol>
+<li>Search for <strong>kafka schema registry github</strong><ol>
+<li>confluent/schema-registry<ol>
+<li>Download the code and follow the instructions</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Search for <strong>confluent platform download</strong><ol>
+<li>Click on <strong>Free Confluent Trial...</strong><ol>
+<li>What is confluent?<ol>
+<li>It is a cloud based implementation of the entire Kafka ecosystem (a lot of tools)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Two options:<ol>
+<li>Cloud</li>
+<li>Software<ol>
+<li><p>We can download the entire confluent platform locally</p>
+<ol>
+<li>Unzip/install<ol>
+<li>bin/kafka*</li>
+<li>bin/confluent*<ol>
+<li>windows/*.bat</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Add the folder upto bin/windows in PATH</p>
+</li>
+<li><p>Add the folder <strong>bin</strong> using <code>export</code> commands in Mac and Linux</p>
+<pre><code> export CONFLUENT_HOME=&lt;confluent-home-directory&gt;
+ export PATH=$PATH:$CONFLUENT_HOME/bin
+</code></pre>
+</li>
+<li><p>Stop Kafka, Zookeeper etc...</p>
+</li>
+<li><p>Run the following command to start confluent platform:</p>
+<pre><code> confluent local services start # **(M)**
+</code></pre>
+<ol>
+<li>Starts:<ol>
+<li>Zookeeper</li>
+<li>Kafka</li>
+<li>Schema Registry</li>
+<li>Kafka REST API (Connect)</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Open Schema Registry:</p>
+<pre><code> http://localhost:8081/schemas
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Avro Schema</h3>
+<ol>
+<li>New source folder: src/main/resources<ol>
+<li><p>New file: order.avsc</p>
+<pre><code> {
+     "namespace": "com.bharath.kafka.avro",
+     "type": "record",
+     "name": "Order",
+     "fields": [
+         {"name": "customerName", "type": "string"},
+         {"name": "product", "type": "string"},
+         {"name": "quantity", "type": "int"}
+     ]
+ }
+</code></pre>
+<ol>
+<li>namespace: used as package name</li>
+<li>name: used as class-name</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>API Walkthrough</h3>
+<ol>
+<li>Steps:<ol>
+<li><p>Add Maven dependencies</p>
+</li>
+<li><p>Configure Avro Maven plugin</p>
+<ol>
+<li>To generate Java class out of the schema file<ol>
+<li>Order Pojo can be generated</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Producer creation</p>
+<pre><code> props.setProperty("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+ props.setProperty("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+ props.setProperty("schema.registry.url", "http://localhost:8081");
+ props.setProperty("specific.avro.reader", "true");
+ props.setProperty("group.id", "AvroOrderGroup");
+
+ KafkaProducer&lt;String, Order&gt; producer = new KafkaProducer&lt;&gt;(props);
+
+ ProducerRecord&lt;String, Order&gt; record = new ProducerRecord&lt;&gt;("OrderTopic", order.getCutomerName().toString());
+
+ try {
+     producer.send(record);
+ } catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+</code></pre>
+<ol>
+<li><code>KafkaAvroSerializer</code>:<ol>
+<li>Works with common types (String, int, ...) &amp; object types</li>
+<li>It also pushes schema to schema registry</li>
+</ol>
+</li>
+<li><code>specific.avro.reader</code>: for specific objects (<code>Order</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Configure Maven Avro Plugin</h3>
+<ol>
+<li><p>Dependencies:</p>
+<pre><code> &lt;dependencies&gt;
+     &lt;dependency&gt;
+         &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;
+         &lt;artifactId&gt;avro&lt;/artifactId&gt;
+         &lt;version&gt;1.10.2&lt;/version&gt;
+     &lt;/dependency&gt;
+     &lt;dependency&gt;
+         &lt;groupId&gt;io.confluent&lt;/groupId&gt;
+         &lt;artifactId&gt;kafka-avro-serializer&lt;/artifactId&gt;
+         &lt;version&gt;6.2.0&lt;/version&gt;
+     &lt;/dependency&gt;
+ &lt;dependencies&gt;
+
+ &lt;repositories&gt;
+     &lt;repository&gt;
+         &lt;id&gt;confluent&lt;/id&gt;
+         &lt;url&gt;http://packages.confluent.io/maven/&lt;/url&gt;
+         &lt;releases&gt;
+             &lt;enabled&gt;true&lt;/enabled&gt;
+         &lt;/releases&gt;
+         &lt;snapshots&gt;
+             &lt;enabled&gt;true&lt;/enabled&gt;
+         &lt;/snapshots&gt;
+     &lt;/repository&gt;
+ &lt;/repositories&gt;
+
+ &lt;build&gt;
+     &lt;plugins&gt;
+         &lt;plugin&gt;
+             &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;
+             &lt;artifactId&gt;avro-maven-plugin&lt;/artifactId&gt;
+             &lt;version&gt;1.10.2&lt;/version&gt;
+             &lt;executions&gt;
+                 &lt;execution&gt;
+                     &lt;phase&gt;generate-sources&lt;/phase&gt;
+                     &lt;goals&gt;
+                         &lt;goal&gt;schema&lt;/goal&gt;
+                     &lt;/goals&gt;
+                     &lt;configuration&gt;
+                         &lt;sourceDirectory&gt;${project.basedir}/src/main/resources/&lt;/sourceDirectory&gt;
+                         &lt;outputDirectory&gt;${project.basedir}/src/main/java&lt;/outputDirectory&gt;
+                     &lt;/configuration&gt;
+                 &lt;/execution&gt;
+             &lt;/executions&gt;
+         &lt;/plugin&gt;
+     &lt;/plugins&gt;
+ &lt;/build&gt;
+</code></pre>
+<ol>
+<li>Search and use the latest versions</li>
+<li>Right click on project &gt; Update Maven Project</li>
+<li>Right click &gt; Run As &gt; Maven clean</li>
+<li>Right click &gt; Run As &gt; Maven Generate Sources</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Producer</h3>
+<ol>
+<li>Right click &gt; Package &gt; *.serializers<ol>
+<li><p>OrderProducer.java</p>
+<pre><code> Properties props = new Properties();
+ props.setProperty("bootstrap.servers", "localhost:9092");
+ props.setProperty("key.serializer", KafkaAvroSerializer.class.getName());
+ props.setProperty("value.serializer", KafkaAvroSerializer.class.getName());
+ props.setProperty("schema.registry.url", "http://localhost:8081");
+
+ KafkaProducer&lt;String, Order&gt; producer = new KafkaProducer&lt;&gt;(props);
+ Order order = new Order("Bharath", "IPhone", 3);
+ ProducerRecord&lt;String, Order&gt; record = new ProducerRecord&lt;&gt;("OrderAvroTopic", order.getCustomerName().toString(), order);
+
+ try {
+     producer.send(record);
+ } catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Consumer</h3>
+<ol>
+<li>New Consumer Project<ol>
+<li>Paste all avro dependencies previously mentioned</li>
+<li>Generate stub (or copy)</li>
+</ol>
+</li>
+</ol>
+<h3>Test</h3>
+<h3>GenericRecord Type</h3>
+<h3>Construct a GenericRecord Producer</h3>
+<h3>Construct a Consumer</h3>
+<h3>Schema Evolution</h3>
+<h3>Schema Compatibility</h3>
+<h3>Consumers in Real Time</h3>
+<h3>Stop Confluent Platform</h3>
+<h3>Quiz 5: Use Avro</h3>
+<h3>Assignment 3: Use Avro</h3>
+<h2>Section 7: More About Producers</h2>
+<h3>Introduction</h3>
+<ol>
+<li>How to construct custom partitioners and put a record into whichever partition we return from custom partitioner.</li>
+<li>Advanced config we can use in producer that will impact the way producer works and how Kafka broker reacts</li>
+</ol>
+<h3>Construct a Topic</h3>
+<ol>
+<li><p>cmd:</p>
+<pre><code> kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 10 --topic OrderPartitionedTopic
+ 
+ kafka-topics --describe --zookeeper localhost:2181 --topic OrderPartitionedTopic
+ 
+</code></pre>
+<ol>
+<li>Leader is 0 - we have one broker</li>
+<li>Replicas are 0</li>
+<li>Partitions: 0 - 9</li>
+</ol>
+</li>
+<li><p>Editor:</p>
+<ol>
+<li><p>Producer class: com.bharath.kafka.orderproducer.customserializers.OrderProducer:</p>
+<pre><code> public class OrderProducer {
+     public static void main(String[] args) {
+         ...
+         ProducerRecord&lt;String, Order&gt; record = new ProducerRecord&lt;&gt;("OrderPartitionedTopic", order.getCustomer...);
+     }
+ }
+ 
+</code></pre>
+</li>
+<li><p>Consumer class: com.bharath.kafka.orderproducer.customdeserializers.OrderConsumer:</p>
+<pre><code> public class OrderConsumer {
+     ...
+     consumer.subscribe(Collections.singletonList("OrderPartitionedTopic"));
+     ...
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Custom Partitioner</h3>
+<ol>
+<li><p>New class: customserializers.partitioners.VIPPartitioner which implement org.apache.kafka.clients.producer.Partitioner</p>
+<pre><code> @Override
+ public void configure(Map&lt;String, ?&gt; configs) {
+     // Additional config that will help our partitioning
+ }
+
+ @Override
+ public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
+     List&lt;PartitionInfo&gt; partitions = cluster.availablePartitionsForTopic(topic);
+     if (((String) key).equals("Bharath")) {
+         return 5;
+     }
+     return Math.abs(Utils.murmur2(keyBytes) % paritions.size() - 1); // ?
+ }
+ 
+ @Override
+ public void close() {
+     // To close any resources that we open up during partition logic
+ }
+ 
+</code></pre>
+<ol>
+<li><code>partition</code> - receives key as Object as well as a byte array<ol>
+<li>Receives value as object as well as a byte array</li>
+<li><code>cluster</code> - has cluster details<ol>
+<li>Partition details</li>
+<li>Number of Partitions</li>
+<li>...</li>
+</ol>
+</li>
+<li><code>murmur2</code> - algorithm used to decide partition</li>
+<li>Name can be passed through configuration as well</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Using the partitioner into OrderProducer:</p>
+<pre><code> props.setProperty("partitioner.class", VIPPartitioner.class.getName());
+ ...
+ for (CustomerRecord&lt;String, Order&gt; record : records) {
+     ...
+     System.out.println("Partition: " + record.partition());
+ }
+ 
+</code></pre>
+<ol>
+<li>Run the consumer application</li>
+<li>Run the producer application<ol>
+<li>See console - Partition assignment is shown</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Assignment 4: Construct Custom Partitioner Class</h3>
+<h3>ProducerConfig Class</h3>
+<ol>
+<li>Open <code>OrderProducer</code><ol>
+<li><p>We don't have to hard-coding properties</p>
+<pre><code> props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, ...);
+ props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ...);
+ props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ...);
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Acknowledgements and More</h3>
+<ol>
+<li><p>More properties:</p>
+<pre><code> props.setProperty(ProducerConfig.ACK_CONFIG, "0"); // "0", "1" or "all"
+ 
+</code></pre>
+<ol>
+<li><p>Controls how partitions should receive the message before the producer considers it as a successful write/send</p>
+<ol>
+<li>0 - producer will just send the message and then considers it as success<ol>
+<li>It will not wait for response from the broker<ol>
+<li>Cons: If leader is down, the message is lost (no re-tries)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>1 - producer recieves a successful response from broker only if the leader-replica successfully receives a message<ol>
+<li>Safe</li>
+</ol>
+</li>
+<li>all - producer recieves acknowledgement from broker only once all the replicas recieve the message<ol>
+<li>Pros - safest option</li>
+<li>Cons - more latency (producer has to wait for the message to be delivered to all the replicas)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Buffer:</p>
+<pre><code> props.setProperty(ProducerConfig.BUFFER_MEMORY_CONFIG, "38483423");
+ 
+</code></pre>
+<ol>
+<li>Producer will buffer the messages before they are sent to the broker<ol>
+<li>If application is too fast in producing messages and handing them over to the API, the producers might block if the memory is not big enough<ol>
+<li>Default value: 256 MB<ol>
+<li>We can configure this</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Compression type:</p>
+<pre><code> props.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+ 
+</code></pre>
+<ol>
+<li>By default, messages are not compressed.<ol>
+<li>Only when we set this value, the messages are compressed</li>
+</ol>
+</li>
+<li>Values:<ol>
+<li>snappy - Google's<ol>
+<li>Doesn't utilize much CPU</li>
+</ol>
+</li>
+<li>gzip<ol>
+<li>Compression ratio is better than snappy<ol>
+<li>CPU used is more</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>lz4</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Retries:</p>
+<pre><code> props.setProperty(ProducerConfig.RETRIES_CONFIG, "2");
+ props.setProperty(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "400");
+ 
+</code></pre>
+<ol>
+<li>Producer will retry if there is some error that can be recovered<ol>
+<li>Leader has temporarily gone down</li>
+</ol>
+</li>
+<li>Default:<ol>
+<li>Producer waits for 100ms before retry</li>
+</ol>
+</li>
+<li>Wait for 400ms before each retry</li>
+<li>Producer will not retry if there is un-recoverable exception<ol>
+<li>Example: Message is too big, ...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Three More Properties</h3>
+<ol>
+<li><p>More properties:</p>
+<pre><code> props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, "893749233223");
+ 
+</code></pre>
+<ol>
+<li><p>The memory size we want to allocate for a batch in bytes</p>
+</li>
+<li><p>Default: 16kb</p>
+<ol>
+<li>Configure it to a higher number<ol>
+<li>Producer doesn't wait until the memory is filled up but hands the message over as soon as a sender thread is available to send the message to the broker</li>
+<li>If we set it to a very small value might cause problem<ol>
+<li>Batch size will be very small<ol>
+<li>Decreases the throughput</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Complementing the batch size:</p>
+<pre><code> props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "200");
+ 
+</code></pre>
+<ol>
+<li>producer waits for 200ms before it hands over the message to a sender thread although it is available<ol>
+<li>Allows us to fill the batch with few more messages<ol>
+<li>Increases throughput with some compromize on latency<ol>
+<li>More messages can go in a batch at once to the sender thread</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Timeout:</p>
+<pre><code> props.setProperty(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, "200");
+ 
+</code></pre>
+<ol>
+<li>Producer will wait for 200ms for a response from the broker<ol>
+<li>If it timesout, the producer will retry</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Search for Kafka producer configuration:</p>
+<ol>
+<li>Confluent website</li>
+<li>Apache website</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 6: More About Producers</h3>
+<h2>Section 8: Message Delivery and Transactions</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Achieving message delivery idempotency (no duplicate deliveries)</li>
+<li>Three basic message delivery semantics:<ol>
+<li>At least once</li>
+<li>At most once</li>
+<li>Only Once/ idempotency</li>
+</ol>
+</li>
+<li>Advantages and disadvantages of the three semantics</li>
+<li>Transactions<ol>
+<li>Sending all messages or no messages at all<ol>
+<li><code>beginTransaction</code></li>
+<li><code>commitTransaction</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Message Delivery Semantics</h3>
+<ol>
+<li>Three semantics:<ol>
+<li>At Least Once</li>
+<li>At Most Once</li>
+<li>Only Once / Idempotency</li>
+</ol>
+</li>
+<li>At Least Once:<ol>
+<li>Steps:<ol>
+<li>Producer sends a message</li>
+<li>Broker receives it</li>
+<li>Broker writes to all partitions if we have replications</li>
+<li>Once all partitions recieve the message, the broker treats it as committed</li>
+<li>Broker sends an acknowledge to the producer</li>
+</ol>
+</li>
+<li>Issues:<ol>
+<li>If broker has written to all partitions but if acknowledgement that needs to be sent is not sent<ol>
+<li>Producer will retry which might result in a message duplication<ol>
+<li>Same message will get re-processed<ol>
+<li>Good for use-cases if it is okay</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>At Most Once:<ol>
+<li>No retries on Producer side (set to 0)</li>
+<li>Steps:<ol>
+<li>Producer sends a message</li>
+<li>If broker writes to all partitions, we are good</li>
+<li>If broker fails, we have an issue<ol>
+<li>The message might get lost</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Issues:<ol>
+<li>Messages might get lost</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Exactly Once:<ol>
+<li>Producer config: <code>enable.idempotence</code> is set to <code>true</code></li>
+<li>Steps:<ol>
+<li>Producer generates a unique sequence number for every message (unique within a given partition)</li>
+<li>Broker maintains the message sequence number</li>
+<li>Broker generates a unique producerId for each producer instance<ol>
+<li>The producerId uses it in the message everytime it will send it</li>
+<li>If a producer with a unique producer id is sending the same message again (it has a sequence number)</li>
+<li>Broker checks the sequence number and if it matches with a message that it has already received from the given producer, then broker will reject the message</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>This mechanism has retries to ensure that the message is delivered at-least once, and also rejection of duplicate messages to ensure the message is delivered at-most once which makes it exactly once semantics.<ol>
+<li><p>Property to be set in Producer:</p>
+<pre><code> props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+ 
+</code></pre>
+<ol>
+<li>If multiple instances of producer are running, each will get a unique producer-id and if they send the same message, the duplication gets accepted.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Transactions</h3>
+<ol>
+<li><p>Transaction on Kafka producer is just like a DB transaction</p>
+<ol>
+<li>We commit all records in a transaction or we roll-back<ol>
+<li>Atomicity</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Configuration:</p>
+<pre><code> producer.initTransactions();
+ ProducerRecord&lt;String, Integer&gt; record = new ProducerRecord&lt;&gt;("OrderTopic", "Mac Book Pro", 10);
+ ProducerRecord&lt;String, Integer&gt; record2 = new ProducerRecord&lt;&gt;("OrderTopic", "Dell Laptop", 20);
+ try {
+     producer.beginTransaction();
+     producer.send(record, new OrderCallback());
+     producer.send(record2);
+     producer.commitTransaction();
+ } catch (Exception e) {
+     producer.abortTransaction(); // rollback
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+ 
+</code></pre>
+<ol>
+<li>If one of the records is committed but not the second one, then everything will be rolled back<ol>
+<li>Producer needs to retry</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Use a Transaction</h3>
+<ol>
+<li><p>New class: com.bharath.kafka.orderproducer.TransactionalOrderProducer</p>
+<pre><code> props.setProperty(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-producer-1"); // id must be unique. Every producer that is starting a transaction must have a unique transaction id. If we run two instances, we need to have separate ids
+ 
+ producer.initTransactions();
+ 
+</code></pre>
+<ol>
+<li><p><code>initTransactions</code> - invoked before starting a transaction</p>
+<ol>
+<li><p>It ensures that any transactions initiated by previous instances of the producer with the same transactional.id are completed</p>
+</li>
+<li><p>If previous instance had failed with a transaction in progress, it will be aborted.</p>
+</li>
+<li><p>If the last transaction had begun completion, but not yet finished, this method awaits its completion</p>
+</li>
+<li><p>It gets producer-id and epoch time</p>
+<ol>
+<li>They will be sent along every message to the broker<ol>
+<li>Broker ensures idempotency using the producer-id and epoch</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>The method will raise a TimeoutException if the transactional state cannot be initialized before expiration of <code>max.block.ms</code></p>
+<pre><code> props.setProperty(ProducerConfig.MAX_BLOCK_MS_CONFIG, "1000"); // applicable for initTransactions, send, commitTransaction, ...
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Start transaction:</p>
+<pre><code> try {
+     producer.beginTransaction();
+     producer.send(record, new OrderCallback());
+     producer.send(record2);
+     producer.commitTransaction();
+ } catch (Exception e) {
+     producer.abortTransaction();
+     e.printStackTrace();
+ } finally {
+     producer.close();
+ }
+ 
+</code></pre>
+<ol>
+<li><code>beginTransaction</code>: Called before starting every transaction<ol>
+<li><code>initTransactions()</code> must be invoked prior to invoking the method<ol>
+<li>Broker must have the unique producer-id and epoch before beginning a transaction</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>commitTransaction</code>: Flushes any unset records before committing transaction<ol>
+<li>If producer has more records that are buffered or batched and yet to be sent, the method ensures that the records and sent and then commits the transaction</li>
+<li>If any of the send calls hit irrecoverable error, the method will throw the last received exception immediately and the transaction will not be committed</li>
+</ol>
+</li>
+<li><code>abortTransaction</code> - stops any further messages from being buffered or batched to be sent</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Few Pointers About Transactions</h3>
+<ol>
+<li>A producer cannot have multiple transactions open at the same time<ol>
+<li>It has to close or commit a transaction before starting anothe transaction</li>
+</ol>
+</li>
+<li>Callback is not required<ol>
+<li>Callback is used to just handle exceptions. However, in a transaction, we handle exception and abort transaction</li>
+</ol>
+</li>
+<li>Producers are thread safe<ol>
+<li>We can invoked send method from multiple threads<ol>
+<li>We need to start the transaction before any threads start (?)</li>
+<li>We need to commit the transaction after all the threads finish<ol>
+<li>We need to take up this responsibility</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 7: Message Delivery and Transactions</h3>
+<h2>Section 9: More About Consumers</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Topics:<ol>
+<li>Consumer Groups</li>
+<li>Rebalancing</li>
+<li>How re-balancing impacts the consumer group, and partitions and offsets consumed by them</li>
+<li>How to minimize the risk of rebalancing by using offset commits<ol>
+<li>Commit offsets from consumers synchronously and asynchronously</li>
+<li>How to commit a specific offset if we want to</li>
+</ol>
+</li>
+<li>Advanced configuration on consumer side<ol>
+<li>Properties that can be set that will impact the consumers and also how broker works with the consumer</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Consumer Groups</h3>
+<ol>
+<li>Example: Hospital management suite of applications<ol>
+<li>Components:<ol>
+<li>Patient Checkout application</li>
+<li>Billing application</li>
+<li>HouseKeeping application</li>
+</ol>
+</li>
+<li>Flow:<ol>
+<li>Patient Checkout application publishes a record to Kafka Broker whenever a patient checks out</li>
+<li>Billing and HouseKeeping applications read the record, process it using their own business logic, and do whatever they are supposed to do</li>
+</ol>
+</li>
+<li>Problem:<ol>
+<li>If Patient Checkout is publishing a lot of records, they might increase the load on consumer applications and they might crash<ol>
+<li>Solution: Consumer Groups<ol>
+<li>Group of consumers that can read from the same topic but different partitions in the topic</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Scaling:<ol>
+<li>A topic is broken down into multiple partitions and consumer group with one or more consumers that can consume from the topic<ol>
+<li>If a consumer group has a single consumer but 4 partitions, the single consumer is responsible for consuming records from all partitions.<ol>
+<li>Solution: We can increase consumers in the consumer group<ol>
+<li>If 4 partitions, 2 consumers:<ol>
+<li>Partition 0, 1 -&gt; consumer 1</li>
+<li>Partition 2, 3 -&gt; consumer 2</li>
+</ol>
+</li>
+<li>If 4 partitions, 4 consumers:<ol>
+<li>Each partition is read by one consumer</li>
+</ol>
+</li>
+<li>If consumers &gt; partitions<ol>
+<li>Additional consumers will remain idle<ol>
+<li>We need to have enough partitions to keep consumers busy</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Multiple consumer groups can consume from the same topic<ol>
+<li>Each consumer group can have it's own copy of data<ol>
+<li>Example: Billing can use consumer group 1, HouseKeeping can use consumer group 2<ol>
+<li>Each consumer group will get all the data</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Consumer Group Rebalancing</h3>
+<ol>
+<li>Rebalancing:<ol>
+<li>If there are k partitions and k - 1 consumers in a consumer group, the k partitions will be read by the consumers</li>
+<li>If a new consumer is added to the CG, it will start consuming from a partition that was previously consumed by a previous consumer</li>
+<li>If a consumer goes downs (gracefully shut down or it has crashed), the partitions will be taken care of by other consumers in the group</li>
+<li><strong>Moving a partition ownership from one consumer to another consumer in a group is called consumer re-balancing</strong><ol>
+<li>This mechanism is key to high availability and scalability of Kafka<ol>
+<li>Cons: <strong>The consumers in CG go silent during a re-balancing operation</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>How Rebalancing Works</h3>
+<ol>
+<li>How consumer groups work:<ol>
+<li>When a consumer group is created, Kafka allocates one of the brokers as consumer group coordinator</li>
+<li>When a new consumer joins a consumer group, it does it by sending a join request to the group coordinator</li>
+<li>The group coordinator will send all the partition details to the first consumer and makes it a consumer group leader</li>
+<li>When another consumer joins the CG by sending a join group request, the consumer group coordinator will trigger a re-balance<ol>
+<li>It hands over the current partition details and consumer details to the group leader</li>
+</ol>
+</li>
+<li>Group leader does the re-balancing<ol>
+<li>It re-assign partitions to list of consumers in the CG and hands over the list to group coordinator</li>
+</ol>
+</li>
+<li>Group coordinator will send the individual partition allocations to the other consumers<ol>
+<li>Only the group coordinator and group leader will have the entire list of partitions and consumers but the other consumers will have only their list of partition allocation information</li>
+</ol>
+</li>
+<li>The above process is repeated for each consumer that gets added after the leader</li>
+<li>When a consumer leaves the group (gracefully or due to a crash), the same process of re-balancing will take place</li>
+</ol>
+</li>
+<li>How does group coordinator know the consumer health?<ol>
+<li>Consumer is responsible for sending a heartbeat<ol>
+<li>If heartbeat is not received by the group coordinator for a certain amount of time (configurable), the consumer is assumed not available and re-balancing is triggered</li>
+</ol>
+</li>
+<li>Consumer can gracefully leave the group by sending a leave request<ol>
+<li>When group coordinator receives a leave request, it triggers a re-balance</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>When re-balancing happens, the consumers do nothing because group leader is re-assigning the partitions to all the consumers.<ol>
+<li><strong>We need to minimize re-balancing or avoid it</strong></li>
+</ol>
+</li>
+</ol>
+<h3>Offset Commits</h3>
+<ol>
+<li>Example: Assume we have 4 partitions and 4 consumers in a CG<ol>
+<li>Consumers invoke poll method</li>
+<li><strong>Kafka doesn't keep track of which offset a consumer has reached or how many offsets a consumer has processed</strong><ol>
+<li><strong>Okay if all consumers are healthy</strong></li>
+</ol>
+</li>
+<li><strong>If a new consumer is added or if an existing consumer crashes?</strong><ol>
+<li>Re-balancing will be triggered and partitions are re-allocated across consumers<ol>
+<li><strong>The consumers will not know from which offset to start within a given partition</strong><ol>
+<li>Solution: <strong>Offset Commits</strong><ol>
+<li>Consumer API is allowed to do it.</li>
+<li>Consumers can commit all the offsets they have processed to a special topic called <strong>__consumer_offsets</strong> (in-built topic that comes with Kafka)<ol>
+<li>Current offset is commited</li>
+</ol>
+</li>
+<li>If a re-balancing happens, the new consumer that is assigned the partition will look up the information in the <strong>__consumer_offsets</strong> topic about upto which offset and will start consuming from the next offset</li>
+<li>Issues:<ol>
+<li>Duplicate processing: If a consumer has processed upto offset 6.<ol>
+<li>Let us assume that the consumer has polled offsets 7, 8, and 9 and will process them</li>
+<li>It has reached offset 9 but crashes before committing</li>
+<li>If a new consumer comes up, it will start processing from offset 7<ol>
+<li>This will result in duplicate processing</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Missed Processing:<ol>
+<li>If consumer has overcommitted</li>
+<li>If it has committed upto offset 10 but has only processed upto offset 2</li>
+<li>If a re-balance happens, the new consumer will start processing from offset 11 missing the records from 3 to 10</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Next:<ol>
+<li>Auto commit</li>
+<li>Manual commit<ol>
+<li>Synchronous</li>
+<li>Asynchronous</li>
+<li>Specific offset commit</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Auto Commit</h3>
+<ol>
+<li>How does it work?<ol>
+<li><p>OrderConsumer</p>
+<pre><code> props.setProperty("enable.auto.commit", "false"); // default is "true"
+ 
+</code></pre>
+<ol>
+<li>Auto-commit time interval is 5 s<ol>
+<li>Poll method drives it<ol>
+<li>When it is invoked for the first time<ol>
+<li>It will fetch and offset</li>
+<li>It will start a timer for the auto-commit</li>
+<li>The records will be processed</li>
+</ol>
+</li>
+<li>Next time the <code>poll</code> method is invoked, the poll will check if the default 5 seconds have elapsed.<ol>
+<li>Only if the 5 seconds have elapsed, it will commit the previous offset</li>
+<li>If 5 seconds have not elapsed, it will fetch the next offset of records and consumer will process them</li>
+<li>Next time poll is invoked, if the timer has gone beyond 5 second mark, it will commit both the previous offsets<ol>
+<li>The timer will be reset to 0</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Configuring time limit:</p>
+<pre><code> props.setProperty("auto.commit.interval.ms", "7000"); // 7 seconds
+ 
+</code></pre>
+</li>
+<li><p><code>close</code> also does a commit</p>
+</li>
+</ol>
+</li>
+<li>Problem with auto-commit:<ol>
+<li>Re-balancing:<ol>
+<li>Let us assume the default auto-commit time to be 5 seconds</li>
+<li>Let us say 2 s has elapsed</li>
+<li>Let us say the consumer has processed 400 records</li>
+<li>If a rebalance happens<ol>
+<li>New consumer will process from latest offset<ol>
+<li>Since 1-400 are not committed, they will be consumed again <ol>
+<li>Duplicate processing will happen</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Solution:<ol>
+<li>We can reduce the timer but the problem is not entirely eliminated</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Sync Commit</h3>
+<ol>
+<li><p>To gain more control on when the offsets will be committed, we can set the following property:</p>
+<pre><code> // props.setProperty("auto.commit.interval.ms", "2000");
+ props.setProperty("auto.commit.offset", "false"); // not committed automatically
+ 
+</code></pre>
+</li>
+<li><p>We can finish processing and commit:</p>
+<pre><code> while (true) {
+     ConsumerRecords&lt;String, Order&gt; records = consumer.poll(Duration.ofSeconds(20));
+     for (ConsumerRecord&lt;String, Order&gt; record : records) {
+         String customerName = record.key();
+         Order order = record.value();
+         System.out.println("Customer Name: " + customerName);
+         System.out.println("Product: " + order.getProduct());
+         System.out.println("Quantity: " + order.getQuantity());
+         System.out.println("Partition: " + record.partition());
+     }
+     consumer.commitSync(); // this will commit the entire commit offset
+ } finally {
+     consumer.close();
+ }
+ 
+</code></pre>
+<ol>
+<li><code>consumer.commitSync()</code>: It will commit the entire commit offset<ol>
+<li>It also does retries<ol>
+<li>It will retry if there are any exceptions<ol>
+<li>Unless it is an un-recoverable exception</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We still have re-balancing problem<ol>
+<li>Let us assume we have 1000 records and 400 records are processed.<ol>
+<li>If re-balancing happens, the new consumer will process 1-400 records (from the beginning)<ol>
+<li><strong>Duplication problem</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Pros: We commit as soon as the offset is processed and not after sometime (as in auto-commit)</li>
+</ol>
+</li>
+</ol>
+<h3>Async Commit</h3>
+<ol>
+<li><code>commitSync</code> - blocks consumer application until the broker responds back to the commit request (degrades performance)<ol>
+<li>Retries if commit fails</li>
+</ol>
+</li>
+<li><code>commitAsync</code> - commit request will be sent to the broker and the next <code>poll</code> request is executed, next offset is processed while the current commit is in progress.<ol>
+<li><p>Challenges:</p>
+<ol>
+<li>Doesn't retry if a commit fails for some reason<ol>
+<li>Reason:<ol>
+<li>Let us assume that when the poll is invoked for the first time, we have received offset from records 1-1000</li>
+<li>The records are processed</li>
+<li>The <code>commitAsync</code> method is invoked</li>
+<li>The <code>poll</code> will be invoked again immediately</li>
+<li>Let us assume the previous commit has failed</li>
+<li>Let us assume that the records from 1001-2000 have been processed successfully and committed successfully</li>
+<li>If a retry is invoked, the order will get jumbled up<ol>
+<li>If a re-balance is invoked at this point, the new consumer will re-process all the records starting from 1<ol>
+<li>Duplicate processing</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Supports a callback:</p>
+<pre><code> consumer.commitAsync(new OffsetCommitCallback() {
+     @Override
+     public void onComplete(Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets, Exception exception) {
+          if (exception != null) {
+             System.out.println("Commit failed for offset " + offsets);
+          }
+     }
+ });
+ 
+</code></pre>
+<ol>
+<li>Whenever a commit finishes the callback is invoked and we can take appropriate action<ol>
+<li>We can also retry here if we want<ol>
+<li>We need to take into consideration, the problem with retry</li>
+</ol>
+</li>
+<li>If there is any exception during commit, the exception is also passed as an argument</li>
+<li>We get offsets that were processed<ol>
+<li>It is a map from <code>TopicPartition</code> to <code>OffsetAndMetadata</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Commit Custom Offset</h3>
+<ol>
+<li>Commit sync and async methods will commit the entire offset returned by the <code>poll</code> method<ol>
+<li>We need to wait for all the messages in the offset to be processed before we commit<ol>
+<li>If a re-balance happens between processing of the records then the next consumer which takes up the partition will start processing again from the beginning of the offset<ol>
+<li>Solution: Custom commits<ol>
+<li>We can do more frequent commits</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Both <code>commitSync</code> and <code>commitAsync</code> have overloaded methods<ol>
+<li><p>Say, we want commit to happen for every 10 records that are processed</p>
+<pre><code> int count = 0;
+ for (...) {
+     ...
+     if (count % 10 == 0) {
+         consumer.commitAsync(Collections.singletonMap(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1)), new OffsetCommitCallback() {
+             ...
+         });
+     }
+ }
+ 
+</code></pre>
+<ol>
+<li><code>record.offset() + 1</code> - next consumer will start from the next record</li>
+<li>The first argument:<ol>
+<li>Map of topic-partition to offset that needs to be committed<ol>
+<li>Key: TopicPartition(topic, partition) object</li>
+<li>Value: OffsetAndMetadata(offset) object</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a RebalanceListener</h3>
+<ol>
+<li>How to use consumer-rebalance listener to take it a step further<ol>
+<li><p>It is a special class with methods</p>
+<ol>
+<li>The methods will be invoked when a re-balance happens</li>
+</ol>
+</li>
+<li><p>Overloaded version of <code>subscribe</code></p>
+<pre><code> class RebalanceHandler implements ConsumerRebalanceListener {
+     @Override
+     public void onPartitionsRevoked(Collection&lt;TopicPartition&gt; partitions) {
+     
+     }
+     
+     @Override
+     public void onPartitionsAssigned(Collection&lt;Partition&gt; partitions) {
+         
+     }
+ }
+ 
+ consumer.subscribe(Collections.singletonList("OrderPartitionedTopic", new RebalanceHandler());
+ 
+</code></pre>
+<ol>
+<li><code>onPartitionsRevoked</code> - invoked when a re-balance is triggered and before the partitions are being revoked from this consumer<ol>
+<li>If there is any cleanup on consumer side and if there are any records which are not committed yet, we can commit those offsets here<ol>
+<li>Last chance before consumer loses the partition completely</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>onPartitionsAssigned</code> - invoked when partitions are assigned<ol>
+<li>When new partitions are assigned we can take necessary action in this method</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Commit Last Offset Processed</h3>
+<ol>
+<li><p>We will commit offsets that are processed but yet to be committed in re-balance handler</p>
+<pre><code> consumer.commitSync();
+ 
+</code></pre>
+<ol>
+<li><p>Extract map:</p>
+<pre><code> Map&lt;TopicPartition, OffsetAndMetadata&gt; currentOffsets = new HashMap&lt;&gt;();
+ 
+ KafkaConsumer&lt;String, Order&gt; consumer = new KafkaConsumer&lt;&gt;();
+ ...
+ onPartitionsRevoked(...) {
+     consumer.commitSync(currentOffsets);
+ }
+ ...
+ currentOffsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1)); // has latest offset
+ 
+ if (count % 10 == 0) {
+     ...
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using ConsumerConfig Class</h3>
+<ol>
+<li><p>Consumer configuration:</p>
+<pre><code> public class OrderConsumer {
+     public static void main(String[] args) {
+         Properties props = new Properties();
+         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+         props.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.);
+         props.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "...");
+         props.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "OrderGroup");
+         
+         ...
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Min Fetch Size and Timeouts</h3>
+<ol>
+<li><p>4 important poperties:</p>
+<pre><code> props.setProperty(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, "1024"); // Kafka broker will wait until the mentioned amount of data exists to be sent to the consumer (1024 bytes), the higher the number, the better it is to avoid frequent communication between the broker and the consumer
+ props.setProperty(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, "200"); // Kafka broker will wait for 200 ms before it sends the data. Which ever occurs first 1024 bytes or 200 ms, broker will send the data
+ 
+ props.setProperty(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "1000"); // For every 1000 ms, the consumer has to send a heartbeat to the coordinator
+ 
+ props.setProperty(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "3000"); // Tells the broker, for how long can the consumer go without sending the heartbeat information, consumer can skip only upto 3 s
+ 
+</code></pre>
+<ol>
+<li>Good practice is: heartbeat interval must be 1/3rd the session timeout config</li>
+</ol>
+</li>
+</ol>
+<h3>Four More Properties</h3>
+<ol>
+<li><p>4 more properties:</p>
+<pre><code> props.setProperty(ConsumerConfig.MAX_PARTITIONS_FETCH_BYTES_CONFIG, "1MB"); // Default: 1MB, controls the max number of bytes the server returns to the consumer
+ 
+ props.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+ 
+ props.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, "OrderConsumer");
+ 
+ props.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100");
+ 
+</code></pre>
+<ol>
+<li>ConsumerConfig.MAX_PARTITIONS_FETCH_BYTES_CONFIG: If we have 30 partitions, 5 consumers, each consumer gets 6 partitions<ol>
+<li>We need to ensure that each consumer has at-least 6 MB space<ol>
+<li>However, it is better to give more - 12 MB<ol>
+<li>If one of the consumers goes down, another consumer needs to handle another partition</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The property says how many bytes per partition the broker sends to the consumer</li>
+</ol>
+</li>
+<li>ConsumerConfig.AUTO_OFFSET_RESET_CONFIG: Controls consumer behavior if it starts reading a partition if it doesn't have a committed offset<ol>
+<li>"lastest" - consumer will start reading those records which came to the partition after the consumer started running<ol>
+<li>Ignores previous records</li>
+</ol>
+</li>
+<li>"earliest" - consumer will start reading from the beginning of the partition<ol>
+<li>It will process all the records from the beginning of the partition</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ConsumerConfig.CLIENT_ID_CONFIG: Used by broker for logging, metrics, and any quota allocation purposes</li>
+<li>ConsumerConfig.MAX_POLL_RECORDS_CONFIG: The maximum number of records the poll can return<ol>
+<li>Controls the amount of data our application needs to process in the polling loop<ol>
+<li>Each time <code>poll</code> is called, the specified number of records will be returned</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Partition Assignor Strategy</h3>
+<ol>
+<li><p>Another property:</p>
+<pre><code> props.setProperty(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, RangeAssignor.class.getName());
+ 
+</code></pre>
+<ol>
+<li>Internally, a partition assigner is responsible to assign partitions to consumers in consumer-group</li>
+<li>Two partition assigners:<ol>
+<li><code>RangeAssignor</code>: Default<ol>
+<li>Assume there are two topics and three partitions each</li>
+<li>Assume there are two consumers in the consumer group</li>
+<li>If <code>RangeAssignor</code> is used:<ol>
+<li>It will take consecutive subset of partitions from each topic and assigns them to consumer<ol>
+<li>Consumer 1:<ol>
+<li>P0, P1 from Topic 1 </li>
+<li>P0, P1 from Topic 2</li>
+</ol>
+</li>
+<li>Consumer 2:<ol>
+<li>P2 from Topic 1</li>
+<li>P2 from Topic 2</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It doesn't equally divide<ol>
+<li>The first consumer gets more partitions than the second consumer</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>RoundRobinAssignor</code>: <ol>
+<li>It will combine the partitions of both the topics and assign in a round robbin fasion<ol>
+<li>Consumer 1:<ol>
+<li>P0 from Topic 1</li>
+<li>P2 from Topic 1</li>
+<li>P1 from Topic 2</li>
+</ol>
+</li>
+<li>Consumer 2:<ol>
+<li>P1 from Topic 1</li>
+<li>P0 from Topic 2</li>
+<li>P2 from Topic 2</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Consumers mostly get equal number of partitions<ol>
+<li>If not one of them will get one extra (if two consumers)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 8: More About Consumers</h3>
+<h2>Section 10: Construct a Simple Consumer</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Kafka allows us to have a standalone consumer which doesn't have to be a part of a consumer-group (rare)<ol>
+<li>There is no re-balancing, group-coordinator, ...</li>
+<li>The consumer is responsible to take care of partitions<ol>
+<li><p><strong>We need to assign partitions</strong></p>
+<pre><code> List&lt;PartitionInfo&gt; partitionInfo = consumer.partitionsFor("SimpleConsumerTopic");
+ 
+ List&lt;TopicPartition&gt; partitions = new ArrayList&lt;&gt;();
+ 
+ for (PartitionInfo info : partitionInfos) {
+     System.out.println(info.partition());
+     partitions.add(new TopicPartition("SimpleConsumerTopic", info.parition());
+ }
+
+ consumer.assign(partitions); // instead of subscribe
+ 
+</code></pre>
+<ol>
+<li>We can also assign specific partitions</li>
+</ol>
+</li>
+<li><p>If new partitions are created, we need to invoke <code>partitionsFor</code> method again</p>
+<ol>
+<li>We might need to loop and check</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct a Simple Consumer</h3>
+<ol>
+<li><p>New class: <code>com.bharath.kafka.simpleconsumer.SimpleConsumer</code></p>
+<pre><code> public class SimpleConsumer {
+     public static void main(String[] args) {
+         Properties props = new Properties();
+         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+         props.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "...");
+         props.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "...");
+         
+         KafkaConsumer&lt;String, Integer&gt; consumer = new KafkaConsumer&lt;&gt;(props);
+         List&lt;TopicPartition&gt; partitions = new ArrayList&lt;&gt;();
+         List&lt;PartitionInfo&gt; partitionInfos = consumer.partitionsFor("SimpleConsumerTopic");
+         
+         for (PartitionInfo info : partitionInfos) {
+             partitions.add(new TopicPartition("SimpleConsumerTopic", info.partition()); // The topic is automatically created when we run the producer application
+         }
+         
+         consumer.assign(partitions);
+         
+         ConsumerRecords&lt;...&gt;
+         ...
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Construct a Producer and Test</h3>
+<ol>
+<li><p>Simple producer and test:</p>
+</li>
+<li><p>New class: <code>com.bharath.kafka.orderproducer.SimpleConsumerTestProducer</code></p>
+<pre><code> public class SimpleConsumerTestProducer {
+     public static void main(String[] args) {
+         Properties props = new Properties();
+         props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "...");
+         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "...");
+         
+         KafkaProducer&lt;String, Integer&gt; producer = new KafkaProducer&lt;String, Integer&gt;(props);
+         ProducerRecord&lt;String, Integer&gt; record = new ProducerRecord&lt;&gt;("SimpleConsumerTopic", "Mac Book");
+         
+         try {
+             producer.send(record, new OrderCallback());
+         } catch (Exception e) {
+             e.printStackTrace();
+         } finally {
+             producer.close();
+         }
+     }
+ }
+ 
+</code></pre>
+<ol>
+<li><p>Run Producer which instantiates the topic</p>
+</li>
+<li><p>Set another property for consumer:</p>
+<pre><code> props.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+ 
+</code></pre>
+<ol>
+<li>Otherwise, it will start consuming only those messages that arrived after it starts</li>
+</ol>
+</li>
+<li><p>Run the consumer</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Few Important Points</h3>
+<ol>
+<li>Things to remember while working with simple consumer:<ol>
+<li><p><code>poll</code> method gets offset of records, consumer processes them, and auto-commit is triggered by default</p>
+<pre><code> // after records are processed
+ consumer.commitAsync();
+ 
+</code></pre>
+<ol>
+<li><p>Throws an exception:</p>
+<pre><code> org.apache.kafka.common.errors.InvalidGroupIdException: To use the group management or offset commit APIs, you must provide a valid group.id in the consumer configuration.
+ 
+</code></pre>
+<ol>
+<li><p>To use offset commit API, we need to part of a valid group id even if we don't want consumer group</p>
+<ol>
+<li><p>Solution:</p>
+<pre><code> props.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "SimpleConsumerGroup"); // unique value
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>We must not add a simple consumer to an active group (commit exception)</p>
+</li>
+<li><p>Same consumer group can be used for multiple simple consumers</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 11: Stream Processing</h2>
+<h3>Introduction</h3>
+<ol>
+<li>Topic:<ol>
+<li>What is real-time stream processing</li>
+</ol>
+</li>
+<li>Use-Case: Big data<ol>
+<li>Data is first stored in systems we call data lakes</li>
+<li>We then use tools to pull the data, analyze it and generate reports that are used to make business decisions</li>
+<li>The process is called <strong>near real-time</strong><ol>
+<li>There is a slight time delay between data generation, data being pulled and analysis being done and report getting generated</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Data stream:<ol>
+<li>It is a continuous flow of business events or data</li>
+<li>Unlike in big-data, we do not store the data in database or datalake but it is data in-motion</li>
+<li>It doesn't have a pre-determined beginning or ending</li>
+<li>As the data flows through the stream processing applications, the applications can apply computational logic (aggregations, transformations, ...) on the data and the reports will be generated in real-time</li>
+<li>Real-time stream processing applies to:<ol>
+<li>Data platforms, micro-services<ol>
+<li>Microservices applications can use the Kafka real-time processing along with other big-data tools like Storm, Spark, ... to analyse the data right away and generate the reports.</li>
+</ol>
+</li>
+<li>Monitoring trucks, cars<ol>
+<li>Real-time stream processing can be used to monitor the trucks, cars, ... to see that they are on-time to the destination and if something goes wrong, we can fix it right away</li>
+</ol>
+</li>
+<li>Retail, Hotel and Travel<ol>
+<li>For recommendations, ...</li>
+</ol>
+</li>
+<li>Factories<ol>
+<li>We can process data from IoT devices and make intelligent decisions</li>
+</ol>
+</li>
+<li>Hospitals<ol>
+<li>To monitor the health of a patient and take intelligent decisions</li>
+</ol>
+</li>
+<li>Financial Transactions<ol>
+<li>Real-time data processing can be used for payment transactions and stock transactions, ...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Kafka makes is easy for us to construct the computational logic as data flows by giving us a Kafka streams library<ol>
+<li>Kafka Stream Library:<ol>
+<li>StreamsDSL<ol>
+<li>This is on top of Processor API<ol>
+<li>DSL - Domain Specific Langauge</li>
+<li>It is simple to use as data flows through the applications<ol>
+<li>For joins</li>
+<li>For transformations</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Processor API<ol>
+<li>We can use this if StreamsDSL is not good enough</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Usecase and API</h3>
+<ol>
+<li><p>Kafka Streams Library:</p>
+<pre><code> &lt;dependency&gt;
+     &lt;groupId&gt;org.apache.kafka&lt;/groupId&gt;
+     &lt;artifactId&gt;kafka-streams&lt;/artifactId&gt;
+     &lt;version&gt;2.8.0&lt;/version&gt;
+ &lt;/dependency&gt;
+ 
+</code></pre>
+<ol>
+<li>It is an abstraction built into the Kafka client library<ol>
+<li>It transitively pulls it and uses it</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Data-flow use-case:</p>
+<ol>
+<li>The data flows from an input topic to an output topic</li>
+<li>We can apply transformational logic in-between</li>
+</ol>
+</li>
+<li><p>Steps:</p>
+<ol>
+<li><p>Set required properties</p>
+<pre><code> Properties props = new Properties();
+ props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-dataflow");
+ props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+ props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String()).getClass().getName());
+ props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+ 
+</code></pre>
+<ol>
+<li><code>StreamsConfig</code> - properties are defined in this class as constants</li>
+<li><code>APPLICATION_ID_CONFIG</code> - unique id that we need to provide for every streaming application</li>
+<li><code>BOOTSTRAP_SERVERS_CONFIG</code> - broker details</li>
+<li><code>DEFAULT_KEY_SERDE_CLASS_CONFIG</code> - Key for serializer and deserializer (SERDE)<ol>
+<li>A streaming application is both a consumer and a producer</li>
+</ol>
+</li>
+<li><code>DEFAULT_VALUE_SERDE_CLASS_CONFIG</code> - Value for serializer and deserializer</li>
+<li><code>Serdes</code> - factory class<ol>
+<li>It has methods when invoked will return the appropriate SERDE class</li>
+<li><code>Serdes.String()</code> - It will return serializer and deserializer required to handle <code>String</code> data<ol>
+<li>Other options:<ol>
+<li><code>Serdes.Long()</code></li>
+<li><code>Serdes.Double()</code></li>
+<li>...</li>
+</ol>
+</li>
+<li><code>String()</code> - wrapper around <code>StringSerializer</code> and <code>StringDeserializer</code> classes</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Define computational logic</p>
+<pre><code> StreamsBuilder builder = new StreamsBuilder();
+ KStream&lt;String, String&gt; stream = builder.stream("streams-dataflow-input");
+ stream.foreach((key, value) -&gt; System.out.println("Key and Value " + key + " " + value));
+ stream.filter((key, value) -&gt; value.contains("token"))
+     // .mapValues(value -&gt; value.toUpperCase())
+     .map((key, value) -&gt; KeyValue.pair(key, value.toUpperCase()))
+     .to("streams-dataflow-output");
+ 
+ Topology topology = builder.build();
+ System.out.println(topology.describe());
+     
+</code></pre>
+<ol>
+<li>Topology for the application<ol>
+<li><code>StreamsBuilder</code> - used to construct a topology (topology builder)</li>
+<li><code>builder.stream</code> - used to stream data from an input topic</li>
+<li><code>stream</code> - object used to apply transformations on data<ol>
+<li>It has methods used to transform data</li>
+</ol>
+</li>
+<li><code>to</code> - points to output topic</li>
+<li><code>builder.build()</code> - used to build a topology object</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Construct a Kafka Streams client object</p>
+<pre><code> KafkaStreams streams = new KafkaStreams(topology, props);
+ streams.start();
+ 
+</code></pre>
+<ol>
+<li><code>streams.start()</code> - only when we run this, the data will start flowing</li>
+</ol>
+</li>
+<li><p>Shutdown the stream</p>
+<pre><code> Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+ 
+</code></pre>
+<ol>
+<li>When the program is running, the <code>start</code> will run it in an infinite loop</li>
+<li>When we stop the program (ctrl + c), the stream will stop<ol>
+<li>The shutdown hook is called when the program is closed.<ol>
+<li><code>Runtime.getRuntime()</code> - This will return the runtime of the stream program</li>
+<li><code>addShutdownHook</code> - A new thread is passed to this method which calls <code>streams::close</code> method</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Topics</h3>
+<ol>
+<li><p>Setup of topics required for simple data-flow streaming application</p>
+</li>
+<li><p>Commands:</p>
+<pre><code> kafka-topics --create \
+     --bootstrap-server localhost:9092 \
+     --replication-factor 1 \
+     --partitions 1 \
+     --topic streams-dataflow-input
+     
+ kafka-topics --create \
+     --bootstrap-server localhost:9092 \
+     --replication-factor 1 \
+     --partitions 1 \
+     --topic streams-dataflow-output
+     
+ kafka-console-producer --bootstrap-server localhost:9092 --topic streams-dataflow-input
+ 
+ kafka-console-consumer --bootstrap-server localhost:9092 \
+     --topic streams-dataflow-output \
+     --property print.key=true \
+     --property print.value=true \
+     --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \
+     --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+     
+</code></pre>
+<ol>
+<li><p>Confluent Kafka:</p>
+<pre><code> confluent kafka topic create streams-dataflow-input --partitions 1
+ 
+ confluent kafka topic create streams-dataflow-output --partitions 1
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Project</h3>
+<ol>
+<li>New maven project:<ol>
+<li>maven-archetype-quickstart</li>
+<li>groupId: com.bharath.kafka</li>
+<li>artifactId: streams-demo</li>
+<li>java version: 14</li>
+<li>Remove plugins section</li>
+</ol>
+</li>
+<li>Open web browser:<ol>
+<li><p>search for kafka streams maven dependency</p>
+</li>
+<li><p>copy</p>
+</li>
+<li><p>Add it:</p>
+<pre><code> &lt;!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams --&gt;
+ &lt;dependency&gt;
+     &lt;groupId&gt;org.apache.kafka&lt;/groupId&gt;
+     &lt;artifactId&gt;kafka-streams&lt;/artifactId&gt;
+     &lt;version&gt;3.5.1&lt;/version&gt;
+ &lt;/dependency&gt;
+</code></pre>
+</li>
+<li><p>Right click</p>
+<ol>
+<li>Maven &gt; Update project</li>
+</ol>
+</li>
+<li><p>dependencies:</p>
+<ol>
+<li>kafka-client....</li>
+<li>Other dependencies</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Step 1 - Configure Properties</h3>
+<ol>
+<li><p>New class: DataFlowStream</p>
+<pre><code> Properties props = new Properties();
+ props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-dataflow");
+ props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+ 
+ // Confluent Kafka Related Config
+ //props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "&lt;SERVER_DOMAIN_NAME&gt;:9092");
+ 
+ props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+ props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+ 
+ // Confluent Kafka Related Config
+ props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+ props.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username='&lt;API_KEY&gt;' password='&lt;API_SECRET&gt;';");
+ props.put("sasl.mechanism", "PLAIN");
+ 
+</code></pre>
+<ol>
+<li>APPLICATION_ID_CONFIG - every streaming application should have a unique id<ol>
+<li>When we run multiple instances of the same application, they should have the same id</li>
+</ol>
+</li>
+<li>BOOTSTRAP_SERVERS_CONFIG - supports multiple servers as comma-separated values</li>
+<li>DEFAULT_KEY_SERDE_CLASS_CONFIG - Default which can be overridden</li>
+</ol>
+</li>
+</ol>
+<h3>Step 2 - Construct Topology</h3>
+<ol>
+<li><p>Topology code:</p>
+<pre><code> StreamsBuilder builder = new StreamsBuilder();
+ KStream&lt;String, String&gt; stream = builder.stream("streams-dataflow-input");
+ stream.foreach((key, value) -&gt; System.out.println("Key and Value " + key + " " + value));
+ 
+ Topology topology = builder.build();
+ 
+</code></pre>
+<ol>
+<li><code>StreamsBuilder</code> - topology builder</li>
+<li><code>KStream</code> - Kafka-Stream object<ol>
+<li><code>String</code> - key</li>
+<li><code>String</code> - value</li>
+</ol>
+</li>
+<li>Each record is handed over to the lambda</li>
+<li><code>build</code> - builds a topology</li>
+</ol>
+</li>
+</ol>
+<h3>Step 3 - Start and Stop Stream</h3>
+<ol>
+<li><p>Start and stop the stream</p>
+<pre><code> KafkaStreams streams = new KafkaStreams(topology, props);
+ streams.start();
+ 
+ Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+ 
+</code></pre>
+<ol>
+<li><code>KafkaStreams</code> - streams client object</li>
+<li><code>start</code> - starts the stream</li>
+<li>Right click and run the program<ol>
+<li>It runs indefinitely</li>
+</ol>
+</li>
+<li>Resource leak. The streams is not closed</li>
+<li><code>Runtime.getRuntime().addShutdownHook(new Thread(streams::close))</code> - closes the stream on shutdown</li>
+</ol>
+</li>
+</ol>
+<h3>Test</h3>
+<ol>
+<li><p>Right click and start the application</p>
+</li>
+<li><p>Run the following command in console:</p>
+<pre><code> kafka-console-producer --bootstrap-server localhost:9092 --topic streams-dataflow-input
+ 
+</code></pre>
+<ol>
+<li><p>Confluent Kafka</p>
+<pre><code> confluent kafka topic produce streams-dataflow-input
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Type data to send:</p>
+<pre><code> Kafka streams is easy and awesome
+ 
+</code></pre>
+<ol>
+<li>The output will be shown on the console in the IDE</li>
+</ol>
+</li>
+</ol>
+<h3>Describe Topology</h3>
+<ol>
+<li><p>Inspecting topology before running the stream:</p>
+<ol>
+<li>Used to ensure that our computational logic is okay.</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code> System.out.println(topology.describe());
+ ...
+ //streams.start();
+ 
+</code></pre>
+<ol>
+<li><p>Describes the entire topology</p>
+<pre><code> Topologies:
+     Sub-topology: 0
+         Source: KSTREAM-SOURCE-0000...0 (topics: [streams-dataflow-input])
+             --&gt; KSTREAM-FOREACH-0000...1
+         Processor: KSTREAM-FOREACH-0000...1 (stores: [])
+             --&gt; none
+             &lt;-- KSTREAM-SOURCE-0000...0
+             
+</code></pre>
+<ol>
+<li><p>Terminating transformations do not return anything</p>
+</li>
+<li><p>Arrows indicate data flow</p>
+<pre><code> Topic
+ |Consume
+ v
+ Source Processor
+ |KStream
+ v
+ ForEach Processor
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Uncomment <code>start()</code></p>
+</li>
+</ol>
+<h3>Write to Output Topic</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code> ...
+ stream.to("streams-dataflow-output");
+ 
+</code></pre>
+<ol>
+<li>Expects the topic to be created before running the application</li>
+</ol>
+</li>
+<li><p>Output topic creation:</p>
+<pre><code> kafka-console-consumer --bootstrap-server localhost:9092 \
+     --topic streams-dataflow-output \
+     --property print.key=true \
+     --property print.value=true \
+     --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \
+     --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+     
+</code></pre>
+<ol>
+<li><p>Confluent Kafka:</p>
+<pre><code> confluent kafka topic create --partitions 1 --if-not-exists streams-dataflow-output
+ 
+</code></pre>
+</li>
+<li><p>Enter data in console</p>
+<ol>
+<li>Data is flows to the output topic</li>
+</ol>
+</li>
+<li><p>Topology:</p>
+<pre><code> Sink node
+</code></pre>
+<ol>
+<li>Data is flowing to both Processor node and Sink node</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Use Filter Method</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code> KStream&lt;String, String&gt; filteredStream = stream.filter((key, value) -&gt; value.contains("token"));
+ filteredStream.to("streams-dataflow-output");
+ 
+ // or
+ 
+ stream.filter((key, value) -&gt; value.contains("token")).to("streams-dataflow-output");
+ 
+</code></pre>
+<ol>
+<li><p>Takes a predicate, filters out records using the predicate and constructs a new stream which has only the filtered records / messages</p>
+</li>
+<li><p>Run the application:</p>
+<pre><code> filter works only with token
+ filter does not work
+ 
+</code></pre>
+<ol>
+<li>Second message doesn't pass through</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Use Map Methods</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code> stream.filter(...).
+     .mapValues(value -&gt; value.toUpperCase())
+     .to(...);
+     
+</code></pre>
+<ol>
+<li><code>mapValues</code> - transforms value into a different value based on value-mapper logic we pass<ol>
+<li>Transformation can be sophisticated</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code> stream.map((key, value) -&gt; new KeyValue&lt;&gt;(key, value.toUpperCase()))
+ 
+</code></pre>
+<ol>
+<li><p><code>map</code> - can be used to transform both key and value</p>
+</li>
+<li><p>Value can be a key:</p>
+<pre><code> stream.map((key, value) -&gt; new KeyValue&lt;&gt;(value, value.toUpperCase())
+ 
+</code></pre>
+</li>
+<li><p>Another way:</p>
+<pre><code> stream.map((key, value) -&gt; KeyValue.pair(key, value.toUpperCase()))
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Assignment 5: Streaming Basics</h3>
+<ol>
+<li><p>Filter integers, filter out odd numbers, and triple them. Write the output to console</p>
+<pre><code> stream.filter((key, value) -&gt; (value % 2) != 0)
+     .mapValues(value -&gt; 3 * value)
+     .to("streams-dataflow-output");
+</code></pre>
+</li>
+</ol>
+<h3>Word Count Usecase</h3>
+<ol>
+<li>As messages flow from input topic to the output topic, we can have a topology that calculates the number of times a word appears</li>
+</ol>
+<h3>KTable</h3>
+<ol>
+<li><p>Code:</p>
+<pre><code> KGroupStream&lt;String, String&gt; kGroupedStream = stream.flatMapValues(value -&gt; Arrays.asList(value.to)).groupBy((key, value) -&gt; value);
+ KTable&lt;String, Long&gt; countsTable = kGroupedStream.count();
+ countsTable.toStream().to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long());
+ 
+</code></pre>
+<ol>
+<li><code>count</code> - aggregate function</li>
+</ol>
+</li>
+<li><p>KTable:</p>
+<ol>
+<li>It is a representation of an update stream (change-log)<ol>
+<li>As the records flow through the stream, it maintains updates for the records with the same key<ol>
+<li>A stateful component</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The table is stored in a local store that is created automatically<ol>
+<li>As the records flow through the stream, the count of the words from previous messages</li>
+</ol>
+</li>
+<li>Handles upsert (update | insert) operation<ol>
+<li>If we want to delete, we can take a key and pass null as the value</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Topics</h3>
+<ol>
+<li><p>Topics for word-count demo application</p>
+</li>
+<li><p>Commands:</p>
+<pre><code> kafka-topics --create \
+     --bootstrap-server localhost:9092 \
+     --replication-factor 1 \
+     --partitions 1 \
+     --topic streams-wordcount-input
+     
+ kafka-topics --create \
+     --bootstrap-server localhost:9092 \
+     --replication-factor 1 \
+     --partitions 1 \
+     --topic streams-wordcount-output
+</code></pre>
+</li>
+</ol>
+<h3>Implement Word Count</h3>
+<ol>
+<li><p>Make a copy of <code>DataFlowStream</code> and name it <code>WordCountStream</code></p>
+<pre><code> KStream&lt;String, String&gt; stream = builder.stream("streams-wordcount-input");		
+ 
+ stream.flatMapValues(value -&gt; Arrays.asList(value.toLowerCase().split(" "));
+ 
+ ...
+ 
+</code></pre>
+<ol>
+<li><code>flatMapValues</code> - returns multiple records<ol>
+<li>Returns a list of values split by space character with key as <code>null</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Aggregate Using groupBy and Count</h3>
+<ol>
+<li><p>SQL analogy:</p>
+<pre><code> select count(value) kstream group by value;
+ 
+</code></pre>
+<ol>
+<li><p>It is more tricky here:</p>
+<pre><code> KGroupedStream&lt;String, String&gt; kGroupedStream =  stream.flatMapValue(...).
+     .groupBy((key, value) -&gt; value); // sets value as the key
+ KTable&lt;String, Long&gt; countsTable = KGroupedStream.count(); // returns a KTable
+ countsTable.toStream().to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
+ 
+</code></pre>
+<ol>
+<li>Converted to stream and sent to output topic</li>
+<li><code>Produced.with</code> - takes serializer and deserializer for both key and value (because value is <code>Long</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Test</h3>
+<ol>
+<li>Property needed:<br> props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
+ <ol>
+<li>Required for <code>KTable</code><ol>
+<li>It might take sometime before the contents of KTable are streamed</li>
+<li>By default, the value is 1<ol>
+<li>It does some buffering and only if there is lot of data and counting, then it will push it to the Stream<ol>
+<li>Production has a lot of data so this prop is not required</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Start the stream:<ol>
+<li><p>Produce data:</p>
+<pre><code> kafka-console-producer --bootstrap-server localhost:9092 --topic streams-wordcount-input
+ 
+ kafka-console-consumer --bootstrap-server localhost:9092 \
+     --topic streams-wordcount-output \
+     --from-beginning \
+     --property print.key=true \
+     --property print.value=true \
+     --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \
+     value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+     
+</code></pre>
+<ol>
+<li>Run</li>
+</ol>
+</li>
+<li><p>Send test data</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Quiz 9: Stream Processing</h3>
+<h2>Section 12: Spring Boot and Kafka</h2>
+<h3>Introduction</h3>
+<ol>
+<li>We wrote a lot of boilerplate code and we repeat it for all producers and consumers<ol>
+<li>Solutions: <code>spring-kafka</code><ol>
+<li>It is an abstraction on top of Kafka clients library</li>
+<li>It makes it simple to construct producers and consumers</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Producer side:<ol>
+<li><code>KafkaTemplate</code> is injected<ol>
+<li>Boilerplate code will be gone</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Consumer side:<ol>
+<li><code>@KafkaListener</code> annotation<ol>
+<li>Listener Container is maintained internally</li>
+<li>A method is marked with <code>@KafkaListener</code> annotation</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>API Walkthrough</h3>
+<ol>
+<li>New Spring Boot Project<ol>
+<li>Producer Project<ol>
+<li><code>spring-boot-starter-web</code></li>
+<li><code>spring-kafka</code> dependency</li>
+<li>RESTful endpoint will receive user's data<ol>
+<li>The endpoint will write data to a Kafka topic</li>
+<li>Data: user's name and age</li>
+</ol>
+</li>
+<li>Data is sent using <code>KafkaTemplate</code> instance</li>
+<li>The configuration is in <strong>application.properties</strong></li>
+</ol>
+</li>
+<li>Consumer Project<ol>
+<li>Add the above dependencies</li>
+<li><code>@Service</code> class with a method marked with <code>@KafkaListener</code> annotation</li>
+<li>Recieves data and processes it</li>
+<li>The configuration is in <strong>application.properties</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct Producer Project</h3>
+<ol>
+<li>New Spring Boot project:<ol>
+<li>New starter Project<ol>
+<li>name: user-producer</li>
+<li>group: com.bharath.kafka</li>
+<li>Description: User producer</li>
+<li>Next:<ol>
+<li>Search for kafka<ol>
+<li>Spring for Apache Kafka</li>
+</ol>
+</li>
+<li>Search for web<ol>
+<li>Spring Web</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Open pom.xml<ol>
+<li><code>spring-kafka</code></li>
+<li><code>spring-kafka-test</code><ol>
+<li>Allows us to write kafka specific tests</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct the Producer Service</h3>
+<ol>
+<li><p>New class: com.bharath.kafka.service.UserProducerService</p>
+<pre><code> @Service
+ public class UserProducerService {
+     @Autowired
+     private KafkaTemplate&lt;String, Integer&gt; kafkaTemplate;
+     
+     public void sendUserData(String name, int age) {
+         kafkaTemplate.send("user-topic", name, age);
+     }
+ }
+ 
+</code></pre>
+<ol>
+<li><code>send</code> overloaded:<ol>
+<li>Topic</li>
+<li>data</li>
+<li>Key</li>
+<li>data</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Construct the REST Endpoint</h3>
+<ol>
+<li><p>New class: com.bharath.kafka.controllers.UserController</p>
+<pre><code> @RestController
+ @RequestMapping("/userapi")
+ public class UserController {
+     @Autowired
+     private UserProducerService service;
+     
+     @PostMapping("/publishUserData/{name}/{age}")
+     public void sendUserData(@PathVariable("name") String name, @PathVariable("age") int age) {
+         service.sendUserData(name, age);
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Construct the Consumer</h3>
+<ol>
+<li><p>New Spring Starter project:</p>
+<ol>
+<li>Name: user-consumer</li>
+<li>group: com.bharath.kafka</li>
+<li>Description: User consumer</li>
+<li>Next:<ol>
+<li>Search for kafka<ol>
+<li>Spring for Apache Kafka</li>
+</ol>
+</li>
+<li>Search for web<ol>
+<li>Spring Web</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>New class: com.bharath.kafka.service.UserConsumerService</p>
+<pre><code> @Service
+ public class UserConsumerService {
+     
+     @KafkaListener(topics = {"user-topic"})
+     public void consumerUserData(int age) {
+         System.out.println("User's age is: " + age);
+     }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Configure</h3>
+<ol>
+<li><p>Open application.properties under Producer project</p>
+<pre><code> spring.kafka.producer.bootstrap-servers = localhost:9092
+ spring.kafka.producer.key-serializer = org.apache.kafka.common.serialization.StringSerializer
+ spring.kafka.producer.value-serilizer = org.apache.kafka.common.serialization.IntegerSerializer
+ spring.kafka.properties.security.protocol=SASL_SSL
+ spring.kafka.properties.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='&lt;api-key&gt;' password='&lt;api-secret&gt;';
+ spring.kafka.properties.sasl.mechanism=PLAIN
+ 
+</code></pre>
+<ol>
+<li>cmd + shift + t or ctrl + shift + t to open properties values autofill<ol>
+<li>Copy the package name</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Open application.properties under Consumer project</p>
+<ol>
+<li><p>Copy paste the above properties</p>
+<pre><code> spring.kafka.consumer.bootstrap-servers = localhost:9092
+ spring.kafka.consumer.key-deserializer = org.apache.kafka.common.serialization.StringDeserializer
+ spring.kafka.producer.value-deserilizer = org.apache.kafka.common.serialization.IntegerDeserializer
+ spring.kafka.consumer.group-id = user-group
+ spring.kafka.properties.security.protocol=SASL_SSL
+ spring.kafka.properties.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='&lt;api-key&gt;' password='&lt;api-secret&gt;';
+ spring.kafka.properties.sasl.mechanism=PLAIN
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Topic creation:</p>
+<pre><code> confluent kafka topic create user-topic --partitions 1
+</code></pre>
+</li>
+</ol>
+<h3>Test</h3>
+<ol>
+<li><p>Right click and run as Spring Boot App</p>
+<ol>
+<li>Producer</li>
+<li>Consumer:<ol>
+<li><p>Open application.properties</p>
+<pre><code> server.port = 8085
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Open PostMan</p>
+<ol>
+<li>POST: <a href="http://localhost:8080/userapi/publishUserData/bob/40">http://localhost:8080/userapi/publishUserData/bob/40</a></li>
+</ol>
+</li>
+</ol>
+<h3>Use Object Type</h3>
+<ol>
+<li><p>How to produce custom objects</p>
+</li>
+<li><p>New pojo class: <package>.kafka.dto.User</package></p>
+<pre><code> public class User {
+     private String name;
+     private int age;
+     private String favGenre;
+     
+     // Getters and setters
+ }
+ 
+</code></pre>
+</li>
+<li><p>Controller:</p>
+<pre><code> @PostMapping("/publishUserData")
+ public void sendUserData(@RequestBody User user) {
+     service.send(user);
+ }
+ 
+</code></pre>
+</li>
+<li><p>Service:</p>
+<pre><code> @Autowired
+ private KafkaTemplate&lt;String, User&gt; kafkaTemplate;
+
+ public void sendUserData(User user) {
+     kafkaTemplate.send("user-topic", user.name, user);
+ }
+ 
+</code></pre>
+</li>
+<li><p>Configure serializer: application.properties:</p>
+<pre><code> spring.kafka.producer.value-serializer = org.springframework.kafka.support.serializer.JsonSerializer
+</code></pre>
+</li>
+</ol>
+<h3>Configure JsonDeserailizer</h3>
+<ol>
+<li>Consumer:<ol>
+<li><p>Copy DTO package: (can be in a common project)</p>
+<pre><code> @KafkaListener(topics = {"user-topic"})
+ public void consumerUserData(User user) {
+     System.out.println("Users Age Is: " + user.getAge() + " Fav Genre " + user.getFavGenre());
+ }
+ 
+</code></pre>
+</li>
+<li><p>application.properties:</p>
+<pre><code> spring.kafka.consumer.value-deserilizer = org.springframework.kafka.support.serializer.JsonDeserializer
+ spring.kafka.consumer.properties.spring.json.trusted.packages = com.bharath.kafka.dto
+ ...
+ 
+</code></pre>
+<ol>
+<li>There will be trust issues<ol>
+<li>JsonDeserailizer does not trust all DTOs<ol>
+<li>We need to give the packages that JsonDeserailizer can trust<ol>
+<li>We can give one or more packages</li>
+<li><ul>
+<li><ul>
+<li>trust all packages</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Test</h3>
+<ol>
+<li><p>Run Producer as Spring Boot app</p>
+</li>
+<li><p>Run Consumer as Spring Boot app</p>
+</li>
+<li><p>Go to postman:</p>
+<pre><code> POST: http://localhost:8080/userapi/publishUserData
+ 
+ {
+     "name": "Bharath",
+     "age": 40,
+     "favGenre": "thriller"
+ }
+ 
+</code></pre>
+</li>
+<li><p>The data appears in Consumer console</p>
+</li>
+</ol>
+<h3>Quiz 10: Spring Boot and Kafka</h3>
+<h3>Assignment 6: Spring Boot and Kafka</h3>
+<ol>
+<li>CreditCard Producer project, Credit Card Consumer project</li>
+<li>CreditCard DTO: <ol>
+<li>fullName</li>
+<li>cardNumber</li>
+<li>expDate</li>
+<li>secCode</li>
+</ol>
+</li>
+<li>REST endpoint</li>
+<li>Consumer will recieve the message and prints the information</li>
+</ol>
+<h2>Section 13: Wrap Up</h2>
+<h3>Quiz 11: Final Quiz</h3>
+<h3>Bonus Lecture</h3>
+<ol>
+<li>Courses:<ol>
+<li><a href="https://www.udemy.com/course/kafka-fundamentals-for-java-developers/learn/lecture/27907362#content">https://www.udemy.com/course/kafka-fundamentals-for-java-developers/learn/lecture/27907362#content</a></li>
+</ol>
+</li>
+</ol>

@@ -1,0 +1,4767 @@
+<h1>Advanced CSS and Sass: Flexbox, Grid, Animations and More!</h1>
+<h2>Section 1: Welcome, Welcome, Welcome!</h2>
+<h3>Welcome to the Most Advanced CSS Course Ever!</h3>
+<ol>
+<li>7 sections - 20+ hours</li>
+<li>Sections:<ol>
+<li>Natours Project - Setup and First Steps (Part 1) <ol>
+<li>Landing page</li>
+<li>New CSS properties and techniques</li>
+<li>Animations</li>
+<li>Advanced responsive design</li>
+<li>CSS architecture</li>
+<li>...</li>
+</ol>
+</li>
+<li>How CSS Works: A Look Behind the Scenes<ol>
+<li>CSS architecture</li>
+</ol>
+</li>
+<li>Introduction to Sass and NPM<ol>
+<li>Tools to write and compile Sass</li>
+</ol>
+</li>
+<li>Natours Project - Using Advanced CSS and Sass (Part 2)<ol>
+<li>CSS properties and features</li>
+</ol>
+</li>
+<li>Natours Project - Advanced Responsive Design (Part 3)</li>
+<li>Trillo Project - Master Flexbox!</li>
+<li>A Quick Introduction to CSS Grid Layouts<ol>
+<li>Fundamentals</li>
+</ol>
+</li>
+<li>Nexter Project - Master CSS Grid Layouts!</li>
+</ol>
+</li>
+</ol>
+<h3>READ BEFORE YOU START!</h3>
+<ol>
+<li>Download starter files, final project code, and course slides<ol>
+<li><a href="https://github.com/jonasschmedtmann/advanced-css-course">Course material and instructions on GitHub</a></li>
+</ol>
+</li>
+<li><a href="https://discord.gg/uhMkpf4">Discord community</a></li>
+<li><a href="http://codingheroes.io/resources/">Online tools and resources</a></li>
+</ol>
+<h3>Setting up Our Tools</h3>
+<ol>
+<li>VS Code<ol>
+<li>Auto-complete</li>
+<li>Built-in git support</li>
+<li>Extensions<ol>
+<li>Very smooth</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Google Chrome</li>
+</ol>
+<h2>Section 2: Natours Project - Setup and First Steps (Part 1)</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>HTML and advanced CSS</li>
+<li>Set up project</li>
+<li>Exciting CSS features</li>
+</ol>
+<h3>Project Overview</h3>
+<ol>
+<li>Project<ol>
+<li>Website - landing page<ol>
+<li>Tours in the nature</li>
+</ol>
+</li>
+<li>Animations</li>
+<li>Features</li>
+<li>Animated cards</li>
+<li>Popup (pure CSS and not JS)</li>
+<li>Background video</li>
+<li>Modern look and feel</li>
+<li>Placeholder slides down</li>
+<li>Custom radio buttons</li>
+<li>Navigation<ol>
+<li>Animation</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Open Natures project in VS Code: <a href="https://github.com/jonasschmedtmann/advanced-css-course">https://github.com/jonasschmedtmann/advanced-css-course</a></li>
+</ol>
+<h3>Building the Header - Part 1</h3>
+<ol>
+<li><p>What you will learn in this lecture</p>
+<ol>
+<li>The best way to perform a basic reset using the universal selector</li>
+<li>How to set project-wide font definitions</li>
+<li>How to clip parts of elements using <code>clip-path</code> (modern CSS property)</li>
+</ol>
+</li>
+<li><p>Universal selector:</p>
+<ol>
+<li><p><code>*</code> - selects each and every element in the page</p>
+</li>
+<li><p>Reset:</p>
+<pre><code> * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+</code></pre>
+<ol>
+<li>Browsers, by default, apply some margin and padding on some elements (main heading say)</li>
+<li><code>border-box</code> - change box model so that borders and paddings are no longer added to border width or border height specified</li>
+</ol>
+</li>
+<li><p>Properties related to font are inherited</p>
+<pre><code> body {
+     font-family: "Lato", sans-serif; // inherited by all child elements in the body
+     font-weight: 400;
+     font-size: 16px;
+     line-height: 1.7; // 1.7 times bigger than the predefined line-height
+     color: #777;
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p><a href="https://bennettfeely.com/clippy/">https://bennettfeely.com/clippy/</a></p>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> /*
+ COLORS:
+ 
+ Light green: #7ed56f
+ Medium green: #55c57a
+ Dark green: #28b485
+ 
+ */
+ 
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+ 
+ body {
+   font-family: "Lato", sans-serif;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 1.7;
+   color: #777;
+   padding: 30px; /* Not inherited */
+ }
+ 
+ .header {
+   height: 95vh; /* 95% of viewport height */
+   background-image: linear-gradient(
+       to right bottom,
+       rgba(126, 213, 111, 0.8),
+       rgba(40, 180, 133, 0.8)
+     ),
+     url("../img/hero.jpg");
+   background-size: cover; /* tries to fit image inside the box */
+   background-position: top; /* top of the image stays on top */
+ 
+   clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+   /* clip-path: polygon(50% 0, 100% 100%, 0 100%); */
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Building the Header - Part 2</h3>
+<ol>
+<li><p>What we will learn:</p>
+<ol>
+<li>The easiest way to center anything with the <code>transform</code>, <code>top</code>, and <code>left</code> properties</li>
+</ol>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> .logo-box {
+   position: absolute;
+   top: 40px;
+   left: 40px;
+ }
+ 
+ .logo {
+   height: 35px;
+ }
+ 
+ .text-box {
+   position: absolute;
+   top: 50%; /* In relation to the parent element */
+   left: 50%;
+   transform: translate(
+     -40%,
+     -50%
+   ); /* Relative to the element and not it's parent */
+ }
+ 
+ .heading-primary {
+   color: #fff;
+   text-transform: uppercase;
+ }
+ 
+ .heading-primary-main {
+   display: block;
+   font-size: 60px;
+   font-weight: 400;
+   letter-spacing: 35px;
+ }
+ 
+ .heading-primary-sub {
+   display: block;
+   font-size: 20px;
+   font-weight: 700;
+   letter-spacing: 17.4px;
+ }
+</code></pre>
+</li>
+<li><p>Code: index.html</p>
+<pre><code> &lt;body&gt;
+     &lt;header class="header"&gt;
+         &lt;div class="logo-box"&gt;
+             &lt;img src="img/logo-white.png" alt="Logo" class="logo"&gt;
+         &lt;/div&gt;
+ 
+         &lt;div class="text-box"&gt;
+             &lt;h1 class="heading-primary"&gt; &lt;!-- Important for Google --&gt;
+                 &lt;span class="heading-primary-main"&gt;Outdoors
+                 &lt;/span&gt;
+                 &lt;span class="heading-primary-sub"&gt;is where life happens&lt;/span&gt;
+             &lt;/h1&gt;
+         &lt;/div&gt;
+     &lt;/header&gt;
+ &lt;/body&gt;
+</code></pre>
+</li>
+</ol>
+<h3>Constructing Cool CSS Animations</h3>
+<ol>
+<li>What you will learn in this<ol>
+<li>How to contstruct CSS animations using <code>@keyframes</code> and the <code>animation</code> property</li>
+</ol>
+</li>
+<li>Browsers are optimized for<ol>
+<li>Opacity</li>
+<li>Transform</li>
+</ol>
+</li>
+<li>ctrl+d (select multiple instances)</li>
+</ol>
+<h3>Building a Complex Animated Button - Part 1</h3>
+<ol>
+<li><p>What you will learn in the lecture</p>
+<ol>
+<li>What pseudo-elemets and pseudo-classes are;</li>
+<li>How and why to use the <code>::after</code> pseudo-element</li>
+<li>How to construct a creative hover animation effect using the <code>transition</code> property</li>
+</ol>
+</li>
+<li><p>Pseudo-class - a special state of an element</p>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> .btn:link,
+ .btn:visited {
+   text-transform: uppercase;
+   text-decoration: none;
+   padding: 15px 40px;
+   display: inline-block;
+   border-radius: 100px;
+   transition: all 0.2s;
+ }
+ 
+ .btn:hover {
+   transform: translateY(-3px);
+   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 0px - x axis, 10px down - y axis, 20px - blur  */
+ }
+ 
+ .btn:active {
+   transform: translateY(-1px); /* in relation to original state */
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .btn-white {
+   background-color: #fff;
+   color: #777;
+ }
+</code></pre>
+</li>
+<li><p>Code: index.html</p>
+<pre><code> &lt;a href="#" class="btn btn-white"&gt;Discover our tours&lt;/a&gt;
+</code></pre>
+</li>
+<li><p>Pseudo elements: Allow us to style certain parts of elements</p>
+<ol>
+<li>It is a virtual element after the element under selection which can be styled</li>
+</ol>
+</li>
+</ol>
+<h3>Building a Complex Animated Button - Part 2</h3>
+<ol>
+<li><p>Code: style.css</p>
+<pre><code> @keyframes moveInBotton {
+   0% {
+     opacity: 0;
+     transform: translateY(30px);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateY(0);
+   }
+ }
+
+ .btn:link,
+ .btn:visited {
+   text-transform: uppercase;
+   text-decoration: none;
+   padding: 15px 40px;
+   display: inline-block;
+   border-radius: 100px;
+   transition: all 0.2s;
+   position: relative;
+ }
+ 
+ .btn:hover {
+   transform: translateY(-3px);
+   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 0px - x axis, 10px down - y axis, 20px - blur  */
+ }
+ 
+ .btn:active {
+   transform: translateY(-1px); /* in relation to original state */
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .btn-white {
+   background-color: #fff;
+   color: #777;
+ }
+ 
+ /* Acts like a child of `btn` */
+ .btn::after {
+   content: "";
+   display: inline-block;
+   height: 100%; /* same height as parent: `btn` */
+   width: 100%;
+   border-radius: 100px;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: -1; /* Behind the button */
+   transition: all 0.4s;
+ }
+ 
+ .btn-white::after {
+   background-color: #fff;
+ }
+ 
+ /* On hover of button apply style to pseudo element ::after */
+ .btn:hover::after {
+   transform: scaleX(1.5) scaleY(1.6);
+   opacity: 0;
+ }
+ 
+ .btn-animated {
+   animation: moveInBotton 0.5s ease-out 0.75s;
+   animation-fill-mode: backwards; /* It automatically applies the style of 0% before the animation starts */
+ }
+</code></pre>
+</li>
+</ol>
+<h2>Section 3: How CSS Works: A Look Behind the Scenes</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>Important and advanced concepts</li>
+</ol>
+<h3>Three Pillars of Writing Good HTML and CSS (Never Forget Them!)</h3>
+<ol>
+<li>Three pillars to write good HTML and CSS... and build good websites<ol>
+<li>Responsive design</li>
+<li>Maintainable and scalable code</li>
+<li>Web performance</li>
+</ol>
+</li>
+</ol>
+<h4>Responsive Design</h4>
+<ol>
+<li>One website that works for all screen sizes on all devices<ol>
+<li>Concepts:<ol>
+<li>Fluid layouts</li>
+<li>Media queries</li>
+<li>Responsive images</li>
+<li>Correct units<ol>
+<li>Font sizes</li>
+<li>Element dimensions</li>
+</ol>
+</li>
+<li>Desktop-first vs mobile-first</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Maintainable and Scalable Code</h4>
+<ol>
+<li>Topics - For professional Web development<ol>
+<li>Clean</li>
+<li>Easy-to-understand</li>
+<li>Growth</li>
+<li>Reusable</li>
+<li>How to organize files (part of CSS architecture)</li>
+<li>How to name classes (part of CSS architecture)</li>
+<li>How to structure HTML (part of CSS architecture)</li>
+</ol>
+</li>
+</ol>
+<h4>Web Performance</h4>
+<ol>
+<li>Performance: Faster and smaller (user needs to download less data)</li>
+<li>Topics:<ol>
+<li>Less HTTP requests</li>
+<li>Less code</li>
+<li>Compress code</li>
+<li>Use a CSS preprocessor</li>
+<li>Less images<ol>
+<li>The biggest part of the size<ol>
+<li>Use only necessary images</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Compress images<ol>
+<li>They use less bandwidth</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>How CSS Works Behind the Scenes: An Overview</h3>
+<ol>
+<li>To become a better CSS developer</li>
+</ol>
+<h4>What Happens to CSS When We Load Up a Web Page?</h4>
+<ol>
+<li>Flow:<ol>
+<li>Load HTML</li>
+<li>Parse HTML (decodes code line by line)<ol>
+<li>Browser builds Document Object Model (DOM)<ol>
+<li>Describes web document as a family tree (decoded HTML code)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Browser loads CSS mentioned in the header</li>
+<li>Parse CSS (more complex)<ol>
+<li><strong>Resolve conflicting CSS declarations (cascade)</strong></li>
+<li><strong>Process final CSS values</strong><ol>
+<li>% to px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>CSS Object Model (CSSOM)<ol>
+<li>Final CSS is stored in a tree-like structure</li>
+</ol>
+</li>
+<li>DOM + CSSOM =&gt; Render Tree</li>
+<li>Website rendering: the visual formatting model<ol>
+<li>The visual formatting model: Algorithm calculates and uses many things (box model, floats, positioning)</li>
+</ol>
+</li>
+<li>Final rendered website</li>
+</ol>
+</li>
+</ol>
+<h3>How CSS is Parsed, Part 1: The Cascade and Specificity</h3>
+<h4>Quick Review: CSS Terminology</h4>
+<ol>
+<li><p>A CSS Rule</p>
+<pre><code>     .my-class {
+         color: blue;
+         text-align: center;
+         font-size: 20px;
+     }
+
+ 1. `.my-class` - selector
+     1. To select one or more HTML elements
+ 2. `{...}` - declaration block
+     1. Actual style
+ 3. `color: blue` - declaration
+     1. `color` - property
+     2. `blue` - declared value
+</code></pre>
+</li>
+</ol>
+<h4>The Cascade (The "C" in CSS)</h4>
+<ol>
+<li>Cascade: It is the process of combining different stylesheets and resolving conflicts between different CSS rules and declarations, when more than one rule applies to a certain element.<ol>
+<li><p>Sources:</p>
+<ol>
+<li>Author declarations<ol>
+<li>Declarations in stylesheets</li>
+</ol>
+</li>
+<li>User declarations<ol>
+<li>Users changing style in browser</li>
+</ol>
+</li>
+<li>Browser (user agent)<ol>
+<li>Default styles applied by browser (if we don't style them)<ol>
+<li>Set by browser</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Strategy to resolve conflict</p>
+<pre><code> importance (weight) &gt; specificity &gt; source order
+</code></pre>
+<ol>
+<li><p>Cascading gives conflicting declarations different importances based on where they are declared</p>
+<ol>
+<li>User <code>!important</code> declarations (declarations marked with <code>!important</code> keyword)</li>
+<li>Author <code>!important</code> declarations</li>
+<li>Author declarations</li>
+<li>User declarations</li>
+<li>Default browser declarations (least important)</li>
+</ol>
+</li>
+<li><p>Example: Author declarations</p>
+<pre><code> .button {
+     font-size: 20px;
+     color: white;
+     background-color: blue !important; /* more important than the next one */
+ }
+
+ #nav .pull-right .button {
+     background-color: green;
+ }
+</code></pre>
+</li>
+<li><p>If conflicting rules exist without <code>!important</code> then they have the same importance</p>
+<ol>
+<li>Next Cascade compares specificities of the declarations</li>
+</ol>
+</li>
+<li><p>Specificities order:</p>
+<ol>
+<li>Inline styles (highest specificity)</li>
+<li>IDs</li>
+<li>Classes, pseudo-classes, attribute</li>
+<li>Elements, pseudo-elements [selectors] (least specificity)</li>
+</ol>
+</li>
+<li><p>Calculating specificity:</p>
+<pre><code> .button {
+     font-size: 20px;
+     color: white;
+     background-color: blue;
+ }
+
+ nav#nav div.pull-right .button {
+     background-color: green;
+ }
+
+ a {
+     background-color: purple;
+ }
+
+ #nav a.button:hover {
+     background-color: yellow;
+ }
+</code></pre>
+<ol>
+<li>Specificity: <code>(inline, IDs, Classes, Elements)</code><ol>
+<li><p>For each one, we count the number of occurrences in the selector</p>
+</li>
+<li><p>Example: (above)</p>
+<pre><code> (0, 0, 1, 0)
+ (0, 1, 2, 2) // (-, #nav, .pull-right &amp; .button, nav &amp; div)
+ (0, 0, 0, 1)
+ (0, 1, 2, 1) // .button &amp; :hover
+</code></pre>
+<ol>
+<li>We look from left to right (most specific to least specific)<ol>
+<li>If a specificity is the highest, that wins<ol>
+<li><code>(0, 1, 2, 2)</code> wins<ol>
+<li>It is the cascaded value</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>If same specificity?<ol>
+<li>The last declaration in the code will override all other declarations and will be applied</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Cascade and Specificity: What you need to know</h4>
+<ol>
+<li>CSS declarations marked with <code>!important</code> have the highest priority</li>
+<li>But, only use <code>!important</code> as a last resort. It's better to use correct specificities - <strong>more maintainable code!</strong><ol>
+<li>Can cause problems in the long run</li>
+</ol>
+</li>
+<li>Inline styles will always have priority over styles in external stylesheets<ol>
+<li>Not a good practice</li>
+</ol>
+</li>
+<li>A selector that contains 1 ID is more specific than one with 1000 classes.</li>
+<li>A selector that contains 1 class is more specific than one with 1000 elements.</li>
+<li>The universal selector <code>*</code> has no specificity value (0, 0, 0, 0)<ol>
+<li>All other selectors have presedence over it</li>
+</ol>
+</li>
+<li>Rely more on <strong>specificity</strong> than on the <strong>order</strong> of selectors<ol>
+<li>If we re-arrange CSS code, we will not have surprises<ol>
+<li>Easier to maintain</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>But, rely on order when using 3rd party stylesheets - always put your author stylesheet last<ol>
+<li>We should be able to override the styles</li>
+</ol>
+</li>
+</ol>
+<h3>Specificity in Practice</h3>
+<ol>
+<li>Codepen.io<ol>
+<li><p>HTML</p>
+<pre><code> &lt;nav id="nav"&gt;
+   &lt;div class="pull-right"&gt;
+     &lt;a class="button button-danger" href="link.html"&gt;Don't click here!&lt;/a&gt;
+   &lt;/div&gt;
+ &lt;/nav&gt;
+</code></pre>
+</li>
+<li><p>CSS:</p>
+<pre><code> body {
+   padding: 50px;
+ }
+ 
+ .button {
+   font-size: 20px;
+   color: white;
+   background-color: blue;
+ }
+ 
+ a {
+   background-color: purple;
+ }
+ 
+ #nav div.pull-right a.button {
+   background-color: orangered;
+ }
+ 
+ #nav div.pull-right a.button:hover { /* this class should have a higher specificity than the original one without :hover */
+   background-color: green;
+ }
+ 
+ #nav a.button:hover {
+   background-color: yellow; /* doesn't work because the specificity is lower */
+ }
+</code></pre>
+<ol>
+<li>Helps in debugging if something doesn't work</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>How CSS is Parsed, Part 2: Value Processing</h3>
+<ol>
+<li>How values are processed in parsing phase</li>
+</ol>
+<h4>How CSS Values are Processed</h4>
+<ol>
+<li><p>Each time we use a unit other than px (%, rem, ...), it will ultimately be converted to px.</p>
+<ol>
+<li>Helps us predict and control which property takes with value</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> &lt;div class="section"&gt;
+     &lt;p class="amazing"&gt;CSS is absolutely amazing&lt;/p&gt;
+ &lt;/div&gt;
+
+ .section {
+     font-size: 1.5rem;
+     width: 280px;
+     background-color: orangered;
+ }
+
+ p {
+     width: 140px;
+     background-color: green;
+ }
+
+ .amazing {
+     width: 66%;
+ }
+</code></pre>
+<ol>
+<li>6 steps:<ol>
+<li>Declared value (author declaration)<ol>
+<li>width (paragraph):<ol>
+<li>140px</li>
+<li>66% - more specific</li>
+</ol>
+</li>
+<li>padding (paragraph):</li>
+<li>font-size (root):</li>
+<li>font-size (section):</li>
+<li>font-size (paragraph):</li>
+</ol>
+</li>
+<li>Cascaded value (after the cascade)<ol>
+<li>width (paragraph):<ol start="2">
+<li>66% - more specific</li>
+</ol>
+</li>
+<li>padding (paragraph):</li>
+<li>font-size (root):</li>
+<li>font-size (section):</li>
+<li>font-size (paragraph):</li>
+</ol>
+</li>
+<li>Specified value (defaulting, if there is no cascaded value)</li>
+<li>Computed value (converting relative values to absolute - they can be inherited) - keywords such as <code>auto</code>, <code>orange</code>, <code>bolder</code>, ... are computed and replaced<ol>
+<li>width (paragraph):<ol start="2">
+<li>66% (nothing happens in this step because it is not a unit)</li>
+</ol>
+</li>
+<li>padding (paragraph):</li>
+<li>font-size (root):</li>
+<li>font-size (section):</li>
+<li>font-size (paragraph):</li>
+</ol>
+</li>
+<li>Used value (final calculations, based on layout)<ol>
+<li>width (paragraph):<ol start="2">
+<li>66% of 280px = 184.8px</li>
+</ol>
+</li>
+<li>padding (paragraph):</li>
+<li>font-size (root):</li>
+<li>font-size (section):</li>
+<li>font-size (paragraph):</li>
+</ol>
+</li>
+<li>Actual value (considered using browser and device restrictions)<ol>
+<li>width (paragraph):<ol start="2">
+<li>184.8px =&gt; 185px</li>
+</ol>
+</li>
+<li>padding (paragraph):</li>
+<li>font-size (root):</li>
+<li>font-size (section):</li>
+<li>font-size (paragraph):</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>For each and every element in the page, each and every CSS property needs to have a value (even if not declared)</p>
+<ol>
+<li>padding (paragraph)<ol>
+<li>Declared value (author declarations) -</li>
+<li>Cascaded value (after the cascade) -</li>
+<li>Specified value (defaulting if there is no cascaded value)<ol>
+<li>0px (initial value) - already in absolute unit (if no padding is declared, we don't want any)<ol>
+<li>Used if there is no cascaded value<ol>
+<li>Inheritance also plays a role here</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Computed value (converting relative vals to absolute)</li>
+<li>Used value (final calculations, based on layout)</li>
+<li>Actual value (browser and device restrictions)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Root: font-size:</p>
+<ol>
+<li>Declared value -</li>
+<li>Cascaded value (after the cascade) - 16px (Browser default - user agent declaration)<ol>
+<li>No more calculation needed</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Section: font-size:</p>
+<ol>
+<li>Declared value<ol>
+<li>1.5rem</li>
+</ol>
+</li>
+<li>Cascaded value<ol>
+<li>1.5rem</li>
+</ol>
+</li>
+<li>Specified value<ol>
+<li>1.5rem</li>
+</ol>
+</li>
+<li>Computed value<ol>
+<li>24px (1.5rem x 16px)</li>
+</ol>
+</li>
+<li>Used value<ol>
+<li>24px</li>
+</ol>
+</li>
+<li>Actual value<ol>
+<li>24px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Paragraph: font-size</p>
+<ol>
+<li>Declared value<ol>
+<li><ul>
+<li></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Cascaded value<ol>
+<li><ul>
+<li></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Specified value<ol>
+<li>24px (inheritance)<ol>
+<li>Some elements inherit the computed value of their parent</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Computed value<ol>
+<li>24px (1.5rem x 16px)</li>
+</ol>
+</li>
+<li>Used value<ol>
+<li>24px</li>
+</ol>
+</li>
+<li>Actual value<ol>
+<li>24px</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>How Units are Converted from Relative to Absolute (PX)</h4>
+<ol>
+<li><p>Example:</p>
+<pre><code> html, body {
+     font-size: 16px;
+     width: 80vw;
+ }
+
+ header {
+     font-size: 150%;
+     padding: 2em;
+     margin-bottom: 10rem;
+     height: 90vh;
+     width: 1000px;
+ }
+
+ .header-child {
+     font-size: 3em;
+     padding: 10%;
+ }
+</code></pre>
+<ol>
+<li>Example (x);<ol>
+<li>% (fonts)<ol>
+<li>150%</li>
+</ol>
+</li>
+<li>% (lengths) (reference is always parent element's width)<ol>
+<li>10%</li>
+</ol>
+</li>
+<li>em (font) (font-based) (uses parent's font-size as reference)<ol>
+<li>3em</li>
+</ol>
+</li>
+<li>em (lengths) (font-based) (uses parent's font-size as reference)<ol>
+<li>2em</li>
+</ol>
+</li>
+<li>rem (font-based) (uses root's font-size as reference)<ol>
+<li>10rem</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>How to convert to pixels<ol>
+<li>% (fonts)<ol>
+<li>x% * parent's computed font-size<ol>
+<li>html/body</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>% (lengths)<ol>
+<li>x% * parent's computed width<ol>
+<li>10% * 1000px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>em (font)<ol>
+<li>x * parent computed font-size<ol>
+<li>3 * 24px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>em (lengths)<ol>
+<li>x * current element computed font-size<ol>
+<li>2 * 24px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>rem<ol>
+<li>x * root computed font-size<ol>
+<li>10 * 16px</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Result in pixels<ol>
+<li>% (fonts)<ol>
+<li>24px</li>
+</ol>
+</li>
+<li>% (lengths)<ol>
+<li>100px</li>
+</ol>
+</li>
+<li>em (font)<ol>
+<li>72px</li>
+</ol>
+</li>
+<li>em (lengths)<ol>
+<li>48px</li>
+</ol>
+</li>
+<li>rem<ol>
+<li>160px</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Why using font-size and ems and rems</p>
+<ol>
+<li>Enables building more responsive layouts<ol>
+<li>Lengths can be changed by just changing font-size<ol>
+<li>For flexibility</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>vh</code></p>
+<ol>
+<li>Example (x)<ol>
+<li>90vh</li>
+</ol>
+</li>
+<li>How to convert to pixels<ol>
+<li>x * 1% of viewport height</li>
+</ol>
+</li>
+<li>Result in pixels<ol>
+<li>90% of the current viewport height (browser knows what the viewport height is)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>vw</code></p>
+<ol>
+<li>Example (x)<ol>
+<li>80vw</li>
+</ol>
+</li>
+<li>How to convert to pixels<ol>
+<li>x * 1% of viewport width</li>
+</ol>
+</li>
+<li>Result in pixels<ol>
+<li>80% of the current viewport width</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>CSS Value Processing: What you need to know</h4>
+<ol>
+<li>Each property has an initial value, used if nothing is declared (and if there is no inheritance - see next lecture)</li>
+<li>Browsers specify a <strong>root font-size</strong> for each page (usually 16px)</li>
+<li>Percentages and relative values are always converted to pixels<ol>
+<li>For CSS engine to render the page in the screen</li>
+</ol>
+</li>
+<li>Percentages are measured relative to their parent's font-size, if used to specify font-size</li>
+<li>Percentages are measured relative to their parent's width, if used to specify lengths</li>
+<li>em are measured relative to their parent font-size, if used to specify font-size</li>
+<li>em are measured relative to the current font-size, if used to specify lengths</li>
+<li>rem are always measured relative to the document's root font-size</li>
+<li>vh and vw are simply percentage measurements of the viewport's height and width</li>
+</ol>
+<h3>How CSS is Parsed, Part 3: Inheritance</h3>
+<h4>Inheritance in CSS</h4>
+<ol>
+<li><p>Example: Let's analyse line-height on .child</p>
+<pre><code> .parent {
+     font-size: 20px;
+     line-height: 150%;
+ }
+
+ .child {
+     font-size: 25px;
+ }
+</code></pre>
+<ol>
+<li>Every CSS property must have a value<ol>
+<li>Even if the author nor the browser specifies it<ol>
+<li>(no cascaded value)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Is there a cascaded value?<ol>
+<li>If yes:<ol>
+<li>Specified value = cascaded values</li>
+</ol>
+</li>
+<li>If no:<ol>
+<li>Is the property inherited? (specified to each property)<ol>
+<li>Yes:<ol>
+<li>Some are inherited, and others are not</li>
+<li><code>line-height</code> property specification<ol>
+<li>It is inherited</li>
+</ol>
+</li>
+<li>Specified value = Computed value of parent element<ol>
+<li>It is not the % that is inherited, but the computed value</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>No:<ol>
+<li>Secified value = Initial value (specific to each property)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Inheritance in CSS</h4>
+<ol>
+<li><p>Example:</p>
+<pre><code> .parent {
+     font-size: 20px;
+     line-height: 150%;
+ }
+
+ .child {
+     font-size: 25px;
+ }
+</code></pre>
+<ol>
+<li>Let's analyse <code>line-height</code> on <code>.child</code></li>
+</ol>
+</li>
+<li><p>Steps:</p>
+<ol>
+<li>Every CSS property must have a value</li>
+<li>Is there a cascaded value?<ol>
+<li>Yes<ol>
+<li>Specified value = Cascaded value</li>
+</ol>
+</li>
+<li>No<ol>
+<li>Is the property inherited? (specific to each property)<ol>
+<li>Yes<ol>
+<li>Specified value = Computed value of parent element<ol>
+<li>30px (computed value)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>No<ol>
+<li>Specified value = Initial value (specific to each property)<ol>
+<li>Padding: 0px (intuitive)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Inheritance: What You Need to Know</h4>
+<ol>
+<li>Inheritance passes the value for some specific properties from parents to children - <strong>more maintainable code</strong><ol>
+<li>Advantage:<ol>
+<li>Allows developer to write less code and code that is more maintainable</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Poperties related to text are inherited:<ol>
+<li><code>font-family</code></li>
+<li><code>font-size</code></li>
+<li><code>color</code></li>
+<li>etc.</li>
+</ol>
+</li>
+<li>Properties like margins and paddings are not inherited<ol>
+<li>Impractical<ol>
+<li>All children inheriting margin doesn't make sense</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The computed value of a property is what gets inherited, not the declared value</li>
+<li>Inheritance of a property only works if no one declares a value for that property</li>
+<li>The <code>inherit</code> keyword forces inheritance on a certain property</li>
+<li>The <code>initial</code> keyword resets a property to its initial value</li>
+</ol>
+<h3>Converting px to rem: An Effective Workflow</h3>
+<h4>What You Will Learn in this Lecture</h4>
+<ol>
+<li>How and why to use <code>rem</code> units in our project</li>
+<li>A great workflow for converting px to rem</li>
+</ol>
+<h4>Why?</h4>
+<ol>
+<li><p>We want an easy way to change measurements in a page with one simple setting</p>
+<ol>
+<li>Example: When we hit a breakpoint to display on a mobile device<ol>
+<li>We want to decrease all measurements at the same time<ol>
+<li>Instead of writing a lot of code to do that in media queries. One global setting can be changed. <code>font-size</code> say</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Change font-size and px to rem</p>
+<pre><code> html {
+     font-size: 10px;
+ }
+
+ /* ... */
+ border-radius: 10rem; /* 10 * 10px = 100px */
+</code></pre>
+<ol>
+<li>Using <code>px</code> is also a bad practice<ol>
+<li>Users cannot change the font-size in the browser (it is hardcoded)<ol>
+<li><p>Solution: Change to <code>%</code></p>
+<ol>
+<li><p>Example:</p>
+<pre><code> html {
+   /* font-size: 10px; */ /* 1rem = 10px */
+   font-size: 62.5%;
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p><code>rem</code> not supported below IE 9 - irrelevant</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Inheritance must be used instead of universal selector</p>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> * *::after *::before {
+   /* after and before don't get the style by default */
+   margin: 0;
+   padding: 0;
+   /* box-sizing: border-box; */
+   box-sizing: inherit; /* Inherits whatever we put inside `body` which is `box-sizing: border-box` */
+ }
+ 
+ body {
+   font-family: "Lato", sans-serif;
+   font-weight: 400;
+   /* font-size: 16px; */
+   line-height: 1.7;
+   color: #777;
+   /* padding: 30px; /* Not inherited */
+   padding: 4rem;
+ 
+   box-sizing: border-box; /* makes it easier to change in plugins. Better practicing */
+ }
+</code></pre>
+</li>
+</ol>
+<h3>How CSS Renders a Website: The Visual Formatting Model</h3>
+<h4>The Visual Formatting Model</h4>
+<ol>
+<li><strong>Definition</strong>: It is an algorithm that calculates boxes and determines the layout of these boxes, for each element in the render tree, in order to determin the final layout of the page.<ol>
+<li>Factors considered<ol>
+<li><strong>Dimensions of boxes</strong>: the box model</li>
+<li><strong>Box type</strong>: inline, block, inline-block</li>
+<li><strong>Positioning scheme</strong>: floats and positioning</li>
+<li><strong>Stacking contexts</strong></li>
+<li>Other elemnts in the render tree<ol>
+<li>Siblings</li>
+<li>Parents</li>
+</ol>
+</li>
+<li>Viewport size, dimensions of images, etc.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>The Box Model</h4>
+<pre><code>                            -
+                        margin
+                            -
+                        padding
+                            -
+                            ^
+                            |
+    margin | padding | &lt;--- width ---&gt; | padding | margin
+                        height
+                            |
+                            v
+                            -
+                        padding
+                            -
+                        margin
+                            -
+
+1. Each and every element in a web-page can be seen as a box
+2. Each box can have
+    1. Width
+    2. Height
+    3. Padding (optional)
+    4. Margin (optional)
+    5. Border (optional)
+3. **Content**
+    1. text, images, etc. (we specify)
+    2. We can define its `height` and `width` using the CSS properties.
+4. **Padding**
+    1. **Transparent area** around the content, inside of the box
+    2. It is used to define whitespace inside of the box
+    3. `padding` property can be used in CSS
+5. **Border**
+    1. Goes around the padding and the content
+6. **Margin**
+    1. Space between boxes (outside the box)
+    2. Used to define space between two elements
+7. **Fill area**
+    1. Area that gets filled with background color or background image
+        1. Includes **content area + padding area + border area**
+</code></pre>
+<h4>The Box Model: Heights and Widths</h4>
+<ol>
+<li><strong>total width</strong> = right border + right padding + specified width + left-padding + left border</li>
+<li><strong>total height</strong> = top border + top padding + specified height + bottom padding + bottom border<ol>
+<li>Example: height = 0 + 20px + 100px + 20px + 0 = 140px</li>
+</ol>
+</li>
+<li>If we don't specify height and width, the visual formatting model will use content of the box to determine its size</li>
+</ol>
+<h4>The Box Model with Box-Sizing: Border-Box</h4>
+<ol>
+<li>width = left border + left padding + content width + right padding + right border</li>
+<li>height = top border + top padding + content height + bottom padding + bottom border</li>
+<li><strong>total width</strong> = specified width</li>
+<li><strong>total height</strong> = specified height</li>
+</ol>
+<h4>Box Types: Inline, Block-Level, and Inline-Block</h4>
+<ol>
+<li>Block-Level boxes<ol>
+<li>Elements formatted visually as blocks</li>
+<li>100% of parent's width (as much space as possible)</li>
+<li>Vertically, one after another<ol>
+<li>Line breaks are created at the end</li>
+</ol>
+</li>
+<li>Box-model applies as shown</li>
+<li><code>display: block</code> (The below also produce block-level boxes)<ol>
+<li><code>display: flex</code></li>
+<li><code>display: list-item</code></li>
+<li><code>display: table</code></li>
+</ol>
+</li>
+<li>Some elements' display property is set to <code>block</code> by default</li>
+</ol>
+</li>
+<li>Inline boxes<ol>
+<li>Content is distributed in lines<ol>
+<li>Only occupies the space its content needs</li>
+</ol>
+</li>
+<li>Occupies only <strong>content's space</strong></li>
+<li>No line-breaks<ol>
+<li>They sit inside block level parent element</li>
+</ol>
+</li>
+<li>No heights and widths<ol>
+<li>They do not apply</li>
+</ol>
+</li>
+<li>Paddings and margins only horizontal (left and right)</li>
+<li><code>display: inline</code></li>
+</ol>
+</li>
+<li>Inline-block boxes<ol>
+<li>A mix of block and inline</li>
+<li>Occupies only content's space</li>
+<li>No line-breaks</li>
+<li>Box-model applies as shown</li>
+<li><code>display: inline-block</code></li>
+</ol>
+</li>
+</ol>
+<h4>Positioning Schemes: Normal Flow, Absolute Positioning, And Floats</h4>
+<ol>
+<li>Normal flow<ol>
+<li>Default position scheme<ol>
+<li>Elements are layed out in the natural order of the code</li>
+</ol>
+</li>
+<li>If <strong>NOT</strong> floated</li>
+<li>If <strong>NOT</strong> absolutely positioned</li>
+<li>Elements laid out according to their source order</li>
+<li><strong>Default</strong><ol>
+<li><code>position: relative</code> - it will still be normal flow</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Floats<ol>
+<li><strong>Element is removed from the normal flow</strong><ol>
+<li>Shifted to left or right as far as possible until it touches the edge of its containing box or another float element</li>
+</ol>
+</li>
+<li>Text and inline elements will wrap around the floated element</li>
+<li>The container will not adjust its height to the element<ol>
+<li>Solution: Using clear fixes</li>
+</ol>
+</li>
+<li>Types:<ol>
+<li><code>float: left</code></li>
+<li><code>float: right</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Absolute positioning<ol>
+<li><strong>Element is removed from the normal flow</strong></li>
+<li>No impact on surrounding content or elements<ol>
+<li>It can overlap other elements</li>
+</ol>
+</li>
+<li>We use <code>top</code>, <code>bottom</code>, <code>left</code>, and <code>right</code> to offset the element from its relatively positioned container<ol>
+<li>Stacking contexts</li>
+</ol>
+</li>
+<li>Types:<ol>
+<li><code>position: absolute</code></li>
+<li><code>position: fixed</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Stacking Contexts</h4>
+<ol>
+<li>Determine in which order elements are rendered on the page<ol>
+<li><p>A new stacking context can be constructed using different CSS properties</p>
+<ol>
+<li>Example: z-index</li>
+</ol>
+</li>
+<li><p>Layers on the bottom of the stack are painted first and then subsequent layers on the top</p>
+</li>
+<li><p>Example:</p>
+<pre><code> z-index: 3
+ position: relative
+
+ z-index: 2
+ position: absolute
+
+ z-index: 1
+ position: relative
+</code></pre>
+<ol>
+<li>Stacking context with higher z-index appears on top</li>
+</ol>
+</li>
+<li><p>Other properties that construct stacking contexts</p>
+<ol>
+<li>Opacity different from 1</li>
+<li>Transform</li>
+<li>Filter</li>
+</ol>
+</li>
+<li><p>Sometimes the stacking order doesn't work as expected even after setting the z-index</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3>CSS Architecture, Components and BEM</h3>
+<h4>The Think - Build - Architect Mindset</h4>
+<ol>
+<li><p>We want code that is:</p>
+<ol>
+<li>Clean</li>
+<li>Modular</li>
+<li>Reusable</li>
+<li>Ready for growth (to add more features)</li>
+</ol>
+</li>
+<li><p>Architecture</p>
+<ol>
+<li>We need to take important decisions concerning HTML and CSS code right from the beginning<ol>
+<li>We need good strategy</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Strategy:</p>
+<pre><code> Think ----------------------------&gt; Build ----------------------------&gt; Architect
+ Think about the layout of your		Build your layout in HTML and		Construct a logical **architecture** for
+ webpage or web app before			CSS with a consistent structure		your CSS with files and folders
+ writing code						for naming classes
+</code></pre>
+</li>
+</ol>
+<h4>Thinking About the Layout</h4>
+<ol>
+<li>Component-driven design<ol>
+<li><strong>Modular building blocks</strong> that make up interfaces<ol>
+<li>Interface - collection of components held together by overall layout of the page</li>
+<li>Components should be <strong>Re-usable</strong> across a project, and between different projects<ol>
+<li>We can build a library of components and re-use them across the project which will speed up development</li>
+</ol>
+</li>
+<li><strong>Components</strong> should be independent, allowing us to use them anywhere on the page<ol>
+<li>Components should not depend on parent elements</li>
+</ol>
+</li>
+<li>Similar to <strong>Atomic design</strong> philosopht<ol>
+<li>Atoms -&gt; Molecules -&gt; Organisms -&gt; Templates -&gt; Pages<ol>
+<li>Atoms - smallest units of the page<ol>
+<li>They combine to form molecules</li>
+<li>Molecules compile to form organisms<ol>
+<li>Organisms - components</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Building with Meaningful Class Names</h4>
+<ol>
+<li><p>Consistent strategy, structure for naming classes</p>
+<ol>
+<li>Strategies<ol>
+<li>Object Oriented CSS</li>
+<li>SMAX?</li>
+<li>BEM (more popular)<ol>
+<li>Clean system</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>BEM - Block Element Modifier</p>
+<pre><code> .block {}
+ .block__element {}
+ .block__element--modifier {}
+</code></pre>
+<ol>
+<li>Low specificity BEM selectors<ol>
+<li>We always use classe, and they are not nested - always low specificity<ol>
+<li>Hence easy to maintain and re-usable code</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Block: Standalone component that is meaningful on its own<ol>
+<li>Components are the blocks (standalone components that we can use anywhere in the project)<ol>
+<li>Example:<ol>
+<li><code>recipe</code></li>
+<li><code>btn</code> (inside <code>recipe</code> block)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Element: Part of a block that has no standalone meaning (if we take them out, they will not have any meaning)<ol>
+<li><code>__info</code></li>
+<li><code>__stats-box</code> (<code>recipe__stats--box</code>)</li>
+</ol>
+</li>
+<li>Modifier: A different version of a block or an element<ol>
+<li>To make it different from regular blocks or elements<ol>
+<li><p>Example: To make a button round</p>
+<pre><code> btn--round
+</code></pre>
+<ol>
+<li>Modifier is used to make a different button</li>
+<li><code>btn</code> applies to all buttons</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Example:</p>
+<pre><code> &lt;figure class="recipe"&gt;
+     &lt;div class="recipe__hero"&gt;
+         &lt;img class="recipe__img" src="" /&gt;
+     &lt;/div&gt;
+     &lt;div class="recipe__info"&gt;
+         &lt;div class="recipe__category"&gt;
+             Veggie
+         &lt;/div&gt;
+         &lt;figoption class="recipe__details"&gt;
+             &lt;h2 class="recipe__title"&gt;Pizza Vegetole&lt;/h2&gt;
+             &lt;p class="recipe__description"&gt;
+                 Yummy veggie pizza with tasty olives
+             &lt;/p&gt;
+         &lt;/figoption&gt;
+         &lt;div class="recipe__stats-box"&gt;
+             &lt;div class="recipe__stat"&gt;
+                 &lt;span class="recipe__stat-value"&gt;4.9&lt;/span&gt;
+                 &lt;span class="recipe__stat-name recipe__state-name--1"&gt;Stats&lt;/span&gt;
+             &lt;/div&gt;
+             &lt;div class="recipe__stat"&gt;
+                 &lt;span class="recipe__stat-value"&gt;45&lt;/span&gt;
+                 &lt;span class="recipe__stat-name recipe__state-name--1"&gt;Minutes&lt;/span&gt;
+             &lt;/div&gt;
+             &lt;div class="recipe__stat"&gt;
+                 &lt;span class="recipe__stat-value"&gt;2&lt;/span&gt;
+                 &lt;span class="recipe__stat-name recipe__state-name--1"&gt;Persons&lt;/span&gt;
+             &lt;/div&gt;
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;a class="recipe__btn btn btn--round" href="#"&gt;Try&lt;/a&gt;
+ &lt;/figure&gt;
+</code></pre>
+<ol>
+<li>BEM might look ugly and hard to write (opinion) - more code<ol>
+<li>It is worth it</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Architecting with Files and Folders</h4>
+<ol>
+<li>Strategies<ol>
+<li>ITCSS</li>
+<li>SMAXS</li>
+<li>7-1 pattern</li>
+</ol>
+</li>
+<li>7-1 pattern<ol>
+<li>7 different folders for partial Sass files (or any other CSS preprocessor), and<ol>
+<li><code>base/</code><ol>
+<li>Basic project definitions</li>
+</ol>
+</li>
+<li><code>components/</code><ol>
+<li>One file for each component</li>
+</ol>
+</li>
+<li><code>layout/</code><ol>
+<li>Definition of the overall layout of the project</li>
+</ol>
+</li>
+<li><code>pages/</code><ol>
+<li>Styles for specific pages of the project</li>
+</ol>
+</li>
+<li><code>themes/</code><ol>
+<li>To implement different visual themes</li>
+</ol>
+</li>
+<li><code>abstracts/</code><ol>
+<li>Code that does not output any CSS<ol>
+<li>Variables</li>
+<li>Mixins</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>vendors/</code><ol>
+<li>All third party CSS goes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>1 main Sass file to import all other files into a compiled CSS stylesheet</li>
+</ol>
+</li>
+<li>We don't have to use all the folders<ol>
+<li>Depends on size and scope of project</li>
+</ol>
+</li>
+</ol>
+<h3>Implementing BEM in the Natours Project</h3>
+<ol>
+<li><p>What you will learn in this lecture</p>
+<ol>
+<li>How to use the BEM method in practice</li>
+</ol>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> /*
+ COLORS:
+ 
+ Light green: #7ed56f
+ Medium green: #55c57a
+ Dark green: #28b485
+ 
+ */
+ 
+ html {
+   /* font-size: 10px; */ /* 1rem = 10px */
+   font-size: 62.5%;
+ }
+ 
+ * *::after *::before {
+   /* after and before don't get the style by default */
+   margin: 0;
+   padding: 0;
+   /* box-sizing: border-box; */
+   box-sizing: inherit; /* Inherits whatever we put inside `body` which is `box-sizing: border-box` */
+ }
+ 
+ body {
+   font-family: "Lato", sans-serif;
+   font-weight: 400;
+   /* font-size: 16px; */
+   line-height: 1.7;
+   color: #777;
+   /* padding: 30px; /* Not inherited */
+   padding: 4rem;
+ 
+   box-sizing: border-box; /* makes it easier to change in plugins. Better practicing */
+ }
+ 
+ .header {
+   height: 95vh; /* 95% of viewport height */
+   background-image: linear-gradient(
+       to right bottom,
+       rgba(126, 213, 111, 0.8),
+       rgba(40, 180, 133, 0.8)
+     ),
+     url("../img/hero.jpg");
+   background-size: cover; /* tries to fit image inside the box */
+   background-position: top; /* top of the image stays on top */
+   position: relative;
+ 
+   clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+   /* clip-path: polygon(50% 0, 100% 100%, 0 100%); */
+ }
+ 
+ .header__logo-box {
+   position: absolute;
+   top: 4rem;
+   left: 4rem;
+ }
+ 
+ .header__logo {
+   height: 3.5rem;
+ }
+ 
+ .header__text-box {
+   position: absolute;
+   top: 50%; /* In relation to the parent element */
+   left: 50%;
+   transform: translate(
+     -50%,
+     -40%
+   ); /* Relative to the element and not it's parent */
+   text-align: center;
+ }
+ 
+ .heading-primary {
+   color: #fff;
+   text-transform: uppercase;
+ 
+   backface-visibility: hidden; /* back part of the element will not be visible. Fixes shaking problem. Hack */
+ 
+   margin-bottom: 6rem;
+ }
+ 
+ .heading-primary--main {
+   display: block;
+   font-size: 6rem;
+   font-weight: 400;
+   letter-spacing: 3.5rem;
+ 
+   animation-name: moveInLeft;
+   animation-duration: 1s;
+   animation-timing-function: ease-out;
+ 
+   /* animation-iteration-count: 3; */ /* Happens 3 times */
+   /* animation-delay: 3s; */
+ }
+ 
+ .heading-primary--sub {
+   display: block;
+   font-size: 2rem;
+   font-weight: 700;
+   letter-spacing: 1.75rem;
+ 
+   animation: moveInRight 1s ease-out;
+ }
+ 
+ @keyframes moveInLeft {
+   0% {
+     opacity: 0;
+     transform: translateX(-10rem);
+   }
+ 
+   80% {
+     transform: translateX(1rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateX(0);
+   }
+ }
+ 
+ @keyframes moveInRight {
+   0% {
+     opacity: 0;
+     transform: translateX(10rem);
+   }
+ 
+   80% {
+     transform: translateX(-1rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateX(0);
+   }
+ }
+ 
+ @keyframes moveInBotton {
+   0% {
+     opacity: 0;
+     transform: translateY(3rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateY(0);
+   }
+ }
+ 
+ .btn:link,
+ .btn:visited {
+   text-transform: uppercase;
+   text-decoration: none;
+   padding: 1.5rem 4rem;
+   display: inline-block;
+   border-radius: 10rem;
+   transition: all 0.2s;
+   position: relative;
+   font-size: 1.6rem;
+ }
+ 
+ .btn:hover {
+   transform: translateY(-0.3rem);
+   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); /* 0px - x axis, 10px down - y axis, 20px - blur  */
+ }
+ 
+ .btn:active {
+   transform: translateY(-0.1rem); /* in relation to original state */
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .btn--white {
+   background-color: #fff;
+   color: #777;
+ }
+ 
+ /* Acts like a child of `btn` */
+ .btn::after {
+   content: "";
+   display: inline-block;
+   height: 100%; /* same height as parent: `btn` */
+   width: 100%;
+   border-radius: 10rem;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: -1; /* Behind the button */
+   transition: all 0.4s;
+ }
+ 
+ .btn--white::after {
+   background-color: #fff;
+ }
+ 
+ /* On hover of button apply style to pseudo element ::after */
+ .btn:hover::after {
+   transform: scaleX(1.5) scaleY(1.6);
+   opacity: 0;
+ }
+ 
+ .btn--animated {
+   animation: moveInBotton 0.5s ease-out 0.75s;
+   animation-fill-mode: backwards; /* It automatically applies the style of 0% before the animation starts */
+ }
+</code></pre>
+</li>
+</ol>
+<h2>Section 4: Introduction to Sass and NPM</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>Sass<ol>
+<li>Basics</li>
+<li>Not hard to learn<ol>
+<li>Extension of CSS</li>
+</ol>
+</li>
+<li>Sass compiler<ol>
+<li>NPM ecosystem<ol>
+<li>How to compile using NPM packages &amp; NPM scripts</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>What is Sass?</h3>
+<h4>What is Sass and How Does it Work?</h4>
+<ol>
+<li>Sass is a CSS preprocessor, an extension of CSS that adds power and elegance to the basic language<ol>
+<li>SASS Source Code -Sass compiler-&gt; Compiled CSS Code</li>
+</ol>
+</li>
+<li>Sass is used to fix problems with CSS<ol>
+<li>CSS can get very messy very quickly</li>
+<li>CSS has no re-usable pieces</li>
+<li>CSS has no logic</li>
+</ol>
+</li>
+<li>Sass has handy features</li>
+<li>How does it work?<ol>
+<li>We write Sass code in Sass files</li>
+<li>Sass compiler converts Sass code to CSS code</li>
+</ol>
+</li>
+<li>Website doesn't know Sass<ol>
+<li>It only sees CSS</li>
+</ol>
+</li>
+</ol>
+<h4>Main Sass Features</h4>
+<ol>
+<li><strong>Variables:</strong> for reusable values such as colors, font-size, spacing, etc.</li>
+<li><strong>Nesting:</strong> to nest selectors inside of one another, allowing us to write less code</li>
+<li><strong>Operators:</strong> for mathematical operations right inside of CSS</li>
+<li><strong>Partials and imports:</strong> to write CSS in different files and importing them all into one single file</li>
+<li><strong>Mixins:</strong> to write reusable pieces of CSS code</li>
+<li><strong>Functions:</strong> similar to mixins, with the difference that they produce a value that can then be used</li>
+<li><strong>Extends:</strong> to make different selectors inherit declarations that are common to all of them</li>
+<li><strong>Control directives:</strong> to write complex code using conditionals and loops (not covered in this course)</li>
+</ol>
+<h4>Sass and SCSS: Clearing up the Confusion</h4>
+<ol>
+<li><p>Sass</p>
+<ol>
+<li>SASS syntax<ol>
+<li>Indentation sensitive and doesn't use curly braces or semi-colons<ol>
+<li>Confusing</li>
+<li>Difficult to learn</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>SCSS syntax (Sassy CSS)<ol>
+<li>Preserves the way original CSS looks like</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: index.html</p>
+<pre><code> &lt;nav&gt;
+   &lt;ul class="navigation"&gt;
+     &lt;li&gt;&lt;a href="#"&gt;About Us&lt;/a&gt;&lt;/li&gt;
+     &lt;li&gt;&lt;a href="#"&gt;Pricing&lt;/a&gt;&lt;/li&gt;
+     &lt;li&gt;&lt;a href="#"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+   &lt;div class="buttons"&gt;
+     &lt;a class="btn-main" href="#"&gt;Sign Up&lt;/a&gt;
+     &lt;a class="btn-hot" href="#"&gt;Get a Quote&lt;/a&gt;
+   &lt;/div&gt;
+ &lt;/nav&gt;
+</code></pre>
+</li>
+<li><p>Code: style.css</p>
+<pre><code> * {
+   margin: 0;
+   padding: 0;
+ }
+ 
+ $color-primary: #f9ed69; // yellow
+ $color-secondary: #f08a5d; // orange
+ $color-tertiary: #b83b5e; // pink
+ $color-text-dark: #333;
+ $color-text-light: #eee;
+ 
+ $width-button: 150px;
+ 
+ nav { // collapses - height = 0
+   margin: 30px;
+   background-color: $color-primary;
+   
+   &amp;::after {
+     content: "";
+     clear: both;
+     display: table;
+   }
+ }
+ 
+ .navigation {
+   list-style: none;
+   float: left;
+   
+   li {
+     display: inline-block;
+     margin-left: 30px;
+     
+     &amp;:first-child { // .navigation li:first-child
+       margin: 0;
+     }
+     
+     a:link {
+       text-decoration: none;
+       text-transform: uppercase;
+       color: $color-text-dark;
+     }
+   }
+ }
+ 
+ .buttons {
+   float: right;
+ }
+ 
+ .btn-main:link,
+ .btn-hot:link {
+   padding: 10px;
+   display: inline-block;
+   text-align: center;
+   border-radius: 100px;
+   text-decoration: none;
+   text-transform: uppercase;
+   width: $width-button;
+   color: $color-text-light;
+ }
+ 
+ .btn-main {
+   &amp;:link {
+     background-color: $color-secondary;
+   }
+   
+   &amp;:hover {
+     background-color: darken($color-secondary, 15%);
+   }
+ }
+ 
+ .btn-hot {
+   &amp;:link {
+     background-color: $color-tertiary;
+   }
+   
+   &amp;:hover {
+     background-color: lighten($color-secondary, 10%);
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>First Steps with Sass: Variables and Nesting</h3>
+<ol>
+<li>Mixin:<ol>
+<li>A re-usable piece of code we write in a mixin<ol>
+<li>The code in mixin is used in the place where we called the mixin<ol>
+<li>Like a variable with multiple lines of code</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>First Steps with Sass: Mixins, Extends, and Functions</h3>
+<ol>
+<li><p>Code: style.css</p>
+<pre><code> * {
+   margin: 0;
+   padding: 0;
+ }
+ 
+ $color-primary: #f9ed69; // yellow
+ $color-secondary: #f08a5d; // orange
+ $color-tertiary: #b83b5e; // pink
+ $color-text-dark: #333;
+ $color-text-light: #eee;
+ 
+ $width-button: 150px;
+ 
+ @mixin clearfix {
+   &amp;::after {
+     content: "";
+     clear: both;
+     display: table;
+   }
+ }
+ 
+ @mixin style-link-text($color) {
+   text-decoration: none;
+   text-transform: uppercase;
+   color: $color;
+ }
+ 
+ @function divide($a, $b) {
+   @return $a / $b;
+ }
+ 
+ nav { // collapses - height = 0
+   margin: divide(60, 2) * 1px; // 30px
+   background-color: $color-primary;
+   
+   @include clearfix;
+ }
+ 
+ .navigation {
+   list-style: none;
+   float: left;
+   
+   li {
+     display: inline-block;
+     margin-left: 30px;
+     
+     &amp;:first-child { // .navigation li:first-child
+       margin: 0;
+     }
+     
+     a:link {
+       @include style-link-text($color-text-dark);
+     }
+   }
+ }
+ 
+ .buttons {
+   float: right;
+ }
+ 
+ %btn-placeholder { // A selector is copied to the placeholder with @extend
+   padding: 10px;
+   display: inline-block;
+   text-align: center;
+   border-radius: 100px;
+   width: $width-button;
+   
+   @include style-link-text($color-text-light);
+ }
+ 
+ .btn-main {
+   &amp;:link {
+     @extend %btn-placeholder;
+     background-color: $color-secondary;
+   }
+   
+   &amp;:hover {
+     background-color: darken($color-secondary, 15%);
+   }
+ }
+ 
+ .btn-hot {
+   &amp;:link {
+     @extend %btn-placeholder;
+     background-color: $color-tertiary;
+   }
+   
+   &amp;:hover {
+     background-color: lighten($color-secondary, 10%);
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>A Brief Introduction to the Command Line</h3>
+<ol>
+<li>Install and compiling Sass</li>
+<li>Windows:<ol>
+<li>Command Prompt<ol>
+<li><code>dir</code></li>
+<li><code>cd &lt;folder&gt;</code></li>
+<li><code>cd..</code></li>
+<li><code>cls</code></li>
+<li><code>mkdir</code></li>
+<li><code>move</code></li>
+<li><code>rm</code>/<code>del</code><ol>
+<li><code>rm</code> deletes permanently</li>
+<li><code>rm -r</code> - recursive</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>NPM Packages: Let's Install Sass Locally</h3>
+<ol>
+<li>Installing Sass on local computer</li>
+</ol>
+<h4>A Brief Introduction to NPM and the Node Ecysystem</h4>
+<ol>
+<li><p>Node.js and NPM package ecosystem</p>
+<ol>
+<li>Tools</li>
+<li>Libraries</li>
+<li>Frameworks</li>
+</ol>
+</li>
+<li><p>Node.js</p>
+<ol>
+<li>Allows developers to write and run JS applications on the server. Developers started using node.js to also write tools to help them with <strong>local web development</strong></li>
+</ol>
+</li>
+<li><p>NPM</p>
+<ol>
+<li>NPM is a simple command line interface that allows developers to <strong>install and manage packages</strong> on their local computers. There are all kinds of open-source <strong>tools, libraries, and frameworks</strong> needed for modern development. Modern web development could simply not exist without a package manager.<ol>
+<li>It is also used to automate boring tasks</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Install node.js</p>
+</li>
+<li><p>Initialize npm</p>
+<pre><code> npm init
+</code></pre>
+</li>
+<li><p>Install Sass</p>
+<pre><code> npm init node-sass --save-dev # **(M)**
+</code></pre>
+</li>
+<li><p>Re-install dependencies</p>
+<pre><code> npm install
+</code></pre>
+</li>
+<li><p>Uninstall a package</p>
+<pre><code> npm uninstall jquery --save
+</code></pre>
+</li>
+</ol>
+<h3>NPM Scripts: Let's Write and Compile Sass Locally</h3>
+<ol>
+<li><p>package.json</p>
+<pre><code> "scripts": {
+   "compile:sass": "node-sass sass/main.scss css/style.css"
+ },
+</code></pre>
+<ol>
+<li><p>Other packages</p>
+<ol>
+<li>Package to prefix code to support all browsers</li>
+<li>Package to compress code</li>
+<li>...</li>
+</ol>
+</li>
+<li><p>Watch mode:</p>
+<pre><code> "scripts": {
+   "compile:sass": "node-sass sass/main.scss css/style.css -w"
+ },
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>The Easiest Way of Automatically Reloading a Page on File Changes</h3>
+<ol>
+<li><code>npm i live-server -g</code> - for all future projects and anywhere in the computer</li>
+<li>Running live server<ol>
+<li><code>cd starter</code></li>
+<li><code>live-server</code></li>
+</ol>
+</li>
+</ol>
+<h2>Section 5: Natours Project - Using Advanced CSS and Sass (Part 2)</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>Continue working on the Natours project</li>
+</ol>
+<h3>Converting Our CSS Code to Sass: Variables and Nesting</h3>
+<ol>
+<li><p>Converting CSS code into Sass Code</p>
+</li>
+<li><p>All selectors have same specificity and it is low</p>
+<ol>
+<li>It is hard to nest because most elements have classes</li>
+</ol>
+</li>
+<li><p>Code: main.scss</p>
+<pre><code> $color-primary: #55c57a;
+ $color-primary-light: #7ed56f;
+ $color-primary-dark: #28b485;
+ 
+ $color-gray-dark: #777;
+ $color-white: #fff;
+ $color-black: #000;
+ 
+ html {
+   /* font-size: 10px; */ /* 1rem = 10px */
+   font-size: 62.5%;
+ }
+ 
+ * *::after *::before {
+   /* after and before don't get the style by default */
+   margin: 0;
+   padding: 0;
+   /* box-sizing: border-box; */
+   box-sizing: inherit; /* Inherits whatever we put inside `body` which is `box-sizing: border-box` */
+ }
+ 
+ body {
+   font-family: "Lato", sans-serif;
+   font-weight: 400;
+   /* font-size: 16px; */
+   line-height: 1.7;
+   color: $color-gray-dark;
+   /* padding: 30px; /* Not inherited */
+   padding: 4rem;
+ 
+   box-sizing: border-box; /* makes it easier to change in plugins. Better practicing */
+ }
+ 
+ .header {
+   height: 95vh; /* 95% of viewport height */
+   background-image: linear-gradient(
+       to right bottom,
+       rgba($color-primary-light, 0.8),
+       rgba($color-primary-dark, 0.8)
+     ),
+     url("../img/hero.jpg");
+   background-size: cover; /* tries to fit image inside the box */
+   background-position: top; /* top of the image stays on top */
+   position: relative;
+ 
+   clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+   /* clip-path: polygon(50% 0, 100% 100%, 0 100%); */
+ 
+   &amp;__logo-box {
+     position: absolute;
+     top: 4rem;
+     left: 4rem;
+   }
+ 
+   &amp;__logo {
+     height: 3.5rem;
+   }
+ 
+   &amp;__text-box {
+     position: absolute;
+     top: 50%; /* In relation to the parent element */
+     left: 50%;
+     transform: translate(
+       -50%,
+       -40%
+     ); /* Relative to the element and not it's parent */
+     text-align: center;
+   }
+ }
+ 
+ .heading-primary {
+   color: $color-white;
+   text-transform: uppercase;
+ 
+   backface-visibility: hidden; /* back part of the element will not be visible. Fixes shaking problem. Hack */
+ 
+   margin-bottom: 6rem;
+ 
+   &amp;--main {
+     display: block;
+     font-size: 6rem;
+     font-weight: 400;
+     letter-spacing: 3.5rem;
+ 
+     animation-name: moveInLeft;
+     animation-duration: 1s;
+     animation-timing-function: ease-out;
+ 
+     /* animation-iteration-count: 3; */ /* Happens 3 times */
+     /* animation-delay: 3s; */
+   }
+ 
+   &amp;--sub {
+     display: block;
+     font-size: 2rem;
+     font-weight: 700;
+     letter-spacing: 1.75rem;
+ 
+     animation: moveInRight 1s ease-out;
+   }
+ }
+ 
+ @keyframes moveInLeft {
+   0% {
+     opacity: 0;
+     transform: translateX(-10rem);
+   }
+ 
+   80% {
+     transform: translateX(1rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateX(0);
+   }
+ }
+ 
+ @keyframes moveInRight {
+   0% {
+     opacity: 0;
+     transform: translateX(10rem);
+   }
+ 
+   80% {
+     transform: translateX(-1rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateX(0);
+   }
+ }
+ 
+ @keyframes moveInBotton {
+   0% {
+     opacity: 0;
+     transform: translateY(3rem);
+   }
+ 
+   100% {
+     opacity: 1;
+     transform: translateY(0);
+   }
+ }
+ 
+ .btn {
+   &amp;:link,
+   &amp;:visited {
+     text-transform: uppercase;
+     text-decoration: none;
+     padding: 1.5rem 4rem;
+     display: inline-block;
+     border-radius: 10rem;
+     transition: all 0.2s;
+     position: relative;
+     font-size: 1.6rem;
+   }
+ 
+   &amp;:hover {
+     transform: translateY(-0.3rem);
+     box-shadow: 0 1rem 2rem rgba($color-black, 0.2); /* 0px - x axis, 10px down - y axis, 20px - blur  */ /* Works only in Sass */
+ 
+     /* On hover of button apply style to pseudo element ::after */
+     &amp;::after {
+       transform: scaleX(1.5) scaleY(1.6);
+       opacity: 0;
+     }
+   }
+ 
+   &amp;:active {
+     transform: translateY(-0.1rem); /* in relation to original state */
+     box-shadow: 0 5px 10px rgba($color-black, 0.2);
+   }
+ 
+   &amp;--white {
+     background-color: $color-white;
+     color: $color-gray-dark;
+ 
+     &amp;::after {
+       background-color: $color-white;
+     }
+   }
+ 
+   /* Acts like a child of `btn` */
+   &amp;::after {
+     content: "";
+     display: inline-block;
+     height: 100%; /* same height as parent: `btn` */
+     width: 100%;
+     border-radius: 10rem;
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: -1; /* Behind the button */
+     transition: all 0.4s;
+   }
+ 
+   &amp;--animated {
+     animation: moveInBotton 0.5s ease-out 0.75s;
+     animation-fill-mode: backwards; /* It automatically applies the style of 0% before the animation starts */
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Implementing the 7-1 CSS Architecture with Sass</h3>
+<ol>
+<li>The architecture is required for big projects with multiple pages<ol>
+<li>themes<ol>
+<li>Web app with different themes</li>
+</ol>
+</li>
+<li>vendors<ol>
+<li>Third party CSS<ol>
+<li>CSS file of Bootstrap</li>
+<li>Icon system</li>
+<li>Animation framework</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Review: Responsive Design Principles and Layout Types</h3>
+<h4>Review: Basic Responsive Design Principles</h4>
+<ol>
+<li>Technique to adjust the layout to any possible screen size<ol>
+<li>screen size: Just the window/viewport size</li>
+<li>Makes website usable on all possible devices</li>
+</ol>
+</li>
+<li>Four Web design principles (big important ones)<ol>
+<li>Fluid Layouts (this needs to be implemented from the beginning)<ol>
+<li>To allow webpage to adapt to the current viewport width (or even height)</li>
+<li>Use % (or vh/vw) unit instead of px for elements that should adapt to viewport (usually layout)</li>
+<li>Use <code>max-width</code> instead of <code>width</code></li>
+</ol>
+</li>
+<li>Responsive Units<ol>
+<li>Use <code>rem</code> unit instead of <code>px</code> for most lengths (in CSS)</li>
+<li>To make it easy to scale the entire layout down (or up) automatically</li>
+</ol>
+</li>
+<li>Flexible Images<ol>
+<li>By default, images don't scale automatically as we change the viewport, so we need to fix that</li>
+<li>Always use % for image dimensions, together with the <code>max-width</code> property</li>
+</ol>
+</li>
+<li>Media Queries (important only if the above 3 are done)<ol>
+<li>To change CSS styles on certain viewport widths (called breakpoints)<ol>
+<li>Different versions of the website for different devices</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Layout Types</h4>
+<ol>
+<li>Types<ol>
+<li>Float Layouts<ol>
+<li>The <strong>old way of building layouts</strong> of all sizes, using the float CSS property. Still used, but getting outdated.<ol>
+<li>Placing boxes side by side using <code>float</code> property</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Flexbox<ol>
+<li>Modern way of laying out elements in a <strong>1-dimensional row</strong> wihout using floats. Perfect for <strong>component layouts</strong></li>
+</ol>
+</li>
+<li>CSS Grid<ol>
+<li>For laying out element in a fully-fledged <strong>2-dimensional grid</strong>. Perfect for <strong>page layouts and complex components</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Why Use a Float Layout in This Project?</h4>
+<ol>
+<li>The focus of this project is on using modern CSS properties and techniques: clips, transforms, animations, background video, etc.<ol>
+<li>We will build a float-based custom grid, and use it throughout the project</li>
+</ol>
+</li>
+<li>Even though flexbox and CSS grid are more modern, <strong>every web developer should still know how float layouts work</strong><ol>
+<li>Reasons:<ol>
+<li>As a professional developer, <strong>your job will include working with older CSS codebases</strong>, which</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building a Custom Grid with Floats</h3>
+<h4>What You Will Learn in this Lecture</h4>
+<ol>
+<li>How to architect and build a simple grid system.</li>
+<li>How the attribute selector works</li>
+<li>How the <code>:not</code> pseudo-class works</li>
+<li>How <code>calc()</code> works, and what's the difference between <code>calc()</code> and simple Sass operations</li>
+</ol>
+<h4>What is a Grid</h4>
+<ol>
+<li><p>Design system to build consistent interfaces</p>
+<ol>
+<li>Equal parts</li>
+<li>1/3rd and 2/3rds</li>
+<li>etc.</li>
+<li>Consistent spacing<ol>
+<li>Gutters</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Configurations</p>
+<ol>
+<li>Two columns</li>
+<li>Three columns</li>
+<li>Four columns<ol>
+<li>1 + 1 + 1 + 1</li>
+<li>1 + 1 + 2</li>
+<li>1 + 3</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>We need rows as well</p>
+</li>
+<li><p>Code: _grid.scss</p>
+<pre><code> .row {
+   max-width: $grid-width; // 100% width if vw is &lt; 114rem else 114rem
+   background-color: #eee;
+   margin: 0 auto; // Browser will figure out the left and right margins
+ 
+   &amp;:not(:last-child) {
+     margin-bottom: $gutter-vertical;
+   }
+ 
+   @include clearfix;
+ 
+   [class^="col-"] {
+     background-color: orangered;
+     float: left;
+ 
+     &amp;:not(:last-child) {
+       margin-right: $gutter-horizontal;
+     }
+   }
+ 
+   .col-1-of-2 {
+     width: calc(
+       (100% - #{$gutter-horizontal}) / 2
+     ); // We can mix units. Not possible in CSS. Calculation depends on layout
+   }
+ 
+   .col-1-of-3 {
+     width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+   }
+ 
+   .col-1-of-4 {
+     width: calc((100% - 3 * #{$gutter-horizontal}) / 4);
+   }
+ 
+   .col-2-of-3 {
+     width: calc(
+       2 * ((100% - 2 * #{$gutter-horizontal}) / 3) + #{$gutter-horizontal}
+     );
+   }
+ 
+   .col-2-of-4 {
+     width: calc(
+       2 * ((100% - 3 * #{$gutter-horizontal}) / 4) + #{$gutter-horizontal}
+     );
+   }
+ 
+   .col-3-of-4 {
+     width: calc(
+       3 * ((100% - 3 * #{$gutter-horizontal}) / 4) + 2 * #{$gutter-horizontal}
+     );
+   }
+ }
+</code></pre>
+</li>
+<li><p>Code: _variables.scss</p>
+<pre><code> // GRID
+ $grid-width: 114rem;
+ $gutter-vertical: 8rem;
+ $gutter-horizontal: 6rem;
+</code></pre>
+</li>
+<li><p>Code: index.html</p>
+<pre><code> &lt;section class="grid-test"&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-2"&gt;
+             Col 1 of 2
+         &lt;/div&gt;
+         &lt;div class="col-1-of-2"&gt;
+             Col 1 of 2
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-3"&gt;
+             Col 1 of 3
+         &lt;/div&gt;
+         &lt;div class="col-1-of-3"&gt;
+             Col 1 of 3
+         &lt;/div&gt;
+         &lt;div class="col-1-of-3"&gt;
+             Col 1 of 3
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-3"&gt;
+             Col 1 of 3
+         &lt;/div&gt;
+         &lt;div class="col-2-of-3"&gt;
+             Col 2 of 3
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 1 of 4
+         &lt;/div&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 2 of 4
+         &lt;/div&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 3 of 4
+         &lt;/div&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 4 of 4
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 1 of 4
+         &lt;/div&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 2 of 4
+         &lt;/div&gt;
+         &lt;div class="col-2-of-4"&gt;
+             Col 2 of 4
+         &lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class="row"&gt;
+         &lt;div class="col-1-of-4"&gt;
+             Col 1 of 4
+         &lt;/div&gt;
+         &lt;div class="col-3-of-4"&gt;
+             Col 3 of 4
+         &lt;/div&gt;
+     &lt;/div&gt;
+ &lt;/section&gt;
+</code></pre>
+</li>
+</ol>
+<h3>Building the About Section - Part 1</h3>
+<h4>What you will Learn in this Lecture</h4>
+<ol>
+<li>Think about components<ol>
+<li>Where to place the code in the overall CSS architecture</li>
+</ol>
+</li>
+<li>How and why to use utility classes</li>
+<li>How to use the <code>background-clip</code> property</li>
+<li>How to <code>transform</code> multiple properties simultaneously</li>
+<li>How to use the <code>outline-offset</code> property together with <code>outline</code></li>
+<li>How to style elements that are NOT hovered while others are</li>
+</ol>
+<h3>Building the About Section - Part 2</h3>
+<ol>
+<li>We can see computed values in Dev Tools<ol>
+<li>Computed<ol>
+<li>Shows all the properties with values</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the About Section - Part 3</h3>
+<h3>Building the Features Section</h3>
+<h4>What You Will Learn in this Lecture</h4>
+<ol>
+<li>How to include and use an icon font</li>
+<li>Another way of constructing the "skewed section" design</li>
+<li>How and when to use the direct child selector</li>
+<li>linea.io<ol>
+<li>Download basic icons<ol>
+<li>Copy and paste from <code>C:\Users\suppo\Downloads\linea_basic_1.0\_ICONFONT</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the Tours Section - Part 1</h3>
+<h4>What you will Learn in this Lecture</h4>
+<ol>
+<li>How to build an amazing, rotating card</li>
+<li>How to use <code>perspective</code> in CSS</li>
+<li>How to use the <code>backface-visibility</code> property</li>
+<li>Using background blend modes</li>
+<li>How and when to use <code>box-decoration-break</code></li>
+</ol>
+<h3>Building the Tours Section - Part 2</h3>
+<ol>
+<li>Images:<ol>
+<li>unsplash.com - free images</li>
+</ol>
+</li>
+<li><code>background-blend-mode</code> - how background images should blend</li>
+</ol>
+<h3>Building the Tours Section - Part 3</h3>
+<ol>
+<li><code>clip-path</code> breaks the <code>overflow</code> property</li>
+</ol>
+<h3>Building the Stories Section - Part 1</h3>
+<h4>What you will Learn in this Lecture</h4>
+<ol>
+<li>How to make text flow around shapes with <code>shape-outside</code> and <code>float</code></li>
+<li>How to apply a <code>filter</code> to images</li>
+<li>How to construct a background video covering an entire section</li>
+<li>How to use the <code>&lt;video</code> HTML element</li>
+<li>How and when to use the <code>object-fit</code> property</li>
+</ol>
+<h3>Building the Stories Section - Part 2</h3>
+<h3>Building the Stories Section - Part 3</h3>
+<ol>
+<li>Free videos: <a href="https://coverr.co">https://coverr.co</a></li>
+</ol>
+<h3>Building the Booking Section - Part 1</h3>
+<h4>What you will learn in this lecture</h4>
+<ol>
+<li>How to implement "solid-color gradients"</li>
+<li>How the general and adjacent sibling selectors work and why we need them</li>
+<li>How to use the <code>::input-placeholder</code> pseudo-element</li>
+<li>How and when to use the <code>:focus</code>, <code>:invalid</code>, <code>placeholder-shown</code>, and <code>:checked</code> pseudo-classes</li>
+<li>Techniques to build custom radio buttons</li>
+</ol>
+<h3>Building the Booking Section - Part 2</h3>
+<ol>
+<li><p>Browsers do not give font family of the page to the form elements by default.</p>
+<ol>
+<li><p>We have to explicitly inherit the font family.</p>
+<pre><code> font-family: inherit
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Google chrome validation</p>
+<ol>
+<li>Tests if we are writing valid inputs in form (email, etc...)<ol>
+<li>CSS has <code>invalid</code> or <code>valid</code> pseudo-classes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>To make placeholder visible:</p>
+<pre><code>   &amp;__input:placeholder-shown + &amp;__label {
+     // + : adjacent sibling (after), ~ : general sibling
+     opacity: 0; // element will still be on the page
+     visibility: hidden; // removed from the page. We cannot animate it though
+     transform: translateY(-4rem);
+   }
+</code></pre>
+</li>
+</ol>
+<h3>Building the Booking Section - Part 3</h3>
+<ol>
+<li>There is no way to style radio buttons in CSS<ol>
+<li>Trick:<ol>
+<li>Add another button in <code>label</code></li>
+<li>Hide the <code>input</code><ol>
+<li>If the label is clicked, the <code>input</code> gets selected because they are associated</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Similar for checkboxes</li>
+<li>Utility class can have <code>!important</code> to override other styles</li>
+</ol>
+<h3>Building the Footer</h3>
+<h4>What you will Learn in the Lecture</h4>
+<ol>
+<li>How to design a simple website footer</li>
+</ol>
+<h3>Building the Navigation - Part 1</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>What the "checkbox hack" is and how it works</li>
+<li>How to construct custom animation timing functions using cubic bezier curves</li>
+<li>How to animate "solid-color gradients"</li>
+<li>How and why to use <code>transform-origin</code></li>
+<li>In general: Construct an amazingly creative effect</li>
+</ol>
+<h3>Building the Navigation - Part 2</h3>
+<ol>
+<li>Cubic Bezier functions<ol>
+<li><a href="https://easigs.net">https://easigs.net</a></li>
+<li><a href="https://cubic-bezier.com">https://cubic-bezier.com</a></li>
+</ol>
+</li>
+</ol>
+<h3>Building the Navigation - Part 3</h3>
+<h3>Building a Pure CSS Popup - Part 1</h3>
+<h4>What you will Learn in This Lecture</h4>
+<ol>
+<li>How to build a nice popup with only CSS</li>
+<li>How to use the <code>:target</code> pseudo-class</li>
+<li>How to construct boxes with equal height using <code>display: table-cell</code></li>
+<li>How to construct CSS text columns</li>
+<li>How to automatically hyphenate words using hyphens</li>
+</ol>
+<h3>Building a Pure CSS Popup - Part 2</h3>
+<h2>Section 6: Natours Project - Advanced Responsive Design (Part 3)</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>Advanced responsive concepts<ol>
+<li>Media queries</li>
+<li>Screen widths</li>
+<li>Resolutions</li>
+<li>Different touch capabilities</li>
+<li>Responsive images</li>
+<li>Feature queries<ol>
+<li>For browsers to with different capabilities</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Mobile-First vs Desktop-First and Breakpoints</h3>
+<h4>Responsive Design Strategies</h4>
+<ol>
+<li><p>Desktop-first</p>
+<ol>
+<li>Steps:<ol>
+<li>Start writing CSS for the desktop: large screen</li>
+<li>Then, media queries shrink design to smaller screens</li>
+</ol>
+</li>
+<li>Traditional way<ol>
+<li>The easier way to learn<ol>
+<li><p>Writing media queries to test for <code>max-width</code></p>
+<pre><code> html { font-size: 20px; }
+ @media (max-width: 600px) {
+     html { font-size: 16px; }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Mobile-first</p>
+<ol>
+<li>Steps:<ol>
+<li>Start writing CSS for mobile devices: small screen</li>
+<li>Then, media queries expand design to a large desktop screen</li>
+</ol>
+</li>
+<li>Advantages:<ol>
+<li><p>Forces us to reduce websites and apps to the absolute essentials (for smaller and faster final product)</p>
+<pre><code> html { font-size: 16px; }
+ @media (min-width: 600px) {
+     html { font-size: 20px; }
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Responsive Design Strategies: Max-Width and Min-Width</h4>
+<ol>
+<li><p>Pixel spectrum:</p>
+<pre><code> 0px --- 600px --- 900px --- 1200px ---&gt;
+</code></pre>
+<ol>
+<li>Dektop-first<ol>
+<li>Our initial <strong>desktop-first</strong> code goes on the right side</li>
+<li><code>max-width</code> - checks if the current viewport width (vw) is &lt;= 600px<ol>
+<li>If yes,<ol>
+<li>All the code in the media query will apply</li>
+</ol>
+</li>
+<li>If no,<ol>
+<li>All the code in the media query will not apply</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Media queries<ol>
+<li>Used to override specific parts that we want to change</li>
+</ol>
+</li>
+<li>If a phone size is such that multiple media queries match, then which one applies?<ol>
+<li>Both apply<ol>
+<li>Media queries don't add any importance or specificity to selectors, so code order matters - <strong>media queries at the end</strong><ol>
+<li><strong>The one that appears last will take presedence</strong> (order of the code matters)<ol>
+<li>Hence media queries are kept at the end</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Mobile-first<ol>
+<li><code>min-width</code><ol>
+<li>Is the current viewport width &gt;= 600px?<ol>
+<li>If yes, the code applies</li>
+<li>If no, the code doesn't apply</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Reason for this approach?<ol>
+<li>We want media queries to stay away from smaller screen styles</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Is Mobile-First Right for You?</h4>
+<ol>
+<li>Pros<ol>
+<li>100% optimised for the mobile experience</li>
+<li>Reduces websites and apps to the absolute essentials</li>
+<li>Results in smaller, faster and more efficient products<ol>
+<li>Optimized for mobile users</li>
+</ol>
+</li>
+<li>Prioritizes content over aesthetic design, which may be desirable<ol>
+<li>Content is king</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Cons<ol>
+<li>The desktop version might feel overly empty and simplistic<ol>
+<li>Why have a website for desktop if it doesn't use the features and capabilities of the desktop computer?</li>
+</ol>
+</li>
+<li>More difficult and counterintuitive to desktop<ol>
+<li>Larger canvas has less restriction<ol>
+<li>Gives a lot of freedom for design</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Less creative freedom, making it more difficult to construct distinctive products</li>
+<li>Clients are used to see a desktop version of the site as a prototype (not just mobile version)</li>
+<li>Do your users even use the mobile internet? What's the purpose of your website?<ol>
+<li>They might be using desktop or laptop</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Advice:<ol>
+<li>No matter what we do, always keep both desktop and mobile in mind (both are important)<ol>
+<li>Don't leave the other as afterthought</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Selecting Our Breakpoints: The Options</h4>
+<ol>
+<li>Bad<ol>
+<li>The most used way<ol>
+<li>Using widths of popular devices (iphones, ipads, ...)<ol>
+<li>Problems<ol>
+<li>Optimizing for specific devices ignoring the users of other devices (maybe the others are more used)</li>
+<li>Not future-proof<ol>
+<li>If Apple decides to change their resolutions<ol>
+<li>We will end up changing media queries</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Good<ol>
+<li>We use all the most used device widths on the internet &amp; try to group them together</li>
+<li>Pick breakpoints from that<ol>
+<li>In between the groups</li>
+</ol>
+</li>
+<li>Better<ol>
+<li>A lot of devices are used</li>
+<li>Not setting breakpoints at specific widths but between similar devices</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Perfect<ol>
+<li>Ignore all the devices &amp; only look at the content of the design<ol>
+<li>Begin at one size</li>
+<li>Start increasing / decreasing screen widths</li>
+<li>As soon as design breaks (it doesn't look okay) insert breakpoint</li>
+</ol>
+</li>
+<li>Problems<ol>
+<li>It can be extremely difficult to implement</li>
+<li>It is had to find the best breakpoints</li>
+<li>We may end up with many breakpoints</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Setting Our Breakpoints: A Good Approach</h4>
+<ol>
+<li>Scale: <a href="http://gs.statcounter.com/screen-resolution-stats#monthly-201608-201708-bar">http://gs.statcounter.com/screen-resolution-stats#monthly-201608-201708-bar</a><ol>
+<li>0px</li>
+<li>200px</li>
+<li>400px</li>
+<li>600px</li>
+<li>800px</li>
+<li>1200px</li>
+<li>1400px</li>
+<li>1600px</li>
+<li>1800px</li>
+<li>2000px</li>
+</ol>
+</li>
+<li>We need breakpoints for<ol>
+<li>Phones</li>
+<li>Portrait tablets</li>
+<li>Landscape tablets</li>
+<li>Desktop</li>
+</ol>
+</li>
+<li>Breakpoints:<ol>
+<li>Phone only: &lt;= 600px (iPhone)</li>
+<li>Portrait tablet: &lt;= 900px (iPad)</li>
+<li>Landscape tablet: &lt;= 1200px (iPad)</li>
+<li>Desktop: &lt;= 1800px (Macbook Pro 15")</li>
+<li>Big desktop: &gt; 1800px (optional - huge screens)</li>
+</ol>
+</li>
+</ol>
+<h3>Let's Use the Power of Sass Mixins to Write Media Queries</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How to use a powerful Sass mixin to write all our media queries</li>
+<li>How to use the <code>@content</code> and <code>@if</code> Sass directives</li>
+<li>Taking advantage of Chrome DevTools for responsive design</li>
+</ol>
+<h4>Better way to Write Media Queries - Mixin</h4>
+<ol>
+<li><code>rem</code>s and <code>em</code>s are not affected by root font size<ol>
+<li>1 em = 1 rem = font-size coming from browser (16px)<ol>
+<li><code>rem</code>s fail to work in some of the browsers<ol>
+<li><code>em</code>s are he best option for media queries</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Writing Media Queries - Base, Typography and Layout</h3>
+<h3>Writing Media Queries - Layout, About and Features Sections</h3>
+<h3>Writing Media Queries - Tours, Stories and Booking Sections</h3>
+<ol>
+<li>App: <a href="https://sizzy.co">https://sizzy.co</a><ol>
+<li>If we enter URL, it will show pages on a lot of devices</li>
+</ol>
+</li>
+</ol>
+<h3>An Overview of Responsive Images</h3>
+<h4>What are Responsive Images Anyway?</h4>
+<ol>
+<li>They are important for both responsive design and web-performance</li>
+<li>Responsive Images<ol>
+<li>The goal of responsive images is to serve the <strong>right image</strong> to the <strong>right screen size</strong> and device, in order to avoid downloading unnecessary large images on smaller screens<ol>
+<li>1MB - Desktop</li>
+<li>200kb - kb (slow/expensive data plan anywhere in the world)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>When to Use Responsive Images: The 3 Use Cases</h4>
+<ol>
+<li>Resolution switching<ol>
+<li>Large screen -&gt; Small screen<ol>
+<li>Decrease image resolution on smaller screen (same image with smaller resolution)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Density switching (screen size doesn't matter but screen's pixel density matters)<ol>
+<li>@2x screen (high-res) -&gt; @1x screen (low-res)<ol>
+<li>Half the image resolution on @1x screen</li>
+<li>Pixel density: Number of pixels found in an inch or cm<ol>
+<li>Low resolution screens: PC screens<ol>
+<li>1x screen - They use 1px to display 1px of the design<ol>
+<li>If we specify 100px as height, they use 100 physical pixels to display the 100px we specified</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>High resolution screens: Smart phones, some computers (Mac Books with retina display)<ol>
+<li>2x screens - They use two physical pixels to display 1px of our design<ol>
+<li>If we specify 100px as height, they use 200 physical pixels to display the 100px we specified<ol>
+<li>=&gt; <strong>We need to serve an image with double the resolution of the original image</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Art direction<ol>
+<li>Large screen -&gt; small screen<ol>
+<li>Different image on smaller screen<ol>
+<li>Image details were preserved, but the image is different (clipped)<ol>
+<li>We might load a different image (clipped and smaller)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Why discuss?<ol>
+<li>We need to choose different solutions to different use-cases</li>
+</ol>
+</li>
+</ol>
+<h3>Responsive Images in HTML - Art Direction and Density Switching</h3>
+<h4>What You will Learn in this Lecture</h4>
+<ol>
+<li>How to use the <code>srcset</code> attribute on the <code>&lt;img&gt;</code> and <code>&lt;source&gt;</code> elements, together with density descriptors</li>
+<li>How and why to use the <code>&lt;picture&gt;</code> element for art direction (with media queries in HTML)</li>
+<li>How to write media queries in HTML</li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li><p>There are more technologies to do responsive images in HTML</p>
+</li>
+<li><p>Density descriptors</p>
+<pre><code> &lt;img srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x" alt="Full logo" class="footer__logo"&gt;
+</code></pre>
+</li>
+<li><p>Making images depend on screen width - art direction</p>
+<pre><code> &lt;picture class="footer__logo"&gt; &lt;!--Art direction --&gt;
+     &lt;source srcset="img/logo-green-small-1x.png 1x, img/logo-green-small-2x.png 2x"
+         media="(max-width: 37.5em)"&gt; &lt;!--Density switching --&gt;
+     &lt;!-- 0 or more sources, media query  --&gt;
+     &lt;img srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x" alt="Full logo" class="footer__logo"&gt;
+     &lt;!-- Fallback, default --&gt;
+ &lt;/picture&gt;
+</code></pre>
+</li>
+</ol>
+<h3>Responsive Images in HTML - Density and Resolution Switching</h3>
+<h4>What You will Learn In This Lecture</h4>
+<ol>
+<li>Density and Resolution Switching: How to allow the browser to decide the best image to download, using the <code>srcset</code> attribute, width descriptors, and the <code>sizes</code> attribute of the <code>&lt;img&gt;</code> element</li>
+<li>We can set device pixel ratio (DPR - 1.0 or 2.0)</li>
+</ol>
+<h3>Responsive Images in CSS</h3>
+<h4>What You will Learn in this Lecture</h4>
+<ol>
+<li>How to implement responsive images in CSS</li>
+<li>How to use resolution media queries to target high-resolution screens with <code>2x</code></li>
+<li>How to combine multiple conditions in media queries</li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li><p>We just have to write media queries to load different images in different situations</p>
+<ol>
+<li>Based on<ol>
+<li>Viewport width</li>
+<li>Screen resolution</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: _header.scss</p>
+<pre><code>   @media (min-resolution: 192dpi) and (min-width: 37.5em), (min-width: 125em) {
+     // **(M)** resolution of Apple retina screen (reference)
+     background-image: linear-gradient(
+         to right bottom,
+         rgba($color-primary-light, 0.8),
+         rgba($color-primary-dark, 0.8)
+       ),
+       url("../img/hero.jpg");
+   }
+</code></pre>
+</li>
+</ol>
+<h3>Testing for Browser Support with @supports</h3>
+<h4>Warning</h4>
+<ol>
+<li>Many of the new CSS features shown are highly experimental and only work in top modern browsers<ol>
+<li>Always check <a href="caniuse.com">caniuse.com</a> before using a modern CSS poperty in production</li>
+<li>Use graceful degradation with <code>@supports</code><ol>
+<li>Top notch experience for modern browsers, and reduced experience for other browsers</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How to use <code>@supports</code> feature queries</li>
+<li>Implement graceful degradation on selected properties</li>
+<li>How to use <code>backgrop-filter</code></li>
+</ol>
+<h4>backdrop-filter</h4>
+<ol>
+<li>It applies a filter to what's behind the selected element<ol>
+<li><p>Example: Blurring instead of making it dark</p>
+<pre><code>   @supports (-webkit-backdrop-filter: blur(10px)) or
+     (backdrop-filter: blur(10px)) {
+     -webkit-backdrop-filter: blur(10px);
+     backdrop-filter: blur(
+       10px
+     ); // **(M)**. Works only in Safari. It works in Chrome now.
+   }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Setting up a Simple Build Process with NPM Scripts</h3>
+<h4>A Simple Build Process</h4>
+<pre><code>                    main.sass
+                    |		compilation
+                    v
+    icon-font.css	style.comp.css
+    |				|		concatenation (two to one)
+    |				v
+    +-------------&gt;	style.concat.css
+                    |		prefixing
+                    v
+                    style.prefix.css
+                    |		compressing
+                    v
+                    style.css (production code)
+
+1. Automatically adding prefixes
+2. Compressing code
+3. Build process
+    1. Sequence of tasks done automatically after we are done developing the product/feature
+        1. The final output is ready to be deployed to production
+</code></pre>
+<h3>Wrapping up the Natours Project: Final Considerations</h3>
+<ol>
+<li><p>Effect that happens when we select text</p>
+</li>
+<li><p>Media query:</p>
+<pre><code> @media only screen and (max-width: 37.5em) {
+     // ...
+ }
+</code></pre>
+</li>
+<li><p>In CSS we can identify touch devices using media query</p>
+<pre><code> // @include respond(tab-port) {
+ @media only screen and (max-width: 56.25em), only screen and (hover: none) {
+     // ...
+ }
+</code></pre>
+</li>
+<li><p>Commenting code</p>
+<ol>
+<li>A lot of comments are required for real-world</li>
+</ol>
+</li>
+<li><p>Variables</p>
+<ol>
+<li>All numbers could be stored in variables</li>
+</ol>
+</li>
+</ol>
+<h2>Section 7: Trillo Project - Master Flexbox!</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>Flexbox<ol>
+<li>A revolution in CSS</li>
+</ol>
+</li>
+<li>Topics<ol>
+<li>Fundamental concepts and properties of flexbox</li>
+<li>Demo</li>
+<li>Trillo - project</li>
+<li>Custom CSS properties</li>
+<li>Masks</li>
+<li>SVGs</li>
+</ol>
+</li>
+</ol>
+<h3>Why Flexbox: An Overview of the Philosophy Behind Flexbox</h3>
+<h4>A True Revolution</h4>
+<ol>
+<li>Flexbox<ol>
+<li>Flexbox is a new module in CSS3 that makes it easy to align elements to one another, in different directions and orders <ol>
+<li>Change for responsive design</li>
+</ol>
+</li>
+<li>The main idea behind flexbox is to give the container the ability to expand and to shrink elements to best use all the available space</li>
+<li>Flexbox replaces float layouts, using less, and more readable and logical code</li>
+<li>Flexbox completely changes the way that we build one-dimensional layouts<ol>
+<li>There are better ways of building two-demensional layouts<ol>
+<li>CSS Grid layouts</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>A true revolution in CSS<ol>
+<li>Makes it easier for CSS developers</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Main Flexbox Concepts</h4>
+<ol>
+<li><code>display: flex</code><ol>
+<li><code>display: flex-inline</code><ol>
+<li>Flex-container that behaves like an inline element</li>
+</ol>
+</li>
+<li>The element on which we use flex-box is called <strong>flex container</strong></li>
+<li>All the direct children of flex-container are called <strong>flex items</strong></li>
+<li>The direction in which the flex items are layed out is called <strong>main axis</strong><ol>
+<li>Direction can be changed</li>
+<li>There are different ways to align elements along main axis and cross axis</li>
+</ol>
+</li>
+<li>The perpendicular axis is called <strong>cross axis</strong></li>
+</ol>
+</li>
+</ol>
+<h4>Flexbox Properties Overview</h4>
+<ol>
+<li>Container properties<ol>
+<li><code>flex-direction: row | row-reverse | column | column-reverse</code></li>
+<li><code>flex-wrap: nowrap | wrap | wrap-reverse</code><ol>
+<li>Defines if flex items should wrap into a new line if there is not enough space in a flex container or not</li>
+</ol>
+</li>
+<li><code>justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly</code><ol>
+<li>Defines how flex items should be aligned on the main axis</li>
+</ol>
+</li>
+<li><code>align-items: stretch | flex-start | flex-end | center | baseline</code><ol>
+<li>Defines how flex items should be aligned along the cross axis</li>
+</ol>
+</li>
+<li><code>align-content: stretch | flex-start | flex-end | center | baseline</code><ol>
+<li>Applies only if there is more than one row of flex items</li>
+<li>Controls how rows are aligned on the cross axis if there is empty space</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Item<ol>
+<li><code>align-self: auto | stretch | flex-start | flex-end | center | baseline</code><ol>
+<li>For one individual flex item</li>
+</ol>
+</li>
+<li><code>order: 0 | &lt;integer&gt;</code><ol>
+<li>Order in which one specific flex item should appear inside the container<ol>
+<li>To re-order items - for smaller screens say</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>flex-grow: 0 | &lt;integer&gt;</code><ol>
+<li>Decides the width of the flex item</li>
+<li>Defines how much the item can grow</li>
+</ol>
+</li>
+<li><code>flex-shrink: 1 | &lt;integer&gt;</code><ol>
+<li>Decides the width of the flex item</li>
+<li>Defines how much the item can shrink</li>
+</ol>
+</li>
+<li><code>flex-basis: auto | &lt;length&gt;</code><ol>
+<li>Decides the width of the flex item</li>
+<li>Defines base width</li>
+</ol>
+</li>
+<li><code>flex: 0 1 auto | &lt;int&gt; &lt;int&gt; &lt;len&gt;</code><ol>
+<li>Shorthand for the above three properties</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>A Basic Intro to Flexbox: The Flex Container</h3>
+<ol>
+<li><p><code>stretch</code> - stretches all items to match the height of the tallest item</p>
+</li>
+<li><p><code>baseline</code> - text are aligned on top of a line</p>
+</li>
+<li><p><code>space-between</code> - 1x, 2x, 2x, 2x, 1x</p>
+</li>
+<li><p><code>space-around</code> - 1x, 1x, 1x, 1x, 1x</p>
+</li>
+<li><p>Code:</p>
+<pre><code> * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+ 
+ .container {
+   background-color: #ccc;
+   padding: 10px;
+ /*   height: 2000px; */
+   
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   align-items: center;
+ }
+ 
+ .item {
+   background-color: #f1425d;
+   padding: 40px;
+   margin: 30px;
+   color: #fff;
+   font-size: 40px;
+ }
+ 
+ .i2 {
+   height: 200px;
+ }
+ 
+ .i4 {
+ /*   font-size: 70px; */
+ }
+
+
+ &lt;div class="container"&gt;
+   &lt;div class="item"&gt;1&lt;/div&gt;
+   &lt;div class="item i2"&gt;2&lt;/div&gt;
+   &lt;div class="item"&gt;3&lt;/div&gt;
+   &lt;div class="item i4"&gt;4&lt;/div&gt;
+   &lt;div class="item"&gt;5&lt;/div&gt;
+ &lt;/div&gt;
+</code></pre>
+</li>
+</ol>
+<h3>A Basic Intro to Flexbox: Flex Items</h3>
+<ol>
+<li><p>We need to made <code>order</code> less than <code>0</code> because <code>0</code> is the first value</p>
+<pre><code> order: -1
+</code></pre>
+<ol>
+<li><p>Order: <code>-1 0 0 0 1</code></p>
+</li>
+<li><p>Example:</p>
+<pre><code> .i2 {
+   height: 200px;
+   order: 2;
+ }
+ 
+ .i3 {
+   order: 1;
+ }
+ 
+ .i4 {
+ /*   font-size: 70px; */
+   align-self: flex-end;
+   order: -1;
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p><code>flex-grow</code> -</p>
+<ol>
+<li><code>flex-grow: 1</code> - occupy as much space as they can (it matters in relation to other numbers)<ol>
+<li>If container has <code>flex-grow: 1</code> and and item has <code>flex-grow: 2</code>, the item has twice the ability to grow (twice the size of others).<ol>
+<li><code>flex</code> - shorthand</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>flex-basis</code> - instead of <code>width</code></p>
+<ol>
+<li><code>flex-basis: 20%</code> - 20% of the container<ol>
+<li><code>auto</code> - default<ol>
+<li>Occupies only the space that it needs</li>
+</ol>
+</li>
+<li>if set to <code>300px</code> it starts decreasing when there is no more space<ol>
+<li>Fix: <code>flex-shrink</code> - controls how an element will shrink (initial value = 1. Element is allowed to shrink)<ol>
+<li><code>flex-shrink: 0</code> - no longer allowed to shrink (doesn't change its width)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>flex: 0 1 300px</code> - <code>flex-grow flex-shrink flex-basis</code></li>
+</ol>
+</li>
+</ol>
+<h3>A Basic Intro to Flexbox: Adding More Flex Items</h3>
+<ol>
+<li>Problem: We have many flex items<ol>
+<li>They will start overflowing (out of the screen)<ol>
+<li>Solution: <code>flex-wrap: wrap</code> (<code>nowrap</code> - default)<ol>
+<li>A new line is created for flex items that no longer fit in the container</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>align-content: flex-start</code> - aligns entire rows along cross axis<ol>
+<li><code>align-items: flex-start</code> - aligns items</li>
+<li><code>align-content: stretch</code> - stretches the rows and not items</li>
+</ol>
+</li>
+</ol>
+<h3>Project Overview</h3>
+<ol>
+<li>Trillo<ol>
+<li>Fictional booking app<ol>
+<li>Hotel</li>
+<li>Flight</li>
+<li>Car</li>
+<li>Tours</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Defining Project Settings and Custom Properties</h3>
+<h4>What You Will Learn in This Lecture</h4>
+<ol>
+<li><p>How and why to use CSS custom properties</p>
+</li>
+<li><p>CSS custom properties (AKA variables)</p>
+<ol>
+<li>We can use variables in CSS<ol>
+<li>Why CSS variables?<ol>
+<li>We don't need a pre-processor (if we are using Sass only for variables)</li>
+<li>They can be manipulated in JS</li>
+<li>We can edit them in Dev Tools</li>
+<li>We can use in Calc function</li>
+<li>They cascade and can be inherited</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>They should be declared in a scope<ol>
+<li><p>In a declaration block</p>
+<pre><code> :root {
+     
+ }
+</code></pre>
+<ol>
+<li>Similar to <code>html</code> selector but with higher specificity</li>
+<li>It is root of the document<ol>
+<li>Whatever we declare here are available in the child elements</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: _base.scss</p>
+<pre><code> /*
+ COLORS
+ 
+ Primary: #eb2f64
+ Primary light: #FF3366
+ Primary dark: #BA265D
+ 
+ Grey light 1: #faf9f9
+ Grey light 2: #f4f2f2
+ Grey light 3: #f0eeee
+ Grey light 4: #ccc
+ 
+ Grey dark 1: #333
+ Grey dark 2: #777
+ Grey dark 3: #999
+ 
+ */
+ 
+ :root {
+   --color-primary: #eb2f64;
+   --color-primary-light: #ff3366;
+   --color-primary-dark: #ba265d;
+ 
+   --color-grey-light-1: #faf9f9;
+   --color-grey-light-2: #f4f2f2;
+   --color-grey-light-3: #f0eeee;
+   --color-grey-light-4: #ccc;
+ 
+   --color-grey-dark-1: #333;
+   --color-grey-dark-2: #777;
+   --color-grey-dark-3: #999;
+ }
+ 
+ * {
+   margin: 0;
+   padding: 0;
+ }
+ 
+ *,
+ *::before,
+ *::after {
+   box-sizing: inherit;
+ }
+ 
+ html {
+   box-sizing: border-box;
+   font-size: 62.5%; // 1rem = 10px, 10px/16px = .625
+ }
+ 
+ body {
+   font-family: "Open Sans", sans-serif;
+   font-weight: 400;
+   line-height: 1.6;
+   color: var(--color-grey-dark-2);
+ 
+   background-image: linear-gradient(
+     to right bottom,
+     var(--color-primary-light),
+     var(--color-primary-dark)
+   );
+   background-size: cover;
+   background-repeat: no-repeat;
+ 
+   min-height: 100vh;
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Building the Overall Layout</h3>
+<h4>What You Will Learn in this Lecture</h4>
+<ol>
+<li>How to think about the overall layout of an app</li>
+<li>Use flexbox in a real-world project for the first time</li>
+</ol>
+<h3>Building the Header - Part 1</h3>
+<h4>What You Will Learn in This Lecture</h4>
+<ol>
+<li>Why to use SVG icons vs. font icons</li>
+<li>How to find, generate and use SVG sprites in HTML</li>
+<li>How to change the color of an SVG icon in CSS</li>
+<li>How to use more advanced flexbox alignment techniques, including <code>justify-content</code>, <code>align-items</code>, <code>align-self</code>, and <code>flex</code></li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li><p>SVGs</p>
+<ol>
+<li>Why not icon fonts?<ol>
+<li>Hack to display icons which are like images using a font</li>
+<li>Fail more often<ol>
+<li>If so, Browser display black square</li>
+</ol>
+</li>
+<li>Screenreaders may not be able to read iconfonts</li>
+</ol>
+</li>
+<li>SVG:<ol>
+<li>Scalable Vector Graphics<ol>
+<li>We write vector graphics using code</li>
+</ol>
+</li>
+<li>icomoon.io<ol>
+<li>IcoMoon App<ol>
+<li>We can upload icon font and convert to SVGs</li>
+<li>Select icons from free library<ol>
+<li>Entypo+<ol>
+<li>Select</li>
+<li>Download</li>
+<li>Settings<ol>
+<li>Unselect PNG</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Sprite file (<code>symbol-defs.svg</code>)<ol>
+<li>It has all the 10 images in it<ol>
+<li>We can use only one global file<ol>
+<li>Only one HTTP request is sufficient</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>demo.html<ol>
+<li>Icon names</li>
+</ol>
+</li>
+<li>We can use height and width to change the sizes of SVG</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<pre><code> &lt;nav class="user-nav"&gt;
+     &lt;div class="user-nav__icon-box"&gt;
+         &lt;svg class="user-nav__icon"&gt;
+             &lt;use xlink:href="img/sprite.svg#icon-bookmark"&gt;&lt;/use&gt;
+         &lt;/svg&gt;
+         &lt;span class="user-nav__notification"&gt;7&lt;/span&gt;
+     &lt;/div&gt;
+     &lt;div class="user-nav__icon-box"&gt;
+         &lt;svg class="user-nav__icon"&gt;
+             &lt;use xlink:href="img/sprite.svg#icon-chat"&gt;&lt;/use&gt;
+         &lt;/svg&gt;
+         &lt;span class="user-nav__notification"&gt;13&lt;/span&gt;
+     &lt;/div&gt;
+     &lt;div class="user-nav__user"&gt;
+         &lt;img src="img/user.jpg" alt="User photo" class="user-nav__user-photo"&gt;
+         &lt;span class="user-nave__user-name"&gt;Jonas&lt;/span&gt;
+     &lt;/div&gt;
+ &lt;/nav&gt;
+</code></pre>
+</li>
+</ol>
+<h3>Building the Header - Part 2</h3>
+<h3>Building the Header - Part 3</h3>
+<ol>
+<li>Nested flex-boxes are allowed</li>
+</ol>
+<h3>Building the Navigation - Part 1</h3>
+<h4>What you will Learn in this Lecture</h4>
+<ol>
+<li>How to use <code>scaleY</code> and multiple transition properties with different settings, to construct a creative hover effect</li>
+<li>How and why to use the <code>currentColor</code> CSS variable</li>
+<li>How to use some more advanced flexbox alignment techniques, including <code>flex-direction</code>, <code>justify-content</code>, and <code>align-items</code></li>
+</ol>
+<h3>Building the Navigation - Part 2</h3>
+<ol>
+<li><code>currentColor</code>: color of current element or parent element</li>
+</ol>
+<h3>Building the Hotel Overview - Part 1</h3>
+<h4>What You will Learn in this Lecture</h4>
+<ol>
+<li>How to construct animation</li>
+<li>How to use <code>margin: auto</code> with flexbox, and why it's so powerful</li>
+<li>Continue to use flexbox properties for easy positioning and alignment</li>
+</ol>
+<h3>Building the Hotel Overview - Part 2</h3>
+<h3>Building the Description Section - Part 1</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>Continue to use flexbox, including <code>flex-wrap</code> to build a multi-column lis</li>
+<li>How and why to use CSS masks with <code>mask-image</code> and <code>mask-size</code></li>
+</ol>
+<h3>Building the Description Section - Part 2</h3>
+<ol>
+<li>It is not easy to use sprite image in CSS</li>
+<li>Mask - Defines an area where we look through the element and see what's behind the element.<ol>
+<li>We set background color of the element to a solid color</li>
+<li>We then use the icon as the mask<ol>
+<li>We can see through the icon and the background becomes visible</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the User Reviews Section</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>Continue using and practicing flexbox<ol>
+<li>figure - for review (they are good for pictures and some text)</li>
+</ol>
+</li>
+<li>css-tricks.com<ol>
+<li>HTML elements</li>
+</ol>
+</li>
+</ol>
+<h3>Building the CTA Section</h3>
+<h4>What You will Learn in this Lecture</h4>
+<ol>
+<li>Yet another creative and modern hover efect</li>
+<li>Transition does work for<ol>
+<li>Background images</li>
+<li>Gradients</li>
+</ol>
+</li>
+</ol>
+<h3>Writing Media Queries - Part 1</h3>
+<ol>
+<li>Flexbox makes it easy to make website responsive</li>
+<li>CSS custom properties doesn't work in media query condition</li>
+</ol>
+<h3>Writing Media Queries - Part 2</h3>
+<h3>Wrapping up the Trillo Project: Final Considerations</h3>
+<ol>
+<li>Final remarks<ol>
+<li>caniuse.com<ol>
+<li>flexbox<ol>
+<li>Show all - which browsers support, and usage</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Grid layout<ol>
+<li>Good for overall layout<ol>
+<li>Smaller details can be handled by flexbox</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>Challenges, Anyone?</h4>
+<ol>
+<li>Display some kind of user menu when hovering over the username in <code>.user-nav</code></li>
+<li>Display a message menu when hovering over the chat icon in <code>.user-nav</code> (maybe like facebook)</li>
+<li>Display a box with search suggestions as soon as the user starts typing in the search field</li>
+<li>Construct a caption for the <code>.gallery__item</code> with a nice hover effect</li>
+<li>Make the page 100% responsive even for veiwport sizes below 500px, maybe even responsive images</li>
+</ol>
+<h2>Section 8: A Quick Introduction to CSS Grid Layouts</h2>
+<h3>Section Intro</h3>
+<ol>
+<li>CSS Grids<ol>
+<li>Makes building layouts easy</li>
+</ol>
+</li>
+<li>Project</li>
+<li>Compare grid with flexbox</li>
+</ol>
+<h3>Why CSS Grid: A Whole New Mindset</h3>
+<h4>A Whole New Mindset</h4>
+<ol>
+<li>CSS Grid<ol>
+<li>CSS Grid layout is a brand new module that brings a two-dimensional grid system to CSS or the first time</li>
+<li>CSS Grid replaces float layouts, using less, and more readable and logical CSS and HTML</li>
+<li>CSS Grid works perfectly together with Flexbox, which is best to handle one-dimensional components and layouts</li>
+<li>CSS Grid completely changes the way that we envision and build two-dimensional layouts<ol>
+<li>We don't need Bootstrap</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4>A Whole New Mindset</h4>
+<h4>CSS Grid Terminology</h4>
+<ol>
+<li>Grid container<ol>
+<li><code>display: grid</code><ol>
+<li><code>display: grid-inline</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Column axis (y-direction)<ol>
+<li>We cannot change direction</li>
+</ol>
+</li>
+<li>Row axis (x-direction)<ol>
+<li>We cannot change direction</li>
+</ol>
+</li>
+<li>Grid items<ol>
+<li>Direct children of grid container</li>
+</ol>
+</li>
+<li>Grid lines<ol>
+<li>The lines that divide the rows and columns</li>
+<li>Automatically numbered<ol>
+<li>1 to (number of rows + 1)</li>
+<li>1 to (number of columns + 1)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Gutter<ol>
+<li>Space between rows or columns<ol>
+<li>Row gutter</li>
+<li>Column gutter (can be different from row gutter)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Track<ol>
+<li>Space between grid-lines (vertical or horizontal)<ol>
+<li>Horizontal track: row</li>
+<li>Vertical track: column</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Grid area<ol>
+<li>Area between two vertical grid-lines and horizontal grid-lines</li>
+<li>Grid cell: If the area is between two adjacent grid-lines vertically and horizontally</li>
+</ol>
+</li>
+</ol>
+<h4>CSS Grid Properties Overview</h4>
+<ol>
+<li>Container<ol>
+<li><code>grit-template</code><ol>
+<li><code>grid-template-rows</code></li>
+<li><code>grid-template-columns</code></li>
+<li><code>grit-template-areas</code></li>
+</ol>
+</li>
+<li><code>grig-gap</code><ol>
+<li><code>grid-row-gap</code></li>
+<li><code>grid-column-gap</code></li>
+</ol>
+</li>
+<li><code>justify-items</code></li>
+<li><code>align-items</code></li>
+<li><code>justify-content</code></li>
+<li><code>align-content</code></li>
+<li><code>grid-auto-rows</code></li>
+<li><code>grid-auto-columns</code></li>
+<li><code>grid-auto-flow</code></li>
+</ol>
+</li>
+<li>Item<ol>
+<li><code>grid-area</code><ol>
+<li><code>grid-row</code><ol>
+<li><code>grid-row-start</code></li>
+<li><code>grid-row-end</code></li>
+</ol>
+</li>
+<li><code>grid-column</code><ol>
+<li><code>grid-column-start</code></li>
+<li><code>grid-column-end</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>justify-self</code></li>
+<li><code>align-self</code></li>
+<li><code>order</code></li>
+</ol>
+</li>
+</ol>
+<h3>Quick Setup for This Section</h3>
+<ol>
+<li>New Browser:<ol>
+<li>Firefox quantum<ol>
+<li>Best Dev tools for CSS grids<ol>
+<li>To visualize grid</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Codepen<ol>
+<li>Settings<ol>
+<li>Oceanic Dark</li>
+<li>Source Code Pro</li>
+<li>15px</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Open Codepen in Firefox</li>
+</ol>
+<h3>Constructing Our First Grid</h3>
+<ol>
+<li><p>Code: html</p>
+<pre><code> &lt;div class="container"&gt;
+   &lt;div class="item item--1"&gt;1: Orange&lt;/div&gt;
+   &lt;div class="item item--2"&gt;2: Green&lt;/div&gt;
+   &lt;div class="item item--3"&gt;3: Violet&lt;/div&gt;
+   &lt;div class="item item--4"&gt;4: Pink&lt;/div&gt;
+   &lt;div class="item item--5"&gt;5: Blue&lt;/div&gt;
+   &lt;div class="item item--6"&gt;6: Brown&lt;/div&gt;
+ &lt;/div&gt;
+</code></pre>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code> .container {
+   background-color: #eee;
+   width: 1000px;
+   margin: 30px auto;
+ 
+   display: grid;
+   grid-template-rows: 150px 150px;
+   grid-template-columns: 150px 150px 150px;
+   grid-row-gap: 30px;
+   grid-column-gap: 30px;
+   
+   grid-gap: 30px;
+ }
+ 
+ .item {
+   padding: 20px;
+   font-size: 30px;
+   font-family: sans-serif;
+   color: white;
+   
+   &amp;--1 {
+     background-color: orangered;
+   }
+   
+   &amp;--2 {
+     background-color: yellowgreen;
+   }
+   
+   &amp;--3 {
+     background-color: blueviolet;
+   }
+   
+   &amp;--4 {
+     background-color: palevioletred;
+   }
+   
+   &amp;--5 {
+     background-color: royalblue;
+   }
+   
+   &amp;--6 {
+     background-color: goldenrod;
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Getting Familiar with the fr Unit</h3>
+<ol>
+<li><p><code>1fr</code> - occupies all the remaining space</p>
+<ol>
+<li>Fractional unit - the fraction of the available space (remaining space)<ol>
+<li><code>1fr</code> - all of the remaining space</li>
+<li><code>.5fr</code> - 50% of the remaining space</li>
+</ol>
+</li>
+<li><code>grid-template-columns: 1fr 2fr 1fr</code><ol>
+<li>1fraction of the available space</li>
+<li>2fractions of the available space</li>
+<li>1fraction of the available space</li>
+</ol>
+</li>
+<li><code>grid-template-columns: 50% 1fr 1fr;</code><ol>
+<li>First item: 500px (50% of the entire width)<ol>
+<li>It doesn't consider gaps (<code>grid-gap</code>)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code> .container {
+   background-color: #eee;
+   width: 1000px;
+   margin: 30px auto;
+   
+   height: 1000px;
+ 
+   display: grid;
+   grid-template-rows: repeat(2, 1fr); // fills up the container
+   // grid-template-columns: repeat(3, 1fr);
+   // grid-template-columns: 50% 1fr 1fr;
+   grid-template-columns: repeat(3, 1fr);
+   grid-row-gap: 30px;
+   grid-column-gap: 30px;
+   
+   grid-gap: 30px;
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Positioning Grid Items</h3>
+<pre><code>    &amp;--5 {
+      background-color: royalblue;
+      // grid-row: 1 / 2;
+      // grid-column: 3 / 4;
+      grid-area: 1 / 3 / 2 / 4;
+    }
+      
+    &amp;--6 {
+      background-color: goldenrod;
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
+    }
+</code></pre>
+<h3>Spanning Grid Items</h3>
+<ol>
+<li><p>Implicit grid:</p>
+<ol>
+<li>If a grid-cell occupies more space than available, the remaining cells are pushed to a new row called implicit grid</li>
+<li>If there are cells explicitly placed in a grid-row/grid-column, the other cells are moved accordingly<ol>
+<li>If multiple cells are explicitly given overlapping locations, they will occupy the same space.<ol>
+<li>We can set z-index to move one on top of the other</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code>   &amp;--1 {
+     background-color: orangered;
+     // grid-row-start: 2;
+     // grid-row-end: 3;
+     // grid-column-start: 2;
+     // grid-column-end: 3;
+     grid-row: 2 / 3;
+     grid-column: 2 / 3;
+     z-index: 10;
+   }
+   
+   &amp;--2 {
+     background-color: yellowgreen;
+     // grid-column: 2 / span 2;
+     grid-column: 1 / -1;
+   }
+   
+   &amp;--3 {
+     background-color: blueviolet;
+     grid-row: 2 / 3;
+     grid-column: 1 / 3;
+   }
+   
+   &amp;--4 {
+     background-color: palevioletred;
+   }
+   
+   &amp;--5 {
+     background-color: royalblue;
+     // grid-row: 1 / 2;
+     // grid-column: 3 / 4;
+     grid-area: 1 / 3 / 2 / 4;
+   }
+   
+   &amp;--6 {
+     background-color: goldenrod;
+     grid-row: 1 / 2;
+     grid-column: 2 / 3;
+   }
+</code></pre>
+</li>
+</ol>
+<h3>Grid Challenge</h3>
+<ol>
+<li><p>Code: SCSS</p>
+<pre><code> .container {
+   background-color: #eee;
+   width: 500px;
+   margin: 30px auto;
+   
+   height: 500px;
+ 
+   display: grid;
+   grid-template-rows: 10% repeat(3, 1fr) 10%;
+   grid-template-columns: repeat(4, 1fr);
+   grid-row-gap: 10px;
+   grid-column-gap: 10px;
+   
+   grid-gap: 20px;
+ }
+ 
+ .item {
+   padding: 10px;
+   font-size: 20px;
+   font-family: sans-serif;
+   color: white;
+   
+   &amp;--1 {
+     background-color: orangered;
+     grid-row: 1 / 2;
+     grid-column: 1 / -1;
+   }
+   
+   &amp;--2 {
+     background-color: orangered;
+   }
+   
+   &amp;--3 {
+     background-color: orangered;
+   }
+   
+   &amp;--4 {
+     background-color: orangered;
+   }
+   
+   &amp;--5 {
+     background-color: orangered;
+     grid-row: 2 / -2;
+   }
+   
+   &amp;--6 {
+     background-color: orangered;
+     grid-row: 3 / -2;
+     grid-column: 1 / -2;
+   }
+   
+   &amp;--7 {
+     background-color: orangered;
+     grid-row: 5 / -1;
+     grid-column: 1 / -1;
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Grid Challenge: A Basic Solution</h3>
+<h3>Naming Grid Lines</h3>
+<ol>
+<li><p>We can name grid-lines</p>
+<ol>
+<li>Convention: <code>&lt;content-in-the-track&gt;-&lt;start|end&gt;</code></li>
+</ol>
+</li>
+<li><p>Code: Method 2</p>
+<pre><code> // METHOD 2: LINE NAMES
+ .container {
+   background-color: #eee;
+   width: 500px;
+   margin: 30px auto;
+   
+   height: 500px;
+ 
+   display: grid;
+   grid-template-rows: [header-start] 10% [header-end box-start] 1fr [box-end main-start] 2fr [main-end footer-start] 10% [footer-end];
+   grid-template-columns: repeat(4, [col-start] 1fr [col-end]); // Named-set: col-start-1, col-end-1, col-start-2, col-end-2, ...
+   grid-row-gap: 10px;
+   grid-column-gap: 10px;
+   
+   grid-gap: 20px;
+ }
+ 
+ .item {
+   padding: 10px;
+   font-size: 15px;
+   font-family: sans-serif;
+   color: white;
+   
+   &amp;--1 {
+     background-color: orangered;
+     grid-row: header-start / header-end;
+     grid-column: col-start 1 / col-end -1;
+   }
+   
+   &amp;--2 {
+     background-color: orangered;
+   }
+   
+   &amp;--3 {
+     background-color: orangered;
+   }
+   
+   &amp;--4 {
+     background-color: orangered;
+   }
+   
+   &amp;--5 {
+     background-color: orangered;
+     grid-row: box-start / main-end;
+   }
+   
+   &amp;--6 {
+     background-color: orangered;
+     grid-row: main-start / main-end;
+     grid-column: col-start 1 / col-end -2;
+   }
+   
+   &amp;--7 {
+     background-color: orangered;
+     grid-row: footer-start / footer-end;
+     grid-column: col-start 1 / col-end -1;
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Naming Grid Areas</h3>
+<h3>Implicit Grids vs. Explicit Grids</h3>
+<ol>
+<li><p>Code: html</p>
+<pre><code> &lt;div class="container"&gt;
+   &lt;div class="item item--1"&gt;Modern&lt;/div&gt;
+   &lt;div class="item item--2"&gt;CSS&lt;/div&gt;
+   &lt;div class="item item--3"&gt;with&lt;/div&gt;
+   &lt;div class="item item--4"&gt;Flexbox&lt;/div&gt;
+   &lt;div class="item item--5"&gt;and&lt;/div&gt;
+   &lt;div class="item item--6"&gt;Grid&lt;/div&gt;
+   &lt;div class="item item--7"&gt;is&lt;/div&gt;
+   &lt;div class="item item--8"&gt;great&lt;/div&gt;
+ &lt;/div&gt;
+</code></pre>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code> .container {
+   width: 1000px;
+   margin: 30px auto;
+   background-color: #ddd;
+   
+   display: grid;
+   grid-template-rows: repeat(2, 150px);
+   grid-template-columns: repeat(2, 1fr);
+   grid-gap: 30px;
+
+   grid-auto-rows: 80px; // automatically added rows have 80px height
+   grid-auto-flow: column; // remaining items are added as columns. row - default. All items fill columns first instead of rows
+   grid-auto-columns: .5fr; // width is set to 1/2 the width of regular cells
+   
+   .item {
+     padding: 20px;
+     color: white;
+     font-family: sans-serif;
+     font-size: 30px;
+     background-color: orangered;
+   }
+ }
+</code></pre>
+<ol>
+<li>2 x 2 we defined is explicit grid</li>
+<li>Rest of the grid is implicit grid<ol>
+<li>Tracks get automatically added</li>
+</ol>
+</li>
+<li>Useful if we don't know how many items will be received from server.</li>
+</ol>
+</li>
+</ol>
+<h3>Aligning Grid Items</h3>
+<ol>
+<li><code>align-items</code> by default is set to <code>stretch</code><ol>
+<li><code>align-items: center</code> - centers the items vertically</li>
+</ol>
+</li>
+<li><code>justify-items</code> by default is set to <code>stretch</code> (since grid is 2D)<ol>
+<li><code>justify-items: center</code> - centers the items horizontally</li>
+</ol>
+</li>
+<li><code>align-self</code></li>
+<li><code>justify-self</code><br>\</li>
+</ol>
+<h3>Aligning Tracks</h3>
+<ol>
+<li><p><code>justify-content</code> - aligns items wrt container</p>
+<ol>
+<li><p>Similar to flex-box</p>
+<pre><code> justify-content: space-evenly; // center, start, end, space-between, space-around, space-evenly
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p><code>align-content</code> - aligns items wrt container vertically</p>
+<pre><code> align-content: center; // center, start, end, space-between, space-around, space-evenly
+</code></pre>
+</li>
+<li><p>Dense grid with no holes</p>
+<pre><code> grid-auto-flow: row dense;
+</code></pre>
+<ol>
+<li>Useful for images</li>
+</ol>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code> .container {
+   width: 1000px;
+   margin: 30px auto;
+   background-color: #ddd;
+   
+   display: grid;
+   // grid-template-rows: repeat(2, 150px);
+   // grid-template-columns: repeat(2, 1fr);
+   grid-gap: 30px;
+   
+   grid-auto-rows: 80px; // automatically added rows have 80px height
+   grid-auto-flow: row dense;
+   grid-auto-columns: .5fr;
+   
+   // Align grid items to grid areas
+   // align-items: center;
+   // justify-items: center;
+   
+   // Align grid tracks to grid container
+   grid-template-rows: repeat(2, 100px);
+   grid-template-columns: repeat(2, 200px);
+   
+   height: 1000px;
+   
+   justify-content: space-evenly; // center, start, end, space-between, space-around, space-evenly
+   align-content: center; // center, start, end, space-between, space-around, space-evenly
+   
+   .item {
+     padding: 10px;
+     color: white;
+     font-family: sans-serif;
+     font-size: 30px;
+     background-color: orangered;
+     
+     &amp;--4 {
+       background-color: crimson;
+       grid-row: 2 / span 3;
+       align-self: end;
+       justify-self: end;
+     }
+     
+     &amp;--6 {
+       background-color: lightcoral;
+       grid-row: 2 / span 2;
+     }
+     
+     &amp;--7 {
+       background-color: palevioletred;
+       grid-column: 1 / -1;
+     }
+   }
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Using min-content, max-content, and the minmax() function</h3>
+<ol>
+<li><code>max-content</code> - maximum size of the content without overflowing</li>
+<li><code>minmax(150px, min-content)</code> - size should be at least 150px but can gro upto min-content if required.<ol>
+<li>Between 150px and the min content height</li>
+<li><code>minmax(200px, 1fr)</code><ol>
+<li>It is <code>1fr</code> but will never less than the minimum content width.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Responsive Layouts with auto-fit and auto-fill</h3>
+<ol>
+<li><p>No media query required</p>
+</li>
+<li><p>Code: SCSS</p>
+<pre><code>   // Using auto-fill and auto-fit
+   display: grid;
+   grid-template-rows: repeat(2, minmax(150px, min-content));
+   grid-template-columns: repeat(auto-fill, 100px); // 10 column tracks are created because container is 1000px. 1000/100 = 10
+   grid-template-columns: repeat(auto-fit, 100px); // same as auto-fill but collapses extra tracks to have a width of 0.
+
+   // grid-template-columns: repeat(auto-fit, 100px); // same as auto-fill but collapses extra tracks to have a width of 0.
+   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); // minimum 100px but fills the container. Overlowing grid item goes to the next rows. Fewer columns are created if container width is decreased
+</code></pre>
+<ol>
+<li>Useful for responsive layouts without writing media-query</li>
+</ol>
+</li>
+</ol>
+<h2>Section 9: Nexter Project - Master CSS Grid Layouts!</h2>
+<h3>Project Overview and Setup</h3>
+<ol>
+<li><p>Nexter project</p>
+</li>
+<li><p>Live server in firefox</p>
+<pre><code> "devserver": "live-server --browser=firefox",
+</code></pre>
+</li>
+</ol>
+<p>		</p>
+<h3>Building the Overall Layout - Part 1</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How to build a complex and modern layout using advanced CSS Grid techniques</li>
+<li>How to choose different row and column track sizes for different types of content</li>
+</ol>
+<h3>Building the Overall Layout - Part 2</h3>
+<ol>
+<li>Predefined 8/10/12 column grid can be used</li>
+</ol>
+<h3>Building the Features Section - Part 1</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How and why to construct grids inside of grids</li>
+<li>How to construct a responsive component without media queries</li>
+<li>How to build a small component using CSS grid</li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li>Subgrid is not available now<ol>
+<li>Aligning columns with parent grid columns is not possible<ol>
+<li>Manual creation of grid is required</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the Features Section - Part 2</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How to deal with overlapping grid items</li>
+<li>Why images are special and behave differently than other grid items</li>
+<li>How to decide if flexbox is a better tool in certain situations</li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li>Flexbox is good for 1d positioning</li>
+</ol>
+<h3>Building the Story Section - Part 1</h3>
+<ol>
+<li>Images have aspect ratio<ol>
+<li>It tries to keep its aspect ratio (doesn't fill at times)</li>
+</ol>
+</li>
+</ol>
+<h3>Building the Story Section - Part 2</h3>
+<h4>What You Will Learn in this Lecture</h4>
+<ol>
+<li>How to build a rather complex component using a mix of CSS Grid properties, overlapping and flexbox</li>
+</ol>
+<h3>Building the Homes Section - Part 1</h3>
+<h3>Building the Homes Section - Part 2</h3>
+<ol start="2">
+<li>Flexbox is good for small alignments</li>
+</ol>
+<h3>Building the Gallery - Part 1</h3>
+<h4>What You will Learn in This Lecture</h4>
+<ol>
+<li>How to construct a complex grid-looking gallery</li>
+<li>Using <code>object-fit</code> together with images for grid items</li>
+</ol>
+<h4>Implementation</h4>
+<ol>
+<li>Consider the smaller unit<ol>
+<li>Try to divide based on that unit<ol>
+<li>The smaller the cells, the more variaty we can produce</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the Gallery - Part 2</h3>
+<h3>Building the Footer</h3>
+<h4>What You Will Learn in This Lecture</h4>
+<ol>
+<li>Apply the concepts you already learned</li>
+</ol>
+<h3>Building the Sidebar</h3>
+<h3>Building the Header - Part 1</h3>
+<h4>What You Will Learn in This Lecture</h4>
+<ol>
+<li>How to manage vertical spacing in a responsive layout using CSS Grid techniques</li>
+<li>How to use <code>::before</code> and <code>::after</code> as grid items</li>
+</ol>
+<h3>Building the Header - Part 2</h3>
+<ol>
+<li>If rows are skipped in <code>grid-template-rows</code>, the cell will be sized based on the content (<code>min-content</code>)</li>
+</ol>
+<h3>Building the Realtors Section</h3>
+<h3>Writing Media Queries - Part 1</h3>
+<h3>Writing Media Queries - Part 2</h3>
+<h3>Browser Support to CSS Grid</h3>
+<ol>
+<li>CSS Grid support:<ol>
+<li>caniuse.com<ol>
+<li><a href="https://caniuse.com/?search=css%20grid">https://caniuse.com/?search=css%20grid</a> - 96.63% support<ol>
+<li>Depends on who the users are</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Progressive enhancement (duplicate work, messing with old code)<ol>
+<li>We first build a website with older CSS methods pretending that the new features do not exist</li>
+<li>We then build a layer on top of that with modern CSS features</li>
+</ol>
+</li>
+</ol>
+<h4>Progressive Enhancement</h4>
+<ol>
+<li><p>Grid containers and grid items ignore certain things</p>
+<ol>
+<li><code>float</code></li>
+<li><code>display: inline-block</code></li>
+<li><code>display: table-cell</code></li>
+<li>Vertical align</li>
+</ol>
+</li>
+<li><p>Code: Progressive enhancement</p>
+<pre><code> .features {
+   // background-color: $color-grey-light-2;
+   grid-column: center-start / center-end;
+ 
+   margin: 15rem 0;
+ 
+   @supports (display: grid) {
+     display: grid;
+     // grid-template-columns: repeat(3, 1fr);
+     grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+     // rows are placed in implict grid
+     grid-gap: 6rem;
+     align-items: start;
+   }
+ }
+ 
+ .feature {
+   float: left;
+   width: 33.3333%;
+   margin-bottom: 6rem;
+ 
+   @supports (display: grid) {
+     display: grid;
+     grid-template-columns: min-content 1fr; // Defining only columns is common
+     grid-row-gap: 1.5rem;
+     grid-column-gap: 2.5rem;
+ 
+     width: auto;
+     margin-bottom: 0;
+   }
+   // ...
+ }
+</code></pre>
+</li>
+</ol>
+<h3>Wrapping up the Nexter Project: Final Considerations</h3>
+<ol>
+<li><p>Running build script</p>
+</li>
+<li><p>Autoprefixer turns of prefixes for CSS grid (not required)</p>
+</li>
+<li><p><code>grid-template</code></p>
+<pre><code> grid-template: repeat(7, 5vw) / repeat(8, 1fr);
+</code></pre>
+</li>
+<li><p>Good to have features:</p>
+<ol>
+<li>Subgrid snapping to parent grid columns</li>
+<li>Ability to change individual gaps</li>
+<li>Selector for mth row and nth column<ol>
+<li>Even rows</li>
+<li>Odd rows</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 10: That's it, Everyone!</h2>
+<h3>See You Next Time, CSS Master!</h3>
+<ol>
+<li>Come up with own ideas</li>
+<li>Own layouts</li>
+<li>Own designs</li>
+<li>Build using the tools given in the course</li>
+<li>Share work</li>
+<li>Keep up with latest news<ol>
+<li>jonas.io - newsletter</li>
+</ol>
+</li>
+<li>Never stop learning</li>
+</ol>
+<h3>My Other Courses + Updates</h3>
+<ol>
+<li><code>@jonasschmedtman</code></li>
+<li><a href="https://app.convertkit.com/landing_pages/90434">Sign up or mailing list</a><ol>
+<li>Discounts for future courses</li>
+</ol>
+</li>
+<li><a href="https://www.youtube.com/channel/UCNsU-y15AwmU2Q8QTQJG1jw">YouTube channel</a></li>
+</ol>

@@ -4,7 +4,7 @@ Virtual threads are a new feature introduced in Java 16 as part of Project Loom.
 
 The main difference between virtual threads and traditional threads is that **virtual threads are lightweight, meaning they can be created and destroyed more quickly than traditional threads**. This makes them **ideal for scenarios where a large number of threads need to be created and managed efficiently**.
 
-To create a virtual thread in Java, you can use the Thread.startVirtualThread() method. Here is an example:
+To create a virtual thread in Java, you can use the `Thread.startVirtualThread()` method. Here is an example:
 
 		Thread virtualThread = Thread.startVirtualThread(() -> {
 			// code to be executed in the virtual thread

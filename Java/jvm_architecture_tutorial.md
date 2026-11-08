@@ -37,10 +37,10 @@
 							1. **jre/lib/ext** - other jars
 					3. Application class loader
 						1. 	Loads classes from `CLASSPATH` env variable and `-cp` parameter from commandline options
-			2. Link pase
+			2. Link phase
 				1. 3 different sub-phases
 					1. Verify
-						1. Looks at bytecode and checks if it is compatible with JVM class specifications etc... (if it is valid Java bytecode - magic number checks, ...)
+						1. Looks at bytecode and checks if it is compatible with JVM class specifications etc... (if it is valid Java bytecode - -magic- number checks, ...)
 					2. Prepare
 						1. Memory is allocated for static variables in class files and assigned to default value
 						

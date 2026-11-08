@@ -1,0 +1,379 @@
+Rule-based systems
+	1. New patterns will break the system
+Machine learning
+	1. Learns patterns from data. Classification, prediction, recs
+		1. One model did one task
+			1. No generality
+Generative AI
+	1. General purpose
+		1. Trained on massive datasets
+		
+Build Software
+	1. AI-assisted coding & review
+	2. Testing
+	3. AIOps - agenss handling ops talks
+
+Software
+	1. AI-native products & features
+	2. Conversational interfaces
+	3. Agent-powered workflows
+	
+Empowering Software Engineering with AI
+	1. Coding & Development
+	2. Testing & QA
+	3. Documentation & Knowledge
+	4. AI Agents & Solutions
+	
+We can build AI agents using AI agents
+
+Agentic AI:
+	1. It reasons
+	2. Plans
+	3. Acts
+	4. Does research
+
+Static code to adaptive system
+	1. System that responds to environment
+Function calls -> decision-driven workflows
+	1. AI decides what to call
+Manual orchestration -> Autonomus
+
+Human-in-the-loop
+	1. AI plans requirements
+	2. Builds multi-file features
+	3. Runs tests automatically
+	4. Deploys & monitors continuously
+	
+AI-Assisted Software
+Agentic AI Systems (Goal-Driven)
+	1. Autonomous
+	2. Self-triggered
+	
+Antigravity
+	1. Multiple agents
+		1. Multiple AI agents work in the editor and terminal to build apps, test code, and manage workflows inside a development environment
+		
+Course
+	1. Build and deploy agents
+	2. Design agentic systems
+	3. Integrate agents
+	4. Ship production-ready agents
+	5. Fine-tune and tailor
+	
+Hidden Shift:
+	1. LLMs + functions = daily workflow integration
+		1. Intelligence + execution - agnetic system foundation
+		
+Topics:
+	1. Introduction to Gen AI and LLMs
+	2. Prompt Engineering
+	3. LLM-Based Agents
+	4. Q & A
+	
+What is Gen AI?
+	1. They generate new content
+		1. New text, code, images, audio, video
+	2. It understands natural language (and multimodal - documents, images, audio, ...) inputs
+	3. Powered by large foundation models trained on massive datasets
+		1. Books
+		2. Websites
+		3. Code repos
+		4. (publicly available info)
+	4. Gaps
+		1. Training cutoff (2024)
+
+AI - simulates human intelligence
+	ML - system learns from data (a subset) and improves over time
+		1. Netflix recommending movies
+		2. DL - Neural network in many layers to process complex info
+			1. Images
+				1. Face unlocks
+					1. Pattern recognition
+			2. Speech
+			3. GenAI:
+				1. AI can generate new content
+					1. Text
+					2. Image
+					3. Vidoes
+					4. ...
+	NLP - overlaps with AI, ML, DL, GenAI
+		1. Siri
+			1. Understands and generates human language
+			
+Use-cases
+	1. Content creation
+	2. Image generation
+	3. Code generation
+	4. Idea generation
+	5. Data analytics
+	6. Music generation
+	7. Text generation
+	8. Fraud detection
+	9. Risk management
+	10. Image identification
+	11. Task management
+	12. Predictive analytics
+	
+What are LLMs?
+	1. Transformers?
+	
+Calling LLMs via client libs
+
+OpenRouter
+	1. Routes to OpenAI, Anthropic, etc.
+	2. Code can be same but model can be changed
+	3. Need to purchase it
+	
+Artifical Analysis
+	1. Benchmarks
+	2. Comparisons
+		1. We can choose the model based on this analysis
+	3. https://artificialanalysis.ai/models/claude-opus-4-8
+	
+Agent = LLM * (Prompt + Tool + Memory)
+	1. Prompt - UI, System
+		1. **We are going to work on it**
+			1. We have the most control over it
+	2. Tool - Gmail, Outlook, Teams, PostgreSQL, ...
+	2. Memory - conversation history
+		1. Store
+		
+**System prompts:**
+	1. **CRAFT - technique** **(M)**
+		1. Context
+			1. Background information
+				1. What situation - problem statement
+		2. Role
+			1. Persona/Expertise
+				1. Who it should be
+		3. Action
+			1. Task to perform
+		4. Format
+			1. Output structure (important)
+				1. Size can also be mentioned
+		5. Target Audience
+			1. Who consumes the output
+				1. Tone
+				2. Vocabulary
+				3. ...
+				
+Example: 
+	Context: Problem statement
+		1. Salesforce to snowflake DAG
+		2. Daily transform
+		3. Snowflake schema
+			1. Otherwise, AI will make assumptions about the situation
+	Role: Senior Data engineer writing internal documentation expertise
+		1. Otherwise it will assume a role
+	Action: Write technical documentation for the pipeline
+	Format: Markdown with sections
+		1. Otherwise it may not be the right size or the acceptable output
+		2. We can provide examples
+	Target Audience: Data Engineer who maintains the stack
+		1. Leadership? Junior engineer? CTO? ...
+			1. Technical? Non-technical? ...
+			
+Prompt Engineering
+	1. Context
+		1. Set the stage: role, goal, plan etc.
+	2. Structure
+		1. Use delimiters, markdown, or XML-like tags
+	3. Constraints
+		1. Output format
+		2. Tone
+		3. Edge cases
+	4. Iterate
+		1. Draft
+		2. Evaluate
+		3. Review output
+		4. Refine
+		
+Types of prompts
+	1. Zero Shot
+		1. No examples
+	2. One shot
+		1. One example
+	3. Few shot
+		1. A few examples of input and patterns
+			1. For specialized tasks
+	4. Chain of thought (LLMs handle these automatically)
+		1. To reason step by step
+			1. For complex tasks
+	5. COT-SC
+		1. Self-consistency with chain of thought
+			1. Construct multiple chains of thought, evaluate each one, and select the most effective and coherent chain
+	6. Tree of thoughts
+		1. If it has multiple valid angles
+		
+Limitations of LLMs
+	1. No fresh knowledge
+		1. No access to fresh data
+		2. No access to specific data
+		3. No access to private data
+	2. Hallucinations
+		1. It generates plausible text
+		2. Confidently wrong output
+			1. It doesn't say I don't know
+	3. No Actions
+		1. It only generates text
+			1. No outcomes
+				1. Cannot call APIs
+				2. Cannot run a query
+				3. Cannot update a ticket
+	4. No Memory
+		1. Every conversation starts from zero
+			1. Cannot recall the past interactions or accumulated context
+			
+What if we gave the LLM access to tools and a memory?
+
+An agent allows LLM to act, remember context, and decide what to do next.
+	1. Prompt
+	2. Tools
+	3. Memory
+	
+Agents and tools
+	1. Tools
+		1. Retrieve (fetch)
+			1. Data from APIs
+			2. Database
+			3. Vector stores
+			4. ...
+		2. Execute
+			1. Actions in external systems
+				1. Sending emails
+				2. Generate Jira ticket
+				3. Slack message
+		3. Run deterministic logic
+			1. Sorting
+			2. Filtering
+			3. Data transformation
+			4. ...
+			
+Who's deciding what to do next?
+	1. Agentic workflows
+		1. LLM & tool control flow is programatically defined
+			1. Architecture is predetermined by programmer
+				1. Orchestration is deterministic
+	2. Autonomous Agents
+		1. The model dynamically decides what to do next
+			1. Orchestration is not fixed
+				1. Agent will determine on the fly
+		2. Observability is more important here
+			1. Auditing for each step
+			
+Workflows vs. Autonomous
+	1. Workflows - Well-defined processes
+	2. Autonomous - Open-ended tasks
+	
+The Agent Loop = Loop(Think + Act + Observe)
+
+```
+System prompt: You are a scheduling assistant helping user book meetings
+
+Tool definition:
+- find_next_free_slot(from_date) # tool 1
+	1. Think: What it needs to do
+	2. Act: Calls the tool (function call)
+	3. Observe: Verifies the result
+- book_slot(start_time, duration) # tool 2
+```
+
+The Cognitive Engine
+1. Functions
+	1. Intent parsing
+		1. Ambiguities are handled
+	2. Problem decomposition
+		1. For complex goals
+			1. Generates a plan
+	3. Synthesizes data returned from the tools
+		1. Into coherent output
+			1. Summary
+			2. Resolves conflicts
+			
+The ReAct Loop
+	1. Thought - The agent analyzes the request
+	2. Action - It decides which tool to call
+	3. Observation 
+	4. Repeat
+	
+Anatomy of an agent
+	1. The brain (LLM) - The decision maker
+	2. Planning - Breaking down complex goals
+		1. LLMs are handling it
+			1. Goals into subtasks
+	3. Memory - Storing history and context
+		1. Short term
+		2. Long term
+			1. Vector databases
+	4. Tools - Capabiliteis to ineract with the world
+		1. APIs
+		2. Calculators
+		3. Web search
+		4. ...
+
+Tools
+	1. Code execution
+		1. Writing and running Python scripts
+	2. Web browwing
+		1. Accessing realtime information
+	3. External APIs
+		1. Slack
+		2. Jira
+		3. SQL databases
+		4. ...
+		
+Memory
+	1. Short-term
+		1. RAM of the agent
+		2. It is fast
+		3. Current context
+		4. Limited
+		5. Volatile
+	2. Long-term (vector store)
+		1. hard drive of the agent
+		2. Uses Vector Databases (RAG) to store vast
+			1. RAG pipelines
+		3. Tools
+			1. Pine cone
+			2. Pgvector
+			3. Weaviate
+			4. ...
+			
+Planning & Reasoning
+	1. Chain of thought - stepping through logic explicitly
+	2. Tree of thoughts - exporing multiple possibilities before committing
+	3. Reflection - Reviewing past actions to catch errors
+		1. Catches before documenting
+
+The future: Multi-Agent Systems
+	1. Specialization
+		1. Swarms of specialized agents
+			1. Coder
+			2. Designer
+			3. Writer
+		2. They collaborate
+		3. Example:
+			1. Researcher agent - gathers information
+			2. Summarizer - summarizes information
+			3. Writer - Write polished manner
+	2. Orchestration
+		1. "Manager" agents will break down huge projects and assign tasks to "worker" agents
+	3. Autonomy
+		1. Agents will run continuously in the background, optimizing workflows without human input
+
+Why multiple agents?
+	1. Specialized agents can use only its own context without getting muddled with contexts of other agents
+		1. Accuracy is better
+	2. More deterministic
+	3. Orchestrator can decide what and how many agents to use for a task
+	
+Agentic Design Pattern
+	1. Reusable patterns
+		1. Reflection pattern
+		2. Routing pattern
+		3. Tool use pattern
+		4. Planning pattern
+			1. Planner-executor agents
+		5. Multi-agent pattern
+		
+Examples:

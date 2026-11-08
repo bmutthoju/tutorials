@@ -1,0 +1,4940 @@
+<h1>Mastering Microsoft Azure: Advanced Services</h1>
+<h2>Section 1: Introduction</h2>
+<h3>Course Introduction</h3>
+<h3>Join the Cloud and Software Architects Community</h3>
+<h3>Get the Course Slides</h3>
+<h3>Who is This Course For?</h3>
+<h3>Agenda</h3>
+<h2>Section 2: Quick Introduction to the Cloud</h2>
+<h3>Read This before Going Through This Section</h3>
+<h3>Current Status in Computing</h3>
+<h3>What is the Cloud?</h3>
+<h3>Characteristics of the Cloud</h3>
+<h3>IaaS, PaaS, SaaS</h3>
+<h3>Types of Clouds</h3>
+<h3>Main Cloud Providers</h3>
+<h3>Introduction to Azure</h3>
+<h3>Regions and Zones</h3>
+<h3>Azure Services</h3>
+<h3>Instantiating an Account</h3>
+<h2>Section 3: Preparing the Environment</h2>
+<h3>Read This Before Going Through This Section</h3>
+<h3>Install .NET Core SDK</h3>
+<h3>Install VS Code</h3>
+<h3>Install VS Code Extensions</h3>
+<h2>Section 4: IOT Hub</h2>
+<h3>Introduction</h3>
+<ol>
+<li>IOT Hub:<ol>
+<li>It is a central messaging hub for bi-directional communication with IOT devices</li>
+<li>It can handle millions of devices</li>
+<li>It is extremely reliable and secure</li>
+<li>It supports multiple messaging patterns<ol>
+<li>Important when designing</li>
+</ol>
+</li>
+<li>It has built-in monitoring</li>
+</ol>
+</li>
+<li>IOT:<ol>
+<li>Internet of Things<ol>
+<li>It is hardware devices (=things) connected to the internet<ol>
+<li>Examples:<ol>
+<li>Thermostats</li>
+<li>Light bulbs</li>
+<li>Routers </li>
+<li>Refrigerators</li>
+<li>Cameras</li>
+<li>Switches</li>
+</ol>
+</li>
+<li>The above devices connect to the internet<ol>
+<li>Why?<ol>
+<li>Devices connect in order to...<ol>
+<li>Send telemetry - to know their status</li>
+<li>Get softwar updates</li>
+<li>Send images - cameras might want to send images of whats going on in our smarthome</li>
+<li>Send sensor data - Whats the current temperature in our home</li>
+<li>...</li>
+</ol>
+</li>
+<li>There are many scenarios when we want devices to connect to the internet either to send data or to receive data</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>How do the devices connect to the internet<ol>
+<li>Solution: IOT Hub<ol>
+<li>It is a hub where devices connect to<ol>
+<li>Hub is:<ol>
+<li>Secure</li>
+<li>Reliable</li>
+<li>Bi-Directional</li>
+<li>Monitored</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Device Connection to IOT Hub:<ol>
+<li>Extremely simple code<ol>
+<li>It can use Azure IoT Hub SDK<ol>
+<li>We don't have to use the SDK but it will make life easier when connecting to IoT hub</li>
+<li>Supported in:<ol>
+<li>C</li>
+<li>Python</li>
+<li>Node JS</li>
+<li>.NET</li>
+<li>Java</li>
+</ol>
+</li>
+<li>Chances are that if we are a developer designing and developing an IoT system, then the language is covered by Azure IoT Hub SDK</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Communication Protocols Supported (standard IoT Device protocols and a device may support at-least one of them):<ol>
+<li>HTTPS</li>
+<li>AMQP</li>
+<li>MQTT</li>
+</ol>
+</li>
+</ol>
+<h3>Message Routing</h3>
+<ol>
+<li><p>Important concept of IoT Hub</p>
+<ol>
+<li>Connecting to IoT Hub is not enough...<ol>
+<li>Devices connect to the IoT Hub</li>
+<li>IoT Hub will get telemetry messages, images, ...</li>
+<li>Now What?<ol>
+<li>What are we going to do with the data received from the IoT Hub?<ol>
+<li>Solution: Message Routing</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Message Routing</p>
+<ol>
+<li>Message from the IoT device should be routed somewhere</li>
+<li>With IoT hub we have a lot of options where exactly to route messages<ol>
+<li>We have a lot of endpoints with IoT hub<ol>
+<li>Message router can send messages to<ol>
+<li>Event Hub</li>
+<li>Service Bus Topics</li>
+<li>Service Bus Queues</li>
+<li>Storage Blob</li>
+<li>Custom endpoint connectors - we can configure and develop</li>
+<li>Built-in endpoint - comes out of the box with IoT Hub<ol>
+<li>It is essentially an eventhub topic</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The endpoints are discussed in previous course</li>
+</ol>
+</li>
+<li><p>Typical IoT Hub Architecture</p>
+<pre><code> IoT Device
+     |
+     v
+ IOT Hub
+     |
+     v
+ Event Hubs
+     |
+     v
+ Function (Validation - waits for it, checks if everything is in place (params are valid))
+     |
+     v
+ Event Grid (Pub/Sub - publishes to other listeners)
+     |
+     v
+ Function (Insert into DB)
+     |
+     v
+ Cosmos DB
+     ^
+     |
+ App Service (Queries and shows it)
+ 
+</code></pre>
+<ol>
+<li>It is a real-world architecture we can use for our own IoT systems</li>
+<li>Device uses: D2C (Device-to-Cloud) communication<ol>
+<li>IoT device only sends messages to IoT Hub (not the other way around)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Device-to-Cloud Communication</p>
+<ol>
+<li>The classic communication pattern<ol>
+<li>Device sends data in any shape or form to the cloud or IoT Hub</li>
+</ol>
+</li>
+<li>Three modes of communication:<ol>
+<li>Telemetry &amp; Data (the most common pattern for sending device data to the cloud)</li>
+<li>Files upload</li>
+<li>Device Twin</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Cloud-to-Device Communication</p>
+<ol>
+<li>The other way around...</li>
+<li>Used mainly for:<ol>
+<li>Send commands to the device<ol>
+<li>If IoT Hub or user at the cloud wants the device to do something, then it can send a command to the device<ol>
+<li>Example:<ol>
+<li>Take a picture</li>
+<li>Measure temperature</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Software updates<ol>
+<li>Once in a while, the software in a device needs to be updated<ol>
+<li>CTD communication can be used</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It uses direct call to communicate with specific device(s)</li>
+</ol>
+</li>
+</ol>
+<h3>Security</h3>
+<ol>
+<li>IOT Hub Security<ol>
+<li>Security is one of the major issues with IoT<ol>
+<li>Why?<ol>
+<li>Need to make sure that:<ol>
+<li>Only allowed devices can connect to the IoT Hub<ol>
+<li>We want to avoid a malicious device from connecting to IoT hub and poisons our cloud system</li>
+</ol>
+</li>
+<li>Communication is safe<ol>
+<li>The data that was received by the IoT hub was not tampered with</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Device Authentication<ol>
+<li>Devices can authenticate using one of the following:<ol>
+<li>SAS token<ol>
+<li>We used SAS token when connecting to storage account</li>
+</ol>
+</li>
+<li>Individual X.509 certificate (we have a certificate per device)</li>
+<li>X.509 CA authentication (single authentication issued for all the devices using a certified CA)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Secure communication:<ol>
+<li>Communication to IoT Hub is doen using TLS<ol>
+<li>The standard encryption protocol that is used for secure web communication</li>
+</ol>
+</li>
+<li>We can configure the minimum TLS version that is allowed when connecting to the IoT Hub<ol>
+<li>Note: v1.0 &amp; v1.1 are deprecated<ol>
+<li>Should not be allowed to connect to the IoT hub</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Tiers and Pricing</h3>
+<ol>
+<li>Two Tiers:<ol>
+<li>Basic<ol>
+<li>Capabilities:<ol>
+<li>Device-to-cloud telemetry</li>
+<li>Per-device identity</li>
+<li>Message routing, message enrichments, and Event Grid Integration</li>
+<li>HTTP, AMQP, and MQTT protocols</li>
+<li>Device Provisioning Service</li>
+<li>Monitoring and Diagnostics</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Standard (Have Free)<ol>
+<li>Capabilities:<ol>
+<li>Device-to-cloud telemetry</li>
+<li>Per-device identity</li>
+<li>Message routing, message enrichments, and Event Grid Integration</li>
+<li>HTTP, AMQP, and MQTT protocols</li>
+<li>Device Provisioning Service</li>
+<li>Monitoring and Diagnostics</li>
+<li>Cloud-to-device messaging</li>
+<li>Device twins, Module twins, and Device management</li>
+<li>Device streams (preview)</li>
+<li>Azure IoT Edge</li>
+<li>IoT Plug and Play</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The basic differences between the basic tier and standard tier is the cloud to device messaging<ol>
+<li>If we want to send messages from the cloud to the IoT device, we want to go to the standard tier</li>
+</ol>
+</li>
+<li>Standard tier supports Device twins<ol>
+<li>If we need this capability, we cannot go with the Basic tier</li>
+</ol>
+</li>
+</ol>
+<h3>Constructing and Setting up IOT Hub</h3>
+<ol>
+<li>Resource group for IoT Hub<ol>
+<li>Search: Resource Groups<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: IOTHub-rg</li>
+<li>Region: West Europe</li>
+<li>Review + Create</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Search: IOT Hub<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: IOTHub-rg</li>
+<li>Region: West Europe</li>
+<li>IOT hub name: course-iot</li>
+<li>Management:<ol>
+<li>Pricing and scale tier: Standard<ol>
+<li>We need the following features:<ol>
+<li>Cloud to device messaging</li>
+<li>Device twin</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Review + Create</li>
+<li>Create</li>
+<li>Go to reasource</li>
+</ol>
+</li>
+<li>Built in endpoints<ol>
+<li>Endpoints - places where IoT hub sends messages once it gets them from devices<ol>
+<li>Built-in endpoint - EventHub Topic<ol>
+<li>Endpoint of EventHub: Use the connection string to connect</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Messaging:<ol>
+<li>Message routing: Mechanism that IoT Hub uses to route messages to custom endpoints<ol>
+<li>Custom endpoints<ol>
+<li>Types of supported endpoints<ol>
+<li>Storage<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Storage<ol>
+<li>Endpoint name: error-msgs<ol>
+<li>The endpoint will be used to report errors in the messages received by the IoT hub</li>
+</ol>
+</li>
+<li>Pick a Container - to store messages<ol>
+<li><ul>
+<li>Storage account - dedicated for use by the IoT Hub</li>
+</ul>
+<ol>
+<li>Name: iotmsgsmutthoju (unique)</li>
+<li>Account kind: Storage v2 (modern type)</li>
+<li>Replication: Locally-Redundant-Storage (no DR)</li>
+<li>Location: West Europe</li>
+<li>Minimum TLS version: Version 1.2</li>
+<li>OK</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to resource<ol>
+<li>Storage accounts<ol>
+<li>iotmsgsmutthoju<ol>
+<li><ul>
+<li>Container</li>
+</ul>
+</li>
+<li>Name: error-msgs</li>
+<li>Public access level: Private (no anonymous access allowed)</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Select error-msgs<ol>
+<li>Batch Frequence: Max elapsed time from the moment the IoT Hub receives a message until it routes to our container (60s to 720s)<ol>
+<li>60s</li>
+</ol>
+</li>
+<li>Chunk size window: Max size of blob written to the storage account:<ol>
+<li>100MB</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Encoding: JSON<ol>
+<li>Clear text<ol>
+<li>Avro - binary</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>File name: default<ol>
+<li>iothubname-partition-date</li>
+</ol>
+</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Storage<ol>
+<li>Endpoint name: valid-msgs</li>
+<li>Pick a container: iotmsgsmutthoju<ol>
+<li><ul>
+<li>Container:</li>
+</ul>
+<ol>
+<li>valid-msgs</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Select the new container<ol>
+<li>Batch frequency: 60s</li>
+<li>Encoding: JSON</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Routing messages to the endpoint<ol>
+<li>Routes - to define routes so that IoT Hub knows which messages to route to with endpoint<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Name: error-route</li>
+<li>Endpoint: error-msgs</li>
+<li>Data source: Device Telemetry Messages (messages flowing from device to IoT hub containing data, telemetry, etc.)<ol>
+<li>Other types:<ol>
+<li>Lifecycle events</li>
+<li>Connection state</li>
+<li>Twin change</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Enabled</li>
+<li>Routing Query: Allows us to define the contents of the messages so that they will be routed to the endpoints<ol>
+<li><p>true - every message will automatically be routed</p>
+</li>
+<li><p>Only error messages:</p>
+<pre><code> $body.status='error'
+ 
+</code></pre>
+<ol>
+<li>In the body, a field named status should have the value error (if field doesn't exist, the message is ignored)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Test:<ol>
+<li>Message body:<ol>
+<li><p>Type the following JSON</p>
+<pre><code> {
+     "status": "error",
+     "message": "error getting data from db"
+ }
+ 
+</code></pre>
+<ol>
+<li>Test route</li>
+</ol>
+</li>
+<li><p>Message matched the query</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li><p>Name: valid-route</p>
+</li>
+<li><p>Endpoint: valid-msgs</p>
+</li>
+<li><p>Routing query:</p>
+<pre><code> $body.status='success'
+ 
+</code></pre>
+</li>
+<li><p>Save</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Devices and Access Policies</h3>
+<ol>
+<li>IoT devices:<ol>
+<li><ul>
+<li>New - Register devices that are going to use the IoT hub</li>
+</ul>
+<ol>
+<li>Ways to do it:<ol>
+<li>Manually</li>
+<li>Using API</li>
+<li>Using provisioning services</li>
+<li>...</li>
+</ol>
+</li>
+<li>Device ID: every device should have a unique id<ol>
+<li>iotdev1</li>
+</ol>
+</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Refresh</li>
+<li>Authentication type<ol>
+<li>SAS<ol>
+<li>It is a specialized kind of token that is automatically generated by Azure which provides authentication against Azure cloud</li>
+<li>We have to use specialized string (connection string) for the device to connect to IoT hub</li>
+</ol>
+</li>
+<li>Shared access policies<ol>
+<li>List of policies that define access scope of IoT hub - permissions of anyone using the policies</li>
+<li>iothubowner - must be used by owner only<ol>
+<li>device must not use it</li>
+</ol>
+</li>
+<li>device - used by device when connecting to IoT hub (for sending data)<ol>
+<li>Click</li>
+<li>Primary and Secondary connections strings<ol>
+<li>Permissions: Device Connect</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>iothubowner<ol>
+<li>Permissions: full suite</li>
+<li>copy primary connections string</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>A Note About IoT Extensions in VS Code</h3>
+<ol>
+<li>IoT related extensions in VS Code</li>
+<li>Install the following instead of Azure IoT Tools:<ol>
+<li>Azure IoT Hub</li>
+<li>Azure IoT Edge</li>
+</ol>
+</li>
+</ol>
+<h3>Sending Messages to IoT Hub</h3>
+<ol>
+<li>VS Code<ol>
+<li>Extensions<ol>
+<li>Azure IoT Tools<ol>
+<li>Install</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Explorer<ol>
+<li>AZURE IOT HUB<ol>
+<li>Set IoT HUB Connection String<ol>
+<li>Paste the connection string</li>
+<li>Connection string is updated</li>
+</ol>
+</li>
+<li>Right click on iotdev1<ol>
+<li>Send D2C Message to IoT Hub<ol>
+<li><p>Device: iotdev1</p>
+</li>
+<li><p>Messages per device: 1</p>
+</li>
+<li><p>Data Template</p>
+<pre><code> {
+     "status": "error",
+     "message": "Failed to retrieve data"
+ }
+ 
+</code></pre>
+</li>
+<li><p>Send</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Duplicate portal:<ol>
+<li>Storage accounts<ol>
+<li>iotmsgsmutthoju<ol>
+<li>Containers<ol>
+<li>error-msgs<ol>
+<li>empty<ol>
+<li>Why?</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Message routing:<ol>
+<li>Disable fallback routes - IoT has a fallback route (default route)<ol>
+<li>Built-in endpoint<ol>
+<li>Any message that does not fall within the defined routes will go to fallback route</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Metrics<ol>
+<li>1 message that was routed to fallback route<ol>
+<li>Why?<ol>
+<li>Built in endpoints (eventhub topic)<ol>
+<li>Copy the connection string</li>
+<li>VS Code<ol>
+<li>Right click on device<ol>
+<li>Start Monitoring Built in Event Endpoints</li>
+<li>Paste connection string<ol>
+<li>VS Code is monitoring built-in endpoint</li>
+</ol>
+</li>
+<li>Send</li>
+<li>Change "error" to "success"</li>
+<li>Send<ol>
+<li>Every message is routed to fallback route instead of custom endpoint<ol>
+<li>Why?<ol>
+<li>Properties need to be set<ol>
+<li>Cannot be set in a simulator<ol>
+<li>Solution: We need code<ol>
+<li>VS Code can take care of that</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Code to Send Messages</h3>
+<ol>
+<li>VS Code:<ol>
+<li>Right click device<ol>
+<li><p>Generate Code</p>
+<ol>
+<li>C#</li>
+<li>Send device-to-cloud message</li>
+<li>Location: C:/iothubcode/d2c</li>
+</ol>
+</li>
+<li><p>csproj</p>
+<ol>
+<li>Version of .NET core needs to be compatible with what is installed on the system<ol>
+<li>3.1</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>vscode/launch.json</p>
+<ol>
+<li><code>...netcoreapp3.1</code></li>
+</ol>
+</li>
+<li><p>Packages are still missing</p>
+<ol>
+<li><p>Terminal:</p>
+<pre><code> dotnet add package newtonsoft.json -version 13.0.1
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>F5</p>
+<ol>
+<li>Sends messages to IoT hub<ol>
+<li>Connection string is pre-populated</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to another instance of VS Code<ol>
+<li>Monitor of built in endpoint<ol>
+<li>Shows messages currently received on the other instance</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Stop sending messages<ol>
+<li>Code:<ol>
+<li><p><code>SendDeviceIoTCloudMessageAsync()</code> - sends device</p>
+</li>
+<li><p>JSON message string</p>
+<ol>
+<li>Encoding for JSON</li>
+</ol>
+</li>
+<li><p>Properties</p>
+</li>
+<li><p><code>SendEventAsync(...)</code> - sends messages to the IoT Hub</p>
+</li>
+<li><p><code>Main</code> - entry point</p>
+<ol>
+<li>Initialization</li>
+<li>Calls methods to send messages</li>
+</ol>
+</li>
+<li><p>Change:</p>
+<ol>
+<li><p>Remove references of weather</p>
+</li>
+<li><p>Remove comments</p>
+</li>
+<li><p>Define message:</p>
+<pre><code> var messageString = "{'status':'error','message':'Error retrieving data'}";
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>F5</p>
+</li>
+<li><p>Messages are still received in fallback route</p>
+<ol>
+<li>Why?</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Fixing the Code to Enable Routing</h3>
+<ol>
+<li>We need to set some properties<ol>
+<li><p>Code:</p>
+<pre><code> message.contentType="application/json";
+ message.contentEncoding="utf-8";
+ 
+</code></pre>
+</li>
+<li><p>Go to monitor:</p>
+<ol>
+<li>Click bottom-right button to clear the monitor (it must be empty after sending messages)</li>
+</ol>
+</li>
+<li><p>F5</p>
+</li>
+<li><p>Monitor:</p>
+<ol>
+<li>It is empty - nothing is routing to fallback route</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Portal:<ol>
+<li>Metrics<ol>
+<li>Metric: Routing - messages delivered to storage<ol>
+<li>Refresh<ol>
+<li>Messages were delivered to the storage</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>error-msgs - container<ol>
+<li>Refresh<ol>
+<li>course-iot<ol>
+<li>O2/<year>/<day>/<hour>/<minute>/<number>.json<ol>
+<li>A bunch of messages<ol>
+<li>Each line is a single message</li>
+<li>Metadata + body</li>
+</ol>
+</li>
+</ol>
+</number></minute></hour></day></year></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code:<ol>
+<li>Stop code from running<ol>
+<li>Change "error" to "success"</li>
+<li>F5</li>
+</ol>
+</li>
+<li>Nothing is routed to built-in endpoint</li>
+</ol>
+</li>
+<li>Portal:<ol>
+<li>valid-msgs - container<ol>
+<li>It takes some time to write messages (depending on the frequency parameter)</li>
+<li>Refresh</li>
+<li>O2/<year>/<day>/<hour>/<minute>/<number>.json</number></minute></hour></day></year></li>
+<li>Message contains the body</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Sending Cloud-to-Device Messages</h3>
+<ol>
+<li>How to send messages from IoT Hub to devices<ol>
+<li>Sending commands</li>
+<li>Updating software</li>
+<li>...</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li>Right click on the device<ol>
+<li>Start Receiving C2D Message<ol>
+<li>VS Code will listen to messages from the cloud</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Portal<ol>
+<li>IoT devices<ol>
+<li>iotdev1<ol>
+<li>Message to device<ol>
+<li><p>Message body:</p>
+<pre><code> hello fron IOT Hub.
+ 
+</code></pre>
+</li>
+<li><p>Send Message</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li>Message appears</li>
+</ol>
+</li>
+<li>Using Code:<ol>
+<li>Download resource<ol>
+<li><p>Paste contents in <code>Send...Device.cs</code></p>
+<pre><code> private static async void RecieveC2DAsync() {
+     ...
+     ...receivedMessage.GetBytes()...
+     ...
+ }
+ 
+</code></pre>
+<ol>
+<li>If the received message is not null, we print it to console</li>
+</ol>
+</li>
+<li><p>In <code>Main</code> method, paste the following method call:</p>
+<pre><code> RecieveC2DAsync();
+ 
+</code></pre>
+</li>
+<li><p>Click: Stop Recieving C2D Message (bottom)</p>
+<ol>
+<li>Or else, monitor will receive the message instead of the code</li>
+</ol>
+</li>
+<li><p>F5</p>
+</li>
+</ol>
+</li>
+<li>Portal:<ol>
+<li>Send Message<ol>
+<li>Message gets printed</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Try with a different message</li>
+</ol>
+</li>
+<li>How to send messages from code?<ol>
+<li><p>Portal:</p>
+<ol>
+<li>Shared access policies<ol>
+<li>Open <code>service</code> policy - it is code that sends messages to IoT hub<ol>
+<li>Service Connect permission</li>
+<li>Copy Primary connection string</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>VS Code</p>
+<pre><code> private const string s_serviceConnectionString = "&lt;paste-connection-string&gt;";
+ // connection string will be in a different code file
+ // For production, save the connection string in Key-Vault
+</code></pre>
+</li>
+<li><p>Download resource file</p>
+<ol>
+<li><p>Copy the content and paste above <code>Main</code> </p>
+<pre><code> private async static Task SendCludDeviceMessageAsync() {
+     ...
+ }
+ 
+</code></pre>
+<ol>
+<li><p>Terminal:</p>
+<pre><code> dotnet add package Microsoft.Azure.Devices
+ 
+</code></pre>
+</li>
+<li><p>Comment out the method we don't need</p>
+</li>
+<li><p>Point to the error: Ctrl + point</p>
+<ol>
+<li>Microsoft Azure Devices</li>
+<li>Microsfot Azure Device Messages</li>
+</ol>
+</li>
+<li><p><code>Main</code></p>
+<pre><code> SendCloudToDeviceMessageAsync();
+ 
+</code></pre>
+<ol>
+<li>Ctrl+Point<ol>
+<li>Second option</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Right click on iotdev1 device</p>
+<ol>
+<li>Start Receiving C2D Messages</li>
+</ol>
+</li>
+<li><p>Run the code: F5</p>
+</li>
+<li><p>Output</p>
+<ol>
+<li>Message was received</li>
+</ol>
+</li>
+<li><p>Try it again by changing message</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Code:</p>
+<ol>
+<li>We are now using service client (because we are sending messages)</li>
+<li>We specify a target device</li>
+<li><code>SendAsync</code> is used to send a message</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Device Twins</h3>
+<ol>
+<li>What is device twins?<ol>
+<li>It is a JSON document that reflects the current state of the device</li>
+<li>It is stored in the IOT Hub</li>
+</ol>
+</li>
+<li>Why do we need it?<ol>
+<li>It can be used to:<ol>
+<li>Allows the IOT Hub to change device state<ol>
+<li>If we modify the JSON document, the change immediately reflects in the device</li>
+</ol>
+</li>
+<li>It allows us to report back to the IOT Hub on changes in device state<ol>
+<li>When a state of the device is changed, the changes immediately reflects in the JSON document<ol>
+<li>IOT Hub is notified that something was changed</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>IOT Hub recieves notifications on changes</li>
+<li>IOT Hub can query the devices based on the state<ol>
+<li>It can get a set of devices that meet a specific state<ol>
+<li>Example: All the devices that are in the non-active status</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Device Twin:<ol>
+<li><p>Preset sections:</p>
+<ol>
+<li>Device Identity -<ol>
+<li>Status</li>
+<li>Update time</li>
+<li>Connection status</li>
+<li>(some data about device activity, and identity)</li>
+</ol>
+</li>
+<li>Tags: data about the device set by the back end<ol>
+<li>Back end: IoT Hub and all endpoints it routes to<ol>
+<li>Tags are invisible to device<ol>
+<li>Device doesn't have an idea about deployment location</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Desired Properties: Set by the backend &amp; read by the device<ol>
+<li>The way for backend to signal the device, what it wants the device to do or what it wants the device to be<ol>
+<li>Example: send frequency = 5m</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Reported Properties: Set by the device, read by the backend<ol>
+<li>Example: send frequency = 5m (actual send frequency) -&gt; status = success<ol>
+<li>If the send frequency is not 5m, the device sends a failure<ol>
+<li>Backend should be aware of failure and act accordingly</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Functionality of each section:</p>
+<pre><code> Device App								Backend
+ 
+                     Device Twin			
+                     - Tags				Read, write
+                                         change notifications
+                     - Properties
+ Read, receive			- Desired		Read, write
+ change									change
+ notifications							notifications
+ 
+ Read, write				- Reported		Read
+                                         change
+                                         notifications
+                                         
+</code></pre>
+</li>
+<li><p>Usecases:</p>
+<ol>
+<li>Very useful for changing state of devices<ol>
+<li>If changes occure too frequently, IOT Hub might throttle the changes and merge them<ol>
+<li>Solution: Use regular D2C messages (telemetry data)</li>
+</ol>
+</li>
+<li>IOT Hub is designed to cope with large amounts of telemetry data:<ol>
+<li>Device twins is not a replacement for such data</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Device Twins</h3>
+<ol>
+<li>VS Code<ol>
+<li>Right click iotdev1<ol>
+<li>Edit Device Twin<ol>
+<li>Basic device twin automatically setup<ol>
+<li>ID of device</li>
+<li>Properties<ol>
+<li>Desired properties</li>
+<li>Reported properties</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Download the resource<ol>
+<li><p>Unzip</p>
+</li>
+<li><p>Sets tags and properties in a device twin of a specific device</p>
+<pre><code> static string connectionString = '&lt;paste-connection-strin-with-service-permission&gt;'; // manages devices but doesn't report telemetry
+ 
+ var twin = await Task SetDeviceTags() {
+     var twin = await 
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Device Provisioning Service</h3>
+<ol>
+<li>Device Provisioning Service (DPS)<ol>
+<li>Connecting and configuring 100Ks (or even more...) of devices can be a long &amp; tedious task<ol>
+<li>Each device should be:<ol>
+<li>Configured to connect to the IOT Hub</li>
+<li>Configured to have the desired properties (Device Twin - if using it)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Solution: DPS<ol>
+<li>Manufacturer sets the connection to the DPS (manual)<ol>
+<li>It is part of the manufacturing process<ol>
+<li>It is written to the hardware itself</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Sys admin sets the list of devices allowed to connect and the IOT Hub they connect to (manual)</li>
+<li>Devices connect to the DPS (when turned on), then to the IOT Hub, and automatically gets configured (auto)<ol>
+<li>Connecting to IOT Hub, and getting desired properties of device twin in done automatically</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Flow:<ol>
+<li>Device Provisioning Service<ol>
+<li>Admin sets the list of devices and configurations in teh DPS<ol>
+<li>Prepares a list of devices allowed to be connected to DPS</li>
+<li>How should the devices be connected</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Device connected to DPS (using parameters set by manufacturer)<ol>
+<li>Happens when device is turned on</li>
+</ol>
+</li>
+<li>DPS validates the device<ol>
+<li>Ensures that the device appears in the enrollment list (defined in step 1)</li>
+</ol>
+</li>
+<li>DPS registers the device with appropriate IOT Hub<ol>
+<li>Uses API - automatically</li>
+</ol>
+</li>
+<li>IOT Hub returns the device ID which was generated automatically to the DPS</li>
+<li>The DPS returns the connection information to the device</li>
+<li>Device connects to the IOT Hub using the connection information</li>
+<li>Device gets desired configuration using device twin</li>
+</ol>
+</li>
+<li>DPS features:<ol>
+<li>DPS supports up to 1,000,000 devices (soft limit)<ol>
+<li>If we want more, we can ask Microsoft to increase the limit</li>
+</ol>
+</li>
+<li>DPS is easily configurable from the Azure Portal</li>
+<li>DPS is extremely cost effective<ol>
+<li>IoT HUb Device Provisioning Service:<ol>
+<li>1000 (1 million) x $0.10 = $100.00 / month</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>More About IOT Hub</h3>
+<ol>
+<li>SLA: 99.9% (excludes Free tier - no SLA)</li>
+<li>Message size for calculating the number of messagtes is 4K<ol>
+<li>Larger messages are split (two or more messages)</li>
+</ol>
+</li>
+<li>Devices can be bulk-imported using the <code>ImportDevicesAsync</code> of the <code>RegistryManager</code> class</li>
+<li>IOT Hub can be secured and connected to VNet using Private Link<ol>
+<li>It exposes private IP to the VNet<ol>
+<li>Miminizes attack surface</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>DR is achieved using MS-initiated failover (RTO (Recovery Time Objective) of 2-26 hours) or manual failover<ol>
+<li>MS triggers failover to another region<ol>
+<li>Manual trigger has shorter RTO</li>
+<li>It gets triggered when we want it to be triggered</li>
+<li>We will know when MS will trigger</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Resources</h3>
+<ol>
+<li>IOT Hub is an advanced service with a lot of capabilities<ol>
+<li>To learn more:<ol>
+<li>Securing IOT Hub with VNets and Private Links: <a href="https://docs.microsoft.com/en-us/azure/iot-hub/virtual-network-support">https://docs.microsoft.com/en-us/azure/iot-hub/virtual-network-support</a></li>
+<li>High availability and DR: <a href="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-ha-dr">https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-ha-dr</a></li>
+<li>Monitoring IOT Hub, including logging: <a href="https://docs.microsoft.com/en-us/azure/iot-hub/monitor-iot-hub">https://docs.microsoft.com/en-us/azure/iot-hub/monitor-iot-hub</a></li>
+<li>Message enrichment: <a href="https://docs.microsoft.com/en-us/azure/iot-hub/tutorial-message-enrichments">https://docs.microsoft.com/en-us/azure/iot-hub/tutorial-message-enrichments</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 5: API Management</h2>
+<h3>Introduction</h3>
+<ol>
+<li><p>What is API Management</p>
+<ol>
+<li>It is a central API gateway that manages and organizes API access to backend apps</li>
+<li>It manages the:<ol>
+<li>API</li>
+<li>Monitoring</li>
+<li>Rate limit</li>
+<li>Quota</li>
+<li>Security</li>
+<li>Caching</li>
+<li>...</li>
+</ol>
+</li>
+<li>It allows defining various policies for the APIs</li>
+<li>It is an extremely flexible service</li>
+<li>It is easy to manage and maintain</li>
+</ol>
+</li>
+<li><p>It is like a front-end that stands in front of backend apps and manages the access to the apps</p>
+</li>
+<li><p>API Management deployment:</p>
+<pre><code> API Management
+     |
+     |
+     +----------------+----------------+
+     |                |                |
+     On-Prem          Azure            Azure
+     Backend App #3   Bakend App #2    Backend App #1
+     Java, SOAP       NodeJS, REST API .NET, REST API
+     
+</code></pre>
+<ol>
+<li>Each app is developed using different technologies</li>
+<li>API management unifies access to the apps and centralizes all the access aspects to the APIs</li>
+</ol>
+</li>
+<li><p>Three main components:</p>
+<ol>
+<li>API Gateway<ol>
+<li>It accepts the actual API calls and routes to backend APIs<ol>
+<li>While doing that, it validates credentials</li>
+<li>It enforces quotas and rate limits</li>
+<li>It implements policies (if policies were defined)</li>
+<li>It caches responses where relevant</li>
+<li>It logs the calls for future analysis</li>
+</ol>
+</li>
+<li>It sits in front of the apps and does the hard word</li>
+</ol>
+</li>
+<li>Azure Portal<ol>
+<li>We define the API that API management is going to manage and expose</li>
+<li>We can package APIs into products</li>
+<li>We can set up policies:<ol>
+<li>Quotas</li>
+<li>Rate limit</li>
+<li>...</li>
+</ol>
+</li>
+<li>We can get insights from usage data</li>
+<li>We can manage users' access to the API management</li>
+</ol>
+</li>
+<li>Developer Portal<ol>
+<li>It is a specialized portal which is a completely separate portal</li>
+<li>It is for developers that are going to use the APIs exposed by API management<ol>
+<li>What can they do in the portal?<ol>
+<li>Read API docs</li>
+<li>Test APIs</li>
+<li>Subscribe to APIs</li>
+<li>Get your own API usage data<ol>
+<li>How many times did the developer use the API</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>API Management Terminology:</p>
+<ol>
+<li>Operation<ol>
+<li>It is a specific operation in the API<ol>
+<li>Usually - a specific URL in REST API<ol>
+<li>Example: Managing users API<ol>
+<li>Adding user: POST /api/user</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Product<ol>
+<li>A logic container of one or more APIs with usage quotas and terms of use<ol>
+<li>Example: User management API<ol>
+<li>We have a product for managing users<ol>
+<li>Contents of product:<ol>
+<li>API for accessing user's data</li>
+<li>API for getting usage analysis</li>
+<li>...<ol>
+<li>The APIs will be packaged in a single product</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Rate limit<ol>
+<li>A limit to the number of requests an API can accept.<ol>
+<li>It is used to avoid DDOS (Distributed Denial of Service) attacks</li>
+</ol>
+</li>
+<li>Example: 500 requests / s</li>
+</ol>
+</li>
+<li>Quota<ol>
+<li>A limit to the number of requests a developer can send to the API.<ol>
+<li>It is used to avoid abuse by developers<ol>
+<li>If a developer paid for usage, this ensures that other developers will not use the API without payment</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Policy<ol>
+<li>It changes the API behavior through configuration<ol>
+<li>Dozens of policies:<ol>
+<li>Adding authentication</li>
+<li>Performance</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Tiers and Pricing</h3>
+<ol>
+<li>6 Tiers:<ol>
+<li>Consumption</li>
+<li>Developer<ol>
+<li>&lt; $50 / month</li>
+</ol>
+</li>
+<li>Basic</li>
+<li>Standard</li>
+<li>Premium<ol>
+<li>Extremely expensive: ~ $ 2.8k / month</li>
+</ol>
+</li>
+<li>Isolated</li>
+</ol>
+</li>
+<li>Main differences:<ol>
+<li>Developer has no SLA</li>
+<li>Others range from 99.95% - 99.99%</li>
+<li>With <strong>Consumption</strong> tier, we pay for what we actually use<ol>
+<li>No constant monthly payment as with other tiers</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>Consumption</strong> has no developer portal<ol>
+<li>Developer portal is offered with other tiers</li>
+</ol>
+</li>
+<li><strong>Consumption</strong> has auto-scale<ol>
+<li>Not offered with other tiers</li>
+</ol>
+</li>
+<li><strong>Premium</strong> and <strong>Isolated</strong> have VNet support</li>
+<li>If we want API Management to be secure in a VNet and in-accessible to other external resources, we need to go with Premium and Isolated tiers</li>
+</ol>
+<h3>Constructing API Management and Building Backend App</h3>
+<ol>
+<li>Portal:<ol>
+<li>Search: API Management<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: apimgmt-rg</li>
+<li>Region: West Europe</li>
+<li>Resource name: course-api-mutthoju (unique)</li>
+<li>Organization name: hike-co</li>
+<li>Administrator email: <company-email></company-email></li>
+<li>Pricing tier: Developer (no SLA required)<ol>
+<li>Shows SLAs of other tiers</li>
+</ol>
+</li>
+<li>Review + Create</li>
+<li>Create<ol>
+<li>Takes a lot of time<ol>
+<li>In some cases it can take an hour<ol>
+<li>Azure will send an email if the deployment completes</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Backend apps:<ol>
+<li>New VM<ol>
+<li>Search: VM<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Resource group: apimgmt-rg</li>
+<li>Virtual machine name: weather-vm</li>
+<li>Region: West Europe</li>
+<li>Image: Ubuntu Server</li>
+<li>Size: Standard B1s</li>
+<li>Authentication: (SSH public key is the preferred approach)<ol>
+<li>Username: apiadmin</li>
+<li>Password: <password></password></li>
+<li>Confirm password</li>
+</ol>
+</li>
+<li>Networking<ol>
+<li>Public IP: + Create new<ol>
+<li>Assignment: Static</li>
+<li>OK</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Review + Create</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Duplicate the page:<ol>
+<li>Download PuTTY</li>
+<li>Select installer compatible with OS</li>
+<li>Click the installer</li>
+<li>Install</li>
+</ol>
+</li>
+<li>Go to resource<ol>
+<li>Copy Public IP</li>
+</ol>
+</li>
+<li>Open PuTTY:<ol>
+<li>Paste public IP</li>
+<li>Open</li>
+<li>username: apiadmin</li>
+<li>password: <password></password></li>
+<li>Installation:<ol>
+<li>Pull a Node.JS Web API from Github account (backend for API management)</li>
+<li><code>sudo apt install git</code></li>
+<li><code>sudo apt update</code></li>
+<li><code>sudo apt install nodejs</code></li>
+<li><code>sudo git clone https://github.com/memilavi/weatherAPI.git</code></li>
+<li><code>cd weatherAPI</code><ol>
+<li><code>ls</code></li>
+</ol>
+</li>
+<li><code>sudo apt install npm</code></li>
+<li><code>npm start</code><ol>
+<li>Listens to port 8080<ol>
+<li>It is not open for external access<ol>
+<li>Networking:<ol>
+<li>SSH port is open only<ol>
+<li>Never leave the port open to any but limit it to a predefined IP</li>
+</ol>
+</li>
+<li>Add inbound port rule<ol>
+<li>Destination port ranges: 8080</li>
+<li>Protocol: TCP</li>
+<li>Action: Allow</li>
+<li>Add</li>
+</ol>
+</li>
+<li>Refresh</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Open browser tab:<ol>
+<li><public-ip>:8080/api/weather<ol>
+<li>Simple output</li>
+</ol>
+</public-ip></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Building the Second Backend App</h3>
+<ol>
+<li>Portal:<ol>
+<li>Search: Function<ol>
+<li>Function App<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: apimgmt-rg</li>
+<li>Function App name: hike-function-mutthoju</li>
+<li>Publish: Code</li>
+<li>Runtime stack: Node.js</li>
+<li>Region: West Europe</li>
+<li>Review + Create</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Go to resource</li>
+<li>Functions:<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Development environment: Develop in portal (Other options: VS Code, Any editor + Core)<ol>
+<li>We put the code in the portal (VS code is not required)</li>
+</ol>
+</li>
+<li>Trigger: HTTP trigger</li>
+<li>New Function: hikeinfo</li>
+<li>Authorization level: Anonymous</li>
+<li>Add</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Code + Test<ol>
+<li>Copy and paste hike.js from resources<ol>
+<li>It gets the name of a hiking trail and returns information about it</li>
+</ol>
+</li>
+<li>Save</li>
+<li>Test/Run<ol>
+<li>HTTP method: GET</li>
+<li>Query:<ol>
+<li>Name: name</li>
+<li>Value: Rainier</li>
+</ol>
+</li>
+<li>Run<ol>
+<li>200 OK</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Adding APIs</h3>
+<ol>
+<li>course-api-mutthoju<ol>
+<li>APIs<ol>
+<li>Define a new API</li>
+<li>Function App<ol>
+<li>Browse<ol>
+<li>Configure required settings<ol>
+<li>hike-function</li>
+<li>Select</li>
+<li>Display name: hike info API</li>
+<li>API URL suffix: hike/info</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Two methods:<ol>
+<li>GET hikeinfo<ol>
+<li>Click:<ol>
+<li>We can set up:<ol>
+<li>Frontend (we usually don't need this)</li>
+<li>Inbound processing<ol>
+<li>We can define policies (affects the behavior of API call)</li>
+</ol>
+</li>
+<li>Backend</li>
+<li>Outbound processing<ol>
+<li>We can define policies (affects the behavior of API call)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click Test<ol>
+<li><ul>
+<li>Add parameter:</li>
+</ul>
+<ol>
+<li>Name: name</li>
+<li>Value: Renier</li>
+<li>Reqeust URL: <a href="https://course-api.azure-api.net/hike/info/hikeInfo?name=Reinier">https://course-api.azure-api.net/hike/info/hikeInfo?name=Reinier</a><ol>
+<li>We are calling API management</li>
+</ol>
+</li>
+<li>HTTP request:<ol>
+<li>We are going to use subscription key</li>
+</ol>
+</li>
+<li>Copy the URL and paste in browser tab:<ol>
+<li>401 - unauthorized<ol>
+<li>Access is denied due to missing subscription key<ol>
+<li>Go to function app:<ol>
+<li>App keys:<ol>
+<li>apim-course-api:<ol>
+<li>The key was created by API management when the API was created<ol>
+<li>Allows access from API management to function App</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click: Named values<ol>
+<li>Key (automatically added)<ol>
+<li>hike-function-key (same as the one in function app)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Hike info API<ol>
+<li>Settings:<ol>
+<li>Subscription required: checked<ol>
+<li>Header name: Ocp-Apim-Subscription-Key (header we saw when testing)</li>
+<li>Uncheck</li>
+</ol>
+</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Test<ol>
+<li><ul>
+<li>Add parameter</li>
+</ul>
+<ol>
+<li>name: name</li>
+<li>value: Renier</li>
+</ol>
+</li>
+<li>Refresh the URL in the browser<ol>
+<li>We have got the info</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>POST hikeinfo<ol>
+<li>Remove it</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>APIs<ol>
+<li><ul>
+<li>Add API</li>
+</ul>
+<ol>
+<li>Create from definition<ol>
+<li>OpenAPI (Swagger formerly)<ol>
+<li>OpenApi Specification: <a href="https://conferenceapi.azurewebsites.net/?format=json">https://conferenceapi.azurewebsites.net/?format=json</a><ol>
+<li>Provided by Microsoft (demos adding OpenAPI)</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>GetSessions<ol>
+<li>Test<ol>
+<li>Send<ol>
+<li>Long JSON<ol>
+<li>Details of various sessions in the conference</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Settings:<ol>
+<li>Uncheck subscription required</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Copy the URL and paste it in browser<ol>
+<li>Same output</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Remove the API<ol>
+<li>Click ...<ol>
+<li>Delete</li>
+<li>Yes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Weather API<ol>
+<li><ul>
+<li>Add APIs</li>
+</ul>
+<ol>
+<li>Blank API<ol>
+<li>Display Name: Weather Info API</li>
+<li>Web service URL: <ip-address-of-vm-port-number><ol>
+<li>http://<ip-address>:<port>/api</port></ip-address></li>
+</ol>
+</ip-address-of-vm-port-number></li>
+<li>Create</li>
+<li><ul>
+<li>Add operation</li>
+</ul>
+<ol>
+<li>Display name: Weather Info</li>
+<li>URL: /weather</li>
+<li>Description: Get an extremely accurate weather forecast</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Test<ol>
+<li>Send</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Copy the URL and paste in browser<ol>
+<li>Unauthorized<ol>
+<li>Settings<ol>
+<li>Uncheck subscription required</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Refresh the browser page</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Products</h3>
+<ol>
+<li>Products: A logic container of APIs with some common settings such as terms of use etc.</li>
+<li>API Management page:<ol>
+<li>Products<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Display name: Nature API</li>
+<li>Description: A collection of nature related APIs</li>
+<li>Published: No</li>
+<li>Required subscription: Yes</li>
+<li>Required approval: No (doesn't require the approval of administrator)</li>
+<li>APIs<ol>
+<li><ul>
+<li>(add APIs to be included in the product)</li>
+</ul>
+<ol>
+<li>Hike Info API</li>
+<li>Weather Info API</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Access control:<ol>
+<li>Accessed only by Administrators<ol>
+<li>Related to Developer portal<ol>
+<li>We can use the Developer portal to define the access groups that can access the developer portal and use it</li>
+<li>Administrators group is the group with the maximum permissions to access the developer portal</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click on: Nature API<ol>
+<li>Summary of API<ol>
+<li>APIs included</li>
+<li>Access control</li>
+<li>Not published yet</li>
+<li>Included in a single subscription</li>
+</ol>
+</li>
+<li>Click: Access control<ol>
+<li><ul>
+<li>Add group</li>
+</ul>
+<ol>
+<li>Check: Developers, Guests</li>
+<li>Select</li>
+</ol>
+</li>
+<li>All access groups are allowed to use the product</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to Overview:<ol>
+<li>Click: Publish<ol>
+<li>When using the API, the product's settings take effect</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Duplicate Portal:<ol>
+<li>API Management:<ol>
+<li>APIs<ol>
+<li>Weather Info API<ol>
+<li>Select operation<ol>
+<li>Settings<ol>
+<li>Subscription is not required at the API level (But subscription is required at the product level)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Test:<ol>
+<li>Copy the URL<ol>
+<li>Paste the URL in a browser<ol>
+<li>We can use the API<ol>
+<li>We need both the Product and API to require the subscription in order for the API Management to ask us for the subscription key<ol>
+<li>Go back to the API and check <strong>Subscription required</strong><ol>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Refresh the page<ol>
+<li>We need subscription key</li>
+</ol>
+</li>
+<li>Go to Product:<ol>
+<li>Settings:<ol>
+<li>Uncheck requires subscription and save</li>
+</ol>
+</li>
+<li>Go to browser and refresh the page<ol>
+<li>We can use the API<ol>
+<li>Solution: Both APIs and Products require the subscription</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Subscriptions</h3>
+<ol>
+<li>So far the APIs we defined were completely open<ol>
+<li>Anyone who had the URL can use them<ol>
+<li>Not the desired case<ol>
+<li>We want to limit to the developers who registered for the API<ol>
+<li>Registration could be accompanied by some kind of payment</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>With subscriptions, developers subscribe to the API and get a subscription key which should be used when accessing the API</li>
+<li>Subscription key ensures that the developer using the API is actually registered to the API and is actually allowed to do that</li>
+<li>How does the registration occur?<ol>
+<li>It can be done from the Portal</li>
+<li>It can be done from the developer portal<ol>
+<li>Difference: How does the developer get the subscription key<ol>
+<li>With portal, the admins have the subscription key and it will be provided to the developer</li>
+<li>With developer portal, the process is automated<ol>
+<li>The developer can browse the APIs, locate the APIs that interest him, register for the APIs and get the subscription key<ol>
+<li>Admins have nothing to do with this process</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Subscription Scope:<ol>
+<li>Required to be defined when we define subscription</li>
+<li>Subscription can affect three types of resources:<ol>
+<li>Subscription can be for<ol>
+<li>A specific API</li>
+<li>All the APIs</li>
+<li>A specific Product</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Subscriptions</h3>
+<ol>
+<li>course-api<ol>
+<li>Subscriptions<ol>
+<li>Some subscriptions were created automatically when constructing the API management</li>
+<li>They have a primary key and a secondary key<ol>
+<li>Click ...<ol>
+<li>Show/Hide keys<ol>
+<li>The keys must be used when accessing APIs that require subscription</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Ensure that both Product and APIs require subscription<ol>
+<li>Check<ol>
+<li>Test using browser</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Use PostMan<ol>
+<li>Download and install</li>
+<li>Open PostMan (It is used to test REST APIs)</li>
+</ol>
+</li>
+<li>Go to APIs for Hike Info<ol>
+<li>Operation<ol>
+<li>Test<ol>
+<li>Query parameters:<ol>
+<li>Name: name</li>
+<li>Value: Yosemite</li>
+</ol>
+</li>
+<li>Copy the URL<ol>
+<li>Paste the URL in PostMan</li>
+<li>Click Send<ol>
+<li>Check subscription required to fix</li>
+</ol>
+</li>
+<li>Click Send<ol>
+<li>401 error message</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to API page<ol>
+<li>Click Test <ol>
+<li>Select the operation<ol>
+<li>HTTP request:<ol>
+<li>Click the eye button to the subscription key<ol>
+<li>Where did it come from?<ol>
+<li>Subscriptions: Primary key<ol>
+<li>It is a built in all access subscription and provides access to all APIs in the API Management<ol>
+<li>We don't want to use this</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to PostMan<ol>
+<li>Copy the name of the header<ol>
+<li>Paste it under header name</li>
+</ol>
+</li>
+<li>Copy the subscription key<ol>
+<li>Paste it under the header value</li>
+</ol>
+</li>
+<li>Hit send<ol>
+<li>We get the information</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Own subscription:<ol>
+<li>Subscriptions:<ol>
+<li><ul>
+<li>Add subscription</li>
+</ul>
+<ol>
+<li>hike-sub</li>
+<li>Display name: Hike Subscription</li>
+<li>Scope: API</li>
+<li>API<ol>
+<li>Hike Info API</li>
+</ol>
+</li>
+<li>User: Administrator</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Copy the primary key</li>
+</ol>
+</li>
+<li>Go to PostMan<ol>
+<li>Paste the primary key</li>
+<li>Send<ol>
+<li>It works<ol>
+<li>Modify last character of the key and send<ol>
+<li>It doesn't work</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Policies</h3>
+<ol>
+<li>Policies change the API behavior using plug-and-play definitions</li>
+<li>With policies we can change the inbound and outbound behavior</li>
+<li>Policies are extremely useful for:<ol>
+<li>Caching</li>
+<li>Validation</li>
+<li>Performance</li>
+<li>Changing values (in the request or response)</li>
+<li>...</li>
+</ol>
+</li>
+<li>The policies can be heavily customized</li>
+</ol>
+<h3>Adding IP &amp; Cache Policies</h3>
+<ol>
+<li>course-api<ol>
+<li>APIs<ol>
+<li>Hike Info API<ol>
+<li><p>Inbound processing policies (base policy by default)</p>
+<ol>
+<li><ul>
+<li>Add policy</li>
+</ul>
+<ol>
+<li>A limited list of inbound policies</li>
+<li>Discard</li>
+</ol>
+</li>
+<li>Adding policy using code (more flexible)<ol>
+<li><p>Policy code editor button</p>
+<pre><code> &lt;policies&gt;
+     &lt;inbound&gt;
+         &lt;base /&gt;
+         &lt;!-- click Show snippets 
+             We can add to editor
+             Dozens of them
+             Select "Restrict caller's IPs - restricts access to the APIs for specific IPs"
+         --&gt;
+         &lt;ip-filter action="allow"&gt;
+             &lt;address-range from="10.1.1.1" to="10.1.1.2" /&gt;
+         &lt;/ip-filter&gt;
+     &lt;/inbound&gt;
+     &lt;backend&gt;
+         &lt;base /&gt;
+     &lt;/backend&gt;
+     &lt;outbound&gt;
+         &lt;base /&gt;
+     &lt;/outbound&gt;
+     &lt;on-error&gt; &lt;!-- policy triggered when an error occurs --&gt;
+         &lt;base /&gt;
+     &lt;/on-error&gt;
+ &lt;/policies&gt;
+ 
+</code></pre>
+<ol>
+<li>Save<ol>
+<li>We can see the policy in the editor</li>
+</ol>
+</li>
+<li>Testing:<ol>
+<li>PostMan<ol>
+<li>Copy the URL</li>
+<li>Header must point to the right subscription key</li>
+<li>Send<ol>
+<li>403 - forbidden<ol>
+<li>IP address is not in the allowed range of IP addresses</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Delete the policy:<ol>
+<li>Click ...</li>
+<li>Delete</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Outbound processing policies (base policy by default)</p>
+<ol>
+<li>Complex policy: Cache<ol>
+<li><p>To improve response performance of the API</p>
+</li>
+<li><p>Outbound:</p>
+<ol>
+<li><p>Code editor</p>
+<pre><code> &lt;outbound&gt;
+     &lt;base /&gt;
+     &lt;!-- show snippets
+          Store to cache
+     --&gt;
+     &lt;cache-store duration="60" /&gt; &lt;!-- seconds - data is stored for 60 seconds when data is returned from API --&gt;
+ &lt;/outbound&gt;
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Inbound:</p>
+<ol>
+<li><p>When requesting from the API, we need to check whether the data is in the cache and not send request to the underlying API but return from the cache</p>
+<pre><code> &lt;inbound&gt;
+     &lt;base /&gt;
+     &lt;cache-lookup vary-by-developer="false"
+     vary-by-developer-group="false"
+     downstream-caching-type="none"
+     must-revalidate="true" ...&gt;
+         &lt;!-- &lt;vary-by-header&gt;header name&lt;/vary-by-header&gt; --&gt;
+         &lt;vary-by-query-parameter&gt;name&lt;/vary-by-query-parameter&gt;
+ &lt;/inbound&gt;
+ 
+</code></pre>
+<ol>
+<li><code>vary-by-query-parameter</code> - store data in cache per query parameter<ol>
+<li>We want to store different data for <code>Yosemite</code>, ...<ol>
+<li>The name of the parameter is used to differentiate the data to be stored</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Testing:</p>
+<ol>
+<li>Duplicate Portal page:<ol>
+<li>Function App: hite-function<ol>
+<li>Functions<ol>
+<li>hikeInfo function<ol>
+<li>Code + Test<ol>
+<li>Difficulty of Yosemite hike is moderate</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send the request in PostMan<ol>
+<li>Difficulty is moderate</li>
+</ol>
+</li>
+<li>Change the difficulty level to hard<ol>
+<li>Send the request again<ol>
+<li>Request returned much faster</li>
+<li>The difficulty level is still moderate (it didn't get updated)</li>
+</ol>
+</li>
+<li>Cache works</li>
+</ol>
+</li>
+<li>Send reqest with CaresRiver<ol>
+<li>We will get data for CaresRiver<ol>
+<li>Log records show that the actual API was invoked</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send the request again<ol>
+<li>Info is received much quicker</li>
+<li>Log records do not show that the function is invoked</li>
+</ol>
+</li>
+<li>Send the request with Yosemite (more than 60s have passed)<ol>
+<li>Difficulty level is hard</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Backend policies (base policy by default)</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Rate Limit Policy</h3>
+<ol>
+<li>Rate limit limits the maximum concurrent reqeusts the API handles</li>
+<li>Requests start coming to the API<ol>
+<li>At some point, the load on the API is so big that the API crashes (not useful anymore, no other user can make requests)</li>
+<li>Solution: Rate limit<ol>
+<li>A rate limiter is put in front of the API</li>
+<li>Requests first come to the rate limiter</li>
+<li>When there are too many requests to the rate limiter, it simply blocks the requests and returns a response code signaling that the server is too busy and cannot accept anymore requests</li>
+<li>API is up and running and fully functional</li>
+<li>Once API completes some of the requests, then API will receive new requests</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>course-api<ol>
+<li>Inbound processing<ol>
+<li><p>Code editor</p>
+<pre><code> &lt;inbound&gt;
+     ...
+     &lt;!-- add Limit call rate per subscription --&gt;
+     &lt;rate-limit-calls="3" renewal-period="10" remaining-calls-header-name="rate-limit-remaining"&gt;
+     
+</code></pre>
+<ol>
+<li>Maximum number of calls that are allowed per renewal period (for the timeframe)<ol>
+<li>3 calls / 10 seconds<ol>
+<li>More than that, API will return an error</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>remaining-calls-header-name</code> - Sets the name of the header that is returned to us that indicates of remaining calls we can run in the renewal period timerframe</li>
+<li>Click Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send request from Postman<ol>
+<li>Headers:<ol>
+<li>rate-limit-remaining: 2<ol>
+<li>2 calls remaining before rate limiter kicks in</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>If we run multiple times, the policy didn't take effect<ol>
+<li>Aspect: order of policies is extremely important<ol>
+<li>When APIM entered <strong>cache-lookup</strong> and found the data in the cache, it returned the data<ol>
+<li>APIM didn't check rate-limit policy further</li>
+</ol>
+</li>
+<li>Solution: Drag the <strong>rate-limit</strong> policy before <strong>cache-lookup</strong> policy<ol>
+<li>Code shows the order</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send the request a few times<ol>
+<li>429 response code (too many requests)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We can almost always improve API management using policies</li>
+</ol>
+<h3>Full List of Policies</h3>
+<ol>
+<li>There are dozens of policies for API management</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-policies">Full list of policies, their functionality, and how to use them</a></li>
+<li>Policies are most important and most useful feature of API management<ol>
+<li>Before we add some functionality to API, we can check if the functionality is already covered by existing policies</li>
+</ol>
+</li>
+</ol>
+<h3>Securing the Backends</h3>
+<ol>
+<li>Currently the backends are publicly accessible<ol>
+<li>API managmenent accesses backends<ol>
+<li>API management and backends are publicly accessible<ol>
+<li>We can skip the API management and go straight to Hike API and Weather API<ol>
+<li>The only way should be through the API management</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>How to do that?<ol>
+<li>The way to achieve that depends on the backend type<ol>
+<li>Examples:<ol>
+<li>VMs - Put the API management in a VNet and set up peering with the VM's VNet</li>
+<li>Function - Block the function from access from outside<ol>
+<li>Allow traffic to function only from API management</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Deploying API Management in VNet</h3>
+<ol>
+<li>Portal:<ol>
+<li>search: virtual networks<ol>
+<li>We want to make sure that the address spaces of the new VNet and existing VNet do not overlap<ol>
+<li>Go to apimgmt-rg-vnet<ol>
+<li>Duplicate the tab<ol>
+<li>Go for VNet page<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: apimgmp-rg</li>
+<li>Name: apimgmp-vnet</li>
+<li>IP addresses<ol>
+<li>Address space (check if this overlaps with the address space of API M)</li>
+</ol>
+</li>
+<li>Review + Create</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Search: Network security groups<ol>
+<li>APIM requires NSG to limit the traffic (NSG - is like a mini firewall that restricts traffic based on source ip, port, and protocol)</li>
+<li>One NSG was created automatically for the VM of the weather api</li>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: apimgmt-rg</li>
+<li>Name: apimgmp-subnet-vnet (NSG is per subnet)</li>
+<li>Review + Create </li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to the resource<ol>
+<li>Inbound security rules<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Service: HTTPS (allows only HTTPS traffic through NSG)</li>
+<li>Name: HTTPS</li>
+<li>Add</li>
+</ol>
+</li>
+<li>A specific rule needs to be added for API Management (required for APIM to work with Azure resources)</li>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Source: Service Tag</li>
+<li>Source service tag: ApiManagement</li>
+<li>Destination: VirtualNetwork</li>
+<li>Destination port range: 3443 (API Mgmt uses this port inside Azure)</li>
+<li>Protocol: TCP</li>
+<li>Priority: 110</li>
+<li>Name: apimgmp-port-3443</li>
+<li>Add</li>
+</ol>
+</li>
+<li>Assign NSG to subnet<ol>
+<li>Subnets<ol>
+<li><ul>
+<li>Associate</li>
+</ul>
+<ol>
+<li>Virtual network: apimgmt-vnet</li>
+<li>Subnet: default</li>
+<li>OK</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>The subnet is going to have APIManagment</li>
+</ol>
+</li>
+<li>Public IP (will be used by APIM when placed in vnet)<ol>
+<li>Search: Public IP<ol>
+<li>Public IP Addresses<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Name: apimgmt-ip</li>
+<li>DNS name label: azapimgmtmutthoju (unique)</li>
+<li>Resource group: apimgmt-rg</li>
+<li>Location: West Europe</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to API Management<ol>
+<li>course-api<ol>
+<li>Deployment + Infrastructure<ol>
+<li>Virtual network<ol>
+<li>Takes a long time - changes can take from 15 to 45 minutes to apply</li>
+<li>Select either <strong>external</strong> or <strong>internal</strong> VNet (external - APIM will be accessible from the internet, internal - APIM will be accessible only to internal Azure resources)</li>
+<li>Select <strong>external</strong> (APIM is used from the internet)<ol>
+<li>Location: (APIM can be deployed into VNets that are located in the same location as the APIM)  <ol>
+<li>Select West Europe<ol>
+<li>Virtual network: apimgmt-vnet</li>
+<li>Subnet: default</li>
+<li>Public IP address: apimgmt-ip</li>
+<li>Apply</li>
+</ol>
+</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Securing the Weather and Hike Backends</h3>
+<ol>
+<li>Azure Functions: Three types of protection can be used<ol>
+<li>Limit traffic to only Azure services (only Azure services can access the function)</li>
+<li>Allow traffic only from the newly created subnet<ol>
+<li>Only traffic originating from the subnet is allowed</li>
+</ol>
+</li>
+<li>Using identity to authenticate the request arriving to the function</li>
+</ol>
+</li>
+<li>Search: Function App<ol>
+<li>hike-function<ol>
+<li>Settings<ol>
+<li>Networking<ol>
+<li>Access Restrictions<ol>
+<li>Configure Access Restrictions<ol>
+<li>We have only default rule (all traffic)</li>
+<li><ul>
+<li>Add rule</li>
+</ul>
+<ol>
+<li>Name: Allow API Management</li>
+<li>Priority: 100</li>
+<li>Action: Allow</li>
+<li>Type: Service Tag (first option) (definition of various services within Azure and outside Azure which represents the IP addresses of the service - we don't have to know the IP address)</li>
+<li>Service Tag: ApiManagement<ol>
+<li>Second option:<ol>
+<li>Type: Virtual Network (traffic originating from a specific VNet is allowed to the function app)</li>
+<li>Subscription: Azure subscription 1</li>
+<li>Virtual Network: apimgmt-vnet</li>
+<li>Subnet: default<ol>
+<li>Message: The default subnet doesn't have a service endpoint enabled for Microsoft.Web (it is the namespace of the function app). Enabling access may take upto 15 minutes to complete<ol>
+<li>If we enable this rule, Azure will add a service endpoint to the default subnet to allow access to the function app<ol>
+<li>Service endpoint is two sided action<ol>
+<li>First we need to allow traffic to underlying resource (function app)</li>
+<li>We need to define service endpoint on the originating subnet (default subnet)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Add rule<ol>
+<li>Azure adds service endpoint<ol>
+<li>Search: Virtual Networks<ol>
+<li>Click: apimgmt-vnet<ol>
+<li>Sbnets<ol>
+<li>default<ol>
+<li>Services: Microsoft.Web<ol>
+<li>Allows traffic from VNet to the function app resource we set up</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Protecting VM so that only traffic from APIM will be allowed<ol>
+<li>Search: Virtual Machines<ol>
+<li>weather-vm<ol>
+<li>Click the VNet<ol>
+<li>Peering (process of connecting two VNets so that resources in one VNet can connect to resources in the other VNet)<ol>
+<li>Addresss spaces between the VNets should not overlap</li>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Peering link name: weather-apimgmt-peer</li>
+<li>Remote link name: apimgmt-weather-peer (from APIM)</li>
+<li>Virtual network (VNet to peer with)<ol>
+<li>apimgmt-vnet</li>
+</ol>
+</li>
+<li>Add<ol>
+<li>Two peerings are defined one the the other and back</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Function app:<ol>
+<li>hike-function<ol>
+<li>hikeInfo (function)<ol>
+<li>Get function url<ol>
+<li><p>Copy and paste in new browser tab</p>
+<pre><code> &lt;url&gt;?name=Renier
+ 
+</code></pre>
+<ol>
+<li>403 - forbidden<ol>
+<li>The rule is working</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Connecting API Management to Secure Backends</h3>
+<ol>
+<li>APIM is inside a VNet<ol>
+<li>Network connectivity status<ol>
+<li>All green<ol>
+<li>APIM can reach all the resources it needs and all backends</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Run the same request in PostMan<ol>
+<li>Hike info<ol>
+<li>We have got the info<ol>
+<li>APIM can reach the backend</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Run it a few more times to check if rate limiting works</li>
+</ol>
+</li>
+<li>For VM<ol>
+<li>Access from APIM to VM through private IP and not through public IP address (we want to remove the public IP)</li>
+<li>weather-vm<ol>
+<li>Copy private IP (we peered APIM VNet with VM VNet so APIM must be able to use private IP to access the VM)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to APIM<ol>
+<li>course-api<ol>
+<li>APIs<ol>
+<li>Weather Info API<ol>
+<li>Settings<ol>
+<li>Paste private IP address<ol>
+<li>Web service URL: http://<private-ip>:8080/api</private-ip></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Test<ol>
+<li>Select the operation<ol>
+<li>Send<ol>
+<li>APIM was able to access VM</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to weather-vm<ol>
+<li>Networking<ol>
+<li>Delete the rule Port_8080</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go back to test<ol>
+<li>Hit send<ol>
+<li>We got the response</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Other Security Options</h3>
+<ol>
+<li>There are more ways of securing the backend<ol>
+<li>Protect Backend Web API using OAuth 2.0 and Azure AD:<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad">https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad</a></li>
+</ol>
+</li>
+<li>Adding Application Gateway in front of API Management:<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-integrate-internal-vnet-appgateway">https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-integrate-internal-vnet-appgateway</a></li>
+</ol>
+</li>
+<li>Use certificates with API Management<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-ca-certificates">https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-ca-certificates</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Versions and Revisions</h3>
+<ol>
+<li>Over time, APIs are going to change<ol>
+<li>The changes must be well managed in order to not break things that the developers use</li>
+</ol>
+</li>
+<li>What are versions?<ol>
+<li><p>Version: A group of related API for the developers</p>
+</li>
+<li><p>Each version represents a specific set of capabilities</p>
+</li>
+<li><p>New versions usually break the old onces</p>
+<ol>
+<li>If the developers switch from older versions to newer ones, the code will work differently</li>
+<li>One of the roles of versions is to announce that a breaking change is part of the system</li>
+</ol>
+</li>
+<li><p>Developers can indicate the desired verison using:</p>
+<ol>
+<li>Path (required version in the path)</li>
+<li>Query String</li>
+<li>Header</li>
+</ol>
+</li>
+<li><p>Examples:</p>
+<pre><code> api/cars/v1/models
+ 
+ api/cars/fastest?v=2
+ 
+</code></pre>
+</li>
+<li><p>Versions are for the API users (=developers)</p>
+</li>
+</ol>
+</li>
+<li>API Revisions:<ol>
+<li>Revision = A non-breaking change to the API definition<ol>
+<li>Example: Changes in policies<ol>
+<li>Usually done in new revision (no new version is released)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Revision allows making the changes safely without affecting the published API</li>
+<li>Revisions can be tested and documented before publishing<ol>
+<li>Only after we are satisfied with the result, we can publish the revision and make it the current version, the API users will use</li>
+</ol>
+</li>
+<li>Revisions can be rolled back in case of problems<ol>
+<li>If we find out that the new policy definition is not good, we can roll back to the original version</li>
+</ol>
+</li>
+<li>Examples:<ol>
+<li>Adding rate limit policy</li>
+<li>Adding validation policy (for parameters)</li>
+</ol>
+</li>
+<li>Revisions are for the API developers (not the users)</li>
+</ol>
+</li>
+</ol>
+<h3>Using Versions</h3>
+<ol>
+<li>course-api<ol>
+<li>APIs<ol>
+<li>Hike Info API<ol>
+<li>...<ol>
+<li>Add version<ol>
+<li>Add new version to the Hike Info API</li>
+<li>Version identifier: v1</li>
+<li>Versioning scheme: Path (part of the path of the API)</li>
+<li>Full API version name: hike-info-v1</li>
+<li>Products: Nature API</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Two versions exist:<ol>
+<li>Original: uses the original URL we defined previously</li>
+<li>v1: has its own URL</li>
+</ol>
+</li>
+<li>Click Hike Info API<ol>
+<li>Version set: It is a logic container of versions for an API (we can define verious properties for the version set)<ol>
+<li>Display name</li>
+<li>Description (what are the versions are for)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click: v1<ol>
+<li>Test:<ol>
+<li>Click the operation<ol>
+<li>Request URL: https://.../v1/...</li>
+</ol>
+</li>
+<li>Paste the URL in PostMan<ol>
+<li>?name=Ranier<ol>
+<li>Error: We don't have subscription key<ol>
+<li>Subscriptions<ol>
+<li>Scope: API without any version<ol>
+<li>v1 is not included</li>
+</ol>
+</li>
+<li>Scope: Product Nature API<ol>
+<li>Show/Hide keys<ol>
+<li>Copy: Primary key</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Paste in PostMan<ol>
+<li>Send<ol>
+<li>It works<ol>
+<li>The API is part of a product (it automatically includes any new versions and revisions of an API)<ol>
+<li>Subscription automatically includes the new version<ol>
+<li>One reason to use products instead of the APIs with subscription</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Portal:<ol>
+<li>hike-function<ol>
+<li>Functions<ol>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Development environment: Develop in portal</li>
+<li>HTTP trigger</li>
+<li>New Function: hikeinfoview1</li>
+<li>Authorization: Anonymous</li>
+<li>Add</li>
+</ol>
+</li>
+<li>Code + Test</li>
+<li>Download hikeview1.js</li>
+<li>Copy paste its contents in the function body</li>
+<li>Code:<ol>
+<li>For kid's is it easy enough to do the hike</li>
+</ol>
+</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>APIM<ol>
+<li>APIs<ol>
+<li>v1<ol>
+<li>hikeinfo operation<ol>
+<li>Inbound policy<ol>
+<li><ul>
+<li>Add policy</li>
+</ul>
+<ol>
+<li>Rewrite URL<ol>
+<li>Backend: /hikeinfoview1</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Test<ol>
+<li><ul>
+<li>Add parameter</li>
+</ul>
+<ol>
+<li>name = Renier</li>
+<li>forKidsIndicator = true</li>
+</ol>
+</li>
+<li><p>Send</p>
+</li>
+<li><p>Send request again</p>
+</li>
+<li><p>Change indicator to false and send again</p>
+<ol>
+<li>yes indicator<ol>
+<li>Why?<ol>
+<li>Cache policy - only name parameter is used<ol>
+<li>Design<ol>
+<li><p>cache-lookup</p>
+<pre><code> &lt;vary-by-query-parameter&gt;forKidsIndicator&lt;/vary-by-query-parameter&gt;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Send request again</p>
+<ol>
+<li>Modification works</li>
+</ol>
+</li>
+<li><p>Call the original version from PostMan</p>
+<ol>
+<li>It still works like before</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Revisions</h3>
+<ol>
+<li>course-api<ol>
+<li>APIs<ol>
+<li>v1<ol>
+<li>Revisions<ol>
+<li><ul>
+<li>Add revision</li>
+</ul>
+<ol>
+<li>Revision description: Increase rate limit to 10 (what we want to achieve through this revision)</li>
+<li>Create</li>
+</ol>
+</li>
+<li>The revision is online but not the current revision<ol>
+<li>Current revision is the previous one</li>
+</ol>
+</li>
+<li>Title: Revision 2 is what we are working on<ol>
+<li>We can select Revision 1 and working on it</li>
+</ol>
+</li>
+<li>Design<ol>
+<li><p>rate-limit policy</p>
+<pre><code> &lt;rate-limit calls="10" ...&gt;
+ 
+</code></pre>
+</li>
+<li><p>Save</p>
+</li>
+</ol>
+</li>
+<li>Go to Revision 1<ol>
+<li>rate-limit policy<ol>
+<li>It is still 3</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Revisions<ol>
+<li>/hikeInfo?rev=2<ol>
+<li>Used to test the new revision before publishing it</li>
+</ol>
+</li>
+<li>Test:<ol>
+<li>Send request in PostMan using <code>rev=2</code></li>
+</ol>
+</li>
+<li>...<ol>
+<li>Make current<ol>
+<li>Post public change log for this API<ol>
+<li>Log that documents the changes that happened to the API between versions and revisions</li>
+<li>Type: Rate limited increased to 10 due to infrastructure improvements</li>
+<li>Save</li>
+</ol>
+</li>
+<li>Revision 2 is the current one</li>
+</ol>
+</li>
+<li>Create version from this revision<ol>
+<li>If the new revision is a big one and probably has breaking changes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Change log<ol>
+<li>Documents the change we made</li>
+<li>Test: Remove <code>rev=2</code> and send the request in PostMan<ol>
+<li>rate limit increased</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Monitoring</h3>
+<ol>
+<li>It's important to know the state of the API managment<ol>
+<li>Whether there are problems, is everything fine, or is there anything that needs our attention<ol>
+<li>Solution: Monitoring is an important part to figure out what is going on with the API management</li>
+</ol>
+</li>
+<li>Monitoring in API management uses the regular monitoring and logging mechanism of Azure<ol>
+<li>Metrics</li>
+<li>Logs</li>
+<li>Application Insights</li>
+</ol>
+</li>
+<li>Some more mechanisms exist<ol>
+<li>We'll focus on:<ol>
+<li>Analytics</li>
+<li>Metrics</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Monitoring</h3>
+<ol>
+<li>course-api<ol>
+<li>Monitoring<ol>
+<li>Metrics<ol>
+<li>Metric: Capacity<ol>
+<li>The capacity used by API management (compute power used in 24 hours default)<ol>
+<li>If it is too high, we need to scale up the API Management and select a stronger tier</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Metric: Requests<ol>
+<li>The number of requests handled by API management in 24 hours</li>
+<li>Change to last 7 days</li>
+<li>One of the most important<ol>
+<li>New alert rule<ol>
+<li>Scope: course-api</li>
+<li>Condition: whenever the sum of requests greater than <some-number></some-number></li>
+<li>Actions<ol>
+<li>Action group</li>
+</ol>
+</li>
+<li>Alert rule details</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Analytics<ol>
+<li>We get information about API Management behavior and usage</li>
+<li>Time range: last 7 days<ol>
+<li>Requests</li>
+<li>Data transfer</li>
+<li>Response time</li>
+<li>Cache (usage)</li>
+</ol>
+</li>
+<li>Geography<ol>
+<li>Heatmap<ol>
+<li>Where did the requests came from<ol>
+<li>For each country</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>APIs<ol>
+<li>What actual APIs were called and how many successful requests, unauthorized, ... were received by the APIM</li>
+</ol>
+</li>
+<li>Operations<ol>
+<li>Specific URL inside an API</li>
+</ol>
+</li>
+<li>Products<ol>
+<li>Products usage of APIM<ol>
+<li>Nature API - only usage</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Subscriptions<ol>
+<li>Subscriptions used<ol>
+<li>Actual usage per subscription</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Users (number of requests per user)<ol>
+<li>Anonymous</li>
+<li>Administrator</li>
+</ol>
+</li>
+<li>Requests<ol>
+<li>List of actual requests that were handled by APIM<ol>
+<li>To grill down into actual request and what happened</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Developer Portal</h3>
+<ol>
+<li>A quick reminder:<ol>
+<li>API Gateway - handles API requests and executes the policies</li>
+<li>Azure Portal - to define APIM, set up policies, set up APIs</li>
+<li>Developer Portal</li>
+</ol>
+</li>
+<li>Oftentimes, we want to advertise the API exposed via the API management<ol>
+<li>So that developers can learn about our APIs and gain access to them (so that instead of developers sending emails asking for access keys)<ol>
+<li>Doesn't need any human intervention<ol>
+<li>Solution: Developer portal<ol>
+<li>Shows APIs</li>
+<li>Allows testing</li>
+<li>Allows developer to register for the API and get subscription key</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Developer Portal<ol>
+<li>It is automatically generated, fully customizable web portal with docs about the API</li>
+<li>It includes interactive console to test the APIs</li>
+<li>It can be used to request access to the API</li>
+<li>It supports authentication via various identity providers</li>
+</ol>
+</li>
+</ol>
+<h3>Using the Developer Portal</h3>
+<ol>
+<li>course-api<ol>
+<li>Developer portal URL<ol>
+<li>Copy<ol>
+<li>Paste the link in in-cognito mode browser tab (for anonymous user)<ol>
+<li>Developer portal is not published yet<ol>
+<li>Portal:<ol>
+<li>Portal overview<ol>
+<li>Enable CORS (allows cross domain access between websites)</li>
+<li>Click Developer Portal (as admin)<ol>
+<li>Editor<ol>
+<li>Logo</li>
+<li>Descriptions</li>
+<li>Click Welcome to Contosos!<ol>
+<li>Welcome to Hike Co.!</li>
+</ol>
+</li>
+<li>Click logo<ol>
+<li>Click recycle bin</li>
+</ol>
+</li>
+<li>Testing portal for various form-factors<ol>
+<li>Phone screen (for developers using mobile phone)</li>
+<li>Wide screen</li>
+</ol>
+</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click on side-bar<ol>
+<li>Operations<ol>
+<li>Publish Website</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We can publish from Azure Portal as well</li>
+<li>Copy the link</li>
+<li>Paste the link in-cognito window</li>
+<li>Click APIs<ol>
+<li>Two versions of Hiki Info API</li>
+<li>Click Hike Info API<ol>
+<li>Operation<ol>
+<li>We can change version</li>
+<li>We can look at change log</li>
+<li>Change to v1</li>
+<li>Change log shows adding revision</li>
+<li>Click try it<ol>
+<li>We need subscription<ol>
+<li>We need to register to the developer portal</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Sign Up<ol>
+<li>Fill in details</li>
+<li>Sign Up</li>
+</ol>
+</li>
+<li>Copy the link sent to email<ol>
+<li>Paste the link in-cognito</li>
+<li>Sign in<ol>
+<li>Products<ol>
+<li>Nature API<ol>
+<li>Nature API Subscription<ol>
+<li>Subscribe</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Hike Info API<ol>
+<li>try it<ol>
+<li>Subscription key is pre-populated</li>
+<li>Add parameter<ol>
+<li>name: Reinier</li>
+<li>Send</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We can select the language for the API<ol>
+<li>C#<ol>
+<li>Code to use to use the API</li>
+</ol>
+</li>
+<li>Java</li>
+<li>Javascript</li>
+<li>PHP</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+<h3>Adding Azure AD Support for the Developer Portal</h3>
+<ol>
+<li>Identity provider is basic one by default</li>
+<li>Using AD Authentication<ol>
+<li>Portal<ol>
+<li>course-api<ol>
+<li>Portal overview<ol>
+<li>Date published is shown in Overview</li>
+<li>Click Publish here to make changes get reflected in Developer Portal</li>
+<li>Enable user sign-in with Azure Active Directory<ol>
+<li>Enable Azure AD</li>
+<li>Enable Azure AD<ol>
+<li>Azure registers the developer portal as an application in the Azure AD<ol>
+<li>A token is created</li>
+<li>Adds it as an identity provider in APIM</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Identities<ol>
+<li>Two providers<ol>
+<li>Azure Active Directory</li>
+<li>Username and password</li>
+</ol>
+</li>
+<li><ul>
+<li>Add</li>
+</ul>
+<ol>
+<li>Type:<ol>
+<li>Facebook, Google, Microsoft, Twitter (deprecated - because this functionality is supported using Azure Active Directory B2C)</li>
+<li>Azure Active Directory B2C</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Portal overview<ol>
+<li>Publish<ol>
+<li>AD is configured</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Open URL in-cognito<ol>
+<li>Click Sign in<ol>
+<li>Azure Active Directory button (enables users in AD to login)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Summary of APIM:<ol>
+<li>Allows us to mask internal APIs</li>
+<li>Protect the internal APIs</li>
+<li>Change their behavior</li>
+<li>Expose a consistent and easy to use APIs</li>
+<li>APIM is used if there are many APIs in the org</li>
+</ol>
+</li>
+<li>Remove the resource group of APIM</li>
+</ol>
+<h3>Resources</h3>
+<ol>
+<li>To learn more:<ol>
+<li>API Gateway can be local (on-prem)<ol>
+<li>It can be managed using Azure portal:<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/self-hosted-gateway-overview">https://docs.microsoft.com/en-us/azure/api-management/self-hosted-gateway-overview</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Modifications to developer portal (including code):<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-developer-portal-customize">https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-developer-portal-customize</a></li>
+</ol>
+</li>
+<li>We can add API facades before the underlying backends even exist<ol>
+<li>We can use the mocking capabilities of API Management to mock response of an API that does not have a backend yet:<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/mock-api-responses?tabs=azure-portal">https://docs.microsoft.com/en-us/azure/api-management/mock-api-responses?tabs=azure-portal</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Tracing: To find out what happened to the request sent to API Management<ol>
+<li>Tracing capability of APIM provides rich info about the request (useful in figuring out bits and bytes of request)<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-api-inspector">https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-api-inspector</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 6: Notification Hub</h2>
+<h3>Introduction</h3>
+<ol>
+<li>What is it?<ol>
+<li>It is a central hub for sending push notifications to mobile devices<ol>
+<li>To user's devices</li>
+</ol>
+</li>
+<li>It is massively scalable<ol>
+<li>Supports millions of notifications and devices</li>
+</ol>
+</li>
+<li>It is cross-platform:<ol>
+<li>Android</li>
+<li>iOS</li>
+<li>Windows</li>
+<li>Amazon</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It can be used from almost any backend<ol>
+<li>Cloud or on-promise<ol>
+<li>We don't have deploy app cloud</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It is extremely cost effective</li>
+<li>It uses tags to target specific devices<ol>
+<li>Sometimes we want to segment users and send notifications to a subset of the users</li>
+</ol>
+</li>
+</ol>
+<h3>Push Notification Concepts</h3>
+<ol>
+<li>Main concept:<ol>
+<li>PNS<ol>
+<li>Platform Notification Systems<ol>
+<li>It is a platform for pushing notification to device</li>
+<li>It uses device's handle (a unique token a device uses to register itself in a PNS)</li>
+<li>It is platform specific</li>
+</ol>
+</li>
+<li>How PNS works:<ol>
+<li>First device registers with device handle in PNS (PNS becomes familiar with the device and knows how to communicate with it)</li>
+<li>App (backend) sends notification request to PNS (it doesn't communicate with the device directly)</li>
+<li>PNS sends notification to the device<ol>
+<li>PNS is platform specific<ol>
+<li>Flow is duplicated and is specific per platform<ol>
+<li>APNS - Apple PNS</li>
+<li>FCM - Firebase Cloud Messaging (Google)</li>
+<li>WNS - Windows Notification Service</li>
+</ol>
+</li>
+<li>App Needs to communicate with each one of the PNSs<ol>
+<li>Problem: <ol>
+<li>App needs to employ separate APIs</li>
+<li>Separate handles (each PNS has its own handle format)</li>
+<li>Limited functionality - the app needs to adapt itself to the various functionality of PNS and to work with common denominator of all the PNSs</li>
+</ol>
+</li>
+<li>Solution:<ol>
+<li>Notification Hub<ol>
+<li>Azure NH sits in between the app and PNSs<ol>
+<li>App only needs to connect with the NH and send notification<ol>
+<li>NH does the dirty work of connecting with all the PNSs and communicating with them and ensuring that everything works flawlessly regardless of specific PNS and specific device a user has</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Tiers and Pricing</h3>
+<ol>
+<li>Three tiers:<ol>
+<li>Free<ol>
+<li>For 1 million</li>
+</ol>
+</li>
+<li>Basic<ol>
+<li>$10 / month for first 10 million notifications</li>
+</ol>
+</li>
+<li>Standard<ol>
+<li>$200 / month for first 10 million notifications</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Main differences:<ol>
+<li>Free has no SLA, Basic and Standard have 99.9% SLA<ol>
+<li>Don't use Free tier for Production (especially with heavy load)</li>
+<li>Good for Dev and Test scenarios</li>
+</ol>
+</li>
+<li>Free inludes 1 m notifications / month, Basic and Standard include 10m free notifications</li>
+<li>Devices / namespace: Free = 500, Basic = 200K, Standard = 10m<ol>
+<li>Number of devices</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Notification Hub</h3>
+<ol>
+<li>Portal:<ol>
+<li>Search: Notification<ol>
+<li>Notification Hubs<ol>
+<li><ul>
+<li>Create</li>
+</ul>
+<ol>
+<li>Resource group: new<ol>
+<li>notifhub-rg</li>
+</ol>
+</li>
+<li>Namespace: notifhub-nf (container to notification hub)</li>
+<li>Notification hub: notifhub</li>
+<li>Location: West Europe</li>
+<li>Select pricing tier: Free</li>
+<li>Create</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Android app:<ol>
+<li>Download and install Android studio<ol>
+<li>Download Android studio</li>
+<li>Install</li>
+</ol>
+</li>
+<li>Start Android studio<ol>
+<li>Do not import settings</li>
+<li>...</li>
+<li>Standard</li>
+<li>...</li>
+<li>Finish</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Download notificationhubandroid.zip file</li>
+<li>Extract it</li>
+<li>Launch Android studio<ol>
+<li>Open an existing project<ol>
+<li>Open the folder where the files are</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Firebase cloud messaging account (PNS used by Google to send notifications to Android mobile phone)</li>
+<li>Go to: console.firebase.google.com<ol>
+<li>Sign in or sign up</li>
+<li><ul>
+<li>Add project</li>
+</ul>
+<ol>
+<li>Name: fcmnotificationhub</li>
+<li>Allow google analytics</li>
+<li>Default google analytics account (created for Firebase)</li>
+<li>Create project</li>
+<li>Continue</li>
+</ol>
+</li>
+<li>Add Firebase libraries and support for our App (Android)<ol>
+<li>Click Android icon<ol>
+<li>Register app:<ol>
+<li>Package name: com.example.mobilenotificationtest</li>
+<li>Register app</li>
+</ol>
+</li>
+<li>Download config file (google_services.json - needs to be merged into our project)<ol>
+<li>Download</li>
+<li>Open the folder the file is in<ol>
+<li><code>app</code> folder<ol>
+<li>Paste the file</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Firebase<ol>
+<li>Settings button (near Project Overview)<ol>
+<li>Project settings<ol>
+<li>Cloud Messaging<ol>
+<li>Copy Server key (server key used when sending messaging to Android phones when using Firebase cloud messaging)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Azure Portal:<ol>
+<li>Go to the resource<ol>
+<li>Max devices - 500</li>
+<li>Free pushes - 1 M</li>
+<li>Manage<ol>
+<li>Access Policies<ol>
+<li>DefaultListenSharedAccessSignature (connection string allows us to listen to notifications sent from the notification hub)<ol>
+<li>Client application (mobile app) should use this policy<ol>
+<li>Azure displays a message to do this</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>DefaultFullSharedAccessSignature (to listen, manage notification hub, send notifications)<ol>
+<li>We can use this to connect to notification hub from backend code and to send notification to devices</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Google<ol>
+<li>API Key<ol>
+<li>Paste the API Key we copied from Firebase cloud messaging page</li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Access Policies<ol>
+<li>Copy DefaultListenSharedAccessSignature</li>
+<li>Android studio<ol>
+<li>MainActivity.kt<ol>
+<li>Paste after <code>connectionString</code></li>
+</ol>
+</li>
+<li>Open NotificationHubListener.java<ol>
+<li>Set break point at line 18 (<code>onPushNotificationReceived</code> method)<ol>
+<li>Triggered when a new push notification is recieved by the app</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Shift + F9 (build)<ol>
+<li>Phone is opened (emulator)<ol>
+<li>Android app is up and running</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Portal<ol>
+<li>Overview<ol>
+<li>Test Send<ol>
+<li>Platforms: Android</li>
+<li>Send<ol>
+<li>Sent successfully</li>
+<li>Breakpoint was hit<ol>
+<li>F8 (to advance)</li>
+<li><code>title</code> variable (title of the message)</li>
+<li>F8</li>
+<li><code>body</code></li>
+<li>F8</li>
+<li>Writing content to log</li>
+<li>Data</li>
+<li>Click Logcat (bottom left)<ol>
+<li>key/value pairs</li>
+</ol>
+</li>
+<li>Ensure Emulator that is running is picked</li>
+<li>Ensure that Show only selected application is selected</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Refresh<ol>
+<li>Some successful push notifications</li>
+<li>How many push notifications were sent</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Tags and Tag Expressions</h3>
+<ol>
+<li>Not always we want to send push notifications to all devices (called broadcast)</li>
+<li>Usually there's a need to send push notifications just to devices that belong to specific groups</li>
+<li>Examples:<ol>
+<li>Users interested in technology news</li>
+<li>Participants in specific chat</li>
+<li>Followers of specific influencer</li>
+<li>Specific user</li>
+</ol>
+</li>
+<li>For that we have the tags</li>
+<li>Tags<ol>
+<li>Tags are used for sending notifications to subset of devices based on properties of the device</li>
+<li>Devices can register specific tags and Notification Hub sends notifications to devices having these tags</li>
+<li>Devices can register one or more tags (up to 60)</li>
+<li>Tags are simple strings</li>
+<li>Examples:<ol>
+<li>Tech_news</li>
+<li>Kim-followers</li>
+<li>User_558392</li>
+<li>Chat-882dkc</li>
+</ol>
+</li>
+<li>Flow of Tags:<ol>
+<li>Step 1: A device registers for a tag (Beatles) with Notification Hub</li>
+<li>Step 2: App backend sends notification to Notification hub targetting all devices with tag Beatles</li>
+<li>Step 3: Notification hub sends the notification to only those devices</li>
+</ol>
+</li>
+<li>Tag Expressions<ol>
+<li>Notifications can be sent to devices that meet tag conditions (not specific tags only)</li>
+<li>Example:<ol>
+<li>Interested in tech_news and also follows Satya Nadella</li>
+<li>Users who belong to petrolHeads group but is not to specific user named 55838</li>
+</ol>
+</li>
+<li>Tag expressions can be used for the above scenarios</li>
+<li>With Tag Expressions we can define logic expressions that determine whether a notification will be sent to the device</li>
+<li>It uses common logical operators</li>
+<li>Examples:<ol>
+<li><code>(tech_news || business_news) &amp;&amp; location_France</code></li>
+<li><code>(group_5593 &amp;&amp; !user_35828)</code></li>
+</ol>
+</li>
+<li>Tag expressions add another logical layer to simple tags and allows further segmentation</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Tags and Tag Expressions</h3>
+<ol>
+<li><p>In MainActivity.kt</p>
+<pre><code> onCreate(...) {
+     ...
+     NotificationHub.addTag("tech_news");
+     
+</code></pre>
+<ol>
+<li>Device is going to register tech_news tag with notification hub so that future notifications that will be sent to the tech_news tag will be recieved by the device</li>
+</ol>
+</li>
+<li><p>Debug the app</p>
+</li>
+<li><p>Portal:</p>
+<ol>
+<li>Test Send<ol>
+<li>Platforms: Android</li>
+<li>Send</li>
+</ol>
+</li>
+<li>Breakpoint is hit</li>
+<li>Test Send<ol>
+<li><p>Send to Tag Expression: tech_news</p>
+</li>
+<li><p>Payload:</p>
+<pre><code> "title": "Tech News Breaking News",
+ "Body": "This is an extremely important tech news!"
+ 
+</code></pre>
+</li>
+<li><p>Send</p>
+</li>
+<li><p>Breakpoint is hit again</p>
+</li>
+</ol>
+</li>
+<li>Test Send<ol>
+<li>Send to Tag Expression: fashion_news</li>
+<li>Send</li>
+<li>Breakpoint is not hit</li>
+</ol>
+</li>
+<li>Test Send<ol>
+<li><p>Send to Tag Expression: (tech_news || fashion_news)</p>
+</li>
+<li><p>Payload:</p>
+<pre><code> "title": "Fashion of Tech News"
+ 
+</code></pre>
+</li>
+<li><p>Send</p>
+</li>
+<li><p>Breakpoint will be hit</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Sending Notifications Using Code</h3>
+<ol>
+<li>Sending notifications from our own code</li>
+<li>Download the Notificationhubsample.zip file</li>
+<li>Extract it</li>
+<li>Go into the folder</li>
+<li>Open the backend project in VS Code<ol>
+<li>Program.cs<ol>
+<li>NotificationHub client (a client for the Notification hub)</li>
+<li>Client is going to connect to the Notification hub using the connection string</li>
+<li>Commented lines: another way of sending notifications<ol>
+<li>Construct notification we want to send<ol>
+<li>Title</li>
+<li>Body</li>
+</ol>
+</li>
+<li><code>SendFcmNativeNotificationAsync</code> - A method to send notifications to Android devices</li>
+</ol>
+</li>
+<li>Connection string:<ol>
+<li>Portal:<ol>
+<li>Access Policies<ol>
+<li>Copy DefaultFullSharedAccessSignature</li>
+<li>Paste in <code>CreateClientFromConnectionString</code></li>
+<li>Save</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li>F5</li>
+<li>Log entry: Enqueued<ol>
+<li>Notification was sent to notification hub</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Android studio<ol>
+<li>Hit breakpoint</li>
+</ol>
+</li>
+<li>VS Code<ol>
+<li><code>hubClient</code> (instance of Notification hub client)</li>
+<li>Sends notification to FCM (Firebase Cloud Messaging)<ol>
+<li>There are other methods<ol>
+<li>Check resources (one-stop-shop to working with Notificaiton Hub)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Delete resource group</li>
+</ol>
+<h3>Resources</h3>
+<ol>
+<li>Notification hub has a lot of capabilities and features</li>
+<li>Resources to learn more:<ol>
+<li><code>NotificationHubClient</code> class has a lot of useful methods for communicating with the Notification Hub<ol>
+<li>One-stop-shop for all notification hub-related tasks<ol>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.notificationhubs.notificationhubclient?view=azure-dotnet">https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.notificationhubs.notificationhubclient?view=azure-dotnet</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Notifications can be scheduled:<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-send-push-notifications-scheduled">https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-send-push-notifications-scheduled</a></li>
+</ol>
+</li>
+<li>Templates can be used for a unified messaging format across all devices<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages">https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-templates-cross-platform-push-messages</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>Section 7: Cognitive Services</h2>
+<h3>Introduction</h3>
+<ol>
+<li>What are they?<ol>
+<li>A set of APIs to help us build cognitive intelligence apps<ol>
+<li>The APIs use Artificial Intelligence, Machine Learning, and more to perform some cognitive actions</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We don't need to know anything about AI and ML<ol>
+<li>We just need to know how to use the APIs</li>
+</ol>
+</li>
+<li>It is not a regular service...<ol>
+<li>We just get an API</li>
+</ol>
+</li>
+<li>Categories:<ol>
+<li>Vision:<ol>
+<li>Computer Vision</li>
+<li>Face recognition</li>
+<li>Form recognition</li>
+<li>...</li>
+</ol>
+</li>
+<li>Speech<ol>
+<li>Speech-to-Text</li>
+<li>Text-to-Speech</li>
+<li>Translation</li>
+<li>...</li>
+</ol>
+</li>
+<li>Languages<ol>
+<li>Language understanding</li>
+<li>QnA maker</li>
+<li>Text analysis</li>
+<li>...</li>
+</ol>
+</li>
+<li>Decision<ol>
+<li>Anomaly detector</li>
+<li>Content moderator</li>
+<li>Personalizer</li>
+<li>...</li>
+</ol>
+</li>
+<li>Search<ol>
+<li>Full text search</li>
+<li>Indexing</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Pricing</h3>
+<ol>
+<li>Pricing structure is a little complicated<ol>
+<li>But we basically pay for the number of transactions</li>
+</ol>
+</li>
+<li>Computer Vision:<ol>
+<li>Face recognition -<ol>
+<li>For First million transactions:<ol>
+<li>$1 / 1000 transactions</li>
+</ol>
+</li>
+<li>For 1 milltion to 10 million transactions<ol>
+<li>$0.65 / 1000 transactions</li>
+</ol>
+</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Language<ol>
+<li>We are not paying because the service exists<ol>
+<li>We pay for the actual usage - similar to Azure functions</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Constructing Cognitive Services</h3>
+<ol>
+<li>Portal:<ol>
+<li>Search: Cognitive Services<ol>
+<li>Two places<ol>
+<li>Services<ol>
+<li>Cognitive Services - routes to Marketplace</li>
+</ol>
+</li>
+<li>Marketplace<ol>
+<li>Cognitive Services<ol>
+<li>Resource group: Create one<ol>
+<li>cognitive-rg</li>
+</ol>
+</li>
+<li>Region: West Europe</li>
+<li>Name: azcourse-cognitive</li>
+<li>Pricing tier: Standard S0 (only one is avaialable)</li>
+<li>Check to acknowledge that we have read and understood the terms<ol>
+<li>Responsible AI notice - what the cognitive services are intended for</li>
+</ol>
+</li>
+<li>Review + Create</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Go to resource<ol>
+<li>Quick start guide</li>
+<li>Overview<ol>
+<li>Status: Active</li>
+</ol>
+</li>
+<li>Keys and Endpoint<ol>
+<li>Used to connect to the API and work with it</li>
+<li>Copy the Endpoint<ol>
+<li><p>Open Postman:</p>
+<ol>
+<li>POST: <paste-endpoint>/test/analytics/v3.0/sentiment</paste-endpoint></li>
+<li>Headers:<ol>
+<li>Content-Type: application/json</li>
+</ol>
+</li>
+<li>Ocp-Apim-Subscription-Key: Copy and paste Key 1</li>
+<li>Body:<ol>
+<li><p>Check Raw:</p>
+</li>
+<li><p>Download and copy paste resource text</p>
+<pre><code> {
+     documents: [
+         {
+             "language": "en",
+             "id": "1",
+             "text": "I love my wife"
+         },
+         {
+             "language": "en",
+             "id": "2",
+             "text": "My cat annoys me"
+         }
+     ]
+ }
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Sentiment API:</p>
+<ol>
+<li>It takes some text, analyzes, returns a sentiment (mood)<ol>
+<li>Are we angry</li>
+<li>Are we happy</li>
+<li>...</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Hit Send</p>
+<ol>
+<li>Sentiment: Positive</li>
+<li>Sentiment: Negative</li>
+</ol>
+</li>
+<li><p>Download HE file and paste contents of the file under the previous body</p>
+<ol>
+<li>Error: Invalid language code<ol>
+<li>List of supported languages</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Langauge Understanding</h3>
+<ol>
+<li>Language Understanding Service (LUIS)<ol>
+<li>It analysis texts and understands them</li>
+<li>Great for:<ol>
+<li>Bots (hotel reservations, medical advice etc.)<ol>
+<li>The bots usually need to understand what we are telling them so that they will know how to reply accordingly</li>
+</ol>
+</li>
+<li>Voice controlled devices (home automation, car controls, etc.)<ol>
+<li>We can talk to the home or car and they do what we want<ol>
+<li>They need to understand what we exactly want from them</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>...</li>
+</ol>
+</li>
+<li>Extracts <strong>Intents</strong> and <strong>Entities</strong><ol>
+<li>From the text that we provide</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>LUIS<ol>
+<li>Intent<ol>
+<li>It indicates <strong>what we want to do</strong><ol>
+<li>Examples:<ol>
+<li>Turn off something</li>
+<li>Buy something</li>
+<li>Go somewhere</li>
+<li>Stand up somewhere</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Entity<ol>
+<li>The object you refer to<ol>
+<li>Examples:<ol>
+<li>Light</li>
+<li>Cake</li>
+<li>Outside</li>
+<li>Chair</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>By extracting the intent and entity, LUIS can exactly tell what we want to do</li>
+<li>In order to use LUIS, Intents and Entities should be defined<ol>
+<li>Solution:<ol>
+<li>There are pre-built domains for specific areas (saves us the need to manually configure the intent and entities)<ol>
+<li><strong>Can be configured via the LUIS portal</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>No coding is required</li>
+<li>No ML knowledge required</li>
+</ol>
+</li>
+</ol>
+<h3>Using LUIS</h3>
+<ol>
+<li>luis.ai<ol>
+<li>Home page of language understanding service</li>
+<li>Login<ol>
+<li>New authoring resource (resource used for LUIS capabilities)</li>
+<li>Pick subscription<ol>
+<li>Creat an authoring resource<ol>
+<li>Azure resource group: cognitive-rg</li>
+<li>Azure resource name: azcource-luis</li>
+<li>Location: West Europe</li>
+<li>Done</li>
+</ol>
+</li>
+<li><ul>
+<li>New app</li>
+</ul>
+<ol>
+<li>Name: home-app</li>
+<li>Culture: English</li>
+<li>Done</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Prebuilt Domains<ol>
+<li>Calendar</li>
+<li>Communication</li>
+<li>Email</li>
+<li>NomeAutomation (select)<ol>
+<li>Add domain</li>
+</ol>
+</li>
+<li>Note</li>
+<li>Places</li>
+<li>RestaurantReservation</li>
+<li>ToDo</li>
+<li>Utilities</li>
+<li>Weather</li>
+<li>Web</li>
+</ol>
+</li>
+<li>Click: Intent<ol>
+<li>QueryState</li>
+<li>SetDevice (state)</li>
+<li>TurnDown</li>
+<li>TurnOff</li>
+<li>TurnOn</li>
+<li>TurnDown</li>
+</ol>
+</li>
+<li>Click: Entities<ol>
+<li>Device name</li>
+<li>Device type </li>
+<li>Location</li>
+<li>Numerical change (that can happen as a result of the action)</li>
+<li>...<ol>
+<li>We can customize, modify, and add</li>
+</ol>
+</li>
+<li><ul>
+<li>Create (for new entities)</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Training:<ol>
+<li>Train - disabled<ol>
+<li>Refresh the page<ol>
+<li>LUIS needs to figure out that we have Intents and Entities</li>
+</ol>
+</li>
+<li>Click Train<ol>
+<li>LUIS will use ML capabilities to understand Intents and Entities the user will provide</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Manage<ol>
+<li>We are going to add a prediction resource<ol>
+<li>Prediction resource - a publicly accessible API which we can use to feed LUIS with text to be analysed</li>
+</ol>
+</li>
+<li>Click: Azure Resources<ol>
+<li>Add prediction resource<ol>
+<li>Prediction resource: azcourse-cognitive</li>
+</ol>
+</li>
+<li>Done</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Publish<ol>
+<li>Production Slot (API will be in production)<ol>
+<li>Done</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Copy the example query<ol>
+<li>It has all the parameters we want to use<ol>
+<li>GET: <paste-the-url><ol>
+<li>YOUR_QUERY_HERE -&gt; please turn off the lights</li>
+<li>Headers:<ol>
+<li>Uncheck: Ocp-Apim-Subscription-Key (it may confuse LUIS)</li>
+</ol>
+</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>Intent: HomeAutomationDomain.TurnOff<ol>
+<li>Highest rank: 99% probability</li>
+</ol>
+</li>
+<li>Entity: Lights</li>
+</ol>
+</li>
+<li>Turn off the Lights<ol>
+<li>Backend developer exactly knows what to do</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Change to: Turn the heat up to 25 degrees<ol>
+<li>LUIS understands<ol>
+<li>Probability is &gt; 98%</li>
+<li>Entities:<ol>
+<li>SettingType: Heat</li>
+<li>Setting: 25</li>
+<li>Unit: Degrees</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Using the above data, developer knows exactly what needs to be done</li>
+</ol>
+</li>
+</ol>
+</paste-the-url></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>LUIS can take free text, extracts intents and entities and gives the developer a structured data that contains everything the developer needs to know as to what exactly needs to be done.</li>
+</ol>
+</li>
+</ol>
+<h3>Text to Speech</h3>
+<ol>
+<li>What is it?<ol>
+<li>It converts written text to a synthesized speech<ol>
+<li>Use-cases:<ol>
+<li>Great for audio books</li>
+<li>Talking devices</li>
+<li>As an assistive feature</li>
+<li>(anything that requires speech)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>It uses multitude of voices with various features<ol>
+<li>We can provide the best voice for the text</li>
+<li>It can translate the text while converting it to speech</li>
+</ol>
+</li>
+<li>It can be implemented using:<ol>
+<li>REST API</li>
+<li>SDK<ol>
+<li>Downlaoded from cognitive services page</li>
+<li>Simple to use</li>
+</ol>
+</li>
+<li>No need for special coding skills or AI skills</li>
+</ol>
+</li>
+</ol>
+<h3>Using Text to Speech</h3>
+<ol>
+<li>Portal<ol>
+<li>Search: Speech<ol>
+<li>Marketplace: Speech (New text-to-speech resource)<ol>
+<li>Name: azcourse-speech</li>
+<li>Subscription</li>
+<li>Location: West Europe</li>
+<li>Pricing tier: Free</li>
+<li>Resource group: cognitive-rg</li>
+<li>Create</li>
+</ol>
+</li>
+<li>Go to resource</li>
+</ol>
+</li>
+<li>API type: Speech</li>
+<li>Pricing tier<ol>
+<li>Differences between various tiers of speech cognitive service<ol>
+<li>Speech Transaltion:<ol>
+<li>Free: 5 hours/month</li>
+<li>Standard: Unlimited but we pay</li>
+</ol>
+</li>
+<li>Speech-to-text:<ol>
+<li>Free: 5 hours/month</li>
+<li>Standard: Unlimited but we pay</li>
+</ol>
+</li>
+<li>Text-to-speech:<ol>
+<li>Free: 5 M characters/month</li>
+<li>Standard: Unlimited but we pay</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Keys and Endpoint<ol>
+<li>How we are going to connect to the service and how we are going to use the API</li>
+<li>Open Postman:<ol>
+<li>Copy and paste the Endpoint URL: <a href="https://westeurope.tts.speech.microsoft.com/cognitiveservices/voices/list">https://westeurope.tts.speech.microsoft.com/cognitiveservices/voices/list</a></li>
+<li>Method: GET</li>
+<li>Check: Ocp-Apim-Subscription-Key: <copy-and-paste-key-1></copy-and-paste-key-1></li>
+<li>What does it do?<ol>
+<li>Shows us various voices that can be used with the service<ol>
+<li>Send<ol>
+<li>Long list<ol>
+<li>For each voice we have some characteristics:<ol>
+<li>Name: "Microsoft Server Speech Test to Speech Voice (locale, Name of speeker)"</li>
+<li>DisplayName: "Jacob"</li>
+<li>Gender</li>
+<li>Locale</li>
+<li>Sample rate Hertz: Quality of sound</li>
+<li>Status: GA<ol>
+<li>Generally available<ol>
+<li>Tested and it can be used</li>
+</ol>
+</li>
+<li>Status: Preview<ol>
+<li>It is not fully tested yet<ol>
+<li>There might be some problems</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Copy the list and paste it into notepad</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Change the request<ol>
+<li>Replace <code>voices/list</code> with <code>v1</code></li>
+<li><code>POST</code></li>
+<li>Headers:<ol>
+<li><code>Content-Type</code>: <code>application/ssml+xml</code></li>
+<li><code>x-Microsoft-OutputFormat</code>: <code>audio-48khz-192kbitrate-mono-mp3</code> -  for audio format (there are other formats)</li>
+</ol>
+</li>
+<li>Body:<ol>
+<li>Download the file and copy paste the content<ol>
+<li><p>XML document</p>
+<pre><code> &lt;speak ...&gt;
+     &lt;voice ...&gt; &lt;!-- specifies the voice we need - shortname for the list is used --&gt;
+         text
+     &lt;/voice&gt;
+ &lt;/speak&gt;
+ 
+</code></pre>
+<ol>
+<li>Stylelist item - what are the best scenarios for the voice<ol>
+<li>Chat application - Aria is the best fit</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>SSML:</p>
+<ol>
+<li>Speech Synthesis Markup Language<ol>
+<li>A flavor of XML - defines speech</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send<ol>
+<li>Save response</li>
+<li>Save to a file</li>
+<li>Pick the folder where we want the file to be saved</li>
+<li>suffix - mp3</li>
+</ol>
+</li>
+<li>Double click the file</li>
+<li>Another voice<ol>
+<li>name: "<pick-another-voice-from-the-list>"</pick-another-voice-from-the-list></li>
+<li>Send</li>
+<li>Save the response<ol>
+<li>Translation is also possible</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Computer Vision</h3>
+<ol>
+<li>The computer vision API analyzes images and extracts meaningful information from them</li>
+<li>It can be used with SDKs in various languages or REST API</li>
+<li>Usage of SDK and API is extremely simple</li>
+<li>No AI or ML knowledge is required<ol>
+<li>We just need to know how to use the SDK or API</li>
+</ol>
+</li>
+<li>APIs:<ol>
+<li>OCR - Optical Character Recognition<ol>
+<li>It identifies letters, words, and other text in an image and extracts the text</li>
+</ol>
+</li>
+<li>Spatial Analysis<ol>
+<li>Analyzes presence and movement of people in video<ol>
+<li>What exactly is there in the video</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Image Analysis<ol>
+<li>It contains: Object detection, face detection, categorization, etc.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>Using Computer Vision</h3>
+<ol>
+<li>Portal:<ol>
+<li>Search: Computer Vision<ol>
+<li>Marketplace: Computer Vision<ol>
+<li>Creation of Computer Vision Resource<ol>
+<li>Resource group: cognitive-rg</li>
+<li>Region: West Europe</li>
+<li>Name: azcourse-vision-mutthoju (unique)</li>
+<li>Pricing tier: Free (20 calls per minute, 5000 calls per month)<ol>
+<li>Standard (10 calls per second)<ol>
+<li>Production will decide which one to select</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Check the responsible AI notice acknowledgement</li>
+<li>Review + Create</li>
+<li>Create<ol>
+<li>Deployment is quite short</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Go to the resource<ol>
+<li>Overview<ol>
+<li>API type: Computer Vision</li>
+</ol>
+</li>
+<li>Keys and Endpoint<ol>
+<li>Two keys<ol>
+<li>Copy key 1</li>
+</ol>
+</li>
+<li>Endpoint</li>
+</ol>
+</li>
+<li>Quick start<ol>
+<li>API Console - specialized tool which allows us to try CV API without writing code and any external tool<ol>
+<li>Analyze Image (API)<ol>
+<li>Region: Select West Europe<ol>
+<li>Headers:<ol>
+<li>Ocp-Apim-Subscription-Key: copy and paste the subscription key</li>
+</ol>
+</li>
+<li>Query parameters<ol>
+<li>visualFeatures: Categories (categories of objects in the image)</li>
+<li>language: en</li>
+<li>model-version: latest</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Body:<ol>
+<li>Download the file from resources<ol>
+<li>URLs of various images</li>
+</ol>
+</li>
+<li>Paste the first URL<ol>
+<li>Open it in browser tab</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>Categories: building<ol>
+<li>Probability: 87%</li>
+</ol>
+</li>
+<li>Metadata about image:<ol>
+<li>Height</li>
+<li>Width</li>
+<li>Format</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Query parameters:<ol>
+<li>details: Landmarks (specific landmarks visible)</li>
+</ol>
+</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>Landmarks: Eifel Tower</li>
+<li>Probability: 99.8%</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Headers:<ol>
+<li>detail: Remove it</li>
+<li>visualFeatures: Description,Tags (no space in between)</li>
+</ol>
+</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>List of tags: Indicate what we see in the photo:<ol>
+<li>outdoor</li>
+<li>building</li>
+<li>sky</li>
+<li>tree</li>
+<li>monument</li>
+<li>...</li>
+</ol>
+</li>
+<li>Description:<ol>
+<li>Free text: "a tall metal tower with Eifel Tower in the background"</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We can play with other parameter values</li>
+<li>Query Parameters:<ol>
+<li>visualFeatures: Faces</li>
+</ol>
+</li>
+<li>Change the URL to a second URL</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>List of faces<ol>
+<li>Age</li>
+<li>Gender</li>
+<li>Coordinates of face rectangle</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Detect Object API<ol>
+<li>Select West Europe<ol>
+<li>Headers:<ol>
+<li>Ocp-Apim-Subscription-Key: copy paste key</li>
+</ol>
+</li>
+<li>Use the URL of third image (city street)</li>
+<li>Send<ol>
+<li>Response:<ol>
+<li>A list of objects that CV identified in the photo<ol>
+<li>Identified objects &amp; their coordinates</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>We can add AI and ML capabilities to our system without any prior AI or ML knowledge<ol>
+<li>We just need to know how to use the API</li>
+</ol>
+</li>
+</ol>
+<h3>Resources</h3>
+<ol>
+<li>There are lots more APIs<ol>
+<li>QnA Maker: <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/qnamaker/">https://docs.microsoft.com/en-us/azure/cognitive-services/qnamaker/</a></li>
+<li>Anomaly Detector: <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/anomaly-detector/">https://docs.microsoft.com/en-us/azure/cognitive-services/anomaly-detector/</a></li>
+<li>Spatial Analysis: <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/intro-to-spatial-analysis-public-preview">https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/intro-to-spatial-analysis-public-preview</a></li>
+</ol>
+</li>
+<li>Cognitive Services can be protected using VNets and Azure AD authentication<ol>
+<li><a href="https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-virtual-networks?tabs=portal">Configuring Cognitive Services Virtual Networks</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/cognitive-services/authentication?tabs=powershell">Authenticate requests to Cognitive Services</a></li>
+</ol>
+</li>
+</ol>
+<h2>Section 8: Case Study</h2>
+<h3>Introduction</h3>
+<h3>Introducing our App</h3>
+<h3>Requirements</h3>
+<h3>Component Mapping</h3>
+<h3>Upload Photos Component</h3>
+<h3>Process Photos Component</h3>
+<h3>Registration Component</h3>
+<h3>Retrieve Photos Component</h3>
+<h3>Cost Estimation</h3>
+<h3>Download the Architecture Diagram</h3>
+<h2>Section 9: Conclusion</h2>
+<h3>Conclusion</h3>
+<h3>BONUS: Next Steps</h3>

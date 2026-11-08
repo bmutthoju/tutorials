@@ -1,0 +1,51 @@
+## Multi-Agent Systems
+
+MA systems coordinate specialized components to tackle complex workflows
+	1. Not every complex tasks requires this approach - a single agent with the right tools and prompt can often achieve similar results
+	
+Parallelisation - scaling up
+	1. Example: Multiple bugs, security issues, ...
+	
+Why multi-agent systems?
+	1. Context Management
+		1. For instance, team that analyzes has only the context relevant to the analysis
+		2. Hospital:
+			1. Reception
+				1. Data related to customers only required by them
+					1. Don't need irrelevant context
+			2. Radiology
+			3. BIlling
+			4. Pharmacy
+			5. ...
+		3. Context for specialized roles is clearly isolated
+			1. Good for isolating context
+				1. Context engineering - how well we maintain context
+		4. Lost in the middle
+			1. If contexts are mixed up, it will forget what it needs to do
+	2. Distributed development
+		1. Example:
+			1. Alert agent
+			2. Analysis agent
+				1. Example: Log analysis, code analysis, ...
+			3. ...
+	3. Parallelisation
+		1. Example: Travel agent
+			1. Hotel search
+			2. Flight search
+			3. Iterinary
+				1. Hotel search and flight search are independent
+					1. They can be run in parallel
+		2. Example: Independent analysis or different types
+	4. Scalable
+		1. Adding more agents (horizontal scaling)
+	5. Strong and reliable
+		1. If an agent stops working, the system keeps going because other agents take over
+		2. Example:
+			1. Bug Triaging
+				1. Intake
+				2. Historical search (agent) (if this fails, we can skip it go to the next step)
+					1. How to make it optional? LangGraph
+				3. Analysis (log + code) (agent)
+				4. Synthesis
+	6. Faster and more efficient
+		1. More agents working on different parts of the problem
